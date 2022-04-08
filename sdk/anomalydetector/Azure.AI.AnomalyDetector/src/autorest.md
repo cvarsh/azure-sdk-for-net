@@ -5,7 +5,7 @@ Run `dotnet build /t:GenerateCode` to generate code.
 ``` yaml
 tag: release_1_1_preview.1
 require:
-    -  https://github.com/Azure/azure-rest-api-specs/blob/725b20c866d7f4a6512adff8d0647f0fe3baa069/specification/cognitiveservices/data-plane/AnomalyDetector/readme.md
+    -  https://github.com/Azure/azure-rest-api-specs/blob/39614ae1a107595709fd6a4b9da79e7d835bf061/specification/cognitiveservices/data-plane/AnomalyDetector/readme.md
 namespace: Azure.AI.AnomalyDetector
 public-clients: true
 security:
