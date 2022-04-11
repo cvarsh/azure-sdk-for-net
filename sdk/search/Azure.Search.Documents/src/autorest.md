@@ -12,7 +12,7 @@ See the [Contributing guidelines](https://github.com/Azure/azure-sdk-for-net/blo
 title: SearchServiceClient
 input-file:
  - https://github.com/Azure/azure-rest-api-specs/blob/d850f41f89530917000d8e6bb463f42bb745b930/specification/search/data-plane/Azure.Search/preview/2021-04-30-Preview/searchindex.json
- - https://github.com/Azure/azure-rest-api-specs/blob/d850f41f89530917000d8e6bb463f42bb745b930/specification/search/data-plane/Azure.Search/preview/2021-04-30-Preview/searchservice.json
+ - https://github.com/Azure/azure-rest-api-specs/blob/d464a4145a9f53931e8507fc10aca9e78c8fc57e/specification/search/data-plane/Azure.Search/preview/2021-04-30-Preview/searchservice.json
 modelerfour:
     seal-single-value-enum-by-default: true
 ```
