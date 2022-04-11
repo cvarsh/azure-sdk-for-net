@@ -149,13 +149,13 @@ directive:
 # Service V3 swagger
 ``` yaml
 input-file:
-  -  https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8e73bccfad3f6873b9f91d3920ce0f96af554378/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
+  -  https://github.com/Azure/azure-rest-api-specs/blob/d464a4145a9f53931e8507fc10aca9e78c8fc57e/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
 ```
 
 ## Make generated models internal by default
 ``` yaml
 directive:
-  from: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8e73bccfad3f6873b9f91d3920ce0f96af554378/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
+  from: https://github.com/Azure/azure-rest-api-specs/blob/d464a4145a9f53931e8507fc10aca9e78c8fc57e/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
   where: $.definitions.*
   transform: >
     $["x-accessibility"] = "internal";
@@ -165,7 +165,7 @@ directive:
 ## Rename operationIds
 ``` yaml
 directive:
-- from: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8e73bccfad3f6873b9f91d3920ce0f96af554378/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
+- from: https://github.com/Azure/azure-rest-api-specs/blob/d464a4145a9f53931e8507fc10aca9e78c8fc57e/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
   where: $.paths.*
   transform: >
     const prefix = "DocumentAnalysis_";
@@ -179,7 +179,7 @@ directive:
 ## Rename duplicated types
 ``` yaml
 directive:
-  from: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8e73bccfad3f6873b9f91d3920ce0f96af554378/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
+  from: https://github.com/Azure/azure-rest-api-specs/blob/d464a4145a9f53931e8507fc10aca9e78c8fc57e/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
   where: $.definitions.ModelInfo
   transform: >
     $["x-ms-client-name"] = "DocumentModel"
@@ -187,7 +187,7 @@ directive:
 
 ``` yaml
 directive:
-  from: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8e73bccfad3f6873b9f91d3920ce0f96af554378/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
+  from: https://github.com/Azure/azure-rest-api-specs/blob/d464a4145a9f53931e8507fc10aca9e78c8fc57e/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
   where: $.definitions.ErrorResponse
   transform: >
     $["x-ms-client-name"] = "DocumentErrorResponse"
@@ -195,7 +195,7 @@ directive:
 
 ``` yaml
 directive:
-- from: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8e73bccfad3f6873b9f91d3920ce0f96af554378/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
+- from: https://github.com/Azure/azure-rest-api-specs/blob/d464a4145a9f53931e8507fc10aca9e78c8fc57e/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
   where: $.definitions..properties.*
   transform: >
     if ($.enum &&  $["x-ms-enum"].name == "OperationStatus") {
@@ -208,7 +208,7 @@ directive:
 
 ``` yaml
 directive:
-- from: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8e73bccfad3f6873b9f91d3920ce0f96af554378/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
+- from: https://github.com/Azure/azure-rest-api-specs/blob/d464a4145a9f53931e8507fc10aca9e78c8fc57e/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
   where: $.definitions.DocumentPage.properties.unit
   transform: >
     $["x-ms-enum"].name = "V3LengthUnit";
@@ -216,7 +216,7 @@ directive:
 
 ``` yaml
 directive:
-- from: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8e73bccfad3f6873b9f91d3920ce0f96af554378/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
+- from: https://github.com/Azure/azure-rest-api-specs/blob/d464a4145a9f53931e8507fc10aca9e78c8fc57e/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
   where: $.definitions.DocumentSelectionMarkState
   transform: >
     $["x-ms-enum"].name = "V3SelectionMarkState";
@@ -225,7 +225,7 @@ directive:
 ## Make enums internal and in the right namespace
 ``` yaml
 directive:
-- from: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8e73bccfad3f6873b9f91d3920ce0f96af554378/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
+- from: https://github.com/Azure/azure-rest-api-specs/blob/d464a4145a9f53931e8507fc10aca9e78c8fc57e/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
   where: $.definitions..properties.*
   transform: >
     if ($.enum) {
@@ -237,7 +237,7 @@ directive:
 ## Rename QueryStringIndexType
 ``` yaml
 directive:
-- from: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8e73bccfad3f6873b9f91d3920ce0f96af554378/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
+- from: https://github.com/Azure/azure-rest-api-specs/blob/d464a4145a9f53931e8507fc10aca9e78c8fc57e/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
   where: $.parameters.QueryStringIndexType
   transform: >
     $["x-namespace"] = "Azure.AI.FormRecognizer.DocumentAnalysis"
