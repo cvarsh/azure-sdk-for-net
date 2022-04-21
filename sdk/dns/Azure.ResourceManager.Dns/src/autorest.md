@@ -5,7 +5,7 @@ Run `dotnet build /t:GenerateCode` to generate code.
 ``` yaml
 
 azure-arm: true
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e0996d4f6dbca40ebf2fa4abf9a1cba45ada94d8/specification/dns/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/e46960baeaf5b3481d35c7d0a44855875cea33fa/specification/dns/resource-manager/readme.md
  
 
 ```
