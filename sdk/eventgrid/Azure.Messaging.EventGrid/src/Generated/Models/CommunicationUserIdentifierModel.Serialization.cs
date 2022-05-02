@@ -5,25 +5,9 @@
 
 #nullable disable
 
-using System.Text.Json;
-using Azure.Core;
-
 namespace Azure.Messaging.EventGrid.SystemEvents
 {
-    public partial class CommunicationUserIdentifierModel
+    internal partial class CommunicationUserIdentifierModel
     {
-        internal static CommunicationUserIdentifierModel DeserializeCommunicationUserIdentifierModel(JsonElement element)
-        {
-            string id = default;
-            foreach (var property in element.EnumerateObject())
-            {
-                if (property.NameEquals("id"))
-                {
-                    id = property.Value.GetString();
-                    continue;
-                }
-            }
-            return new CommunicationUserIdentifierModel(id);
-        }
     }
 }

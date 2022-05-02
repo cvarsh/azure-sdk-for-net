@@ -20,12 +20,10 @@ namespace Azure.Messaging.EventGrid.SystemEvents
             Optional<string> id = default;
             Optional<DateTimeOffset> timestamp = default;
             Optional<string> action = default;
-            Optional<string> location = default;
             Optional<ContainerRegistryEventTarget> target = default;
             Optional<ContainerRegistryEventRequest> request = default;
             Optional<ContainerRegistryEventActor> actor = default;
             Optional<ContainerRegistryEventSource> source = default;
-            Optional<ContainerRegistryEventConnectedRegistry> connectedRegistry = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("id"))
@@ -46,11 +44,6 @@ namespace Azure.Messaging.EventGrid.SystemEvents
                 if (property.NameEquals("action"))
                 {
                     action = property.Value.GetString();
-                    continue;
-                }
-                if (property.NameEquals("location"))
-                {
-                    location = property.Value.GetString();
                     continue;
                 }
                 if (property.NameEquals("target"))
@@ -93,18 +86,8 @@ namespace Azure.Messaging.EventGrid.SystemEvents
                     source = ContainerRegistryEventSource.DeserializeContainerRegistryEventSource(property.Value);
                     continue;
                 }
-                if (property.NameEquals("connectedRegistry"))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        property.ThrowNonNullablePropertyIsNull();
-                        continue;
-                    }
-                    connectedRegistry = ContainerRegistryEventConnectedRegistry.DeserializeContainerRegistryEventConnectedRegistry(property.Value);
-                    continue;
-                }
             }
-            return new ContainerRegistryImagePushedEventData(id.Value, Optional.ToNullable(timestamp), action.Value, location.Value, target.Value, request.Value, actor.Value, source.Value, connectedRegistry.Value);
+            return new ContainerRegistryImagePushedEventData(id.Value, Optional.ToNullable(timestamp), action.Value, target.Value, request.Value, actor.Value, source.Value);
         }
 
         internal partial class ContainerRegistryImagePushedEventDataConverter : JsonConverter<ContainerRegistryImagePushedEventData>

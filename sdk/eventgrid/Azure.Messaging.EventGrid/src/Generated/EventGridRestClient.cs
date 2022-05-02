@@ -113,7 +113,7 @@ namespace Azure.Messaging.EventGrid
             }
         }
 
-        internal HttpMessage CreatePublishCloudEventEventsRequest(string topicHostname, IEnumerable<CloudEventInternal> events, string aegChannelName)
+        internal HttpMessage CreatePublishCloudEventEventsRequest(string topicHostname, IEnumerable<CloudEventInternal> events)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
@@ -124,10 +124,6 @@ namespace Azure.Messaging.EventGrid
             uri.AppendPath("/api/events", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
-            if (aegChannelName != null)
-            {
-                request.Headers.Add("aeg-channel-name", aegChannelName);
-            }
             request.Headers.Add("Content-Type", "application/cloudevents-batch+json; charset=utf-8");
             var content = new Utf8JsonRequestContent();
             content.JsonWriter.WriteStartArray();
@@ -143,10 +139,9 @@ namespace Azure.Messaging.EventGrid
         /// <summary> Publishes a batch of events to an Azure Event Grid topic. </summary>
         /// <param name="topicHostname"> The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net. </param>
         /// <param name="events"> An array of events to be published to Event Grid. </param>
-        /// <param name="aegChannelName"> Required only when publishing to partner namespaces with partner topic routing mode ChannelNameHeader. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="topicHostname"/> or <paramref name="events"/> is null. </exception>
-        public async Task<Response> PublishCloudEventEventsAsync(string topicHostname, IEnumerable<CloudEventInternal> events, string aegChannelName = null, CancellationToken cancellationToken = default)
+        public async Task<Response> PublishCloudEventEventsAsync(string topicHostname, IEnumerable<CloudEventInternal> events, CancellationToken cancellationToken = default)
         {
             if (topicHostname == null)
             {
@@ -157,7 +152,7 @@ namespace Azure.Messaging.EventGrid
                 throw new ArgumentNullException(nameof(events));
             }
 
-            using var message = CreatePublishCloudEventEventsRequest(topicHostname, events, aegChannelName);
+            using var message = CreatePublishCloudEventEventsRequest(topicHostname, events);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -171,10 +166,9 @@ namespace Azure.Messaging.EventGrid
         /// <summary> Publishes a batch of events to an Azure Event Grid topic. </summary>
         /// <param name="topicHostname"> The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net. </param>
         /// <param name="events"> An array of events to be published to Event Grid. </param>
-        /// <param name="aegChannelName"> Required only when publishing to partner namespaces with partner topic routing mode ChannelNameHeader. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="topicHostname"/> or <paramref name="events"/> is null. </exception>
-        public Response PublishCloudEventEvents(string topicHostname, IEnumerable<CloudEventInternal> events, string aegChannelName = null, CancellationToken cancellationToken = default)
+        public Response PublishCloudEventEvents(string topicHostname, IEnumerable<CloudEventInternal> events, CancellationToken cancellationToken = default)
         {
             if (topicHostname == null)
             {
@@ -185,7 +179,7 @@ namespace Azure.Messaging.EventGrid
                 throw new ArgumentNullException(nameof(events));
             }
 
-            using var message = CreatePublishCloudEventEventsRequest(topicHostname, events, aegChannelName);
+            using var message = CreatePublishCloudEventEventsRequest(topicHostname, events);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {

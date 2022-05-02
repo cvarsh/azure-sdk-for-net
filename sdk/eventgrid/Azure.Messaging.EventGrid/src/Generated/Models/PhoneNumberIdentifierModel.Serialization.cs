@@ -5,25 +5,9 @@
 
 #nullable disable
 
-using System.Text.Json;
-using Azure.Core;
-
 namespace Azure.Messaging.EventGrid.SystemEvents
 {
-    public partial class PhoneNumberIdentifierModel
+    internal partial class PhoneNumberIdentifierModel
     {
-        internal static PhoneNumberIdentifierModel DeserializePhoneNumberIdentifierModel(JsonElement element)
-        {
-            string value = default;
-            foreach (var property in element.EnumerateObject())
-            {
-                if (property.NameEquals("value"))
-                {
-                    value = property.Value.GetString();
-                    continue;
-                }
-            }
-            return new PhoneNumberIdentifierModel(value);
-        }
     }
 }
