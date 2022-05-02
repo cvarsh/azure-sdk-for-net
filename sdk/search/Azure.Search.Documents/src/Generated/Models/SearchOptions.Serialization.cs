@@ -92,11 +92,6 @@ namespace Azure.Search.Documents
                 writer.WritePropertyName("scoringProfile");
                 writer.WriteStringValue(ScoringProfile);
             }
-            if (Optional.IsDefined(SemanticConfigurationName))
-            {
-                writer.WritePropertyName("semanticConfiguration");
-                writer.WriteStringValue(SemanticConfigurationName);
-            }
             if (Optional.IsDefined(SearchText))
             {
                 writer.WritePropertyName("search");
@@ -170,7 +165,6 @@ namespace Azure.Search.Documents
             Optional<string> sessionId = default;
             Optional<IList<string>> scoringParameters = default;
             Optional<string> scoringProfile = default;
-            Optional<string> semanticConfiguration = default;
             Optional<string> search = default;
             Optional<string> searchFields = default;
             Optional<SearchMode> searchMode = default;
@@ -289,11 +283,6 @@ namespace Azure.Search.Documents
                     scoringProfile = property.Value.GetString();
                     continue;
                 }
-                if (property.NameEquals("semanticConfiguration"))
-                {
-                    semanticConfiguration = property.Value.GetString();
-                    continue;
-                }
                 if (property.NameEquals("search"))
                 {
                     search = property.Value.GetString();
@@ -375,7 +364,7 @@ namespace Azure.Search.Documents
                     continue;
                 }
             }
-            return new SearchOptions(Optional.ToNullable(count), Optional.ToList(facets), filter.Value, highlight.Value, highlightPostTag.Value, highlightPreTag.Value, Optional.ToNullable(minimumCoverage), orderby.Value, Optional.ToNullable(queryType), Optional.ToNullable(scoringStatistics), sessionId.Value, Optional.ToList(scoringParameters), scoringProfile.Value, semanticConfiguration.Value, search.Value, searchFields.Value, Optional.ToNullable(searchMode), Optional.ToNullable(queryLanguage), Optional.ToNullable(speller), answers.Value, select.Value, Optional.ToNullable(skip), Optional.ToNullable(top), captions.Value, semanticFields.Value);
+            return new SearchOptions(Optional.ToNullable(count), Optional.ToList(facets), filter.Value, highlight.Value, highlightPostTag.Value, highlightPreTag.Value, Optional.ToNullable(minimumCoverage), orderby.Value, Optional.ToNullable(queryType), Optional.ToNullable(scoringStatistics), sessionId.Value, Optional.ToList(scoringParameters), scoringProfile.Value, search.Value, searchFields.Value, Optional.ToNullable(searchMode), Optional.ToNullable(queryLanguage), Optional.ToNullable(speller), answers.Value, select.Value, Optional.ToNullable(skip), Optional.ToNullable(top), captions.Value, semanticFields.Value);
         }
     }
 }

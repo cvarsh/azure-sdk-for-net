@@ -430,7 +430,7 @@ namespace Azure.Search.Documents
             }
         }
 
-        internal HttpMessage CreateResetSkillsRequest(string skillsetName, ResetSkillsOptions skillNames)
+        internal HttpMessage CreateResetSkillsRequest(string skillsetName, Paths1Ju2XepSkillsetsSkillsetnameSearchResetskillsPostRequestbodyContentApplicationJsonSchema skillNames)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
@@ -455,7 +455,7 @@ namespace Azure.Search.Documents
         /// <param name="skillNames"> The names of skills to reset. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="skillsetName"/> or <paramref name="skillNames"/> is null. </exception>
-        public async Task<Response> ResetSkillsAsync(string skillsetName, ResetSkillsOptions skillNames, CancellationToken cancellationToken = default)
+        public async Task<Response> ResetSkillsAsync(string skillsetName, Paths1Ju2XepSkillsetsSkillsetnameSearchResetskillsPostRequestbodyContentApplicationJsonSchema skillNames, CancellationToken cancellationToken = default)
         {
             if (skillsetName == null)
             {
@@ -482,7 +482,7 @@ namespace Azure.Search.Documents
         /// <param name="skillNames"> The names of skills to reset. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="skillsetName"/> or <paramref name="skillNames"/> is null. </exception>
-        public Response ResetSkills(string skillsetName, ResetSkillsOptions skillNames, CancellationToken cancellationToken = default)
+        public Response ResetSkills(string skillsetName, Paths1Ju2XepSkillsetsSkillsetnameSearchResetskillsPostRequestbodyContentApplicationJsonSchema skillNames, CancellationToken cancellationToken = default)
         {
             if (skillsetName == null)
             {

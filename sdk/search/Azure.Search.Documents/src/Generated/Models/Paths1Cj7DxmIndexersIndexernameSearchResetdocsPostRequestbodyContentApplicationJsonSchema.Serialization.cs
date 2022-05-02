@@ -10,7 +10,7 @@ using Azure.Core;
 
 namespace Azure.Search.Documents.Models
 {
-    public partial class ResetDocumentOptions : IUtf8JsonSerializable
+    public partial class Paths1Cj7DxmIndexersIndexernameSearchResetdocsPostRequestbodyContentApplicationJsonSchema : IUtf8JsonSerializable
     {
         void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
         {
@@ -25,11 +25,11 @@ namespace Azure.Search.Documents.Models
                 }
                 writer.WriteEndArray();
             }
-            if (Optional.IsCollectionDefined(DataSourceDocumentIds))
+            if (Optional.IsCollectionDefined(DatasourceDocumentIds))
             {
                 writer.WritePropertyName("datasourceDocumentIds");
                 writer.WriteStartArray();
-                foreach (var item in DataSourceDocumentIds)
+                foreach (var item in DatasourceDocumentIds)
                 {
                     writer.WriteStringValue(item);
                 }
