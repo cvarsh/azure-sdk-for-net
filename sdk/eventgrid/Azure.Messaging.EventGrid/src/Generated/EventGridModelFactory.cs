@@ -1687,6 +1687,52 @@ namespace Azure.Messaging.EventGrid
             return new AcsRecordingChunkInfoProperties(documentId, index, endReason, metadataLocation, contentLocation, deleteLocation);
         }
 
+        /// <summary> Initializes a new instance of AcsCallEventBaseProperties. </summary>
+        /// <param name="startedBy"> The communication identifier of the user who started the call. </param>
+        /// <param name="serverCallId"> The id of the server call. </param>
+        /// <param name="isTwoParty"> True if it is a two-party call, false if it is a group call. </param>
+        /// <param name="group"> The details of group for Acs call. </param>
+        /// <returns> A new <see cref="SystemEvents.AcsCallEventBaseProperties"/> instance for mocking. </returns>
+        public static AcsCallEventBaseProperties AcsCallEventBaseProperties(CommunicationIdentifierModel startedBy = null, string serverCallId = null, bool? isTwoParty = null, AcsCallGroupProperties group = null)
+        {
+            return new AcsCallEventBaseProperties(startedBy, serverCallId, isTwoParty, group);
+        }
+
+        /// <summary> Initializes a new instance of AcsCallGroupProperties. </summary>
+        /// <param name="id"> The id of the group for Acs call. </param>
+        /// <returns> A new <see cref="SystemEvents.AcsCallGroupProperties"/> instance for mocking. </returns>
+        public static AcsCallGroupProperties AcsCallGroupProperties(string id = null)
+        {
+            return new AcsCallGroupProperties(id);
+        }
+
+        /// <summary> Initializes a new instance of AcsCallEndedEventData. </summary>
+        /// <param name="startedBy"> The communication identifier of the user who started the call. </param>
+        /// <param name="serverCallId"> The id of the server call. </param>
+        /// <param name="isTwoParty"> True if it is a two-party call, false if it is a group call. </param>
+        /// <param name="group"> The details of group for Acs call. </param>
+        /// <param name="durationOfCall"> The duration of the call. </param>
+        /// <returns> A new <see cref="SystemEvents.AcsCallEndedEventData"/> instance for mocking. </returns>
+        public static AcsCallEndedEventData AcsCallEndedEventData(CommunicationIdentifierModel startedBy = null, string serverCallId = null, bool? isTwoParty = null, AcsCallGroupProperties group = null, double? durationOfCall = null)
+        {
+            return new AcsCallEndedEventData(startedBy, serverCallId, isTwoParty, group, durationOfCall);
+        }
+
+        /// <summary> Initializes a new instance of AcsCallParticipantEventBaseProperties. </summary>
+        /// <param name="startedBy"> The communication identifier of the user who started the call. </param>
+        /// <param name="serverCallId"> The id of the server call. </param>
+        /// <param name="isTwoParty"> True if it is a two-party call, false if it is a group call. </param>
+        /// <param name="group"> The details of group for Acs call. </param>
+        /// <param name="user"> The communication identifier of the user who was added to the call. </param>
+        /// <param name="participantId"> The id of the user who was added. </param>
+        /// <param name="displayName"> The display name of the user who was added. </param>
+        /// <param name="endpointType"> The type of the user&apos;s endpoint added. </param>
+        /// <returns> A new <see cref="SystemEvents.AcsCallParticipantEventBaseProperties"/> instance for mocking. </returns>
+        public static AcsCallParticipantEventBaseProperties AcsCallParticipantEventBaseProperties(CommunicationIdentifierModel startedBy = null, string serverCallId = null, bool? isTwoParty = null, AcsCallGroupProperties group = null, CommunicationIdentifierModel user = null, string participantId = null, string displayName = null, string endpointType = null)
+        {
+            return new AcsCallParticipantEventBaseProperties(startedBy, serverCallId, isTwoParty, group, user, participantId, displayName, endpointType);
+        }
+
         /// <summary> Initializes a new instance of PolicyInsightsPolicyStateCreatedEventData. </summary>
         /// <param name="timestamp"> The time that the resource was scanned by Azure Policy in the Universal ISO 8601 DateTime format yyyy-MM-ddTHH:mm:ss.fffffffZ. </param>
         /// <param name="policyAssignmentId"> The resource ID of the policy assignment. </param>
