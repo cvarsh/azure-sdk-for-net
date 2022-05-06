@@ -39,8 +39,6 @@ namespace Azure.ResourceManager.Sql
         private readonly ServersRestOperations _sqlServerServersRestClient;
         private readonly ClientDiagnostics _sqlDatabaseDatabasesClientDiagnostics;
         private readonly DatabasesRestOperations _sqlDatabaseDatabasesRestClient;
-        private readonly ClientDiagnostics _replicationLinkClientDiagnostics;
-        private readonly ReplicationLinksRestOperations _replicationLinkRestClient;
         private readonly ClientDiagnostics _serverUsagesClientDiagnostics;
         private readonly ServerUsagesRestOperations _serverUsagesRestClient;
         private readonly ClientDiagnostics _firewallRuleClientDiagnostics;
@@ -49,6 +47,8 @@ namespace Azure.ResourceManager.Sql
         private readonly ServerRestOperations _serverOperationsRestClient;
         private readonly ClientDiagnostics _tdeCertificatesClientDiagnostics;
         private readonly TdeCertificatesRestOperations _tdeCertificatesRestClient;
+        private readonly ClientDiagnostics _replicationLinkClientDiagnostics;
+        private readonly ReplicationLinksRestOperations _replicationLinkRestClient;
         private readonly SqlServerData _data;
 
         /// <summary> Initializes a new instance of the <see cref="SqlServerResource"/> class for mocking. </summary>
@@ -76,9 +76,6 @@ namespace Azure.ResourceManager.Sql
             _sqlDatabaseDatabasesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.Sql", SqlDatabaseResource.ResourceType.Namespace, Diagnostics);
             TryGetApiVersion(SqlDatabaseResource.ResourceType, out string sqlDatabaseDatabasesApiVersion);
             _sqlDatabaseDatabasesRestClient = new DatabasesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, sqlDatabaseDatabasesApiVersion);
-            _replicationLinkClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.Sql", ReplicationLinkResource.ResourceType.Namespace, Diagnostics);
-            TryGetApiVersion(ReplicationLinkResource.ResourceType, out string replicationLinkApiVersion);
-            _replicationLinkRestClient = new ReplicationLinksRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, replicationLinkApiVersion);
             _serverUsagesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.Sql", ProviderConstants.DefaultProviderNamespace, Diagnostics);
             _serverUsagesRestClient = new ServerUsagesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
             _firewallRuleClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.Sql", FirewallRuleResource.ResourceType.Namespace, Diagnostics);
@@ -88,6 +85,9 @@ namespace Azure.ResourceManager.Sql
             _serverOperationsRestClient = new ServerRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
             _tdeCertificatesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.Sql", ProviderConstants.DefaultProviderNamespace, Diagnostics);
             _tdeCertificatesRestClient = new TdeCertificatesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
+            _replicationLinkClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.Sql", ReplicationLinkResource.ResourceType.Namespace, Diagnostics);
+            TryGetApiVersion(ReplicationLinkResource.ResourceType, out string replicationLinkApiVersion);
+            _replicationLinkRestClient = new ReplicationLinksRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, replicationLinkApiVersion);
 #if DEBUG
 			ValidateResourceId(Id);
 #endif
@@ -300,72 +300,6 @@ namespace Azure.ResourceManager.Sql
         public virtual Response<ServiceObjectiveResource> GetServiceObjective(string serviceObjectiveName, CancellationToken cancellationToken = default)
         {
             return GetServiceObjectives().Get(serviceObjectiveName, cancellationToken);
-        }
-
-        /// <summary> Gets a collection of ExtendedServerBlobAuditingPolicyResources in the SqlServer. </summary>
-        /// <returns> An object representing collection of ExtendedServerBlobAuditingPolicyResources and their operations over a ExtendedServerBlobAuditingPolicyResource. </returns>
-        public virtual ExtendedServerBlobAuditingPolicyCollection GetExtendedServerBlobAuditingPolicies()
-        {
-            return GetCachedClient(Client => new ExtendedServerBlobAuditingPolicyCollection(Client, Id));
-        }
-
-        /// <summary>
-        /// Gets an extended server&apos;s blob auditing policy.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/extendedAuditingSettings/{blobAuditingPolicyName}
-        /// Operation Id: ExtendedServerBlobAuditingPolicies_Get
-        /// </summary>
-        /// <param name="blobAuditingPolicyName"> The name of the blob auditing policy. </param>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        [ForwardsClientCalls]
-        public virtual async Task<Response<ExtendedServerBlobAuditingPolicyResource>> GetExtendedServerBlobAuditingPolicyAsync(BlobAuditingPolicyName blobAuditingPolicyName, CancellationToken cancellationToken = default)
-        {
-            return await GetExtendedServerBlobAuditingPolicies().GetAsync(blobAuditingPolicyName, cancellationToken).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets an extended server&apos;s blob auditing policy.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/extendedAuditingSettings/{blobAuditingPolicyName}
-        /// Operation Id: ExtendedServerBlobAuditingPolicies_Get
-        /// </summary>
-        /// <param name="blobAuditingPolicyName"> The name of the blob auditing policy. </param>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        [ForwardsClientCalls]
-        public virtual Response<ExtendedServerBlobAuditingPolicyResource> GetExtendedServerBlobAuditingPolicy(BlobAuditingPolicyName blobAuditingPolicyName, CancellationToken cancellationToken = default)
-        {
-            return GetExtendedServerBlobAuditingPolicies().Get(blobAuditingPolicyName, cancellationToken);
-        }
-
-        /// <summary> Gets a collection of ServerBlobAuditingPolicyResources in the SqlServer. </summary>
-        /// <returns> An object representing collection of ServerBlobAuditingPolicyResources and their operations over a ServerBlobAuditingPolicyResource. </returns>
-        public virtual ServerBlobAuditingPolicyCollection GetServerBlobAuditingPolicies()
-        {
-            return GetCachedClient(Client => new ServerBlobAuditingPolicyCollection(Client, Id));
-        }
-
-        /// <summary>
-        /// Gets a server&apos;s blob auditing policy.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/auditingSettings/{blobAuditingPolicyName}
-        /// Operation Id: ServerBlobAuditingPolicies_Get
-        /// </summary>
-        /// <param name="blobAuditingPolicyName"> The name of the blob auditing policy. </param>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        [ForwardsClientCalls]
-        public virtual async Task<Response<ServerBlobAuditingPolicyResource>> GetServerBlobAuditingPolicyAsync(BlobAuditingPolicyName blobAuditingPolicyName, CancellationToken cancellationToken = default)
-        {
-            return await GetServerBlobAuditingPolicies().GetAsync(blobAuditingPolicyName, cancellationToken).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets a server&apos;s blob auditing policy.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/auditingSettings/{blobAuditingPolicyName}
-        /// Operation Id: ServerBlobAuditingPolicies_Get
-        /// </summary>
-        /// <param name="blobAuditingPolicyName"> The name of the blob auditing policy. </param>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        [ForwardsClientCalls]
-        public virtual Response<ServerBlobAuditingPolicyResource> GetServerBlobAuditingPolicy(BlobAuditingPolicyName blobAuditingPolicyName, CancellationToken cancellationToken = default)
-        {
-            return GetServerBlobAuditingPolicies().Get(blobAuditingPolicyName, cancellationToken);
         }
 
         /// <summary> Gets a collection of ServerAdvisorResources in the SqlServer. </summary>
@@ -1054,6 +988,109 @@ namespace Azure.ResourceManager.Sql
             return GetServerConnectionPolicies().Get(connectionPolicyName, cancellationToken);
         }
 
+        /// <summary> Gets a collection of IPv6FirewallRuleResources in the SqlServer. </summary>
+        /// <returns> An object representing collection of IPv6FirewallRuleResources and their operations over a IPv6FirewallRuleResource. </returns>
+        public virtual IPv6FirewallRuleCollection GetIPv6FirewallRules()
+        {
+            return GetCachedClient(Client => new IPv6FirewallRuleCollection(Client, Id));
+        }
+
+        /// <summary>
+        /// Gets an IPv6 firewall rule.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/ipv6FirewallRules/{firewallRuleName}
+        /// Operation Id: IPv6FirewallRules_Get
+        /// </summary>
+        /// <param name="firewallRuleName"> The name of the firewall rule. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="firewallRuleName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="firewallRuleName"/> is null. </exception>
+        [ForwardsClientCalls]
+        public virtual async Task<Response<IPv6FirewallRuleResource>> GetIPv6FirewallRuleAsync(string firewallRuleName, CancellationToken cancellationToken = default)
+        {
+            return await GetIPv6FirewallRules().GetAsync(firewallRuleName, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets an IPv6 firewall rule.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/ipv6FirewallRules/{firewallRuleName}
+        /// Operation Id: IPv6FirewallRules_Get
+        /// </summary>
+        /// <param name="firewallRuleName"> The name of the firewall rule. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="firewallRuleName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="firewallRuleName"/> is null. </exception>
+        [ForwardsClientCalls]
+        public virtual Response<IPv6FirewallRuleResource> GetIPv6FirewallRule(string firewallRuleName, CancellationToken cancellationToken = default)
+        {
+            return GetIPv6FirewallRules().Get(firewallRuleName, cancellationToken);
+        }
+
+        /// <summary> Gets a collection of ServerBlobAuditingPolicyResources in the SqlServer. </summary>
+        /// <returns> An object representing collection of ServerBlobAuditingPolicyResources and their operations over a ServerBlobAuditingPolicyResource. </returns>
+        public virtual ServerBlobAuditingPolicyCollection GetServerBlobAuditingPolicies()
+        {
+            return GetCachedClient(Client => new ServerBlobAuditingPolicyCollection(Client, Id));
+        }
+
+        /// <summary>
+        /// Gets a server&apos;s blob auditing policy.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/auditingSettings/{blobAuditingPolicyName}
+        /// Operation Id: ServerBlobAuditingPolicies_Get
+        /// </summary>
+        /// <param name="blobAuditingPolicyName"> The name of the blob auditing policy. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        [ForwardsClientCalls]
+        public virtual async Task<Response<ServerBlobAuditingPolicyResource>> GetServerBlobAuditingPolicyAsync(BlobAuditingPolicyName blobAuditingPolicyName, CancellationToken cancellationToken = default)
+        {
+            return await GetServerBlobAuditingPolicies().GetAsync(blobAuditingPolicyName, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets a server&apos;s blob auditing policy.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/auditingSettings/{blobAuditingPolicyName}
+        /// Operation Id: ServerBlobAuditingPolicies_Get
+        /// </summary>
+        /// <param name="blobAuditingPolicyName"> The name of the blob auditing policy. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        [ForwardsClientCalls]
+        public virtual Response<ServerBlobAuditingPolicyResource> GetServerBlobAuditingPolicy(BlobAuditingPolicyName blobAuditingPolicyName, CancellationToken cancellationToken = default)
+        {
+            return GetServerBlobAuditingPolicies().Get(blobAuditingPolicyName, cancellationToken);
+        }
+
+        /// <summary> Gets a collection of ExtendedServerBlobAuditingPolicyResources in the SqlServer. </summary>
+        /// <returns> An object representing collection of ExtendedServerBlobAuditingPolicyResources and their operations over a ExtendedServerBlobAuditingPolicyResource. </returns>
+        public virtual ExtendedServerBlobAuditingPolicyCollection GetExtendedServerBlobAuditingPolicies()
+        {
+            return GetCachedClient(Client => new ExtendedServerBlobAuditingPolicyCollection(Client, Id));
+        }
+
+        /// <summary>
+        /// Gets an extended server&apos;s blob auditing policy.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/extendedAuditingSettings/{blobAuditingPolicyName}
+        /// Operation Id: ExtendedServerBlobAuditingPolicies_Get
+        /// </summary>
+        /// <param name="blobAuditingPolicyName"> The name of the blob auditing policy. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        [ForwardsClientCalls]
+        public virtual async Task<Response<ExtendedServerBlobAuditingPolicyResource>> GetExtendedServerBlobAuditingPolicyAsync(BlobAuditingPolicyName blobAuditingPolicyName, CancellationToken cancellationToken = default)
+        {
+            return await GetExtendedServerBlobAuditingPolicies().GetAsync(blobAuditingPolicyName, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets an extended server&apos;s blob auditing policy.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/extendedAuditingSettings/{blobAuditingPolicyName}
+        /// Operation Id: ExtendedServerBlobAuditingPolicies_Get
+        /// </summary>
+        /// <param name="blobAuditingPolicyName"> The name of the blob auditing policy. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        [ForwardsClientCalls]
+        public virtual Response<ExtendedServerBlobAuditingPolicyResource> GetExtendedServerBlobAuditingPolicy(BlobAuditingPolicyName blobAuditingPolicyName, CancellationToken cancellationToken = default)
+        {
+            return GetExtendedServerBlobAuditingPolicies().Get(blobAuditingPolicyName, cancellationToken);
+        }
+
         /// <summary>
         /// Gets a server.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}
@@ -1290,90 +1327,6 @@ namespace Azure.ResourceManager.Sql
                 {
                     var response = _sqlDatabaseDatabasesRestClient.ListInaccessibleByServerNextPage(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken: cancellationToken);
                     return Page.FromValues(response.Value.Value.Select(value => new SqlDatabaseResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
-                }
-                catch (Exception e)
-                {
-                    scope.Failed(e);
-                    throw;
-                }
-            }
-            return PageableHelpers.CreateEnumerable(FirstPageFunc, NextPageFunc);
-        }
-
-        /// <summary>
-        /// Gets a list of replication links.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/replicationLinks
-        /// Operation Id: ReplicationLinks_ListByServer
-        /// </summary>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <returns> An async collection of <see cref="ReplicationLinkResource" /> that may take multiple service requests to iterate over. </returns>
-        public virtual AsyncPageable<ReplicationLinkResource> GetReplicationLinksAsync(CancellationToken cancellationToken = default)
-        {
-            async Task<Page<ReplicationLinkResource>> FirstPageFunc(int? pageSizeHint)
-            {
-                using var scope = _replicationLinkClientDiagnostics.CreateScope("SqlServerResource.GetReplicationLinks");
-                scope.Start();
-                try
-                {
-                    var response = await _replicationLinkRestClient.ListByServerAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken: cancellationToken).ConfigureAwait(false);
-                    return Page.FromValues(response.Value.Value.Select(value => new ReplicationLinkResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
-                }
-                catch (Exception e)
-                {
-                    scope.Failed(e);
-                    throw;
-                }
-            }
-            async Task<Page<ReplicationLinkResource>> NextPageFunc(string nextLink, int? pageSizeHint)
-            {
-                using var scope = _replicationLinkClientDiagnostics.CreateScope("SqlServerResource.GetReplicationLinks");
-                scope.Start();
-                try
-                {
-                    var response = await _replicationLinkRestClient.ListByServerNextPageAsync(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken: cancellationToken).ConfigureAwait(false);
-                    return Page.FromValues(response.Value.Value.Select(value => new ReplicationLinkResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
-                }
-                catch (Exception e)
-                {
-                    scope.Failed(e);
-                    throw;
-                }
-            }
-            return PageableHelpers.CreateAsyncEnumerable(FirstPageFunc, NextPageFunc);
-        }
-
-        /// <summary>
-        /// Gets a list of replication links.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/replicationLinks
-        /// Operation Id: ReplicationLinks_ListByServer
-        /// </summary>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <returns> A collection of <see cref="ReplicationLinkResource" /> that may take multiple service requests to iterate over. </returns>
-        public virtual Pageable<ReplicationLinkResource> GetReplicationLinks(CancellationToken cancellationToken = default)
-        {
-            Page<ReplicationLinkResource> FirstPageFunc(int? pageSizeHint)
-            {
-                using var scope = _replicationLinkClientDiagnostics.CreateScope("SqlServerResource.GetReplicationLinks");
-                scope.Start();
-                try
-                {
-                    var response = _replicationLinkRestClient.ListByServer(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken: cancellationToken);
-                    return Page.FromValues(response.Value.Value.Select(value => new ReplicationLinkResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
-                }
-                catch (Exception e)
-                {
-                    scope.Failed(e);
-                    throw;
-                }
-            }
-            Page<ReplicationLinkResource> NextPageFunc(string nextLink, int? pageSizeHint)
-            {
-                using var scope = _replicationLinkClientDiagnostics.CreateScope("SqlServerResource.GetReplicationLinks");
-                scope.Start();
-                try
-                {
-                    var response = _replicationLinkRestClient.ListByServerNextPage(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken: cancellationToken);
-                    return Page.FromValues(response.Value.Value.Select(value => new ReplicationLinkResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
                 }
                 catch (Exception e)
                 {
@@ -1692,6 +1645,90 @@ namespace Azure.ResourceManager.Sql
                 scope.Failed(e);
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Gets a list of replication links.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/replicationLinks
+        /// Operation Id: ReplicationLinks_ListByServer
+        /// </summary>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <returns> An async collection of <see cref="ReplicationLinkResource" /> that may take multiple service requests to iterate over. </returns>
+        public virtual AsyncPageable<ReplicationLinkResource> GetReplicationLinksAsync(CancellationToken cancellationToken = default)
+        {
+            async Task<Page<ReplicationLinkResource>> FirstPageFunc(int? pageSizeHint)
+            {
+                using var scope = _replicationLinkClientDiagnostics.CreateScope("SqlServerResource.GetReplicationLinks");
+                scope.Start();
+                try
+                {
+                    var response = await _replicationLinkRestClient.ListByServerAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken: cancellationToken).ConfigureAwait(false);
+                    return Page.FromValues(response.Value.Value.Select(value => new ReplicationLinkResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
+                }
+                catch (Exception e)
+                {
+                    scope.Failed(e);
+                    throw;
+                }
+            }
+            async Task<Page<ReplicationLinkResource>> NextPageFunc(string nextLink, int? pageSizeHint)
+            {
+                using var scope = _replicationLinkClientDiagnostics.CreateScope("SqlServerResource.GetReplicationLinks");
+                scope.Start();
+                try
+                {
+                    var response = await _replicationLinkRestClient.ListByServerNextPageAsync(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken: cancellationToken).ConfigureAwait(false);
+                    return Page.FromValues(response.Value.Value.Select(value => new ReplicationLinkResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
+                }
+                catch (Exception e)
+                {
+                    scope.Failed(e);
+                    throw;
+                }
+            }
+            return PageableHelpers.CreateAsyncEnumerable(FirstPageFunc, NextPageFunc);
+        }
+
+        /// <summary>
+        /// Gets a list of replication links.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/replicationLinks
+        /// Operation Id: ReplicationLinks_ListByServer
+        /// </summary>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <returns> A collection of <see cref="ReplicationLinkResource" /> that may take multiple service requests to iterate over. </returns>
+        public virtual Pageable<ReplicationLinkResource> GetReplicationLinks(CancellationToken cancellationToken = default)
+        {
+            Page<ReplicationLinkResource> FirstPageFunc(int? pageSizeHint)
+            {
+                using var scope = _replicationLinkClientDiagnostics.CreateScope("SqlServerResource.GetReplicationLinks");
+                scope.Start();
+                try
+                {
+                    var response = _replicationLinkRestClient.ListByServer(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken: cancellationToken);
+                    return Page.FromValues(response.Value.Value.Select(value => new ReplicationLinkResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
+                }
+                catch (Exception e)
+                {
+                    scope.Failed(e);
+                    throw;
+                }
+            }
+            Page<ReplicationLinkResource> NextPageFunc(string nextLink, int? pageSizeHint)
+            {
+                using var scope = _replicationLinkClientDiagnostics.CreateScope("SqlServerResource.GetReplicationLinks");
+                scope.Start();
+                try
+                {
+                    var response = _replicationLinkRestClient.ListByServerNextPage(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken: cancellationToken);
+                    return Page.FromValues(response.Value.Value.Select(value => new ReplicationLinkResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
+                }
+                catch (Exception e)
+                {
+                    scope.Failed(e);
+                    throw;
+                }
+            }
+            return PageableHelpers.CreateEnumerable(FirstPageFunc, NextPageFunc);
         }
 
         /// <summary>
