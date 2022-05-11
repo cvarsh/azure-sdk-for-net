@@ -6,7 +6,7 @@ Run `dotnet msbuild /t:GenerateCode` to generate code.
 
 azure-arm: true
 title: Insights
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/861e6b8288b22ad3505a58f62c23e3209cbc5a35/specification/monitor/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/e1f482ee1873ca7c545c7ddf0fd7a7beeb4a597c/specification/monitor/resource-manager/readme.md
  
 
 ```
