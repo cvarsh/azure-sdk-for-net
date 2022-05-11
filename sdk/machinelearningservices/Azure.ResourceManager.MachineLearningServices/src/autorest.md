@@ -6,7 +6,7 @@ Run `dotnet build /t:GenerateCode` to generate code.
 
 azure-arm: true
 library-name: MachineLearningServices
-require: https://raw.githubusercontent.com/forteddyt/azure-rest-api-specs/db218390cc57f2509db0e88d8d5ffd1872aa9435/specification/machinelearningservices/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/e1f482ee1873ca7c545c7ddf0fd7a7beeb4a597c/specification/machinelearningservices/resource-manager/readme.md
 modelerfour:
     lenient-model-deduplication: true
 namespace: Azure.ResourceManager.MachineLearningServices
