@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: StoragePool
 namespace: Azure.ResourceManager.StoragePool
-require: https://github.com/Azure/azure-rest-api-specs/blob/068f1ecdf3abb35a6a329a7b270c45df4d9c57a4/specification/storagepool/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/e1f482ee1873ca7c545c7ddf0fd7a7beeb4a597c/specification/storagepool/resource-manager/readme.md
 tag: package-2021-08-01
 output-folder: Generated/
 clear-output-folder: true
