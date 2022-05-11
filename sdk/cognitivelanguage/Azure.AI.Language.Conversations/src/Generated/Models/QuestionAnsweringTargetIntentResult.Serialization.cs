@@ -14,7 +14,7 @@ namespace Azure.AI.Language.Conversations
     {
         internal static QuestionAnsweringTargetIntentResult DeserializeQuestionAnsweringTargetIntentResult(JsonElement element)
         {
-            Optional<KnowledgeBaseAnswers> result = default;
+            Optional<AnswersResult> result = default;
             TargetKind targetKind = default;
             Optional<string> apiVersion = default;
             double confidenceScore = default;
@@ -27,7 +27,7 @@ namespace Azure.AI.Language.Conversations
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    result = KnowledgeBaseAnswers.DeserializeKnowledgeBaseAnswers(property.Value);
+                    result = AnswersResult.DeserializeAnswersResult(property.Value);
                     continue;
                 }
                 if (property.NameEquals("targetKind"))

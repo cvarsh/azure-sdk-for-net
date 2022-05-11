@@ -22,13 +22,13 @@ namespace Azure.AI.Language.Conversations
         /// <param name="apiVersion"> The API version used to call a target service. </param>
         /// <param name="confidence"> The prediction score and it ranges from 0.0 to 1.0. </param>
         /// <param name="result"> The generated answer by a Question Answering KB. </param>
-        internal QuestionAnsweringTargetIntentResult(TargetKind targetKind, string apiVersion, double confidence, KnowledgeBaseAnswers result) : base(targetKind, apiVersion, confidence)
+        internal QuestionAnsweringTargetIntentResult(TargetKind targetKind, string apiVersion, double confidence, AnswersResult result) : base(targetKind, apiVersion, confidence)
         {
             Result = result;
             TargetKind = targetKind;
         }
 
         /// <summary> The generated answer by a Question Answering KB. </summary>
-        public KnowledgeBaseAnswers Result { get; }
+        public AnswersResult Result { get; }
     }
 }

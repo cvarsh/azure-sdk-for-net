@@ -323,37 +323,37 @@ namespace Azure.AI.Language.Conversations
         /// <param name="confidence"> The prediction score and it ranges from 0.0 to 1.0. </param>
         /// <param name="result"> The generated answer by a Question Answering KB. </param>
         /// <returns> A new <see cref="Conversations.QuestionAnsweringTargetIntentResult"/> instance for mocking. </returns>
-        public static QuestionAnsweringTargetIntentResult QuestionAnsweringTargetIntentResult(TargetKind targetKind = default, string apiVersion = null, double confidence = default, KnowledgeBaseAnswers result = null)
+        public static QuestionAnsweringTargetIntentResult QuestionAnsweringTargetIntentResult(TargetKind targetKind = default, string apiVersion = null, double confidence = default, AnswersResult result = null)
         {
             return new QuestionAnsweringTargetIntentResult(targetKind, apiVersion, confidence, result);
         }
 
-        /// <summary> Initializes a new instance of KnowledgeBaseAnswers. </summary>
+        /// <summary> Initializes a new instance of AnswersResult. </summary>
         /// <param name="answers"> Represents Answer Result list. </param>
-        /// <returns> A new <see cref="Conversations.KnowledgeBaseAnswers"/> instance for mocking. </returns>
-        public static KnowledgeBaseAnswers KnowledgeBaseAnswers(IEnumerable<KnowledgeBaseAnswer> answers = null)
+        /// <returns> A new <see cref="Conversations.AnswersResult"/> instance for mocking. </returns>
+        public static AnswersResult AnswersResult(IEnumerable<KnowledgeBaseAnswer> answers = null)
         {
             answers ??= new List<KnowledgeBaseAnswer>();
 
-            return new KnowledgeBaseAnswers(answers?.ToList());
+            return new AnswersResult(answers?.ToList());
         }
 
         /// <summary> Initializes a new instance of KnowledgeBaseAnswer. </summary>
         /// <param name="questions"> List of questions associated with the answer. </param>
         /// <param name="answer"> Answer text. </param>
         /// <param name="confidence"> Answer confidence score, value ranges from 0 to 1. </param>
-        /// <param name="id"> ID of the QnA result. </param>
+        /// <param name="qnaId"> ID of the QnA result. </param>
         /// <param name="source"> Source of QnA result. </param>
         /// <param name="metadata"> Metadata associated with the answer, useful to categorize or filter question answers. </param>
         /// <param name="dialog"> Dialog associated with Answer. </param>
-        /// <param name="answerSpan"> Answer span object of QnA with respect to user&apos;s question. </param>
+        /// <param name="shortAnswer"> Answer span object of QnA with respect to user&apos;s question. </param>
         /// <returns> A new <see cref="Conversations.KnowledgeBaseAnswer"/> instance for mocking. </returns>
-        public static KnowledgeBaseAnswer KnowledgeBaseAnswer(IEnumerable<string> questions = null, string answer = null, double? confidence = null, int? id = null, string source = null, IReadOnlyDictionary<string, string> metadata = null, KnowledgeBaseAnswerDialog dialog = null, AnswerSpan answerSpan = null)
+        public static KnowledgeBaseAnswer KnowledgeBaseAnswer(IEnumerable<string> questions = null, string answer = null, double? confidence = null, int? qnaId = null, string source = null, IReadOnlyDictionary<string, string> metadata = null, KnowledgeBaseAnswerDialog dialog = null, AnswerSpan shortAnswer = null)
         {
             questions ??= new List<string>();
             metadata ??= new Dictionary<string, string>();
 
-            return new KnowledgeBaseAnswer(questions?.ToList(), answer, confidence, id, source, metadata, dialog, answerSpan);
+            return new KnowledgeBaseAnswer(questions?.ToList(), answer, confidence, qnaId, source, metadata, dialog, shortAnswer);
         }
 
         /// <summary> Initializes a new instance of KnowledgeBaseAnswerDialog. </summary>

@@ -17,6 +17,6 @@ namespace Azure.AI.Language.Conversations
         }
 
         /// <summary> The options sent to a Question Answering KB. </summary>
-        public object CallingOptions { get; set; }
+        public AnswersOptions CallingOptions { get; set; }
     }
 }
