@@ -12,7 +12,7 @@ using Azure.ResourceManager.Models;
 namespace Azure.ResourceManager.ElasticSan.Models
 {
     /// <summary> The resource model definition. </summary>
-    internal partial class ElasticSanResourceData : ResourceData
+    public partial class ElasticSanResourceData : ResourceData
     {
         /// <summary> Initializes a new instance of ElasticSanResourceData. </summary>
         public ElasticSanResourceData()

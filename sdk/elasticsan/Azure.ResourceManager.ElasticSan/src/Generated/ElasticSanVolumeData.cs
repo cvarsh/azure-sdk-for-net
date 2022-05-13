@@ -13,11 +13,10 @@ using Azure.ResourceManager.Models;
 namespace Azure.ResourceManager.ElasticSan
 {
     /// <summary> A class representing the ElasticSanVolume data model. </summary>
-    public partial class ElasticSanVolumeData : TrackedResourceData
+    public partial class ElasticSanVolumeData : ElasticSanResourceData
     {
         /// <summary> Initializes a new instance of ElasticSanVolumeData. </summary>
-        /// <param name="location"> The location. </param>
-        public ElasticSanVolumeData(AzureLocation location) : base(location)
+        public ElasticSanVolumeData()
         {
         }
 
@@ -26,13 +25,12 @@ namespace Azure.ResourceManager.ElasticSan
         /// <param name="name"> The name. </param>
         /// <param name="resourceType"> The resourceType. </param>
         /// <param name="systemData"> The systemData. </param>
-        /// <param name="tags"> The tags. </param>
-        /// <param name="location"> The location. </param>
+        /// <param name="tags"> Azure resource tags. </param>
         /// <param name="elasticSanVolumeId"> Unique Id of the volume in GUID format. </param>
         /// <param name="creationData"> State of the operation on the resource. </param>
         /// <param name="sizeGiB"> Volume size. </param>
         /// <param name="storageTarget"> Storage target information. </param>
-        internal ElasticSanVolumeData(ResourceIdentifier id, string name, ResourceType resourceType, SystemData systemData, IDictionary<string, string> tags, AzureLocation location, string elasticSanVolumeId, SourceCreationData creationData, long? sizeGiB, IscsiTargetInfo storageTarget) : base(id, name, resourceType, systemData, tags, location)
+        internal ElasticSanVolumeData(ResourceIdentifier id, string name, ResourceType resourceType, SystemData systemData, IDictionary<string, string> tags, string elasticSanVolumeId, SourceCreationData creationData, long? sizeGiB, IscsiTargetInfo storageTarget) : base(id, name, resourceType, systemData, tags)
         {
             ElasticSanVolumeId = elasticSanVolumeId;
             CreationData = creationData;
