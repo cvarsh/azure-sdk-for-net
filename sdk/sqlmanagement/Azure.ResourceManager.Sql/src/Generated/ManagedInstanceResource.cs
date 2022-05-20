@@ -605,6 +605,43 @@ namespace Azure.ResourceManager.Sql
             return GetServerTrustCertificates().Get(certificateName, cancellationToken);
         }
 
+        /// <summary> Gets a collection of ManagedServerDnsAliasResources in the ManagedInstance. </summary>
+        /// <returns> An object representing collection of ManagedServerDnsAliasResources and their operations over a ManagedServerDnsAliasResource. </returns>
+        public virtual ManagedServerDnsAliasCollection GetManagedServerDnsAliases()
+        {
+            return GetCachedClient(Client => new ManagedServerDnsAliasCollection(Client, Id));
+        }
+
+        /// <summary>
+        /// Gets a server DNS alias.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}
+        /// Operation Id: ManagedServerDnsAliases_Get
+        /// </summary>
+        /// <param name="dnsAliasName"> The String to use. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="dnsAliasName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="dnsAliasName"/> is null. </exception>
+        [ForwardsClientCalls]
+        public virtual async Task<Response<ManagedServerDnsAliasResource>> GetManagedServerDnsAliasAsync(string dnsAliasName, CancellationToken cancellationToken = default)
+        {
+            return await GetManagedServerDnsAliases().GetAsync(dnsAliasName, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets a server DNS alias.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}
+        /// Operation Id: ManagedServerDnsAliases_Get
+        /// </summary>
+        /// <param name="dnsAliasName"> The String to use. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="dnsAliasName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="dnsAliasName"/> is null. </exception>
+        [ForwardsClientCalls]
+        public virtual Response<ManagedServerDnsAliasResource> GetManagedServerDnsAlias(string dnsAliasName, CancellationToken cancellationToken = default)
+        {
+            return GetManagedServerDnsAliases().Get(dnsAliasName, cancellationToken);
+        }
+
         /// <summary> Gets a collection of EndpointCertificateResources in the ManagedInstance. </summary>
         /// <returns> An object representing collection of EndpointCertificateResources and their operations over a EndpointCertificateResource. </returns>
         public virtual EndpointCertificateCollection GetEndpointCertificates()
