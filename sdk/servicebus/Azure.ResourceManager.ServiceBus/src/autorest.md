@@ -6,7 +6,7 @@ Run `dotnet build /t:GenerateCode` to generate code.
 azure-arm: true
 csharp: true
 namespace: Azure.ResourceManager.ServiceBus
-require: https://github.com/Azure/azure-rest-api-specs/blob/a5f8ef67c8170e4081527e400473c6deddcfabfd/specification/servicebus/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/ff9f41d04e184f52365330cbc0ed2d82c829b945/specification/servicebus/resource-manager/readme.md
 clear-output-folder: true
 skip-csproj: true
 request-path-to-resource-name:
