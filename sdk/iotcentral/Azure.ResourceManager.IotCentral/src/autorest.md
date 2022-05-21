@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: IotCentral
 namespace: Azure.ResourceManager.IotCentral
-require: https://github.com/Azure/azure-rest-api-specs/blob/6cb07747e61d4068750cb2666ab1b32197037dbf/specification/iotcentral/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/94ba9b2435d6549385bf5daa59e1cada9671efbb/specification/iotcentral/resource-manager/readme.md
 output-folder: Generated/
 clear-output-folder: true
 skip-csproj: true
