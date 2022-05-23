@@ -31,7 +31,7 @@ namespace Azure.ResourceManager.Grafana.Models
         }
 
         /// <summary> Provisioning state of the resource. </summary>
-        public ProvisioningState? ProvisioningState { get; set; }
+        public ProvisioningState? ProvisioningState { get; }
         /// <summary> The Grafana software version. </summary>
         public string GrafanaVersion { get; }
         /// <summary> The endpoint of the Grafana instance. </summary>
