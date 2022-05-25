@@ -141,7 +141,7 @@ namespace Azure.ResourceManager.Reservations
         }
 
         /// <summary>
-        /// List all the operations.
+        /// List all the operations. 
         /// Request Path: /providers/Microsoft.Capacity/operations
         /// Operation Id: Operation_List
         /// </summary>
@@ -154,7 +154,7 @@ namespace Azure.ResourceManager.Reservations
         }
 
         /// <summary>
-        /// List all the operations.
+        /// List all the operations. 
         /// Request Path: /providers/Microsoft.Capacity/operations
         /// Operation Id: Operation_List
         /// </summary>
