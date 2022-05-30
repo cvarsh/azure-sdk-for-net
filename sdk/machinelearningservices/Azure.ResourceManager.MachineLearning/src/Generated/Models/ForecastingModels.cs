@@ -67,7 +67,7 @@ namespace Azure.ResourceManager.MachineLearning.Models
         /// This method is suitable for forecasting when data is stationary/non stationary, and multivariate with any type of data pattern, i.e., level/trend /seasonality/cyclicity.
         /// </summary>
         public static ForecastingModels Arimax { get; } = new ForecastingModels(ArimaxValue);
-        /// <summary> TCNForecaster: Temporal Convolutional Networks Forecaster. //TODO: Ask forecasting team for brief intro. </summary>
+        /// <summary> TCNForecaster: Temporal Convolutional Networks Forecaster. </summary>
         public static ForecastingModels TCNForecaster { get; } = new ForecastingModels(TCNForecasterValue);
         /// <summary> Elastic net is a popular type of regularized linear regression that combines two popular penalties, specifically the L1 and L2 penalty functions. </summary>
         public static ForecastingModels ElasticNet { get; } = new ForecastingModels(ElasticNetValue);
