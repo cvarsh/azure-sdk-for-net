@@ -8,7 +8,7 @@ Run `dotnet build /t:GenerateCode` to generate code.
 ``` yaml
 tag: release_1_0
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/3196a62202976da192d6da86f44b02246ca2aa97/specification/cognitiveservices/data-plane/TranslatorText/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/6b0a303b46754bb2a87184dcac81f8376000dcaa/specification/cognitiveservices/data-plane/TranslatorText/readme.md
 generation1-convenience-client: true
 ```
 
