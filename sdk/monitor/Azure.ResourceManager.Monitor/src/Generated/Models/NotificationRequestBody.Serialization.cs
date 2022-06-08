@@ -15,8 +15,13 @@ namespace Azure.ResourceManager.Monitor.Models
         void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
         {
             writer.WriteStartObject();
-            writer.WritePropertyName("alertType");
-            writer.WriteStringValue(AlertType);
+            writer.WritePropertyName("properties");
+            writer.WriteStartObject();
+            if (Optional.IsDefined(AlertType))
+            {
+                writer.WritePropertyName("alertType");
+                writer.WriteStringValue(AlertType);
+            }
             if (Optional.IsCollectionDefined(EmailReceivers))
             {
                 writer.WritePropertyName("emailReceivers");
@@ -127,6 +132,7 @@ namespace Azure.ResourceManager.Monitor.Models
                 }
                 writer.WriteEndArray();
             }
+            writer.WriteEndObject();
             writer.WriteEndObject();
         }
     }

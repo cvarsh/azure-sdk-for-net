@@ -7,7 +7,7 @@ Run `dotnet build /t:GenerateCode` to generate code.
 azure-arm: true
 library-name: Monitor
 namespace: Azure.ResourceManager.Monitor
-require: https://github.com/Azure/azure-rest-api-specs/blob/35f8a4df47aedc1ce185c854595cba6b83fa6c71/specification/monitor/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/c32800a8ebc4c8d251115349b10646328b4ec9f7/specification/monitor/resource-manager/readme.md
 
 clear-output-folder: true
 skip-csproj: true

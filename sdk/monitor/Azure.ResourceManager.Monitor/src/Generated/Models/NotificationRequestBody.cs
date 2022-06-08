@@ -5,26 +5,17 @@
 
 #nullable disable
 
-using System;
 using System.Collections.Generic;
 using Azure.Core;
 
 namespace Azure.ResourceManager.Monitor.Models
 {
-    /// <summary> The request body which contain contact detail metadata. </summary>
+    /// <summary> An action group resource. </summary>
     public partial class NotificationRequestBody
     {
         /// <summary> Initializes a new instance of NotificationRequestBody. </summary>
-        /// <param name="alertType"> The name of the supported alert type. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="alertType"/> is null. </exception>
-        public NotificationRequestBody(string alertType)
+        public NotificationRequestBody()
         {
-            if (alertType == null)
-            {
-                throw new ArgumentNullException(nameof(alertType));
-            }
-
-            AlertType = alertType;
             EmailReceivers = new ChangeTrackingList<EmailReceiver>();
             SmsReceivers = new ChangeTrackingList<SmsReceiver>();
             WebhookReceivers = new ChangeTrackingList<WebhookReceiver>();
@@ -39,7 +30,7 @@ namespace Azure.ResourceManager.Monitor.Models
         }
 
         /// <summary> The name of the supported alert type. </summary>
-        public string AlertType { get; }
+        public string AlertType { get; set; }
         /// <summary> The list of email receivers that are part of this action group. </summary>
         public IList<EmailReceiver> EmailReceivers { get; }
         /// <summary> The list of SMS receivers that are part of this action group. </summary>
