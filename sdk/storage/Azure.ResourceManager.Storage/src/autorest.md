@@ -7,7 +7,7 @@ azure-arm: true
 csharp: true
 namespace: Azure.ResourceManager.Storage
 tag: package-2021-09
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/4124b7c2773a714303299f0cfd742b0d26d3bb5d/specification/storage/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/46d6c72fd4a1f8a603e201a5b90e254d073505a3/specification/storage/resource-manager/readme.md
 clear-output-folder: true
 skip-csproj: true
 
