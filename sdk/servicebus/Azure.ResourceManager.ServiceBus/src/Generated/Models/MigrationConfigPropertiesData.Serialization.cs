@@ -38,7 +38,7 @@ namespace Azure.ResourceManager.ServiceBus
             ResourceIdentifier id = default;
             string name = default;
             ResourceType type = default;
-            SystemData systemData = default;
+            Optional<SystemData> systemData = default;
             Optional<string> provisioningState = default;
             Optional<long> pendingReplicationOperationsCount = default;
             Optional<string> targetNamespace = default;
@@ -68,6 +68,11 @@ namespace Azure.ResourceManager.ServiceBus
                 }
                 if (property.NameEquals("systemData"))
                 {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
                     systemData = JsonSerializer.Deserialize<SystemData>(property.Value.ToString());
                     continue;
                 }
@@ -114,7 +119,7 @@ namespace Azure.ResourceManager.ServiceBus
                     continue;
                 }
             }
-            return new MigrationConfigPropertiesData(id, name, type, systemData, location.Value, provisioningState.Value, Optional.ToNullable(pendingReplicationOperationsCount), targetNamespace.Value, postMigrationName.Value, migrationState.Value);
+            return new MigrationConfigPropertiesData(id, name, type, systemData.Value, location.Value, provisioningState.Value, Optional.ToNullable(pendingReplicationOperationsCount), targetNamespace.Value, postMigrationName.Value, migrationState.Value);
         }
     }
 }
