@@ -31,12 +31,8 @@ namespace Azure.ResourceManager.DnsResolver
             writer.WriteStringValue(Location);
             writer.WritePropertyName("properties");
             writer.WriteStartObject();
-            if (Optional.IsDefined(VirtualNetwork))
-            {
-                writer.WritePropertyName("virtualNetwork");
-                JsonSerializer.Serialize(writer, VirtualNetwork);
-            }
-            writer.WriteEndObject();
+            writer.WritePropertyName("virtualNetwork");
+            JsonSerializer.Serialize(writer, VirtualNetwork); writer.WriteEndObject();
             writer.WriteEndObject();
         }
 
@@ -49,7 +45,7 @@ namespace Azure.ResourceManager.DnsResolver
             string name = default;
             ResourceType type = default;
             SystemData systemData = default;
-            Optional<WritableSubResource> virtualNetwork = default;
+            WritableSubResource virtualNetwork = default;
             Optional<DnsResolverState> dnsResolverState = default;
             Optional<ProvisioningState> provisioningState = default;
             Optional<string> resourceGuid = default;
@@ -106,11 +102,6 @@ namespace Azure.ResourceManager.DnsResolver
                     {
                         if (property0.NameEquals("virtualNetwork"))
                         {
-                            if (property0.Value.ValueKind == JsonValueKind.Null)
-                            {
-                                property0.ThrowNonNullablePropertyIsNull();
-                                continue;
-                            }
                             virtualNetwork = JsonSerializer.Deserialize<WritableSubResource>(property0.Value.ToString());
                             continue;
                         }

@@ -30,16 +30,13 @@ namespace Azure.ResourceManager.DnsResolver
             writer.WriteStringValue(Location);
             writer.WritePropertyName("properties");
             writer.WriteStartObject();
-            if (Optional.IsCollectionDefined(IPConfigurations))
+            writer.WritePropertyName("ipConfigurations");
+            writer.WriteStartArray();
+            foreach (var item in IPConfigurations)
             {
-                writer.WritePropertyName("ipConfigurations");
-                writer.WriteStartArray();
-                foreach (var item in IPConfigurations)
-                {
-                    writer.WriteObjectValue(item);
-                }
-                writer.WriteEndArray();
+                writer.WriteObjectValue(item);
             }
+            writer.WriteEndArray();
             writer.WriteEndObject();
             writer.WriteEndObject();
         }
@@ -53,7 +50,7 @@ namespace Azure.ResourceManager.DnsResolver
             string name = default;
             ResourceType type = default;
             SystemData systemData = default;
-            Optional<IList<IPConfiguration>> ipConfigurations = default;
+            IList<IPConfiguration> ipConfigurations = default;
             Optional<ProvisioningState> provisioningState = default;
             Optional<string> resourceGuid = default;
             foreach (var property in element.EnumerateObject())
@@ -109,11 +106,6 @@ namespace Azure.ResourceManager.DnsResolver
                     {
                         if (property0.NameEquals("ipConfigurations"))
                         {
-                            if (property0.Value.ValueKind == JsonValueKind.Null)
-                            {
-                                property0.ThrowNonNullablePropertyIsNull();
-                                continue;
-                            }
                             List<IPConfiguration> array = new List<IPConfiguration>();
                             foreach (var item in property0.Value.EnumerateArray())
                             {
@@ -141,7 +133,7 @@ namespace Azure.ResourceManager.DnsResolver
                     continue;
                 }
             }
-            return new InboundEndpointData(id, name, type, systemData, tags, location, etag.Value, Optional.ToList(ipConfigurations), Optional.ToNullable(provisioningState), resourceGuid.Value);
+            return new InboundEndpointData(id, name, type, systemData, tags, location, etag.Value, ipConfigurations, Optional.ToNullable(provisioningState), resourceGuid.Value);
         }
     }
 }

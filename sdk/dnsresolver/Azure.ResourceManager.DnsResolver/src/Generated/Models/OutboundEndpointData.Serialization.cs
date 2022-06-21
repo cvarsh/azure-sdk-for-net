@@ -31,12 +31,8 @@ namespace Azure.ResourceManager.DnsResolver
             writer.WriteStringValue(Location);
             writer.WritePropertyName("properties");
             writer.WriteStartObject();
-            if (Optional.IsDefined(Subnet))
-            {
-                writer.WritePropertyName("subnet");
-                JsonSerializer.Serialize(writer, Subnet);
-            }
-            writer.WriteEndObject();
+            writer.WritePropertyName("subnet");
+            JsonSerializer.Serialize(writer, Subnet); writer.WriteEndObject();
             writer.WriteEndObject();
         }
 
@@ -49,7 +45,7 @@ namespace Azure.ResourceManager.DnsResolver
             string name = default;
             ResourceType type = default;
             SystemData systemData = default;
-            Optional<WritableSubResource> subnet = default;
+            WritableSubResource subnet = default;
             Optional<ProvisioningState> provisioningState = default;
             Optional<string> resourceGuid = default;
             foreach (var property in element.EnumerateObject())
@@ -105,11 +101,6 @@ namespace Azure.ResourceManager.DnsResolver
                     {
                         if (property0.NameEquals("subnet"))
                         {
-                            if (property0.Value.ValueKind == JsonValueKind.Null)
-                            {
-                                property0.ThrowNonNullablePropertyIsNull();
-                                continue;
-                            }
                             subnet = JsonSerializer.Deserialize<WritableSubResource>(property0.Value.ToString());
                             continue;
                         }
