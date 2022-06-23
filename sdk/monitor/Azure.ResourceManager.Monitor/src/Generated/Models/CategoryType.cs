@@ -5,14 +5,47 @@
 
 #nullable disable
 
+using System;
+using System.ComponentModel;
+
 namespace Azure.ResourceManager.Monitor.Models
 {
     /// <summary> The type of the diagnostic settings category. </summary>
-    public enum CategoryType
+    public readonly partial struct CategoryType : IEquatable<CategoryType>
     {
+        private readonly string _value;
+
+        /// <summary> Initializes a new instance of <see cref="CategoryType"/>. </summary>
+        /// <exception cref="ArgumentNullException"> <paramref name="value"/> is null. </exception>
+        public CategoryType(string value)
+        {
+            _value = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        private const string MetricsValue = "Metrics";
+        private const string LogsValue = "Logs";
+
         /// <summary> Metrics. </summary>
-        Metrics,
+        public static CategoryType Metrics { get; } = new CategoryType(MetricsValue);
         /// <summary> Logs. </summary>
-        Logs
+        public static CategoryType Logs { get; } = new CategoryType(LogsValue);
+        /// <summary> Determines if two <see cref="CategoryType"/> values are the same. </summary>
+        public static bool operator ==(CategoryType left, CategoryType right) => left.Equals(right);
+        /// <summary> Determines if two <see cref="CategoryType"/> values are not the same. </summary>
+        public static bool operator !=(CategoryType left, CategoryType right) => !left.Equals(right);
+        /// <summary> Converts a string to a <see cref="CategoryType"/>. </summary>
+        public static implicit operator CategoryType(string value) => new CategoryType(value);
+
+        /// <inheritdoc />
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override bool Equals(object obj) => obj is CategoryType other && Equals(other);
+        /// <inheritdoc />
+        public bool Equals(CategoryType other) => string.Equals(_value, other._value, StringComparison.InvariantCultureIgnoreCase);
+
+        /// <inheritdoc />
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override int GetHashCode() => _value?.GetHashCode() ?? 0;
+        /// <inheritdoc />
+        public override string ToString() => _value;
     }
 }
