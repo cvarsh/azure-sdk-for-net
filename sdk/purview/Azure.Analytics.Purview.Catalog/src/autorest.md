@@ -6,7 +6,7 @@ Run `dotnet build /t:GenerateCode` to generate code.
 title: PurviewCatalog
 input-file:
 
-- https://github.com/Azure/azure-rest-api-specs/blob/ccbe894f6b012ca2000184307ed453fd68797b86/specification/purview/data-plane/Azure.Analytics.Purview.Catalog/preview/2022-03-01-preview/purviewcatalog.json
+- https://github.com/Azure/azure-rest-api-specs/blob/f1813a0d4e1d582f0a831ad0bfc5a84578443cda/specification/purview/data-plane/Azure.Analytics.Purview.Catalog/preview/2022-03-01-preview/purviewcatalog.json
 
 
 namespace: Azure.Analytics.Purview.Catalog
