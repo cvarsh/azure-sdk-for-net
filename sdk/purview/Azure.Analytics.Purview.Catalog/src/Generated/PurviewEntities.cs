@@ -21,6 +21,7 @@ namespace Azure.Analytics.Purview.Catalog
         private readonly TokenCredential _tokenCredential;
         private readonly HttpPipeline _pipeline;
         private readonly Uri _endpoint;
+        private readonly string _serviceVersion;
 
         /// <summary> The ClientDiagnostics is used to provide tracing support for the client library. </summary>
         internal ClientDiagnostics ClientDiagnostics { get; }
@@ -38,12 +39,14 @@ namespace Azure.Analytics.Purview.Catalog
         /// <param name="pipeline"> The HTTP pipeline for sending and receiving REST requests and responses. </param>
         /// <param name="tokenCredential"> The token credential to copy. </param>
         /// <param name="endpoint"> The catalog endpoint of your Purview account. Example: https://{accountName}.purview.azure.com. </param>
-        internal PurviewEntities(ClientDiagnostics clientDiagnostics, HttpPipeline pipeline, TokenCredential tokenCredential, Uri endpoint)
+        /// <param name="serviceVersion"> the version of api. Allowed values: &quot;v2&quot;. </param>
+        internal PurviewEntities(ClientDiagnostics clientDiagnostics, HttpPipeline pipeline, TokenCredential tokenCredential, Uri endpoint, string serviceVersion)
         {
             ClientDiagnostics = clientDiagnostics;
             _pipeline = pipeline;
             _tokenCredential = tokenCredential;
             _endpoint = endpoint;
+            _serviceVersion = serviceVersion;
         }
 
         /// <summary>
@@ -4231,8 +4234,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity", false);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
@@ -4247,8 +4251,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/bulk", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/bulk", false);
             foreach (var param in guids)
             {
                 uri.AppendQuery("guid", param, true);
@@ -4280,8 +4285,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/bulk", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/bulk", false);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
@@ -4296,8 +4302,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Delete;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/bulk", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/bulk", false);
             foreach (var param in guids)
             {
                 uri.AppendQuery("guid", param, true);
@@ -4314,8 +4321,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/bulk/classification", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/bulk/classification", false);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
@@ -4330,8 +4338,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/guid/", false);
             uri.AppendPath(guid, true);
             if (minExtInfo != null)
             {
@@ -4353,8 +4362,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Put;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/guid/", false);
             uri.AppendPath(guid, true);
             uri.AppendQuery("name", name, true);
             request.Uri = uri;
@@ -4371,8 +4381,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Delete;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/guid/", false);
             uri.AppendPath(guid, true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
@@ -4386,8 +4397,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/guid/", false);
             uri.AppendPath(guid, true);
             uri.AppendPath("/classification/", false);
             uri.AppendPath(classificationName, true);
@@ -4403,8 +4415,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Delete;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/guid/", false);
             uri.AppendPath(guid, true);
             uri.AppendPath("/classification/", false);
             uri.AppendPath(classificationName, true);
@@ -4420,8 +4433,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/guid/", false);
             uri.AppendPath(guid, true);
             uri.AppendPath("/classifications", false);
             request.Uri = uri;
@@ -4436,8 +4450,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/guid/", false);
             uri.AppendPath(guid, true);
             uri.AppendPath("/classifications", false);
             request.Uri = uri;
@@ -4454,8 +4469,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Put;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/guid/", false);
             uri.AppendPath(guid, true);
             uri.AppendPath("/classifications", false);
             request.Uri = uri;
@@ -4472,8 +4488,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/uniqueAttribute/type/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/uniqueAttribute/type/", false);
             uri.AppendPath(typeName, true);
             if (minExtInfo != null)
             {
@@ -4499,8 +4516,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Put;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/uniqueAttribute/type/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/uniqueAttribute/type/", false);
             uri.AppendPath(typeName, true);
             if (attrQualifiedName != null)
             {
@@ -4520,8 +4538,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Delete;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/uniqueAttribute/type/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/uniqueAttribute/type/", false);
             uri.AppendPath(typeName, true);
             if (attrQualifiedName != null)
             {
@@ -4539,8 +4558,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Delete;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/uniqueAttribute/type/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/uniqueAttribute/type/", false);
             uri.AppendPath(typeName, true);
             uri.AppendPath("/classification/", false);
             uri.AppendPath(classificationName, true);
@@ -4560,8 +4580,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/uniqueAttribute/type/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/uniqueAttribute/type/", false);
             uri.AppendPath(typeName, true);
             uri.AppendPath("/classifications", false);
             if (attrQualifiedName != null)
@@ -4582,8 +4603,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Put;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/uniqueAttribute/type/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/uniqueAttribute/type/", false);
             uri.AppendPath(typeName, true);
             uri.AppendPath("/classifications", false);
             if (attrQualifiedName != null)
@@ -4604,8 +4626,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/bulk/setClassifications", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/bulk/setClassifications", false);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
@@ -4620,8 +4643,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/bulk/uniqueAttribute/type/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/bulk/uniqueAttribute/type/", false);
             uri.AppendPath(typeName, true);
             if (minExtInfo != null)
             {
@@ -4647,8 +4671,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/guid/", false);
             uri.AppendPath(guid, true);
             uri.AppendPath("/header", false);
             request.Uri = uri;
@@ -4663,8 +4688,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Delete;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/guid/", false);
             uri.AppendPath(guid, true);
             uri.AppendPath("/businessmetadata", false);
             request.Uri = uri;
@@ -4680,8 +4706,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/guid/", false);
             uri.AppendPath(guid, true);
             uri.AppendPath("/businessmetadata", false);
             if (isOverwrite != null)
@@ -4701,8 +4728,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Delete;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/guid/", false);
             uri.AppendPath(guid, true);
             uri.AppendPath("/businessmetadata/", false);
             uri.AppendPath(bmName, true);
@@ -4719,8 +4747,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/guid/", false);
             uri.AppendPath(guid, true);
             uri.AppendPath("/businessmetadata/", false);
             uri.AppendPath(bmName, true);
@@ -4737,8 +4766,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/businessmetadata/import/template", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/businessmetadata/import/template", false);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/octet-stream");
             return message;
@@ -4751,8 +4781,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/businessmetadata/import", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/businessmetadata/import", false);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "multipart/form-data");
@@ -4767,8 +4798,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Delete;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/guid/", false);
             uri.AppendPath(guid, true);
             uri.AppendPath("/labels", false);
             request.Uri = uri;
@@ -4784,8 +4816,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/guid/", false);
             uri.AppendPath(guid, true);
             uri.AppendPath("/labels", false);
             request.Uri = uri;
@@ -4801,8 +4834,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Put;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/guid/", false);
             uri.AppendPath(guid, true);
             uri.AppendPath("/labels", false);
             request.Uri = uri;
@@ -4818,8 +4852,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Delete;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/uniqueAttribute/type/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/uniqueAttribute/type/", false);
             uri.AppendPath(typeName, true);
             uri.AppendPath("/labels", false);
             if (attrQualifiedName != null)
@@ -4839,8 +4874,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/uniqueAttribute/type/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/uniqueAttribute/type/", false);
             uri.AppendPath(typeName, true);
             uri.AppendPath("/labels", false);
             if (attrQualifiedName != null)
@@ -4860,8 +4896,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Put;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/entity/uniqueAttribute/type/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/entity/uniqueAttribute/type/", false);
             uri.AppendPath(typeName, true);
             uri.AppendPath("/labels", false);
             if (attrQualifiedName != null)

@@ -21,6 +21,7 @@ namespace Azure.Analytics.Purview.Catalog
         private readonly TokenCredential _tokenCredential;
         private readonly HttpPipeline _pipeline;
         private readonly Uri _endpoint;
+        private readonly string _serviceVersion;
         private readonly string _apiVersion;
 
         /// <summary> The ClientDiagnostics is used to provide tracing support for the client library. </summary>
@@ -38,25 +39,29 @@ namespace Azure.Analytics.Purview.Catalog
         /// <param name="endpoint"> The catalog endpoint of your Purview account. Example: https://{accountName}.purview.azure.com. </param>
         /// <param name="credential"> A credential used to authenticate to an Azure Service. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="endpoint"/> or <paramref name="credential"/> is null. </exception>
-        public PurviewCatalogClient(Uri endpoint, TokenCredential credential) : this(endpoint, credential, new PurviewCatalogClientOptions())
+        public PurviewCatalogClient(Uri endpoint, TokenCredential credential) : this(endpoint, credential, "v2", new PurviewCatalogClientOptions())
         {
         }
 
         /// <summary> Initializes a new instance of PurviewCatalogClient. </summary>
         /// <param name="endpoint"> The catalog endpoint of your Purview account. Example: https://{accountName}.purview.azure.com. </param>
         /// <param name="credential"> A credential used to authenticate to an Azure Service. </param>
+        /// <param name="serviceVersion"> the version of api. Allowed values: &quot;v2&quot;. </param>
         /// <param name="options"> The options for configuring the client. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="endpoint"/> or <paramref name="credential"/> is null. </exception>
-        public PurviewCatalogClient(Uri endpoint, TokenCredential credential, PurviewCatalogClientOptions options)
+        /// <exception cref="ArgumentNullException"> <paramref name="endpoint"/>, <paramref name="credential"/> or <paramref name="serviceVersion"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="serviceVersion"/> is an empty string, and was expected to be non-empty. </exception>
+        public PurviewCatalogClient(Uri endpoint, TokenCredential credential, string serviceVersion, PurviewCatalogClientOptions options)
         {
             Argument.AssertNotNull(endpoint, nameof(endpoint));
             Argument.AssertNotNull(credential, nameof(credential));
+            Argument.AssertNotNullOrEmpty(serviceVersion, nameof(serviceVersion));
             options ??= new PurviewCatalogClientOptions();
 
             ClientDiagnostics = new ClientDiagnostics(options, true);
             _tokenCredential = credential;
             _pipeline = HttpPipelineBuilder.Build(options, Array.Empty<HttpPipelinePolicy>(), new HttpPipelinePolicy[] { new BearerTokenAuthenticationPolicy(_tokenCredential, AuthorizationScopes) }, new ResponseClassifier());
             _endpoint = endpoint;
+            _serviceVersion = serviceVersion;
             _apiVersion = options.Version;
         }
 
@@ -496,37 +501,37 @@ namespace Azure.Analytics.Purview.Catalog
         /// <summary> Initializes a new instance of PurviewEntities. </summary>
         public virtual PurviewEntities GetPurviewEntitiesClient()
         {
-            return Volatile.Read(ref _cachedPurviewEntities) ?? Interlocked.CompareExchange(ref _cachedPurviewEntities, new PurviewEntities(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint), null) ?? _cachedPurviewEntities;
+            return Volatile.Read(ref _cachedPurviewEntities) ?? Interlocked.CompareExchange(ref _cachedPurviewEntities, new PurviewEntities(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint, _serviceVersion), null) ?? _cachedPurviewEntities;
         }
 
         /// <summary> Initializes a new instance of PurviewGlossaries. </summary>
         public virtual PurviewGlossaries GetPurviewGlossariesClient()
         {
-            return Volatile.Read(ref _cachedPurviewGlossaries) ?? Interlocked.CompareExchange(ref _cachedPurviewGlossaries, new PurviewGlossaries(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint, _apiVersion), null) ?? _cachedPurviewGlossaries;
+            return Volatile.Read(ref _cachedPurviewGlossaries) ?? Interlocked.CompareExchange(ref _cachedPurviewGlossaries, new PurviewGlossaries(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint, _serviceVersion, _apiVersion), null) ?? _cachedPurviewGlossaries;
         }
 
         /// <summary> Initializes a new instance of PurviewLineages. </summary>
         public virtual PurviewLineages GetPurviewLineagesClient()
         {
-            return Volatile.Read(ref _cachedPurviewLineages) ?? Interlocked.CompareExchange(ref _cachedPurviewLineages, new PurviewLineages(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint, _apiVersion), null) ?? _cachedPurviewLineages;
+            return Volatile.Read(ref _cachedPurviewLineages) ?? Interlocked.CompareExchange(ref _cachedPurviewLineages, new PurviewLineages(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint, _serviceVersion, _apiVersion), null) ?? _cachedPurviewLineages;
         }
 
         /// <summary> Initializes a new instance of PurviewRelationships. </summary>
         public virtual PurviewRelationships GetPurviewRelationshipsClient()
         {
-            return Volatile.Read(ref _cachedPurviewRelationships) ?? Interlocked.CompareExchange(ref _cachedPurviewRelationships, new PurviewRelationships(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint), null) ?? _cachedPurviewRelationships;
+            return Volatile.Read(ref _cachedPurviewRelationships) ?? Interlocked.CompareExchange(ref _cachedPurviewRelationships, new PurviewRelationships(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint, _serviceVersion), null) ?? _cachedPurviewRelationships;
         }
 
         /// <summary> Initializes a new instance of PurviewTypes. </summary>
         public virtual PurviewTypes GetPurviewTypesClient()
         {
-            return Volatile.Read(ref _cachedPurviewTypes) ?? Interlocked.CompareExchange(ref _cachedPurviewTypes, new PurviewTypes(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint, _apiVersion), null) ?? _cachedPurviewTypes;
+            return Volatile.Read(ref _cachedPurviewTypes) ?? Interlocked.CompareExchange(ref _cachedPurviewTypes, new PurviewTypes(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint, _serviceVersion, _apiVersion), null) ?? _cachedPurviewTypes;
         }
 
         /// <summary> Initializes a new instance of PurviewCollections. </summary>
         public virtual PurviewCollections GetPurviewCollectionsClient()
         {
-            return Volatile.Read(ref _cachedPurviewCollections) ?? Interlocked.CompareExchange(ref _cachedPurviewCollections, new PurviewCollections(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint, _apiVersion), null) ?? _cachedPurviewCollections;
+            return Volatile.Read(ref _cachedPurviewCollections) ?? Interlocked.CompareExchange(ref _cachedPurviewCollections, new PurviewCollections(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint, _serviceVersion, _apiVersion), null) ?? _cachedPurviewCollections;
         }
 
         internal HttpMessage CreateSearchRequest(RequestContent content, RequestContext context)
@@ -536,7 +541,8 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
             uri.AppendPath("/search/query", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -553,7 +559,8 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
             uri.AppendPath("/search/suggest", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -570,7 +577,8 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
             uri.AppendPath("/browse", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -587,7 +595,8 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
             uri.AppendPath("/search/autocomplete", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;

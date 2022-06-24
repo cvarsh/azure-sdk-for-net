@@ -20,6 +20,7 @@ namespace Azure.Analytics.Purview.Catalog
         private readonly TokenCredential _tokenCredential;
         private readonly HttpPipeline _pipeline;
         private readonly Uri _endpoint;
+        private readonly string _serviceVersion;
 
         /// <summary> The ClientDiagnostics is used to provide tracing support for the client library. </summary>
         internal ClientDiagnostics ClientDiagnostics { get; }
@@ -37,12 +38,14 @@ namespace Azure.Analytics.Purview.Catalog
         /// <param name="pipeline"> The HTTP pipeline for sending and receiving REST requests and responses. </param>
         /// <param name="tokenCredential"> The token credential to copy. </param>
         /// <param name="endpoint"> The catalog endpoint of your Purview account. Example: https://{accountName}.purview.azure.com. </param>
-        internal PurviewRelationships(ClientDiagnostics clientDiagnostics, HttpPipeline pipeline, TokenCredential tokenCredential, Uri endpoint)
+        /// <param name="serviceVersion"> the version of api. Allowed values: &quot;v2&quot;. </param>
+        internal PurviewRelationships(ClientDiagnostics clientDiagnostics, HttpPipeline pipeline, TokenCredential tokenCredential, Uri endpoint, string serviceVersion)
         {
             ClientDiagnostics = clientDiagnostics;
             _pipeline = pipeline;
             _tokenCredential = tokenCredential;
             _endpoint = endpoint;
+            _serviceVersion = serviceVersion;
         }
 
         /// <summary> Create a new relationship between entities. </summary>
@@ -540,8 +543,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/relationship", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/relationship", false);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
@@ -556,8 +560,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Put;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/relationship", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/relationship", false);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
@@ -572,8 +577,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/relationship/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/relationship/guid/", false);
             uri.AppendPath(guid, true);
             if (extendedInfo != null)
             {
@@ -591,8 +597,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Delete;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/relationship/guid/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/relationship/guid/", false);
             uri.AppendPath(guid, true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");

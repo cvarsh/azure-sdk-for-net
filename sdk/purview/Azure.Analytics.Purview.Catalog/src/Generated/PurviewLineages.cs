@@ -20,6 +20,7 @@ namespace Azure.Analytics.Purview.Catalog
         private readonly TokenCredential _tokenCredential;
         private readonly HttpPipeline _pipeline;
         private readonly Uri _endpoint;
+        private readonly string _serviceVersion;
         private readonly string _apiVersion;
 
         /// <summary> The ClientDiagnostics is used to provide tracing support for the client library. </summary>
@@ -38,13 +39,15 @@ namespace Azure.Analytics.Purview.Catalog
         /// <param name="pipeline"> The HTTP pipeline for sending and receiving REST requests and responses. </param>
         /// <param name="tokenCredential"> The token credential to copy. </param>
         /// <param name="endpoint"> The catalog endpoint of your Purview account. Example: https://{accountName}.purview.azure.com. </param>
+        /// <param name="serviceVersion"> the version of api. Allowed values: &quot;v2&quot;. </param>
         /// <param name="apiVersion"> Api Version. </param>
-        internal PurviewLineages(ClientDiagnostics clientDiagnostics, HttpPipeline pipeline, TokenCredential tokenCredential, Uri endpoint, string apiVersion)
+        internal PurviewLineages(ClientDiagnostics clientDiagnostics, HttpPipeline pipeline, TokenCredential tokenCredential, Uri endpoint, string serviceVersion, string apiVersion)
         {
             ClientDiagnostics = clientDiagnostics;
             _pipeline = pipeline;
             _tokenCredential = tokenCredential;
             _endpoint = endpoint;
+            _serviceVersion = serviceVersion;
             _apiVersion = apiVersion;
         }
 
@@ -453,8 +456,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/lineage/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/lineage/", false);
             uri.AppendPath(guid, true);
             uri.AppendQuery("direction", direction, true);
             if (depth != null)
@@ -485,7 +489,8 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
             uri.AppendPath("/lineage/", false);
             uri.AppendPath(guid, true);
             uri.AppendPath("/next/", false);
@@ -515,8 +520,9 @@ namespace Azure.Analytics.Purview.Catalog
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRaw("/catalog/api", false);
-            uri.AppendPath("/atlas/v2/lineage/uniqueAttribute/type/", false);
+            uri.AppendRaw("/catalog/api/atlas/", false);
+            uri.AppendRaw(_serviceVersion, true);
+            uri.AppendPath("/lineage/uniqueAttribute/type/", false);
             uri.AppendPath(typeName, true);
             uri.AppendQuery("direction", direction, true);
             if (depth != null)
