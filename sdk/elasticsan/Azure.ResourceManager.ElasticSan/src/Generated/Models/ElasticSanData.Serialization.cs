@@ -79,7 +79,7 @@ namespace Azure.ResourceManager.ElasticSan
             Optional<long> volumeGroupCount = default;
             Optional<long> totalIops = default;
             Optional<long> totalMBps = default;
-            Optional<long> provisionedMBps = default;
+            Optional<long> totalSizeTiB = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("tags"))
@@ -231,21 +231,21 @@ namespace Azure.ResourceManager.ElasticSan
                             totalMBps = property0.Value.GetInt64();
                             continue;
                         }
-                        if (property0.NameEquals("provisionedMBps"))
+                        if (property0.NameEquals("totalSizeTiB"))
                         {
                             if (property0.Value.ValueKind == JsonValueKind.Null)
                             {
                                 property0.ThrowNonNullablePropertyIsNull();
                                 continue;
                             }
-                            provisionedMBps = property0.Value.GetInt64();
+                            totalSizeTiB = property0.Value.GetInt64();
                             continue;
                         }
                     }
                     continue;
                 }
             }
-            return new ElasticSanData(id, name, type, systemData.Value, Optional.ToDictionary(tags), location, sku.Value, Optional.ToList(availabilityZones), Optional.ToNullable(provisioningState), Optional.ToNullable(baseSizeTiB), Optional.ToNullable(extendedCapacitySizeTiB), Optional.ToNullable(totalVolumeSizeGiB), Optional.ToNullable(volumeGroupCount), Optional.ToNullable(totalIops), Optional.ToNullable(totalMBps), Optional.ToNullable(provisionedMBps));
+            return new ElasticSanData(id, name, type, systemData.Value, Optional.ToDictionary(tags), location, sku.Value, Optional.ToList(availabilityZones), Optional.ToNullable(provisioningState), Optional.ToNullable(baseSizeTiB), Optional.ToNullable(extendedCapacitySizeTiB), Optional.ToNullable(totalVolumeSizeGiB), Optional.ToNullable(volumeGroupCount), Optional.ToNullable(totalIops), Optional.ToNullable(totalMBps), Optional.ToNullable(totalSizeTiB));
         }
     }
 }
