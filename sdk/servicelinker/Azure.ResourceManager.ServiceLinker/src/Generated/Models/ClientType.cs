@@ -32,6 +32,7 @@ namespace Azure.ResourceManager.ServiceLinker.Models
         private const string DjangoValue = "django";
         private const string NodejsValue = "nodejs";
         private const string SpringBootValue = "springBoot";
+        private const string KafkaSpringBootValue = "kafka-springBoot";
 
         /// <summary> none. </summary>
         public static ClientType None { get; } = new ClientType(NoneValue);
@@ -53,6 +54,8 @@ namespace Azure.ResourceManager.ServiceLinker.Models
         public static ClientType Nodejs { get; } = new ClientType(NodejsValue);
         /// <summary> springBoot. </summary>
         public static ClientType SpringBoot { get; } = new ClientType(SpringBootValue);
+        /// <summary> kafka-springBoot. </summary>
+        public static ClientType KafkaSpringBoot { get; } = new ClientType(KafkaSpringBootValue);
         /// <summary> Determines if two <see cref="ClientType"/> values are the same. </summary>
         public static bool operator ==(ClientType left, ClientType right) => left.Equals(right);
         /// <summary> Determines if two <see cref="ClientType"/> values are not the same. </summary>
