@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: Grafana
 namespace: Azure.ResourceManager.Grafana
-require: https://github.com/Azure/azure-rest-api-specs/blob/a1a224b54f05debfa94fd19477ed820c64f0f9fc/specification/dashboard/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/b041458b852f575e824398a416561fdd438214ba/specification/dashboard/resource-manager/readme.md
 tag: package-2021-09-01-preview
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
