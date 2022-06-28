@@ -8,8 +8,8 @@ title: Conversations
 license-header: MICROSOFT_MIT_NO_VERSION
 
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/725f4ca360426a32d20e81eb945065e62c285d6a/specification/cognitiveservices/data-plane/Language/stable/2022-05-01/analyzeconversations.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/725f4ca360426a32d20e81eb945065e62c285d6a/specification/cognitiveservices/data-plane/Language/stable/2022-05-01/analyzeconversations-authoring.json
+- https://github.com/Azure/azure-rest-api-specs/blob/b041458b852f575e824398a416561fdd438214ba/specification/cognitiveservices/data-plane/Language/stable/2022-05-01/analyzeconversations.json
+- https://github.com/Azure/azure-rest-api-specs/blob/b041458b852f575e824398a416561fdd438214ba/specification/cognitiveservices/data-plane/Language/stable/2022-05-01/analyzeconversations-authoring.json
 clear-output-folder: true
 
 data-plane: true
@@ -154,7 +154,7 @@ directive:
     var operationId = $.operationId.substring("ConversationAnalysis_".length);
     // BUGBUG: Will not work until https://github.com/Azure/autorest.csharp/issues/2384 is fixed.
     $["externalDocs"] = {
-        url: "https://docs.microsoft.com/rest/api/language/conversation-analysis-runtime/" + operationId.replace(/([a-z0–9])([A-Z])/g, "$1-$2").toLowerCase()
+        url: "https://docs.microsoft.com/rest/api/language/conversation-analysis-runtime/" + operationId.replace(/([a-z0ï¿½9])([A-Z])/g, "$1-$2").toLowerCase()
     };
 
 - from: analyzeconversations-authoring.json
@@ -163,7 +163,7 @@ directive:
     var operationId = $.operationId.substring("ConversationalAnalysisAuthoring_".length);
     // BUGBUG: Will not work until https://github.com/Azure/autorest.csharp/issues/2384 is fixed.
     $["externalDocs"] = {
-        url: "https://docs.microsoft.com/rest/api/language/conversational-analysis-authoring/" + operationId.replace(/([a-z0–9])([A-Z])/g, "$1-$2").toLowerCase()
+        url: "https://docs.microsoft.com/rest/api/language/conversational-analysis-authoring/" + operationId.replace(/([a-z0ï¿½9])([A-Z])/g, "$1-$2").toLowerCase()
     };
 
 # Rename operations to be consistent. Do this after other operation transforms for ease.
