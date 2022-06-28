@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: ServiceLinker
 namespace: Azure.ResourceManager.ServiceLinker
-require: https://github.com/Azure/azure-rest-api-specs/blob/eb2b882ef0a4aa5956ca38cfa566fc4d7cfb3fb0/specification/servicelinker/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/b041458b852f575e824398a416561fdd438214ba/specification/servicelinker/resource-manager/readme.md
 tag: package-2022-05-01
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
