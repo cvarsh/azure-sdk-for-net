@@ -25,5 +25,7 @@ namespace Azure.Security.Attestation
         public InitTimeData InitTimeData { get; set; }
         /// <summary> Attest against the provided draft policy. Note that the resulting token cannot be validated. </summary>
         public string DraftPolicyForAttestation { get; set; }
+        /// <summary> Nonce for incoming request - emitted in the generated attestation token. </summary>
+        public string Nonce { get; set; }
     }
 }
