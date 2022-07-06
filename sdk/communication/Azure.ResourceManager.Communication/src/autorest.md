@@ -7,7 +7,7 @@ Run `dotnet msbuild /t:GenerateCode` to generate code.
 azure-arm: true
 title: communication
 namespace: Azure.ResourceManager.Communication
-require: https://github.com/Azure/azure-rest-api-specs/blob/7168ecde052e9797d31d74c40ad00ac68c74ec6a/specification/communication/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/7058b46cb1b1dc0589d819f00cbbdeab388763fe/specification/communication/resource-manager/readme.md
 tag: package-2021-10-01-preview
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
