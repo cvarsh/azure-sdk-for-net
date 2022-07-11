@@ -5,6 +5,7 @@
 
 #nullable disable
 
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Azure;
@@ -47,6 +48,11 @@ namespace Azure.ResourceManager.Network
             }
             writer.WritePropertyName("properties");
             writer.WriteStartObject();
+            if (Optional.IsDefined(ResourceGuid))
+            {
+                writer.WritePropertyName("resourceGuid");
+                writer.WriteStringValue(ResourceGuid.Value);
+            }
             if (Optional.IsDefined(Subnet))
             {
                 writer.WritePropertyName("subnet");
@@ -95,6 +101,7 @@ namespace Azure.ResourceManager.Network
             Optional<ResourceType> type = default;
             Optional<AzureLocation> location = default;
             Optional<IDictionary<string, string>> tags = default;
+            Optional<Guid> resourceGuid = default;
             Optional<SubnetData> subnet = default;
             Optional<IReadOnlyList<NetworkInterfaceData>> networkInterfaces = default;
             Optional<NetworkProvisioningState> provisioningState = default;
@@ -182,6 +189,16 @@ namespace Azure.ResourceManager.Network
                     }
                     foreach (var property0 in property.Value.EnumerateObject())
                     {
+                        if (property0.NameEquals("resourceGuid"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            resourceGuid = property0.Value.GetGuid();
+                            continue;
+                        }
                         if (property0.NameEquals("subnet"))
                         {
                             if (property0.Value.ValueKind == JsonValueKind.Null)
@@ -266,7 +283,7 @@ namespace Azure.ResourceManager.Network
                     continue;
                 }
             }
-            return new PrivateEndpointData(id.Value, name.Value, Optional.ToNullable(type), Optional.ToNullable(location), Optional.ToDictionary(tags), extendedLocation, Optional.ToNullable(etag), subnet.Value, Optional.ToList(networkInterfaces), Optional.ToNullable(provisioningState), Optional.ToList(privateLinkServiceConnections), Optional.ToList(manualPrivateLinkServiceConnections), Optional.ToList(customDnsConfigs));
+            return new PrivateEndpointData(id.Value, name.Value, Optional.ToNullable(type), Optional.ToNullable(location), Optional.ToDictionary(tags), extendedLocation, Optional.ToNullable(etag), Optional.ToNullable(resourceGuid), subnet.Value, Optional.ToList(networkInterfaces), Optional.ToNullable(provisioningState), Optional.ToList(privateLinkServiceConnections), Optional.ToList(manualPrivateLinkServiceConnections), Optional.ToList(customDnsConfigs));
         }
     }
 }
