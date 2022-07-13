@@ -49,7 +49,7 @@ namespace Azure.ResourceManager.ConfidentialLedger.Models
         {
             Optional<string> ledgerName = default;
             Optional<Uri> ledgerUri = default;
-            Optional<Uri> identityServiceUri = default;
+            Optional<string> certificateClientEndpoint = default;
             Optional<string> ledgerInternalNamespace = default;
             Optional<LedgerType> ledgerType = default;
             Optional<LedgerProvisioningState> provisioningState = default;
@@ -72,14 +72,9 @@ namespace Azure.ResourceManager.ConfidentialLedger.Models
                     ledgerUri = new Uri(property.Value.GetString());
                     continue;
                 }
-                if (property.NameEquals("identityServiceUri"))
+                if (property.NameEquals("certificateClientEndpoint"))
                 {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        identityServiceUri = null;
-                        continue;
-                    }
-                    identityServiceUri = new Uri(property.Value.GetString());
+                    certificateClientEndpoint = property.Value.GetString();
                     continue;
                 }
                 if (property.NameEquals("ledgerInternalNamespace"))
@@ -138,7 +133,7 @@ namespace Azure.ResourceManager.ConfidentialLedger.Models
                     continue;
                 }
             }
-            return new LedgerProperties(ledgerName.Value, ledgerUri.Value, identityServiceUri.Value, ledgerInternalNamespace.Value, Optional.ToNullable(ledgerType), Optional.ToNullable(provisioningState), Optional.ToList(aadBasedSecurityPrincipals), Optional.ToList(certBasedSecurityPrincipals));
+            return new LedgerProperties(ledgerName.Value, ledgerUri.Value, certificateClientEndpoint.Value, ledgerInternalNamespace.Value, Optional.ToNullable(ledgerType), Optional.ToNullable(provisioningState), Optional.ToList(aadBasedSecurityPrincipals), Optional.ToList(certBasedSecurityPrincipals));
         }
     }
 }

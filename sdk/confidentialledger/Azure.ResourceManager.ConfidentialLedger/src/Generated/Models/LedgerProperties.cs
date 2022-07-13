@@ -24,17 +24,17 @@ namespace Azure.ResourceManager.ConfidentialLedger.Models
         /// <summary> Initializes a new instance of LedgerProperties. </summary>
         /// <param name="ledgerName"> Unique name for the Confidential Ledger. </param>
         /// <param name="ledgerUri"> Endpoint for calling Ledger Service. </param>
-        /// <param name="identityServiceUri"> Endpoint for accessing network identity. </param>
+        /// <param name="certificateClientEndpoint"> Endpoint for accessing network identity. </param>
         /// <param name="ledgerInternalNamespace"> Internal namespace for the Ledger. </param>
         /// <param name="ledgerType"> Type of Confidential Ledger. </param>
         /// <param name="provisioningState"> Provisioning state of Ledger Resource. </param>
         /// <param name="aadBasedSecurityPrincipals"> Array of all AAD based Security Principals. </param>
         /// <param name="certBasedSecurityPrincipals"> Array of all cert based Security Principals. </param>
-        internal LedgerProperties(string ledgerName, Uri ledgerUri, Uri identityServiceUri, string ledgerInternalNamespace, LedgerType? ledgerType, LedgerProvisioningState? provisioningState, IList<AadBasedSecurityPrincipal> aadBasedSecurityPrincipals, IList<CertBasedSecurityPrincipal> certBasedSecurityPrincipals)
+        internal LedgerProperties(string ledgerName, Uri ledgerUri, string certificateClientEndpoint, string ledgerInternalNamespace, LedgerType? ledgerType, LedgerProvisioningState? provisioningState, IList<AadBasedSecurityPrincipal> aadBasedSecurityPrincipals, IList<CertBasedSecurityPrincipal> certBasedSecurityPrincipals)
         {
             LedgerName = ledgerName;
             LedgerUri = ledgerUri;
-            IdentityServiceUri = identityServiceUri;
+            CertificateClientEndpoint = certificateClientEndpoint;
             LedgerInternalNamespace = ledgerInternalNamespace;
             LedgerType = ledgerType;
             ProvisioningState = provisioningState;
@@ -47,7 +47,7 @@ namespace Azure.ResourceManager.ConfidentialLedger.Models
         /// <summary> Endpoint for calling Ledger Service. </summary>
         public Uri LedgerUri { get; }
         /// <summary> Endpoint for accessing network identity. </summary>
-        public Uri IdentityServiceUri { get; }
+        public string CertificateClientEndpoint { get; }
         /// <summary> Internal namespace for the Ledger. </summary>
         public string LedgerInternalNamespace { get; }
         /// <summary> Type of Confidential Ledger. </summary>
