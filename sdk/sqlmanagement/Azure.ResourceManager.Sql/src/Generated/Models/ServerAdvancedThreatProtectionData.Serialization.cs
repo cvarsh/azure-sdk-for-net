@@ -5,30 +5,38 @@
 
 #nullable disable
 
+using System;
 using System.Text.Json;
 using Azure.Core;
 using Azure.ResourceManager.Models;
+using Azure.ResourceManager.Sql.Models;
 
-namespace Azure.ResourceManager.Sql.Models
+namespace Azure.ResourceManager.Sql
 {
-    public partial class ManagedInstanceUpdateDnsServersOperationData : IUtf8JsonSerializable
+    public partial class ServerAdvancedThreatProtectionData : IUtf8JsonSerializable
     {
         void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
         {
             writer.WriteStartObject();
             writer.WritePropertyName("properties");
             writer.WriteStartObject();
+            if (Optional.IsDefined(State))
+            {
+                writer.WritePropertyName("state");
+                writer.WriteStringValue(State.Value.ToSerialString());
+            }
             writer.WriteEndObject();
             writer.WriteEndObject();
         }
 
-        internal static ManagedInstanceUpdateDnsServersOperationData DeserializeManagedInstanceUpdateDnsServersOperationData(JsonElement element)
+        internal static ServerAdvancedThreatProtectionData DeserializeServerAdvancedThreatProtectionData(JsonElement element)
         {
             ResourceIdentifier id = default;
             string name = default;
             ResourceType type = default;
             Optional<SystemData> systemData = default;
-            Optional<DnsRefreshConfigurationPropertiesStatus> status = default;
+            Optional<AdvancedThreatProtectionState> state = default;
+            Optional<DateTimeOffset> creationTime = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("id"))
@@ -65,21 +73,31 @@ namespace Azure.ResourceManager.Sql.Models
                     }
                     foreach (var property0 in property.Value.EnumerateObject())
                     {
-                        if (property0.NameEquals("status"))
+                        if (property0.NameEquals("state"))
                         {
                             if (property0.Value.ValueKind == JsonValueKind.Null)
                             {
                                 property0.ThrowNonNullablePropertyIsNull();
                                 continue;
                             }
-                            status = new DnsRefreshConfigurationPropertiesStatus(property0.Value.GetString());
+                            state = property0.Value.GetString().ToAdvancedThreatProtectionState();
+                            continue;
+                        }
+                        if (property0.NameEquals("creationTime"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            creationTime = property0.Value.GetDateTimeOffset("O");
                             continue;
                         }
                     }
                     continue;
                 }
             }
-            return new ManagedInstanceUpdateDnsServersOperationData(id, name, type, systemData.Value, Optional.ToNullable(status));
+            return new ServerAdvancedThreatProtectionData(id, name, type, systemData.Value, Optional.ToNullable(state), Optional.ToNullable(creationTime));
         }
     }
 }

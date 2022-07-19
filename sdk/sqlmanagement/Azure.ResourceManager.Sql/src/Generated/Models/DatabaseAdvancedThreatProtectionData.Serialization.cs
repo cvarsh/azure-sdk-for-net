@@ -5,75 +5,40 @@
 
 #nullable disable
 
-using System.Collections.Generic;
+using System;
 using System.Text.Json;
 using Azure.Core;
 using Azure.ResourceManager.Models;
+using Azure.ResourceManager.Sql.Models;
 
 namespace Azure.ResourceManager.Sql
 {
-    public partial class VirtualClusterData : IUtf8JsonSerializable
+    public partial class DatabaseAdvancedThreatProtectionData : IUtf8JsonSerializable
     {
         void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
         {
             writer.WriteStartObject();
-            if (Optional.IsCollectionDefined(Tags))
-            {
-                writer.WritePropertyName("tags");
-                writer.WriteStartObject();
-                foreach (var item in Tags)
-                {
-                    writer.WritePropertyName(item.Key);
-                    writer.WriteStringValue(item.Value);
-                }
-                writer.WriteEndObject();
-            }
-            writer.WritePropertyName("location");
-            writer.WriteStringValue(Location);
             writer.WritePropertyName("properties");
             writer.WriteStartObject();
-            if (Optional.IsDefined(Version))
+            if (Optional.IsDefined(State))
             {
-                writer.WritePropertyName("version");
-                writer.WriteStringValue(Version);
+                writer.WritePropertyName("state");
+                writer.WriteStringValue(State.Value.ToSerialString());
             }
             writer.WriteEndObject();
             writer.WriteEndObject();
         }
 
-        internal static VirtualClusterData DeserializeVirtualClusterData(JsonElement element)
+        internal static DatabaseAdvancedThreatProtectionData DeserializeDatabaseAdvancedThreatProtectionData(JsonElement element)
         {
-            Optional<IDictionary<string, string>> tags = default;
-            AzureLocation location = default;
             ResourceIdentifier id = default;
             string name = default;
             ResourceType type = default;
             Optional<SystemData> systemData = default;
-            Optional<ResourceIdentifier> subnetId = default;
-            Optional<string> version = default;
-            Optional<IReadOnlyList<string>> childResources = default;
+            Optional<AdvancedThreatProtectionState> state = default;
+            Optional<DateTimeOffset> creationTime = default;
             foreach (var property in element.EnumerateObject())
             {
-                if (property.NameEquals("tags"))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        property.ThrowNonNullablePropertyIsNull();
-                        continue;
-                    }
-                    Dictionary<string, string> dictionary = new Dictionary<string, string>();
-                    foreach (var property0 in property.Value.EnumerateObject())
-                    {
-                        dictionary.Add(property0.Name, property0.Value.GetString());
-                    }
-                    tags = dictionary;
-                    continue;
-                }
-                if (property.NameEquals("location"))
-                {
-                    location = new AzureLocation(property.Value.GetString());
-                    continue;
-                }
                 if (property.NameEquals("id"))
                 {
                     id = new ResourceIdentifier(property.Value.GetString());
@@ -108,41 +73,31 @@ namespace Azure.ResourceManager.Sql
                     }
                     foreach (var property0 in property.Value.EnumerateObject())
                     {
-                        if (property0.NameEquals("subnetId"))
+                        if (property0.NameEquals("state"))
                         {
                             if (property0.Value.ValueKind == JsonValueKind.Null)
                             {
                                 property0.ThrowNonNullablePropertyIsNull();
                                 continue;
                             }
-                            subnetId = new ResourceIdentifier(property0.Value.GetString());
+                            state = property0.Value.GetString().ToAdvancedThreatProtectionState();
                             continue;
                         }
-                        if (property0.NameEquals("version"))
-                        {
-                            version = property0.Value.GetString();
-                            continue;
-                        }
-                        if (property0.NameEquals("childResources"))
+                        if (property0.NameEquals("creationTime"))
                         {
                             if (property0.Value.ValueKind == JsonValueKind.Null)
                             {
                                 property0.ThrowNonNullablePropertyIsNull();
                                 continue;
                             }
-                            List<string> array = new List<string>();
-                            foreach (var item in property0.Value.EnumerateArray())
-                            {
-                                array.Add(item.GetString());
-                            }
-                            childResources = array;
+                            creationTime = property0.Value.GetDateTimeOffset("O");
                             continue;
                         }
                     }
                     continue;
                 }
             }
-            return new VirtualClusterData(id, name, type, systemData.Value, Optional.ToDictionary(tags), location, subnetId.Value, version.Value, Optional.ToList(childResources));
+            return new DatabaseAdvancedThreatProtectionData(id, name, type, systemData.Value, Optional.ToNullable(state), Optional.ToNullable(creationTime));
         }
     }
 }

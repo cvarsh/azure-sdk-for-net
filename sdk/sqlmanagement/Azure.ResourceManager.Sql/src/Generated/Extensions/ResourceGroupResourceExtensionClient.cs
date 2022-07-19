@@ -71,13 +71,6 @@ namespace Azure.ResourceManager.Sql
             return new SqlServerTrustGroupCollection(Client, Id, locationName);
         }
 
-        /// <summary> Gets a collection of VirtualClusterResources in the ResourceGroupResource. </summary>
-        /// <returns> An object representing collection of VirtualClusterResources and their operations over a VirtualClusterResource. </returns>
-        public virtual VirtualClusterCollection GetVirtualClusters()
-        {
-            return GetCachedClient(Client => new VirtualClusterCollection(Client, Id));
-        }
-
         /// <summary> Gets a collection of SqlServerResources in the ResourceGroupResource. </summary>
         /// <returns> An object representing collection of SqlServerResources and their operations over a SqlServerResource. </returns>
         public virtual SqlServerCollection GetSqlServers()
@@ -110,6 +103,13 @@ namespace Azure.ResourceManager.Sql
         public virtual ManagedInstanceCollection GetManagedInstances()
         {
             return GetCachedClient(Client => new ManagedInstanceCollection(Client, Id));
+        }
+
+        /// <summary> Gets a collection of VirtualClusterResources in the ResourceGroupResource. </summary>
+        /// <returns> An object representing collection of VirtualClusterResources and their operations over a VirtualClusterResource. </returns>
+        public virtual VirtualClusterCollection GetVirtualClusters()
+        {
+            return GetCachedClient(Client => new VirtualClusterCollection(Client, Id));
         }
 
         /// <summary>

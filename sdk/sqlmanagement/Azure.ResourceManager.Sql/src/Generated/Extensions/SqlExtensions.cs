@@ -375,32 +375,6 @@ namespace Azure.ResourceManager.Sql
         }
 
         /// <summary>
-        /// Gets a list of all virtualClusters in the subscription.
-        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters
-        /// Operation Id: VirtualClusters_List
-        /// </summary>
-        /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <returns> An async collection of <see cref="VirtualClusterResource" /> that may take multiple service requests to iterate over. </returns>
-        public static AsyncPageable<VirtualClusterResource> GetVirtualClustersAsync(this SubscriptionResource subscriptionResource, CancellationToken cancellationToken = default)
-        {
-            return GetExtensionClient(subscriptionResource).GetVirtualClustersAsync(cancellationToken);
-        }
-
-        /// <summary>
-        /// Gets a list of all virtualClusters in the subscription.
-        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters
-        /// Operation Id: VirtualClusters_List
-        /// </summary>
-        /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <returns> A collection of <see cref="VirtualClusterResource" /> that may take multiple service requests to iterate over. </returns>
-        public static Pageable<VirtualClusterResource> GetVirtualClusters(this SubscriptionResource subscriptionResource, CancellationToken cancellationToken = default)
-        {
-            return GetExtensionClient(subscriptionResource).GetVirtualClusters(cancellationToken);
-        }
-
-        /// <summary>
         /// Gets a list of all servers in the subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers
         /// Operation Id: Servers_List
@@ -636,6 +610,32 @@ namespace Azure.ResourceManager.Sql
             return GetExtensionClient(subscriptionResource).GetManagedInstances(expand, cancellationToken);
         }
 
+        /// <summary>
+        /// Gets a list of all virtualClusters in the subscription.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters
+        /// Operation Id: VirtualClusters_List
+        /// </summary>
+        /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <returns> An async collection of <see cref="VirtualClusterResource" /> that may take multiple service requests to iterate over. </returns>
+        public static AsyncPageable<VirtualClusterResource> GetVirtualClustersAsync(this SubscriptionResource subscriptionResource, CancellationToken cancellationToken = default)
+        {
+            return GetExtensionClient(subscriptionResource).GetVirtualClustersAsync(cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets a list of all virtualClusters in the subscription.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters
+        /// Operation Id: VirtualClusters_List
+        /// </summary>
+        /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <returns> A collection of <see cref="VirtualClusterResource" /> that may take multiple service requests to iterate over. </returns>
+        public static Pageable<VirtualClusterResource> GetVirtualClusters(this SubscriptionResource subscriptionResource, CancellationToken cancellationToken = default)
+        {
+            return GetExtensionClient(subscriptionResource).GetVirtualClusters(cancellationToken);
+        }
+
         private static ResourceGroupResourceExtensionClient GetExtensionClient(ResourceGroupResource resourceGroupResource)
         {
             return resourceGroupResource.GetCachedClient((client) =>
@@ -769,46 +769,6 @@ namespace Azure.ResourceManager.Sql
         public static Response<SqlServerTrustGroupResource> GetSqlServerTrustGroup(this ResourceGroupResource resourceGroupResource, AzureLocation locationName, string serverTrustGroupName, CancellationToken cancellationToken = default)
         {
             return resourceGroupResource.GetSqlServerTrustGroups(locationName).Get(serverTrustGroupName, cancellationToken);
-        }
-
-        /// <summary> Gets a collection of VirtualClusterResources in the ResourceGroupResource. </summary>
-        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
-        /// <returns> An object representing collection of VirtualClusterResources and their operations over a VirtualClusterResource. </returns>
-        public static VirtualClusterCollection GetVirtualClusters(this ResourceGroupResource resourceGroupResource)
-        {
-            return GetExtensionClient(resourceGroupResource).GetVirtualClusters();
-        }
-
-        /// <summary>
-        /// Gets a virtual cluster.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters/{virtualClusterName}
-        /// Operation Id: VirtualClusters_Get
-        /// </summary>
-        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
-        /// <param name="virtualClusterName"> The name of the virtual cluster. </param>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentException"> <paramref name="virtualClusterName"/> is an empty string, and was expected to be non-empty. </exception>
-        /// <exception cref="ArgumentNullException"> <paramref name="virtualClusterName"/> is null. </exception>
-        [ForwardsClientCalls]
-        public static async Task<Response<VirtualClusterResource>> GetVirtualClusterAsync(this ResourceGroupResource resourceGroupResource, string virtualClusterName, CancellationToken cancellationToken = default)
-        {
-            return await resourceGroupResource.GetVirtualClusters().GetAsync(virtualClusterName, cancellationToken).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets a virtual cluster.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters/{virtualClusterName}
-        /// Operation Id: VirtualClusters_Get
-        /// </summary>
-        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
-        /// <param name="virtualClusterName"> The name of the virtual cluster. </param>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentException"> <paramref name="virtualClusterName"/> is an empty string, and was expected to be non-empty. </exception>
-        /// <exception cref="ArgumentNullException"> <paramref name="virtualClusterName"/> is null. </exception>
-        [ForwardsClientCalls]
-        public static Response<VirtualClusterResource> GetVirtualCluster(this ResourceGroupResource resourceGroupResource, string virtualClusterName, CancellationToken cancellationToken = default)
-        {
-            return resourceGroupResource.GetVirtualClusters().Get(virtualClusterName, cancellationToken);
         }
 
         /// <summary> Gets a collection of SqlServerResources in the ResourceGroupResource. </summary>
@@ -1001,6 +961,46 @@ namespace Azure.ResourceManager.Sql
         public static Response<ManagedInstanceResource> GetManagedInstance(this ResourceGroupResource resourceGroupResource, string managedInstanceName, string expand = null, CancellationToken cancellationToken = default)
         {
             return resourceGroupResource.GetManagedInstances().Get(managedInstanceName, expand, cancellationToken);
+        }
+
+        /// <summary> Gets a collection of VirtualClusterResources in the ResourceGroupResource. </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <returns> An object representing collection of VirtualClusterResources and their operations over a VirtualClusterResource. </returns>
+        public static VirtualClusterCollection GetVirtualClusters(this ResourceGroupResource resourceGroupResource)
+        {
+            return GetExtensionClient(resourceGroupResource).GetVirtualClusters();
+        }
+
+        /// <summary>
+        /// Gets a virtual cluster.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters/{virtualClusterName}
+        /// Operation Id: VirtualClusters_Get
+        /// </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="virtualClusterName"> The name of the virtual cluster. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="virtualClusterName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="virtualClusterName"/> is null. </exception>
+        [ForwardsClientCalls]
+        public static async Task<Response<VirtualClusterResource>> GetVirtualClusterAsync(this ResourceGroupResource resourceGroupResource, string virtualClusterName, CancellationToken cancellationToken = default)
+        {
+            return await resourceGroupResource.GetVirtualClusters().GetAsync(virtualClusterName, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets a virtual cluster.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters/{virtualClusterName}
+        /// Operation Id: VirtualClusters_Get
+        /// </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="virtualClusterName"> The name of the virtual cluster. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="virtualClusterName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="virtualClusterName"/> is null. </exception>
+        [ForwardsClientCalls]
+        public static Response<VirtualClusterResource> GetVirtualCluster(this ResourceGroupResource resourceGroupResource, string virtualClusterName, CancellationToken cancellationToken = default)
+        {
+            return resourceGroupResource.GetVirtualClusters().Get(virtualClusterName, cancellationToken);
         }
 
         /// <summary>
@@ -2614,25 +2614,6 @@ namespace Azure.ResourceManager.Sql
         }
         #endregion
 
-        #region VirtualClusterResource
-        /// <summary>
-        /// Gets an object representing a <see cref="VirtualClusterResource" /> along with the instance operations that can be performed on it but with no data.
-        /// You can use <see cref="VirtualClusterResource.CreateResourceIdentifier" /> to create a <see cref="VirtualClusterResource" /> <see cref="ResourceIdentifier" /> from its components.
-        /// </summary>
-        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
-        /// <param name="id"> The resource ID of the resource to get. </param>
-        /// <returns> Returns a <see cref="VirtualClusterResource" /> object. </returns>
-        public static VirtualClusterResource GetVirtualClusterResource(this ArmClient client, ResourceIdentifier id)
-        {
-            return client.GetResourceClient(() =>
-            {
-                VirtualClusterResource.ValidateResourceId(id);
-                return new VirtualClusterResource(client, id);
-            }
-            );
-        }
-        #endregion
-
         #region VirtualNetworkRuleResource
         /// <summary>
         /// Gets an object representing a <see cref="VirtualNetworkRuleResource" /> along with the instance operations that can be performed on it but with no data.
@@ -3179,6 +3160,82 @@ namespace Azure.ResourceManager.Sql
             {
                 ExtendedServerBlobAuditingPolicyResource.ValidateResourceId(id);
                 return new ExtendedServerBlobAuditingPolicyResource(client, id);
+            }
+            );
+        }
+        #endregion
+
+        #region DatabaseAdvancedThreatProtectionResource
+        /// <summary>
+        /// Gets an object representing a <see cref="DatabaseAdvancedThreatProtectionResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="DatabaseAdvancedThreatProtectionResource.CreateResourceIdentifier" /> to create a <see cref="DatabaseAdvancedThreatProtectionResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="DatabaseAdvancedThreatProtectionResource" /> object. </returns>
+        public static DatabaseAdvancedThreatProtectionResource GetDatabaseAdvancedThreatProtectionResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                DatabaseAdvancedThreatProtectionResource.ValidateResourceId(id);
+                return new DatabaseAdvancedThreatProtectionResource(client, id);
+            }
+            );
+        }
+        #endregion
+
+        #region ServerAdvancedThreatProtectionResource
+        /// <summary>
+        /// Gets an object representing a <see cref="ServerAdvancedThreatProtectionResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="ServerAdvancedThreatProtectionResource.CreateResourceIdentifier" /> to create a <see cref="ServerAdvancedThreatProtectionResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="ServerAdvancedThreatProtectionResource" /> object. </returns>
+        public static ServerAdvancedThreatProtectionResource GetServerAdvancedThreatProtectionResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                ServerAdvancedThreatProtectionResource.ValidateResourceId(id);
+                return new ServerAdvancedThreatProtectionResource(client, id);
+            }
+            );
+        }
+        #endregion
+
+        #region ManagedServerDnsAliasResource
+        /// <summary>
+        /// Gets an object representing a <see cref="ManagedServerDnsAliasResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="ManagedServerDnsAliasResource.CreateResourceIdentifier" /> to create a <see cref="ManagedServerDnsAliasResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="ManagedServerDnsAliasResource" /> object. </returns>
+        public static ManagedServerDnsAliasResource GetManagedServerDnsAliasResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                ManagedServerDnsAliasResource.ValidateResourceId(id);
+                return new ManagedServerDnsAliasResource(client, id);
+            }
+            );
+        }
+        #endregion
+
+        #region VirtualClusterResource
+        /// <summary>
+        /// Gets an object representing a <see cref="VirtualClusterResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="VirtualClusterResource.CreateResourceIdentifier" /> to create a <see cref="VirtualClusterResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="VirtualClusterResource" /> object. </returns>
+        public static VirtualClusterResource GetVirtualClusterResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                VirtualClusterResource.ValidateResourceId(id);
+                return new VirtualClusterResource(client, id);
             }
             );
         }
