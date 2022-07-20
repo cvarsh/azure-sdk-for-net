@@ -3183,5 +3183,81 @@ namespace Azure.ResourceManager.Sql
             );
         }
         #endregion
+
+        #region DatabaseAdvancedThreatProtectionResource
+        /// <summary>
+        /// Gets an object representing a <see cref="DatabaseAdvancedThreatProtectionResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="DatabaseAdvancedThreatProtectionResource.CreateResourceIdentifier" /> to create a <see cref="DatabaseAdvancedThreatProtectionResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="DatabaseAdvancedThreatProtectionResource" /> object. </returns>
+        public static DatabaseAdvancedThreatProtectionResource GetDatabaseAdvancedThreatProtectionResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                DatabaseAdvancedThreatProtectionResource.ValidateResourceId(id);
+                return new DatabaseAdvancedThreatProtectionResource(client, id);
+            }
+            );
+        }
+        #endregion
+
+        #region ServerAdvancedThreatProtectionResource
+        /// <summary>
+        /// Gets an object representing a <see cref="ServerAdvancedThreatProtectionResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="ServerAdvancedThreatProtectionResource.CreateResourceIdentifier" /> to create a <see cref="ServerAdvancedThreatProtectionResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="ServerAdvancedThreatProtectionResource" /> object. </returns>
+        public static ServerAdvancedThreatProtectionResource GetServerAdvancedThreatProtectionResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                ServerAdvancedThreatProtectionResource.ValidateResourceId(id);
+                return new ServerAdvancedThreatProtectionResource(client, id);
+            }
+            );
+        }
+        #endregion
+
+        #region ManagedServerDnsAliasResource
+        /// <summary>
+        /// Gets an object representing a <see cref="ManagedServerDnsAliasResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="ManagedServerDnsAliasResource.CreateResourceIdentifier" /> to create a <see cref="ManagedServerDnsAliasResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="ManagedServerDnsAliasResource" /> object. </returns>
+        public static ManagedServerDnsAliasResource GetManagedServerDnsAliasResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                ManagedServerDnsAliasResource.ValidateResourceId(id);
+                return new ManagedServerDnsAliasResource(client, id);
+            }
+            );
+        }
+        #endregion
+
+        #region ManagedInstanceDtcResource
+        /// <summary>
+        /// Gets an object representing a <see cref="ManagedInstanceDtcResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="ManagedInstanceDtcResource.CreateResourceIdentifier" /> to create a <see cref="ManagedInstanceDtcResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="ManagedInstanceDtcResource" /> object. </returns>
+        public static ManagedInstanceDtcResource GetManagedInstanceDtcResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                ManagedInstanceDtcResource.ValidateResourceId(id);
+                return new ManagedInstanceDtcResource(client, id);
+            }
+            );
+        }
+        #endregion
     }
 }
