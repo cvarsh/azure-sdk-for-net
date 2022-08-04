@@ -4,8 +4,8 @@ Run `dotnet build /t:GenerateCode` to generate code.
 
 ``` yaml
 title: Container Registry
-input-file:
- - https://github.com/Azure/azure-rest-api-specs/blob/c8d9a26a2857828e095903efa72512cf3a76c15d/specification/containerregistry/data-plane/Azure.ContainerRegistry/stable/2021-07-01/containerregistry.json
+require:
+- /mnt/vss/_work/1/s/azure-rest-api-specs/specification/containerregistry/data-plane/readme.md
  
 model-namespace: false
 generation1-convenience-client: true
@@ -136,3 +136,4 @@ directive:
   transform: >
     delete $["x-accessibility"]
 ```
+
