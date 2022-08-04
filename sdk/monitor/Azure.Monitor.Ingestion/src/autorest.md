@@ -6,8 +6,8 @@ Run `dotnet build /t:GenerateCode` to generate code.
 > see https://aka.ms/autorest
 
 ``` yaml
-input-file:
-- https://github.com/Azure/azure-rest-api-specs/blob/d0188b838d6d338a688707c714803fdb3c1384ec/specification/monitor/data-plane/ingestion/preview/2021-11-01-preview/DataCollectionRules.json
+require:
+- /mnt/vss/_work/1/s/azure-rest-api-specs/specification/monitor/data-plane/readme.md
 namespace: Azure.Monitor.Ingestion
 security: AADToken
 security-scopes: https://monitor.azure.com//.default
@@ -27,3 +27,4 @@ directive:
   where: $.parameters.Endpoint
   transform: $.format = "url";
 ```
+
