@@ -21,7 +21,6 @@ namespace Azure.Analytics.Purview.Catalog
         private readonly TokenCredential _tokenCredential;
         private readonly HttpPipeline _pipeline;
         private readonly Uri _endpoint;
-        private readonly string _apiVersion;
 
         /// <summary> The ClientDiagnostics is used to provide tracing support for the client library. </summary>
         internal ClientDiagnostics ClientDiagnostics { get; }
@@ -57,7 +56,6 @@ namespace Azure.Analytics.Purview.Catalog
             _tokenCredential = credential;
             _pipeline = HttpPipelineBuilder.Build(options, Array.Empty<HttpPipelinePolicy>(), new HttpPipelinePolicy[] { new BearerTokenAuthenticationPolicy(_tokenCredential, AuthorizationScopes) }, new ResponseClassifier());
             _endpoint = endpoint;
-            _apiVersion = options.Version;
         }
 
         /// <summary> Gets data using search. </summary>
@@ -922,13 +920,13 @@ namespace Azure.Analytics.Purview.Catalog
         /// <summary> Initializes a new instance of PurviewGlossaries. </summary>
         public virtual PurviewGlossaries GetPurviewGlossariesClient()
         {
-            return Volatile.Read(ref _cachedPurviewGlossaries) ?? Interlocked.CompareExchange(ref _cachedPurviewGlossaries, new PurviewGlossaries(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint, _apiVersion), null) ?? _cachedPurviewGlossaries;
+            return Volatile.Read(ref _cachedPurviewGlossaries) ?? Interlocked.CompareExchange(ref _cachedPurviewGlossaries, new PurviewGlossaries(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint), null) ?? _cachedPurviewGlossaries;
         }
 
         /// <summary> Initializes a new instance of PurviewLineages. </summary>
         public virtual PurviewLineages GetPurviewLineagesClient()
         {
-            return Volatile.Read(ref _cachedPurviewLineages) ?? Interlocked.CompareExchange(ref _cachedPurviewLineages, new PurviewLineages(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint, _apiVersion), null) ?? _cachedPurviewLineages;
+            return Volatile.Read(ref _cachedPurviewLineages) ?? Interlocked.CompareExchange(ref _cachedPurviewLineages, new PurviewLineages(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint), null) ?? _cachedPurviewLineages;
         }
 
         /// <summary> Initializes a new instance of PurviewRelationships. </summary>
@@ -940,13 +938,13 @@ namespace Azure.Analytics.Purview.Catalog
         /// <summary> Initializes a new instance of PurviewTypes. </summary>
         public virtual PurviewTypes GetPurviewTypesClient()
         {
-            return Volatile.Read(ref _cachedPurviewTypes) ?? Interlocked.CompareExchange(ref _cachedPurviewTypes, new PurviewTypes(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint, _apiVersion), null) ?? _cachedPurviewTypes;
+            return Volatile.Read(ref _cachedPurviewTypes) ?? Interlocked.CompareExchange(ref _cachedPurviewTypes, new PurviewTypes(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint), null) ?? _cachedPurviewTypes;
         }
 
         /// <summary> Initializes a new instance of PurviewCollections. </summary>
         public virtual PurviewCollections GetPurviewCollectionsClient()
         {
-            return Volatile.Read(ref _cachedPurviewCollections) ?? Interlocked.CompareExchange(ref _cachedPurviewCollections, new PurviewCollections(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint, _apiVersion), null) ?? _cachedPurviewCollections;
+            return Volatile.Read(ref _cachedPurviewCollections) ?? Interlocked.CompareExchange(ref _cachedPurviewCollections, new PurviewCollections(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint), null) ?? _cachedPurviewCollections;
         }
 
         internal HttpMessage CreateSearchRequest(RequestContent content, RequestContext context)
@@ -958,7 +956,7 @@ namespace Azure.Analytics.Purview.Catalog
             uri.Reset(_endpoint);
             uri.AppendRaw("/catalog/api", false);
             uri.AppendPath("/search/query", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2022-03-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
@@ -975,7 +973,7 @@ namespace Azure.Analytics.Purview.Catalog
             uri.Reset(_endpoint);
             uri.AppendRaw("/catalog/api", false);
             uri.AppendPath("/search/suggest", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2022-03-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
@@ -992,7 +990,7 @@ namespace Azure.Analytics.Purview.Catalog
             uri.Reset(_endpoint);
             uri.AppendRaw("/catalog/api", false);
             uri.AppendPath("/browse", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2022-03-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
@@ -1009,7 +1007,7 @@ namespace Azure.Analytics.Purview.Catalog
             uri.Reset(_endpoint);
             uri.AppendRaw("/catalog/api", false);
             uri.AppendPath("/search/autocomplete", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2022-03-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");

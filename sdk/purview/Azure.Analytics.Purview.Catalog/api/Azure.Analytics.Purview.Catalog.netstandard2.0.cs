@@ -32,8 +32,29 @@ namespace Azure.Analytics.Purview.Catalog
         public PurviewCatalogClientOptions(Azure.Analytics.Purview.Catalog.PurviewCatalogClientOptions.ServiceVersion version = Azure.Analytics.Purview.Catalog.PurviewCatalogClientOptions.ServiceVersion.V2022_03_01_Preview) { }
         public enum ServiceVersion
         {
-            V2022_03_01_Preview = 1,
+            V2018_12_01_Preview = 1,
+            V2021_07_01_Preview = 2,
+            V2022_03_01_Preview = 3,
         }
+    }
+    public partial class PurviewClassificationRulesClient
+    {
+        protected PurviewClassificationRulesClient() { }
+        public PurviewClassificationRulesClient(System.Uri endpoint, Azure.Core.TokenCredential credential) { }
+        public PurviewClassificationRulesClient(System.Uri endpoint, Azure.Core.TokenCredential credential, Azure.Analytics.Purview.Catalog.PurviewCatalogClientOptions options) { }
+        public virtual Azure.Core.Pipeline.HttpPipeline Pipeline { get { throw null; } }
+        public virtual Azure.Response CreateOrUpdate(string classificationRuleName, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> CreateOrUpdateAsync(string classificationRuleName, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response Delete(string classificationRuleName, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> DeleteAsync(string classificationRuleName, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Pageable<System.BinaryData> GetAll(Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.AsyncPageable<System.BinaryData> GetAllAsync(Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response GetPurviewClassificationRule(string classificationRuleName, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> GetPurviewClassificationRuleAsync(string classificationRuleName, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Pageable<System.BinaryData> GetVersionsByClassificationRuleName(string classificationRuleName, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.AsyncPageable<System.BinaryData> GetVersionsByClassificationRuleNameAsync(string classificationRuleName, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response TagClassificationVersion(string classificationRuleName, int classificationRuleVersion, string action, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> TagClassificationVersionAsync(string classificationRuleName, int classificationRuleVersion, string action, Azure.RequestContext context = null) { throw null; }
     }
     public partial class PurviewCollections
     {
@@ -45,6 +66,21 @@ namespace Azure.Analytics.Purview.Catalog
         public virtual System.Threading.Tasks.Task<Azure.Response> CreateOrUpdateEntityInBulkAsync(string collection, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
         public virtual Azure.Response MoveEntitiesToCollection(string collection, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.Response> MoveEntitiesToCollectionAsync(string collection, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+    }
+    public partial class PurviewDataSourcesClient
+    {
+        protected PurviewDataSourcesClient() { }
+        public PurviewDataSourcesClient(System.Uri endpoint, Azure.Core.TokenCredential credential) { }
+        public PurviewDataSourcesClient(System.Uri endpoint, Azure.Core.TokenCredential credential, Azure.Analytics.Purview.Catalog.PurviewCatalogClientOptions options) { }
+        public virtual Azure.Core.Pipeline.HttpPipeline Pipeline { get { throw null; } }
+        public virtual Azure.Response CreateOrUpdate(string dataSourceName, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> CreateOrUpdateAsync(string dataSourceName, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response Delete(string dataSourceName, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> DeleteAsync(string dataSourceName, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Pageable<System.BinaryData> GetAll(Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.AsyncPageable<System.BinaryData> GetAllAsync(Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response GetPurviewDataSource(string dataSourceName, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> GetPurviewDataSourceAsync(string dataSourceName, Azure.RequestContext context = null) { throw null; }
     }
     public partial class PurviewEntities
     {
@@ -118,6 +154,17 @@ namespace Azure.Analytics.Purview.Catalog
         public virtual System.Threading.Tasks.Task<Azure.Response> UpdateClassificationsAsync(string guid, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
         public virtual Azure.Response UpdateClassificationsByUniqueAttribute(string typeName, Azure.Core.RequestContent content, string attrQualifiedName = null, Azure.RequestContext context = null) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.Response> UpdateClassificationsByUniqueAttributeAsync(string typeName, Azure.Core.RequestContent content, string attrQualifiedName = null, Azure.RequestContext context = null) { throw null; }
+    }
+    public partial class PurviewFiltersClient
+    {
+        protected PurviewFiltersClient() { }
+        public PurviewFiltersClient(System.Uri endpoint, Azure.Core.TokenCredential credential) { }
+        public PurviewFiltersClient(System.Uri endpoint, Azure.Core.TokenCredential credential, Azure.Analytics.Purview.Catalog.PurviewCatalogClientOptions options) { }
+        public virtual Azure.Core.Pipeline.HttpPipeline Pipeline { get { throw null; } }
+        public virtual Azure.Response CreateOrUpdate(string dataSourceName, string scanName, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> CreateOrUpdateAsync(string dataSourceName, string scanName, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response GetPurviewFilter(string dataSourceName, string scanName, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> GetPurviewFilterAsync(string dataSourceName, string scanName, Azure.RequestContext context = null) { throw null; }
     }
     public partial class PurviewGlossaries
     {
@@ -194,6 +241,21 @@ namespace Azure.Analytics.Purview.Catalog
         public virtual Azure.Response UpdateGlossaryTerm(string termGuid, Azure.Core.RequestContent content, bool? includeTermHierarchy = default(bool?), Azure.RequestContext context = null) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.Response> UpdateGlossaryTermAsync(string termGuid, Azure.Core.RequestContent content, bool? includeTermHierarchy = default(bool?), Azure.RequestContext context = null) { throw null; }
     }
+    public partial class PurviewKeyVaultConnectionsClient
+    {
+        protected PurviewKeyVaultConnectionsClient() { }
+        public PurviewKeyVaultConnectionsClient(System.Uri endpoint, Azure.Core.TokenCredential credential) { }
+        public PurviewKeyVaultConnectionsClient(System.Uri endpoint, Azure.Core.TokenCredential credential, Azure.Analytics.Purview.Catalog.PurviewCatalogClientOptions options) { }
+        public virtual Azure.Core.Pipeline.HttpPipeline Pipeline { get { throw null; } }
+        public virtual Azure.Response Create(string keyVaultName, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> CreateAsync(string keyVaultName, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response Delete(string keyVaultName, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> DeleteAsync(string keyVaultName, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Pageable<System.BinaryData> GetAll(Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.AsyncPageable<System.BinaryData> GetAllAsync(Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response GetPurviewKeyVaultConnection(string keyVaultName, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> GetPurviewKeyVaultConnectionAsync(string keyVaultName, Azure.RequestContext context = null) { throw null; }
+    }
     public partial class PurviewLineages
     {
         protected PurviewLineages() { }
@@ -204,6 +266,28 @@ namespace Azure.Analytics.Purview.Catalog
         public virtual System.Threading.Tasks.Task<Azure.Response> GetLineageGraphAsync(string guid, string direction, int? depth = default(int?), int? width = default(int?), bool? includeParent = default(bool?), bool? getDerivedLineage = default(bool?), Azure.RequestContext context = null) { throw null; }
         public virtual Azure.Response NextPageLineage(string guid, string direction, bool? getDerivedLineage = default(bool?), int? offset = default(int?), int? limit = default(int?), Azure.RequestContext context = null) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.Response> NextPageLineageAsync(string guid, string direction, bool? getDerivedLineage = default(bool?), int? offset = default(int?), int? limit = default(int?), Azure.RequestContext context = null) { throw null; }
+    }
+    public partial class PurviewMetadataPolicyClient
+    {
+        protected PurviewMetadataPolicyClient() { }
+        public PurviewMetadataPolicyClient(System.Uri endpoint, Azure.Core.TokenCredential credential) { }
+        public PurviewMetadataPolicyClient(System.Uri endpoint, Azure.Core.TokenCredential credential, Azure.Analytics.Purview.Catalog.PurviewCatalogClientOptions options) { }
+        public virtual Azure.Core.Pipeline.HttpPipeline Pipeline { get { throw null; } }
+        public virtual Azure.Pageable<System.BinaryData> GetAll(string collectionName = null, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.AsyncPageable<System.BinaryData> GetAllAsync(string collectionName = null, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response GetPurviewMetadataPolicy(string policyId, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> GetPurviewMetadataPolicyAsync(string policyId, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response Update(string policyId, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> UpdateAsync(string policyId, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+    }
+    public partial class PurviewMetadataRolesClient
+    {
+        protected PurviewMetadataRolesClient() { }
+        public PurviewMetadataRolesClient(System.Uri endpoint, Azure.Core.TokenCredential credential) { }
+        public PurviewMetadataRolesClient(System.Uri endpoint, Azure.Core.TokenCredential credential, Azure.Analytics.Purview.Catalog.PurviewCatalogClientOptions options) { }
+        public virtual Azure.Core.Pipeline.HttpPipeline Pipeline { get { throw null; } }
+        public virtual Azure.Pageable<System.BinaryData> GetPurviewMetadataRole(Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.AsyncPageable<System.BinaryData> GetPurviewMetadataRoleAsync(Azure.RequestContext context = null) { throw null; }
     }
     public partial class PurviewRelationships
     {
@@ -217,6 +301,79 @@ namespace Azure.Analytics.Purview.Catalog
         public virtual System.Threading.Tasks.Task<Azure.Response> GetPurviewRelationshipAsync(string guid, bool? extendedInfo = default(bool?), Azure.RequestContext context = null) { throw null; }
         public virtual Azure.Response Update(Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.Response> UpdateAsync(Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+    }
+    public partial class PurviewScanResultClient
+    {
+        protected PurviewScanResultClient() { }
+        public PurviewScanResultClient(System.Uri endpoint, Azure.Core.TokenCredential credential) { }
+        public PurviewScanResultClient(System.Uri endpoint, Azure.Core.TokenCredential credential, Azure.Analytics.Purview.Catalog.PurviewCatalogClientOptions options) { }
+        public virtual Azure.Core.Pipeline.HttpPipeline Pipeline { get { throw null; } }
+        public virtual Azure.Response CancelScan(string dataSourceName, string scanName, string runId, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> CancelScanAsync(string dataSourceName, string scanName, string runId, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Pageable<System.BinaryData> GetScanHistory(string dataSourceName, string scanName, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.AsyncPageable<System.BinaryData> GetScanHistoryAsync(string dataSourceName, string scanName, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response RunScan(string dataSourceName, string scanName, string runId, string scanLevel = null, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> RunScanAsync(string dataSourceName, string scanName, string runId, string scanLevel = null, Azure.RequestContext context = null) { throw null; }
+    }
+    public partial class PurviewScanRulesetsClient
+    {
+        protected PurviewScanRulesetsClient() { }
+        public PurviewScanRulesetsClient(System.Uri endpoint, Azure.Core.TokenCredential credential) { }
+        public PurviewScanRulesetsClient(System.Uri endpoint, Azure.Core.TokenCredential credential, Azure.Analytics.Purview.Catalog.PurviewCatalogClientOptions options) { }
+        public virtual Azure.Core.Pipeline.HttpPipeline Pipeline { get { throw null; } }
+        public virtual Azure.Response CreateOrUpdate(string scanRulesetName, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> CreateOrUpdateAsync(string scanRulesetName, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response Delete(string scanRulesetName, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> DeleteAsync(string scanRulesetName, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Pageable<System.BinaryData> GetAll(Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.AsyncPageable<System.BinaryData> GetAllAsync(Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response GetPurviewScanRuleset(string scanRulesetName, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> GetPurviewScanRulesetAsync(string scanRulesetName, Azure.RequestContext context = null) { throw null; }
+    }
+    public partial class PurviewScansClient
+    {
+        protected PurviewScansClient() { }
+        public PurviewScansClient(System.Uri endpoint, Azure.Core.TokenCredential credential) { }
+        public PurviewScansClient(System.Uri endpoint, Azure.Core.TokenCredential credential, Azure.Analytics.Purview.Catalog.PurviewCatalogClientOptions options) { }
+        public virtual Azure.Core.Pipeline.HttpPipeline Pipeline { get { throw null; } }
+        public virtual Azure.Response CreateOrUpdate(string dataSourceName, string scanName, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> CreateOrUpdateAsync(string dataSourceName, string scanName, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response Delete(string dataSourceName, string scanName, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> DeleteAsync(string dataSourceName, string scanName, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Pageable<System.BinaryData> GetByDataSource(string dataSourceName, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.AsyncPageable<System.BinaryData> GetByDataSourceAsync(string dataSourceName, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response GetPurviewScan(string dataSourceName, string scanName, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> GetPurviewScanAsync(string dataSourceName, string scanName, Azure.RequestContext context = null) { throw null; }
+    }
+    public partial class PurviewSystemScanRulesetsClient
+    {
+        protected PurviewSystemScanRulesetsClient() { }
+        public PurviewSystemScanRulesetsClient(System.Uri endpoint, Azure.Core.TokenCredential credential) { }
+        public PurviewSystemScanRulesetsClient(System.Uri endpoint, Azure.Core.TokenCredential credential, Azure.Analytics.Purview.Catalog.PurviewCatalogClientOptions options) { }
+        public virtual Azure.Core.Pipeline.HttpPipeline Pipeline { get { throw null; } }
+        public virtual Azure.Pageable<System.BinaryData> GetAll(Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.AsyncPageable<System.BinaryData> GetAllAsync(Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response GetByVersion(int version, string dataSourceType = null, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> GetByVersionAsync(int version, string dataSourceType = null, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response GetLatest(string dataSourceType = null, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> GetLatestAsync(string dataSourceType = null, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response GetPurviewSystemScanRuleset(string dataSourceType, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> GetPurviewSystemScanRulesetAsync(string dataSourceType, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Pageable<System.BinaryData> GetVersionsByDataSource(string dataSourceType = null, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.AsyncPageable<System.BinaryData> GetVersionsByDataSourceAsync(string dataSourceType = null, Azure.RequestContext context = null) { throw null; }
+    }
+    public partial class PurviewTriggersClient
+    {
+        protected PurviewTriggersClient() { }
+        public PurviewTriggersClient(System.Uri endpoint, Azure.Core.TokenCredential credential) { }
+        public PurviewTriggersClient(System.Uri endpoint, Azure.Core.TokenCredential credential, Azure.Analytics.Purview.Catalog.PurviewCatalogClientOptions options) { }
+        public virtual Azure.Core.Pipeline.HttpPipeline Pipeline { get { throw null; } }
+        public virtual Azure.Response CreateTrigger(string dataSourceName, string scanName, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> CreateTriggerAsync(string dataSourceName, string scanName, Azure.Core.RequestContent content, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response DeleteTrigger(string dataSourceName, string scanName, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> DeleteTriggerAsync(string dataSourceName, string scanName, Azure.RequestContext context = null) { throw null; }
+        public virtual Azure.Response GetTrigger(string dataSourceName, string scanName, Azure.RequestContext context = null) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response> GetTriggerAsync(string dataSourceName, string scanName, Azure.RequestContext context = null) { throw null; }
     }
     public partial class PurviewTypes
     {

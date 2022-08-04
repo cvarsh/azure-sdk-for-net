@@ -20,7 +20,6 @@ namespace Azure.Analytics.Purview.Catalog
         private readonly TokenCredential _tokenCredential;
         private readonly HttpPipeline _pipeline;
         private readonly Uri _endpoint;
-        private readonly string _apiVersion;
 
         /// <summary> The ClientDiagnostics is used to provide tracing support for the client library. </summary>
         internal ClientDiagnostics ClientDiagnostics { get; }
@@ -38,14 +37,12 @@ namespace Azure.Analytics.Purview.Catalog
         /// <param name="pipeline"> The HTTP pipeline for sending and receiving REST requests and responses. </param>
         /// <param name="tokenCredential"> The token credential to copy. </param>
         /// <param name="endpoint"> The catalog endpoint of your Purview account. Example: https://{accountName}.purview.azure.com. </param>
-        /// <param name="apiVersion"> Api Version. </param>
-        internal PurviewTypes(ClientDiagnostics clientDiagnostics, HttpPipeline pipeline, TokenCredential tokenCredential, Uri endpoint, string apiVersion)
+        internal PurviewTypes(ClientDiagnostics clientDiagnostics, HttpPipeline pipeline, TokenCredential tokenCredential, Uri endpoint)
         {
             ClientDiagnostics = clientDiagnostics;
             _pipeline = pipeline;
             _tokenCredential = tokenCredential;
             _endpoint = endpoint;
-            _apiVersion = apiVersion;
         }
 
         /// <summary> Get the businessMetadata definition for the given guid. </summary>
@@ -16133,7 +16130,7 @@ namespace Azure.Analytics.Purview.Catalog
             uri.AppendRaw("/catalog/api", false);
             uri.AppendPath("/types/termtemplatedef/guid/", false);
             uri.AppendPath(guid, true);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2022-03-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             return message;
@@ -16149,7 +16146,7 @@ namespace Azure.Analytics.Purview.Catalog
             uri.AppendRaw("/catalog/api", false);
             uri.AppendPath("/types/termtemplatedef/name/", false);
             uri.AppendPath(name, true);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2022-03-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             return message;
