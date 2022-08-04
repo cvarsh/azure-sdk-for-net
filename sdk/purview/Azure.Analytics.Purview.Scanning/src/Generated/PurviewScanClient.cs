@@ -25,7 +25,6 @@ namespace Azure.Analytics.Purview.Scanning
         private readonly Uri _endpoint;
         private readonly string _dataSourceName;
         private readonly string _scanName;
-        private readonly string _apiVersion;
 
         /// <summary> The ClientDiagnostics is used to provide tracing support for the client library. </summary>
         internal ClientDiagnostics ClientDiagnostics { get; }
@@ -39,7 +38,7 @@ namespace Azure.Analytics.Purview.Scanning
         }
 
         /// <summary> Initializes a new instance of PurviewScanClient. </summary>
-        /// <param name="endpoint"> The scanning endpoint of your purview account. Example: https://{accountName}.scan.purview.azure.com. </param>
+        /// <param name="endpoint"> The catalog endpoint of your Purview account. Example: https://{accountName}.purview.azure.com. </param>
         /// <param name="dataSourceName"> The String to use. </param>
         /// <param name="scanName"> The String to use. </param>
         /// <param name="credential"> A credential used to authenticate to an Azure Service. </param>
@@ -50,7 +49,7 @@ namespace Azure.Analytics.Purview.Scanning
         }
 
         /// <summary> Initializes a new instance of PurviewScanClient. </summary>
-        /// <param name="endpoint"> The scanning endpoint of your purview account. Example: https://{accountName}.scan.purview.azure.com. </param>
+        /// <param name="endpoint"> The catalog endpoint of your Purview account. Example: https://{accountName}.purview.azure.com. </param>
         /// <param name="dataSourceName"> The String to use. </param>
         /// <param name="scanName"> The String to use. </param>
         /// <param name="credential"> A credential used to authenticate to an Azure Service. </param>
@@ -71,7 +70,6 @@ namespace Azure.Analytics.Purview.Scanning
             _endpoint = endpoint;
             _dataSourceName = dataSourceName;
             _scanName = scanName;
-            _apiVersion = options.Version;
         }
 
         /// <summary> Get a filter. </summary>
@@ -897,6 +895,7 @@ namespace Azure.Analytics.Purview.Scanning
         ///         scanRulesetType = "Custom",
         ///         collection = new {
         ///             referenceName = "<referenceName>",
+        ///             type = "<type>",
         ///         },
         ///         workers = 1234,
         ///         connectedVia = new {
@@ -8202,6 +8201,7 @@ namespace Azure.Analytics.Purview.Scanning
         ///         scanRulesetType = "Custom",
         ///         collection = new {
         ///             referenceName = "<referenceName>",
+        ///             type = "<type>",
         ///         },
         ///         workers = 1234,
         ///         connectedVia = new {
@@ -29964,7 +29964,7 @@ namespace Azure.Analytics.Purview.Scanning
             uri.AppendPath("/scans/", false);
             uri.AppendPath(_scanName, true);
             uri.AppendPath("/filters/custom", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2018-12-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             return message;
@@ -29982,7 +29982,7 @@ namespace Azure.Analytics.Purview.Scanning
             uri.AppendPath("/scans/", false);
             uri.AppendPath(_scanName, true);
             uri.AppendPath("/filters/custom", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2018-12-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
@@ -30001,7 +30001,7 @@ namespace Azure.Analytics.Purview.Scanning
             uri.AppendPath(_dataSourceName, true);
             uri.AppendPath("/scans/", false);
             uri.AppendPath(_scanName, true);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2018-12-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
@@ -30020,7 +30020,7 @@ namespace Azure.Analytics.Purview.Scanning
             uri.AppendPath(_dataSourceName, true);
             uri.AppendPath("/scans/", false);
             uri.AppendPath(_scanName, true);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2018-12-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             return message;
@@ -30037,7 +30037,7 @@ namespace Azure.Analytics.Purview.Scanning
             uri.AppendPath(_dataSourceName, true);
             uri.AppendPath("/scans/", false);
             uri.AppendPath(_scanName, true);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2018-12-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             return message;
@@ -30060,7 +30060,7 @@ namespace Azure.Analytics.Purview.Scanning
             {
                 uri.AppendQuery("scanLevel", scanLevel, true);
             }
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2018-12-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             return message;
@@ -30080,7 +30080,7 @@ namespace Azure.Analytics.Purview.Scanning
             uri.AppendPath("/runs/", false);
             uri.AppendPath(runId, true);
             uri.AppendPath("/:cancel", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2018-12-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             return message;
@@ -30098,7 +30098,7 @@ namespace Azure.Analytics.Purview.Scanning
             uri.AppendPath("/scans/", false);
             uri.AppendPath(_scanName, true);
             uri.AppendPath("/runs", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2018-12-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             return message;
@@ -30116,7 +30116,7 @@ namespace Azure.Analytics.Purview.Scanning
             uri.AppendPath("/scans/", false);
             uri.AppendPath(_scanName, true);
             uri.AppendPath("/triggers/default", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2018-12-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             return message;
@@ -30134,7 +30134,7 @@ namespace Azure.Analytics.Purview.Scanning
             uri.AppendPath("/scans/", false);
             uri.AppendPath(_scanName, true);
             uri.AppendPath("/triggers/default", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2018-12-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
@@ -30154,7 +30154,7 @@ namespace Azure.Analytics.Purview.Scanning
             uri.AppendPath("/scans/", false);
             uri.AppendPath(_scanName, true);
             uri.AppendPath("/triggers/default", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("api-version", "2018-12-01-preview", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             return message;
