@@ -43,7 +43,7 @@ namespace Azure.ResourceManager.Batch
         /// <param name="allocationStateTransitionOn"> The time at which the pool entered its current allocation state. </param>
         /// <param name="vmSize"> For information about available sizes of virtual machines for Cloud Services pools (pools created with cloudServiceConfiguration), see Sizes for Cloud Services (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all Cloud Services VM sizes except ExtraSmall. For information about available VM sizes for pools using images from the Virtual Machines Marketplace (pools created with virtualMachineConfiguration) see Sizes for Virtual Machines (Linux) (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series). </param>
         /// <param name="deploymentConfiguration"> Using CloudServiceConfiguration specifies that the nodes should be creating using Azure Cloud Services (PaaS), while VirtualMachineConfiguration uses Azure Virtual Machines (IaaS). </param>
-        /// <param name="currentDedicatedNodes"> The number of compute nodes currently in the pool. </param>
+        /// <param name="currentDedicatedNodes"> The number of dedicated compute nodes currently in the pool. </param>
         /// <param name="currentLowPriorityNodes"> The number of Spot/low-priority compute nodes currently in the pool. </param>
         /// <param name="scaleSettings"> Defines the desired size of the pool. This can either be &apos;fixedScale&apos; where the requested targetDedicatedNodes is specified, or &apos;autoScale&apos; which defines a formula which is periodically reevaluated. If this property is not specified, the pool will have a fixed scale with 0 targetDedicatedNodes. </param>
         /// <param name="autoScaleRun"> This property is set only if the pool automatically scales, i.e. autoScaleSettings are used. </param>
@@ -111,7 +111,7 @@ namespace Azure.ResourceManager.Batch
         public string VmSize { get; set; }
         /// <summary> Using CloudServiceConfiguration specifies that the nodes should be creating using Azure Cloud Services (PaaS), while VirtualMachineConfiguration uses Azure Virtual Machines (IaaS). </summary>
         public BatchDeploymentConfiguration DeploymentConfiguration { get; set; }
-        /// <summary> The number of compute nodes currently in the pool. </summary>
+        /// <summary> The number of dedicated compute nodes currently in the pool. </summary>
         public int? CurrentDedicatedNodes { get; }
         /// <summary> The number of Spot/low-priority compute nodes currently in the pool. </summary>
         public int? CurrentLowPriorityNodes { get; }
