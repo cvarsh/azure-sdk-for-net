@@ -59,17 +59,7 @@ namespace Azure.ResourceManager.Compute.Models
         /// <summary> Used for establishing the purchase context of any 3rd Party artifact through MarketPlace. </summary>
         public PurchasePlan Plan { get; set; }
         /// <summary> Contains the os disk image information. </summary>
-        internal OSDiskImage OSDiskImage { get; set; }
-        /// <summary> The operating system of the osDiskImage. </summary>
-        public SupportedOperatingSystemType? OSDiskImageOperatingSystem
-        {
-            get => OSDiskImage is null ? default(SupportedOperatingSystemType?) : OSDiskImage.OperatingSystem;
-            set
-            {
-                OSDiskImage = value.HasValue ? new OSDiskImage(value.Value) : null;
-            }
-        }
-
+        public OSDiskImage OSDiskImage { get; set; }
         /// <summary> The list of data disk images information. </summary>
         public IList<DataDiskImage> DataDiskImages { get; }
         /// <summary> Describes automatic OS upgrade properties on the image. </summary>

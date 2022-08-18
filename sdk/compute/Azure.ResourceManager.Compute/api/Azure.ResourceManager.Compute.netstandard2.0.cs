@@ -4095,6 +4095,13 @@ namespace Azure.ResourceManager.Compute.Models
         public Azure.ResourceManager.Compute.Models.OrchestrationServiceName? ServiceName { get { throw null; } }
         public Azure.ResourceManager.Compute.Models.OrchestrationServiceState? ServiceState { get { throw null; } }
     }
+    public partial class OSDiskImage
+    {
+        public OSDiskImage(Azure.ResourceManager.Compute.Models.SupportedOperatingSystemType operatingSystem) { }
+        public Azure.ResourceManager.Compute.Models.SupportedOperatingSystemType OperatingSystem { get { throw null; } set { } }
+        public long? SizeInBytes { get { throw null; } set { } }
+        public int? SizeInGb { get { throw null; } set { } }
+    }
     public partial class OSDiskImageEncryption : Azure.ResourceManager.Compute.Models.DiskImageEncryption
     {
         public OSDiskImageEncryption() { }
@@ -5153,7 +5160,7 @@ namespace Azure.ResourceManager.Compute.Models
         public Azure.ResourceManager.Compute.Models.VirtualMachineDiskType? DisallowedVmDiskType { get { throw null; } set { } }
         public System.Collections.Generic.IList<Azure.ResourceManager.Compute.Models.VirtualMachineImageFeature> Features { get { throw null; } }
         public Azure.ResourceManager.Compute.Models.HyperVGeneration? HyperVGeneration { get { throw null; } set { } }
-        public Azure.ResourceManager.Compute.Models.SupportedOperatingSystemType? OSDiskImageOperatingSystem { get { throw null; } set { } }
+        public Azure.ResourceManager.Compute.Models.OSDiskImage OSDiskImage { get { throw null; } set { } }
         public Azure.ResourceManager.Compute.Models.PurchasePlan Plan { get { throw null; } set { } }
     }
     public partial class VirtualMachineImageBase : Azure.ResourceManager.Compute.Models.ComputeWriteableSubResourceData

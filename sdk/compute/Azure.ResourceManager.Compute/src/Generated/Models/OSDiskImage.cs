@@ -8,7 +8,7 @@
 namespace Azure.ResourceManager.Compute.Models
 {
     /// <summary> Contains the os disk image information. </summary>
-    internal partial class OSDiskImage
+    public partial class OSDiskImage
     {
         /// <summary> Initializes a new instance of OSDiskImage. </summary>
         /// <param name="operatingSystem"> The operating system of the osDiskImage. </param>
@@ -17,6 +17,21 @@ namespace Azure.ResourceManager.Compute.Models
             OperatingSystem = operatingSystem;
         }
 
+        /// <summary> Initializes a new instance of OSDiskImage. </summary>
+        /// <param name="sizeInGb"> The size in GB of the osDiskImage. </param>
+        /// <param name="sizeInBytes"> The size in bytes of the osDiskImage. </param>
+        /// <param name="operatingSystem"> The operating system of the osDiskImage. </param>
+        internal OSDiskImage(int? sizeInGb, long? sizeInBytes, SupportedOperatingSystemType operatingSystem)
+        {
+            SizeInGb = sizeInGb;
+            SizeInBytes = sizeInBytes;
+            OperatingSystem = operatingSystem;
+        }
+
+        /// <summary> The size in GB of the osDiskImage. </summary>
+        public int? SizeInGb { get; set; }
+        /// <summary> The size in bytes of the osDiskImage. </summary>
+        public long? SizeInBytes { get; set; }
         /// <summary> The operating system of the osDiskImage. </summary>
         public SupportedOperatingSystemType OperatingSystem { get; set; }
     }

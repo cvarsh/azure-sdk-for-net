@@ -10,11 +10,21 @@ using Azure.Core;
 
 namespace Azure.ResourceManager.Compute.Models
 {
-    internal partial class OSDiskImage : IUtf8JsonSerializable
+    public partial class OSDiskImage : IUtf8JsonSerializable
     {
         void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
         {
             writer.WriteStartObject();
+            if (Optional.IsDefined(SizeInGb))
+            {
+                writer.WritePropertyName("sizeInGb");
+                writer.WriteNumberValue(SizeInGb.Value);
+            }
+            if (Optional.IsDefined(SizeInBytes))
+            {
+                writer.WritePropertyName("sizeInBytes");
+                writer.WriteNumberValue(SizeInBytes.Value);
+            }
             writer.WritePropertyName("operatingSystem");
             writer.WriteStringValue(OperatingSystem.ToSerialString());
             writer.WriteEndObject();
@@ -22,16 +32,38 @@ namespace Azure.ResourceManager.Compute.Models
 
         internal static OSDiskImage DeserializeOSDiskImage(JsonElement element)
         {
+            Optional<int> sizeInGb = default;
+            Optional<long> sizeInBytes = default;
             SupportedOperatingSystemType operatingSystem = default;
             foreach (var property in element.EnumerateObject())
             {
+                if (property.NameEquals("sizeInGb"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    sizeInGb = property.Value.GetInt32();
+                    continue;
+                }
+                if (property.NameEquals("sizeInBytes"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    sizeInBytes = property.Value.GetInt64();
+                    continue;
+                }
                 if (property.NameEquals("operatingSystem"))
                 {
                     operatingSystem = property.Value.GetString().ToSupportedOperatingSystemType();
                     continue;
                 }
             }
-            return new OSDiskImage(operatingSystem);
+            return new OSDiskImage(Optional.ToNullable(sizeInGb), Optional.ToNullable(sizeInBytes), operatingSystem);
         }
     }
 }
