@@ -18,11 +18,6 @@ namespace Azure.ResourceManager.ContainerInstance
         void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
         {
             writer.WriteStartObject();
-            if (Optional.IsDefined(Identity))
-            {
-                writer.WritePropertyName("identity");
-                JsonSerializer.Serialize(writer, Identity);
-            }
             if (Optional.IsCollectionDefined(Zones))
             {
                 writer.WritePropertyName("zones");
@@ -32,6 +27,11 @@ namespace Azure.ResourceManager.ContainerInstance
                     writer.WriteStringValue(item);
                 }
                 writer.WriteEndArray();
+            }
+            if (Optional.IsDefined(Identity))
+            {
+                writer.WritePropertyName("identity");
+                JsonSerializer.Serialize(writer, Identity);
             }
             if (Optional.IsCollectionDefined(Tags))
             {
@@ -69,6 +69,11 @@ namespace Azure.ResourceManager.ContainerInstance
             {
                 writer.WritePropertyName("restartPolicy");
                 writer.WriteStringValue(RestartPolicy.Value.ToString());
+            }
+            if (Optional.IsDefined(RetryTimeoutMinutes))
+            {
+                writer.WritePropertyName("retryTimeoutMinutes");
+                writer.WriteNumberValue(RetryTimeoutMinutes.Value);
             }
             if (Optional.IsDefined(IPAddress))
             {
@@ -133,8 +138,8 @@ namespace Azure.ResourceManager.ContainerInstance
 
         internal static ContainerGroupData DeserializeContainerGroupData(JsonElement element)
         {
-            Optional<ManagedServiceIdentity> identity = default;
             Optional<IList<string>> zones = default;
+            Optional<ManagedServiceIdentity> identity = default;
             Optional<IDictionary<string, string>> tags = default;
             AzureLocation location = default;
             ResourceIdentifier id = default;
@@ -145,6 +150,7 @@ namespace Azure.ResourceManager.ContainerInstance
             IList<ContainerInstanceContainer> containers = default;
             Optional<IList<ContainerGroupImageRegistryCredential>> imageRegistryCredentials = default;
             Optional<ContainerGroupRestartPolicy> restartPolicy = default;
+            Optional<int> retryTimeoutMinutes = default;
             Optional<ContainerGroupIPAddress> ipAddress = default;
             ContainerInstanceOperatingSystemType osType = default;
             Optional<IList<ContainerVolume>> volumes = default;
@@ -157,16 +163,6 @@ namespace Azure.ResourceManager.ContainerInstance
             Optional<IList<InitContainerDefinitionContent>> initContainers = default;
             foreach (var property in element.EnumerateObject())
             {
-                if (property.NameEquals("identity"))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        property.ThrowNonNullablePropertyIsNull();
-                        continue;
-                    }
-                    identity = JsonSerializer.Deserialize<ManagedServiceIdentity>(property.Value.ToString());
-                    continue;
-                }
                 if (property.NameEquals("zones"))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
@@ -180,6 +176,16 @@ namespace Azure.ResourceManager.ContainerInstance
                         array.Add(item.GetString());
                     }
                     zones = array;
+                    continue;
+                }
+                if (property.NameEquals("identity"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    identity = JsonSerializer.Deserialize<ManagedServiceIdentity>(property.Value.ToString());
                     continue;
                 }
                 if (property.NameEquals("tags"))
@@ -274,6 +280,16 @@ namespace Azure.ResourceManager.ContainerInstance
                                 continue;
                             }
                             restartPolicy = new ContainerGroupRestartPolicy(property0.Value.GetString());
+                            continue;
+                        }
+                        if (property0.NameEquals("retryTimeoutMinutes"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            retryTimeoutMinutes = property0.Value.GetInt32();
                             continue;
                         }
                         if (property0.NameEquals("ipAddress"))
@@ -390,7 +406,7 @@ namespace Azure.ResourceManager.ContainerInstance
                     continue;
                 }
             }
-            return new ContainerGroupData(id, name, type, systemData.Value, Optional.ToDictionary(tags), location, identity, provisioningState.Value, containers, Optional.ToList(imageRegistryCredentials), Optional.ToNullable(restartPolicy), ipAddress.Value, osType, Optional.ToList(volumes), instanceView.Value, diagnostics.Value, Optional.ToList(subnetIds), dnsConfig.Value, Optional.ToNullable(sku), encryptionProperties.Value, Optional.ToList(initContainers), Optional.ToList(zones));
+            return new ContainerGroupData(id, name, type, systemData.Value, Optional.ToDictionary(tags), location, Optional.ToList(zones), identity, provisioningState.Value, containers, Optional.ToList(imageRegistryCredentials), Optional.ToNullable(restartPolicy), Optional.ToNullable(retryTimeoutMinutes), ipAddress.Value, osType, Optional.ToList(volumes), instanceView.Value, diagnostics.Value, Optional.ToList(subnetIds), dnsConfig.Value, Optional.ToNullable(sku), encryptionProperties.Value, Optional.ToList(initContainers));
         }
     }
 }
