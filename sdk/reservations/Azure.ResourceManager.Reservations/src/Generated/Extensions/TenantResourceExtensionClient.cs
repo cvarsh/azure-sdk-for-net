@@ -24,6 +24,10 @@ namespace Azure.ResourceManager.Reservations
         private ReservationRestOperations _reservationDetailReservationRestClient;
         private ClientDiagnostics _reservationOrderClientDiagnostics;
         private ReservationOrderRestOperations _reservationOrderRestClient;
+        private ClientDiagnostics _calculateRefundClientDiagnostics;
+        private CalculateRefundRestOperations _calculateRefundRestClient;
+        private ClientDiagnostics _returnClientDiagnostics;
+        private ReturnRestOperations _returnRestClient;
         private ClientDiagnostics _calculateExchangeClientDiagnostics;
         private CalculateExchangeRestOperations _calculateExchangeRestClient;
         private ClientDiagnostics _exchangeClientDiagnostics;
@@ -45,6 +49,10 @@ namespace Azure.ResourceManager.Reservations
         private ReservationRestOperations ReservationDetailReservationRestClient => _reservationDetailReservationRestClient ??= new ReservationRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, GetApiVersionOrNull(ReservationDetailResource.ResourceType));
         private ClientDiagnostics ReservationOrderClientDiagnostics => _reservationOrderClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.Reservations", ReservationOrderResource.ResourceType.Namespace, Diagnostics);
         private ReservationOrderRestOperations ReservationOrderRestClient => _reservationOrderRestClient ??= new ReservationOrderRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, GetApiVersionOrNull(ReservationOrderResource.ResourceType));
+        private ClientDiagnostics CalculateRefundClientDiagnostics => _calculateRefundClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.Reservations", ProviderConstants.DefaultProviderNamespace, Diagnostics);
+        private CalculateRefundRestOperations CalculateRefundRestClient => _calculateRefundRestClient ??= new CalculateRefundRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
+        private ClientDiagnostics ReturnClientDiagnostics => _returnClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.Reservations", ProviderConstants.DefaultProviderNamespace, Diagnostics);
+        private ReturnRestOperations ReturnRestClient => _returnRestClient ??= new ReturnRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
         private ClientDiagnostics CalculateExchangeClientDiagnostics => _calculateExchangeClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.Reservations", ProviderConstants.DefaultProviderNamespace, Diagnostics);
         private CalculateExchangeRestOperations CalculateExchangeRestClient => _calculateExchangeRestClient ??= new CalculateExchangeRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
         private ClientDiagnostics ExchangeClientDiagnostics => _exchangeClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.Reservations", ProviderConstants.DefaultProviderNamespace, Diagnostics);
@@ -196,6 +204,100 @@ namespace Azure.ResourceManager.Reservations
             try
             {
                 var response = ReservationOrderRestClient.Calculate(content, cancellationToken);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Calculate price for returning `Reservations` if there are no policy errors.
+        /// 
+        /// Request Path: /providers/Microsoft.Capacity/calculateRefund
+        /// Operation Id: CalculateRefund_Post
+        /// </summary>
+        /// <param name="content"> Information needed for calculating refund of a reservation. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual async Task<Response<CalculateRefundResponse>> PostCalculateRefundAsync(CalculateRefundContent content, CancellationToken cancellationToken = default)
+        {
+            using var scope = CalculateRefundClientDiagnostics.CreateScope("TenantResourceExtensionClient.PostCalculateRefund");
+            scope.Start();
+            try
+            {
+                var response = await CalculateRefundRestClient.PostAsync(content, cancellationToken).ConfigureAwait(false);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Calculate price for returning `Reservations` if there are no policy errors.
+        /// 
+        /// Request Path: /providers/Microsoft.Capacity/calculateRefund
+        /// Operation Id: CalculateRefund_Post
+        /// </summary>
+        /// <param name="content"> Information needed for calculating refund of a reservation. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual Response<CalculateRefundResponse> PostCalculateRefund(CalculateRefundContent content, CancellationToken cancellationToken = default)
+        {
+            using var scope = CalculateRefundClientDiagnostics.CreateScope("TenantResourceExtensionClient.PostCalculateRefund");
+            scope.Start();
+            try
+            {
+                var response = CalculateRefundRestClient.Post(content, cancellationToken);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Return a reservation.
+        /// Request Path: /providers/Microsoft.Capacity/return
+        /// Operation Id: Return_Post
+        /// </summary>
+        /// <param name="content"> Information needed for returning reservation. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual async Task<Response<RefundResponse>> PostReturnAsync(RefundContent content, CancellationToken cancellationToken = default)
+        {
+            using var scope = ReturnClientDiagnostics.CreateScope("TenantResourceExtensionClient.PostReturn");
+            scope.Start();
+            try
+            {
+                var response = await ReturnRestClient.PostAsync(content, cancellationToken).ConfigureAwait(false);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Return a reservation.
+        /// Request Path: /providers/Microsoft.Capacity/return
+        /// Operation Id: Return_Post
+        /// </summary>
+        /// <param name="content"> Information needed for returning reservation. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual Response<RefundResponse> PostReturn(RefundContent content, CancellationToken cancellationToken = default)
+        {
+            using var scope = ReturnClientDiagnostics.CreateScope("TenantResourceExtensionClient.PostReturn");
+            scope.Start();
+            try
+            {
+                var response = ReturnRestClient.Post(content, cancellationToken);
                 return response;
             }
             catch (Exception e)
