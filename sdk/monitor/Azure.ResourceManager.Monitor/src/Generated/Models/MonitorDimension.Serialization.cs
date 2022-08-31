@@ -33,7 +33,7 @@ namespace Azure.ResourceManager.Monitor.Models
         internal static MonitorDimension DeserializeMonitorDimension(JsonElement element)
         {
             string name = default;
-            MonitorOperator @operator = default;
+            DimensionOperator @operator = default;
             IList<string> values = default;
             foreach (var property in element.EnumerateObject())
             {
@@ -44,7 +44,7 @@ namespace Azure.ResourceManager.Monitor.Models
                 }
                 if (property.NameEquals("operator"))
                 {
-                    @operator = new MonitorOperator(property.Value.GetString());
+                    @operator = new DimensionOperator(property.Value.GetString());
                     continue;
                 }
                 if (property.NameEquals("values"))

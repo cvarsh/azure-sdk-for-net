@@ -11,18 +11,16 @@ using Azure.Core;
 
 namespace Azure.ResourceManager.Monitor.Models
 {
-    public partial class MonitorCriteria : IUtf8JsonSerializable
+    internal partial class ScheduledQueryRuleCriteria : IUtf8JsonSerializable
     {
         void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
         {
             writer.WriteStartObject();
-            writer.WritePropertyName("metricName");
-            writer.WriteStringValue(MetricName);
-            if (Optional.IsCollectionDefined(Dimensions))
+            if (Optional.IsCollectionDefined(AllOf))
             {
-                writer.WritePropertyName("dimensions");
+                writer.WritePropertyName("allOf");
                 writer.WriteStartArray();
-                foreach (var item in Dimensions)
+                foreach (var item in AllOf)
                 {
                     writer.WriteObjectValue(item);
                 }
@@ -31,34 +29,28 @@ namespace Azure.ResourceManager.Monitor.Models
             writer.WriteEndObject();
         }
 
-        internal static MonitorCriteria DeserializeMonitorCriteria(JsonElement element)
+        internal static ScheduledQueryRuleCriteria DeserializeScheduledQueryRuleCriteria(JsonElement element)
         {
-            string metricName = default;
-            Optional<IList<MonitorDimension>> dimensions = default;
+            Optional<IList<Condition>> allOf = default;
             foreach (var property in element.EnumerateObject())
             {
-                if (property.NameEquals("metricName"))
-                {
-                    metricName = property.Value.GetString();
-                    continue;
-                }
-                if (property.NameEquals("dimensions"))
+                if (property.NameEquals("allOf"))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
                     {
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    List<MonitorDimension> array = new List<MonitorDimension>();
+                    List<Condition> array = new List<Condition>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
-                        array.Add(MonitorDimension.DeserializeMonitorDimension(item));
+                        array.Add(Condition.DeserializeCondition(item));
                     }
-                    dimensions = array;
+                    allOf = array;
                     continue;
                 }
             }
-            return new MonitorCriteria(metricName, Optional.ToList(dimensions));
+            return new ScheduledQueryRuleCriteria(Optional.ToList(allOf));
         }
     }
 }

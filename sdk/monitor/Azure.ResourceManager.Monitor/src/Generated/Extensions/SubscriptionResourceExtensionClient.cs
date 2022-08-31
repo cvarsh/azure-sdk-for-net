@@ -30,8 +30,8 @@ namespace Azure.ResourceManager.Monitor
         private ActivityLogsRestOperations _activityLogsRestClient;
         private ClientDiagnostics _metricAlertClientDiagnostics;
         private MetricAlertsRestOperations _metricAlertRestClient;
-        private ClientDiagnostics _logSearchRuleScheduledQueryRulesClientDiagnostics;
-        private ScheduledQueryRulesRestOperations _logSearchRuleScheduledQueryRulesRestClient;
+        private ClientDiagnostics _scheduledQueryRuleResourceScheduledQueryRulesClientDiagnostics;
+        private ScheduledQueryRulesRestOperations _scheduledQueryRuleResourceScheduledQueryRulesRestClient;
         private ClientDiagnostics _monitorPrivateLinkScopePrivateLinkScopesClientDiagnostics;
         private PrivateLinkScopesRestOperations _monitorPrivateLinkScopePrivateLinkScopesRestClient;
         private ClientDiagnostics _activityLogAlertClientDiagnostics;
@@ -63,8 +63,8 @@ namespace Azure.ResourceManager.Monitor
         private ActivityLogsRestOperations ActivityLogsRestClient => _activityLogsRestClient ??= new ActivityLogsRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
         private ClientDiagnostics MetricAlertClientDiagnostics => _metricAlertClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.Monitor", MetricAlertResource.ResourceType.Namespace, Diagnostics);
         private MetricAlertsRestOperations MetricAlertRestClient => _metricAlertRestClient ??= new MetricAlertsRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, GetApiVersionOrNull(MetricAlertResource.ResourceType));
-        private ClientDiagnostics LogSearchRuleScheduledQueryRulesClientDiagnostics => _logSearchRuleScheduledQueryRulesClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.Monitor", LogSearchRuleResource.ResourceType.Namespace, Diagnostics);
-        private ScheduledQueryRulesRestOperations LogSearchRuleScheduledQueryRulesRestClient => _logSearchRuleScheduledQueryRulesRestClient ??= new ScheduledQueryRulesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, GetApiVersionOrNull(LogSearchRuleResource.ResourceType));
+        private ClientDiagnostics ScheduledQueryRuleResourceScheduledQueryRulesClientDiagnostics => _scheduledQueryRuleResourceScheduledQueryRulesClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.Monitor", ScheduledQueryRuleResource.ResourceType.Namespace, Diagnostics);
+        private ScheduledQueryRulesRestOperations ScheduledQueryRuleResourceScheduledQueryRulesRestClient => _scheduledQueryRuleResourceScheduledQueryRulesRestClient ??= new ScheduledQueryRulesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, GetApiVersionOrNull(ScheduledQueryRuleResource.ResourceType));
         private ClientDiagnostics MonitorPrivateLinkScopePrivateLinkScopesClientDiagnostics => _monitorPrivateLinkScopePrivateLinkScopesClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.Monitor", MonitorPrivateLinkScopeResource.ResourceType.Namespace, Diagnostics);
         private PrivateLinkScopesRestOperations MonitorPrivateLinkScopePrivateLinkScopesRestClient => _monitorPrivateLinkScopePrivateLinkScopesRestClient ??= new PrivateLinkScopesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, GetApiVersionOrNull(MonitorPrivateLinkScopeResource.ResourceType));
         private ClientDiagnostics ActivityLogAlertClientDiagnostics => _activityLogAlertClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.Monitor", ActivityLogAlertResource.ResourceType.Namespace, Diagnostics);
@@ -522,23 +522,22 @@ namespace Azure.ResourceManager.Monitor
         }
 
         /// <summary>
-        /// List the Log Search rules within a subscription group.
+        /// Retrieve a scheduled query rule definitions in a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Insights/scheduledQueryRules
         /// Operation Id: ScheduledQueryRules_ListBySubscription
         /// </summary>
-        /// <param name="filter"> The filter to apply on the operation. For more information please see https://msdn.microsoft.com/en-us/library/azure/dn931934.aspx. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <returns> An async collection of <see cref="LogSearchRuleResource" /> that may take multiple service requests to iterate over. </returns>
-        public virtual AsyncPageable<LogSearchRuleResource> GetLogSearchRulesAsync(string filter = null, CancellationToken cancellationToken = default)
+        /// <returns> An async collection of <see cref="ScheduledQueryRuleResource" /> that may take multiple service requests to iterate over. </returns>
+        public virtual AsyncPageable<ScheduledQueryRuleResource> GetScheduledQueryRuleResourcesAsync(CancellationToken cancellationToken = default)
         {
-            async Task<Page<LogSearchRuleResource>> FirstPageFunc(int? pageSizeHint)
+            async Task<Page<ScheduledQueryRuleResource>> FirstPageFunc(int? pageSizeHint)
             {
-                using var scope = LogSearchRuleScheduledQueryRulesClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.GetLogSearchRules");
+                using var scope = ScheduledQueryRuleResourceScheduledQueryRulesClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.GetScheduledQueryRuleResources");
                 scope.Start();
                 try
                 {
-                    var response = await LogSearchRuleScheduledQueryRulesRestClient.ListBySubscriptionAsync(Id.SubscriptionId, filter, cancellationToken: cancellationToken).ConfigureAwait(false);
-                    return Page.FromValues(response.Value.Value.Select(value => new LogSearchRuleResource(Client, value)), null, response.GetRawResponse());
+                    var response = await ScheduledQueryRuleResourceScheduledQueryRulesRestClient.ListBySubscriptionAsync(Id.SubscriptionId, cancellationToken: cancellationToken).ConfigureAwait(false);
+                    return Page.FromValues(response.Value.Value.Select(value => new ScheduledQueryRuleResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
                 }
                 catch (Exception e)
                 {
@@ -546,27 +545,41 @@ namespace Azure.ResourceManager.Monitor
                     throw;
                 }
             }
-            return PageableHelpers.CreateAsyncEnumerable(FirstPageFunc, null);
+            async Task<Page<ScheduledQueryRuleResource>> NextPageFunc(string nextLink, int? pageSizeHint)
+            {
+                using var scope = ScheduledQueryRuleResourceScheduledQueryRulesClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.GetScheduledQueryRuleResources");
+                scope.Start();
+                try
+                {
+                    var response = await ScheduledQueryRuleResourceScheduledQueryRulesRestClient.ListBySubscriptionNextPageAsync(nextLink, Id.SubscriptionId, cancellationToken: cancellationToken).ConfigureAwait(false);
+                    return Page.FromValues(response.Value.Value.Select(value => new ScheduledQueryRuleResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
+                }
+                catch (Exception e)
+                {
+                    scope.Failed(e);
+                    throw;
+                }
+            }
+            return PageableHelpers.CreateAsyncEnumerable(FirstPageFunc, NextPageFunc);
         }
 
         /// <summary>
-        /// List the Log Search rules within a subscription group.
+        /// Retrieve a scheduled query rule definitions in a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Insights/scheduledQueryRules
         /// Operation Id: ScheduledQueryRules_ListBySubscription
         /// </summary>
-        /// <param name="filter"> The filter to apply on the operation. For more information please see https://msdn.microsoft.com/en-us/library/azure/dn931934.aspx. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <returns> A collection of <see cref="LogSearchRuleResource" /> that may take multiple service requests to iterate over. </returns>
-        public virtual Pageable<LogSearchRuleResource> GetLogSearchRules(string filter = null, CancellationToken cancellationToken = default)
+        /// <returns> A collection of <see cref="ScheduledQueryRuleResource" /> that may take multiple service requests to iterate over. </returns>
+        public virtual Pageable<ScheduledQueryRuleResource> GetScheduledQueryRuleResources(CancellationToken cancellationToken = default)
         {
-            Page<LogSearchRuleResource> FirstPageFunc(int? pageSizeHint)
+            Page<ScheduledQueryRuleResource> FirstPageFunc(int? pageSizeHint)
             {
-                using var scope = LogSearchRuleScheduledQueryRulesClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.GetLogSearchRules");
+                using var scope = ScheduledQueryRuleResourceScheduledQueryRulesClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.GetScheduledQueryRuleResources");
                 scope.Start();
                 try
                 {
-                    var response = LogSearchRuleScheduledQueryRulesRestClient.ListBySubscription(Id.SubscriptionId, filter, cancellationToken: cancellationToken);
-                    return Page.FromValues(response.Value.Value.Select(value => new LogSearchRuleResource(Client, value)), null, response.GetRawResponse());
+                    var response = ScheduledQueryRuleResourceScheduledQueryRulesRestClient.ListBySubscription(Id.SubscriptionId, cancellationToken: cancellationToken);
+                    return Page.FromValues(response.Value.Value.Select(value => new ScheduledQueryRuleResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
                 }
                 catch (Exception e)
                 {
@@ -574,7 +587,22 @@ namespace Azure.ResourceManager.Monitor
                     throw;
                 }
             }
-            return PageableHelpers.CreateEnumerable(FirstPageFunc, null);
+            Page<ScheduledQueryRuleResource> NextPageFunc(string nextLink, int? pageSizeHint)
+            {
+                using var scope = ScheduledQueryRuleResourceScheduledQueryRulesClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.GetScheduledQueryRuleResources");
+                scope.Start();
+                try
+                {
+                    var response = ScheduledQueryRuleResourceScheduledQueryRulesRestClient.ListBySubscriptionNextPage(nextLink, Id.SubscriptionId, cancellationToken: cancellationToken);
+                    return Page.FromValues(response.Value.Value.Select(value => new ScheduledQueryRuleResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
+                }
+                catch (Exception e)
+                {
+                    scope.Failed(e);
+                    throw;
+                }
+            }
+            return PageableHelpers.CreateEnumerable(FirstPageFunc, NextPageFunc);
         }
 
         /// <summary>
