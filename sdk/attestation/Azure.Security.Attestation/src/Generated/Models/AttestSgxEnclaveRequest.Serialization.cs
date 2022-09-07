@@ -35,6 +35,11 @@ namespace Azure.Security.Attestation
                 writer.WritePropertyName("draftPolicyForAttestation");
                 writer.WriteStringValue(DraftPolicyForAttestation);
             }
+            if (Optional.IsDefined(Nonce))
+            {
+                writer.WritePropertyName("nonce");
+                writer.WriteStringValue(Nonce);
+            }
             writer.WriteEndObject();
         }
     }
