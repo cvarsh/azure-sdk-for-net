@@ -137,6 +137,72 @@ namespace Azure.ResourceManager.Reservations
         }
 
         /// <summary>
+        /// Calculate price for returning `Reservations` if there are no policy errors.
+        /// 
+        /// Request Path: /providers/Microsoft.Capacity/calculateRefund
+        /// Operation Id: CalculateRefund_Post
+        /// </summary>
+        /// <param name="tenantResource"> The <see cref="TenantResource" /> instance the method will execute against. </param>
+        /// <param name="content"> Information needed for calculating refund of a reservation. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="content"/> is null. </exception>
+        public static async Task<Response<CalculateRefundResponse>> PostCalculateRefundAsync(this TenantResource tenantResource, CalculateRefundContent content, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(content, nameof(content));
+
+            return await GetExtensionClient(tenantResource).PostCalculateRefundAsync(content, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Calculate price for returning `Reservations` if there are no policy errors.
+        /// 
+        /// Request Path: /providers/Microsoft.Capacity/calculateRefund
+        /// Operation Id: CalculateRefund_Post
+        /// </summary>
+        /// <param name="tenantResource"> The <see cref="TenantResource" /> instance the method will execute against. </param>
+        /// <param name="content"> Information needed for calculating refund of a reservation. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="content"/> is null. </exception>
+        public static Response<CalculateRefundResponse> PostCalculateRefund(this TenantResource tenantResource, CalculateRefundContent content, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(content, nameof(content));
+
+            return GetExtensionClient(tenantResource).PostCalculateRefund(content, cancellationToken);
+        }
+
+        /// <summary>
+        /// Return a reservation.
+        /// Request Path: /providers/Microsoft.Capacity/return
+        /// Operation Id: Return_Post
+        /// </summary>
+        /// <param name="tenantResource"> The <see cref="TenantResource" /> instance the method will execute against. </param>
+        /// <param name="content"> Information needed for returning reservation. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="content"/> is null. </exception>
+        public static async Task<Response<RefundResponse>> PostReturnAsync(this TenantResource tenantResource, RefundContent content, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(content, nameof(content));
+
+            return await GetExtensionClient(tenantResource).PostReturnAsync(content, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Return a reservation.
+        /// Request Path: /providers/Microsoft.Capacity/return
+        /// Operation Id: Return_Post
+        /// </summary>
+        /// <param name="tenantResource"> The <see cref="TenantResource" /> instance the method will execute against. </param>
+        /// <param name="content"> Information needed for returning reservation. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="content"/> is null. </exception>
+        public static Response<RefundResponse> PostReturn(this TenantResource tenantResource, RefundContent content, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(content, nameof(content));
+
+            return GetExtensionClient(tenantResource).PostReturn(content, cancellationToken);
+        }
+
+        /// <summary>
         /// Calculates price for exchanging `Reservations` if there are no policy errors.
         /// 
         /// Request Path: /providers/Microsoft.Capacity/calculateExchange
