@@ -59,7 +59,7 @@ namespace Azure.ResourceManager.StreamAnalytics
         {
             Optional<ResourceIdentifier> id = default;
             Optional<string> name = default;
-            Optional<ResourceType> type = default;
+            Optional<Core.ResourceType> type = default;
             Optional<StreamingJobOutputDataSource> datasource = default;
             Optional<DateTimeOffset> timeWindow = default;
             Optional<float> sizeWindow = default;
@@ -92,7 +92,7 @@ namespace Azure.ResourceManager.StreamAnalytics
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    type = new ResourceType(property.Value.GetString());
+                    type = new Core.ResourceType(property.Value.GetString());
                     continue;
                 }
                 if (property.NameEquals("properties"))
