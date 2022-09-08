@@ -50,10 +50,10 @@ namespace Azure.ResourceManager.ElasticSan
         /// </summary>
         /// <param name="filter"> Specify $filter=&apos;location eq &lt;location&gt;&apos; to filter on location. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <returns> An async collection of <see cref="ResourceTypeSku" /> that may take multiple service requests to iterate over. </returns>
-        public virtual AsyncPageable<ResourceTypeSku> GetSkusAsync(string filter = null, CancellationToken cancellationToken = default)
+        /// <returns> An async collection of <see cref="ElasticSanSkuInformation" /> that may take multiple service requests to iterate over. </returns>
+        public virtual AsyncPageable<ElasticSanSkuInformation> GetSkusAsync(string filter = null, CancellationToken cancellationToken = default)
         {
-            async Task<Page<ResourceTypeSku>> FirstPageFunc(int? pageSizeHint)
+            async Task<Page<ElasticSanSkuInformation>> FirstPageFunc(int? pageSizeHint)
             {
                 using var scope = SkusClientDiagnostics.CreateScope("TenantResourceExtensionClient.GetSkus");
                 scope.Start();
@@ -78,10 +78,10 @@ namespace Azure.ResourceManager.ElasticSan
         /// </summary>
         /// <param name="filter"> Specify $filter=&apos;location eq &lt;location&gt;&apos; to filter on location. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <returns> A collection of <see cref="ResourceTypeSku" /> that may take multiple service requests to iterate over. </returns>
-        public virtual Pageable<ResourceTypeSku> GetSkus(string filter = null, CancellationToken cancellationToken = default)
+        /// <returns> A collection of <see cref="ElasticSanSkuInformation" /> that may take multiple service requests to iterate over. </returns>
+        public virtual Pageable<ElasticSanSkuInformation> GetSkus(string filter = null, CancellationToken cancellationToken = default)
         {
-            Page<ResourceTypeSku> FirstPageFunc(int? pageSizeHint)
+            Page<ElasticSanSkuInformation> FirstPageFunc(int? pageSizeHint)
             {
                 using var scope = SkusClientDiagnostics.CreateScope("TenantResourceExtensionClient.GetSkus");
                 scope.Start();
