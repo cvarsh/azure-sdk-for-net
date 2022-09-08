@@ -30,10 +30,21 @@ namespace Azure.ResourceManager.IotCentral.Models
 
         internal static IotCentralNetworkRuleSetIPRule DeserializeIotCentralNetworkRuleSetIPRule(JsonElement element)
         {
+            Optional<IPRuleAction> action = default;
             Optional<string> filterName = default;
             Optional<string> ipMask = default;
             foreach (var property in element.EnumerateObject())
             {
+                if (property.NameEquals("action"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    action = new IPRuleAction(property.Value.GetString());
+                    continue;
+                }
                 if (property.NameEquals("filterName"))
                 {
                     filterName = property.Value.GetString();
@@ -45,7 +56,7 @@ namespace Azure.ResourceManager.IotCentral.Models
                     continue;
                 }
             }
-            return new IotCentralNetworkRuleSetIPRule(filterName.Value, ipMask.Value);
+            return new IotCentralNetworkRuleSetIPRule(Optional.ToNullable(action), filterName.Value, ipMask.Value);
         }
     }
 }
