@@ -17,11 +17,11 @@ namespace Azure.ResourceManager.ElasticSan
     }
     public partial class ElasticSanData : Azure.ResourceManager.Models.TrackedResourceData
     {
-        public ElasticSanData(Azure.Core.AzureLocation location) : base (default(Azure.Core.AzureLocation)) { }
+        public ElasticSanData(Azure.Core.AzureLocation location, Azure.ResourceManager.ElasticSan.Models.ElasticSanSku sku, long baseSizeTiB, long extendedCapacitySizeTiB) : base (default(Azure.Core.AzureLocation)) { }
         public System.Collections.Generic.IList<string> AvailabilityZones { get { throw null; } }
-        public long? BaseSizeTiB { get { throw null; } set { } }
+        public long BaseSizeTiB { get { throw null; } set { } }
         public long? ElasticSanVolumeGroupCount { get { throw null; } }
-        public long? ExtendedCapacitySizeTiB { get { throw null; } set { } }
+        public long ExtendedCapacitySizeTiB { get { throw null; } set { } }
         public Azure.ResourceManager.ElasticSan.Models.ProvisioningState? ProvisioningState { get { throw null; } }
         public Azure.ResourceManager.ElasticSan.Models.ElasticSanSku Sku { get { throw null; } set { } }
         public long? TotalElasticSanVolumeSizeGiB { get { throw null; } }
@@ -199,8 +199,8 @@ namespace Azure.ResourceManager.ElasticSan.Models
     }
     public partial class ElasticSanSku
     {
-        public ElasticSanSku() { }
-        public Azure.ResourceManager.ElasticSan.Models.ElasticSanSkuName? Name { get { throw null; } set { } }
+        public ElasticSanSku(Azure.ResourceManager.ElasticSan.Models.ElasticSanSkuName name) { }
+        public Azure.ResourceManager.ElasticSan.Models.ElasticSanSkuName Name { get { throw null; } set { } }
         public Azure.ResourceManager.ElasticSan.Models.ElasticSanTier? Tier { get { throw null; } set { } }
     }
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
@@ -351,7 +351,7 @@ namespace Azure.ResourceManager.ElasticSan.Models
     public partial class SourceCreationData
     {
         public SourceCreationData() { }
-        public Azure.ResourceManager.ElasticSan.Models.ElasticSanVolumeCreateOption CreateSource { get { throw null; } set { } }
+        public Azure.ResourceManager.ElasticSan.Models.ElasticSanVolumeCreateOption? CreateSource { get { throw null; } set { } }
         public System.Uri SourceUri { get { throw null; } set { } }
     }
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
