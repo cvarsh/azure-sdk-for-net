@@ -16,17 +16,17 @@ namespace Azure.ResourceManager.Monitor.Models
         /// <summary> Initializes a new instance of ActionList. </summary>
         public ActionList()
         {
-            ActionGroups = new ChangeTrackingList<ActivityLogAlertActionGroup>();
+            ActionGroups = new ChangeTrackingList<ActionGroupForActivityLogAlerts>();
         }
 
         /// <summary> Initializes a new instance of ActionList. </summary>
         /// <param name="actionGroups"> The list of the Action Groups. </param>
-        internal ActionList(IList<ActivityLogAlertActionGroup> actionGroups)
+        internal ActionList(IList<ActionGroupForActivityLogAlerts> actionGroups)
         {
             ActionGroups = actionGroups;
         }
 
         /// <summary> The list of the Action Groups. </summary>
-        public IList<ActivityLogAlertActionGroup> ActionGroups { get; }
+        public IList<ActionGroupForActivityLogAlerts> ActionGroups { get; }
     }
 }

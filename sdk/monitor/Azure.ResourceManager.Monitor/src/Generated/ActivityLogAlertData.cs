@@ -57,7 +57,7 @@ namespace Azure.ResourceManager.Monitor
         /// <summary> The actions that will activate when the condition is met. </summary>
         internal ActionList Actions { get; set; }
         /// <summary> The list of the Action Groups. </summary>
-        public IList<ActivityLogAlertActionGroup> ActionsActionGroups
+        public IList<ActionGroupForActivityLogAlerts> ActionsActionGroups
         {
             get
             {

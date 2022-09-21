@@ -37,7 +37,7 @@ namespace Azure.ResourceManager.Monitor
             _userAgent = new TelemetryDetails(GetType().Assembly, applicationId);
         }
 
-        internal HttpMessage CreateGetRequest(string subscriptionId, string resourceGroupName, string autoscaleSettingName, string timespan, TimeSpan interval, string metricNamespace, string metricName, string aggregation)
+        internal HttpMessage CreateGetRequest(string subscriptionId, string resourceGroupName, string autoscaleSettingName, string aggregation, string timespan, TimeSpan? interval, string metricnamespace, string metricnames)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
@@ -51,10 +51,22 @@ namespace Azure.ResourceManager.Monitor
             uri.AppendPath("/providers/Microsoft.Insights/autoscalesettings/", false);
             uri.AppendPath(autoscaleSettingName, true);
             uri.AppendPath("/predictiveMetrics", false);
-            uri.AppendQuery("timespan", timespan, true);
-            uri.AppendQuery("interval", interval, "P", true);
-            uri.AppendQuery("metricNamespace", metricNamespace, true);
-            uri.AppendQuery("metricName", metricName, true);
+            if (timespan != null)
+            {
+                uri.AppendQuery("timespan", timespan, true);
+            }
+            if (interval != null)
+            {
+                uri.AppendQuery("interval", interval.Value, "P", true);
+            }
+            if (metricnamespace != null)
+            {
+                uri.AppendQuery("metricnamespace", metricnamespace, true);
+            }
+            if (metricnames != null)
+            {
+                uri.AppendQuery("metricnames", metricnames, true);
+            }
             uri.AppendQuery("aggregation", aggregation, true);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -67,25 +79,22 @@ namespace Azure.ResourceManager.Monitor
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="autoscaleSettingName"> The autoscale setting name. </param>
+        /// <param name="aggregation"> The list of aggregation types (comma separated) to retrieve. </param>
         /// <param name="timespan"> The timespan of the query. It is a string with the following format &apos;startDateTime_ISO/endDateTime_ISO&apos;. </param>
         /// <param name="interval"> The interval (i.e. timegrain) of the query. </param>
-        /// <param name="metricNamespace"> Metric namespace to query metric definitions for. </param>
-        /// <param name="metricName"> The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself has a comma in it then use %2 to indicate it. Eg: &apos;Metric,Name1&apos; should be **&apos;Metric%2Name1&apos;**. </param>
-        /// <param name="aggregation"> The list of aggregation types (comma separated) to retrieve. </param>
+        /// <param name="metricnamespace"> Metric namespace to query metric definitions for. </param>
+        /// <param name="metricnames"> The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself has a comma in it then use %2 to indicate it. Eg: &apos;Metric,Name1&apos; should be **&apos;Metric%2Name1&apos;**. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="autoscaleSettingName"/>, <paramref name="timespan"/>, <paramref name="metricNamespace"/>, <paramref name="metricName"/> or <paramref name="aggregation"/> is null. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="autoscaleSettingName"/> or <paramref name="aggregation"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="autoscaleSettingName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response<AutoscaleSettingPredicativeResult>> GetAsync(string subscriptionId, string resourceGroupName, string autoscaleSettingName, string timespan, TimeSpan interval, string metricNamespace, string metricName, string aggregation, CancellationToken cancellationToken = default)
+        public async Task<Response<AutoscaleSettingPredicativeResult>> GetAsync(string subscriptionId, string resourceGroupName, string autoscaleSettingName, string aggregation, string timespan = null, TimeSpan? interval = null, string metricnamespace = null, string metricnames = null, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(autoscaleSettingName, nameof(autoscaleSettingName));
-            Argument.AssertNotNull(timespan, nameof(timespan));
-            Argument.AssertNotNull(metricNamespace, nameof(metricNamespace));
-            Argument.AssertNotNull(metricName, nameof(metricName));
             Argument.AssertNotNull(aggregation, nameof(aggregation));
 
-            using var message = CreateGetRequest(subscriptionId, resourceGroupName, autoscaleSettingName, timespan, interval, metricNamespace, metricName, aggregation);
+            using var message = CreateGetRequest(subscriptionId, resourceGroupName, autoscaleSettingName, aggregation, timespan, interval, metricnamespace, metricnames);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -105,25 +114,22 @@ namespace Azure.ResourceManager.Monitor
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="autoscaleSettingName"> The autoscale setting name. </param>
+        /// <param name="aggregation"> The list of aggregation types (comma separated) to retrieve. </param>
         /// <param name="timespan"> The timespan of the query. It is a string with the following format &apos;startDateTime_ISO/endDateTime_ISO&apos;. </param>
         /// <param name="interval"> The interval (i.e. timegrain) of the query. </param>
-        /// <param name="metricNamespace"> Metric namespace to query metric definitions for. </param>
-        /// <param name="metricName"> The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself has a comma in it then use %2 to indicate it. Eg: &apos;Metric,Name1&apos; should be **&apos;Metric%2Name1&apos;**. </param>
-        /// <param name="aggregation"> The list of aggregation types (comma separated) to retrieve. </param>
+        /// <param name="metricnamespace"> Metric namespace to query metric definitions for. </param>
+        /// <param name="metricnames"> The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself has a comma in it then use %2 to indicate it. Eg: &apos;Metric,Name1&apos; should be **&apos;Metric%2Name1&apos;**. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="autoscaleSettingName"/>, <paramref name="timespan"/>, <paramref name="metricNamespace"/>, <paramref name="metricName"/> or <paramref name="aggregation"/> is null. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="autoscaleSettingName"/> or <paramref name="aggregation"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="autoscaleSettingName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response<AutoscaleSettingPredicativeResult> Get(string subscriptionId, string resourceGroupName, string autoscaleSettingName, string timespan, TimeSpan interval, string metricNamespace, string metricName, string aggregation, CancellationToken cancellationToken = default)
+        public Response<AutoscaleSettingPredicativeResult> Get(string subscriptionId, string resourceGroupName, string autoscaleSettingName, string aggregation, string timespan = null, TimeSpan? interval = null, string metricnamespace = null, string metricnames = null, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(autoscaleSettingName, nameof(autoscaleSettingName));
-            Argument.AssertNotNull(timespan, nameof(timespan));
-            Argument.AssertNotNull(metricNamespace, nameof(metricNamespace));
-            Argument.AssertNotNull(metricName, nameof(metricName));
             Argument.AssertNotNull(aggregation, nameof(aggregation));
 
-            using var message = CreateGetRequest(subscriptionId, resourceGroupName, autoscaleSettingName, timespan, interval, metricNamespace, metricName, aggregation);
+            using var message = CreateGetRequest(subscriptionId, resourceGroupName, autoscaleSettingName, aggregation, timespan, interval, metricnamespace, metricnames);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {

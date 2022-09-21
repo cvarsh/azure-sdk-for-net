@@ -17,8 +17,6 @@ namespace Azure.ResourceManager.Monitor.Models
         /// <summary> LessThan. </summary>
         LessThan,
         /// <summary> LessThanOrEqual. </summary>
-        LessThanOrEqual,
-        /// <summary> Equals. </summary>
-        EqualsValue
+        LessThanOrEqual
     }
 }

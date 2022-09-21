@@ -76,7 +76,7 @@ namespace Azure.ResourceManager.Monitor
     public partial class ActivityLogAlertData : Azure.ResourceManager.Models.TrackedResourceData
     {
         public ActivityLogAlertData(Azure.Core.AzureLocation location) : base (default(Azure.Core.AzureLocation)) { }
-        public System.Collections.Generic.IList<Azure.ResourceManager.Monitor.Models.ActivityLogAlertActionGroup> ActionsActionGroups { get { throw null; } }
+        public System.Collections.Generic.IList<Azure.ResourceManager.Monitor.Models.ActionGroupForActivityLogAlerts> ActionsActionGroups { get { throw null; } }
         public System.Collections.Generic.IList<Azure.ResourceManager.Monitor.Models.ActivityLogAlertAnyOfOrLeafCondition> ConditionAllOf { get { throw null; } set { } }
         public string Description { get { throw null; } set { } }
         public bool? IsEnabled { get { throw null; } set { } }
@@ -192,8 +192,8 @@ namespace Azure.ResourceManager.Monitor
         public virtual System.Threading.Tasks.Task<Azure.ResourceManager.ArmOperation> DeleteAsync(Azure.WaitUntil waitUntil, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.Response<Azure.ResourceManager.Monitor.AutoscaleSettingResource> Get(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.Monitor.AutoscaleSettingResource>> GetAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
-        public virtual Azure.Response<Azure.ResourceManager.Monitor.Models.AutoscaleSettingPredicativeResult> GetPredictiveMetric(string timespan, System.TimeSpan interval, string metricNamespace, string metricName, string aggregation, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
-        public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.Monitor.Models.AutoscaleSettingPredicativeResult>> GetPredictiveMetricAsync(string timespan, System.TimeSpan interval, string metricNamespace, string metricName, string aggregation, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual Azure.Response<Azure.ResourceManager.Monitor.Models.AutoscaleSettingPredicativeResult> GetPredictiveMetric(string aggregation, string timespan = null, System.TimeSpan? interval = default(System.TimeSpan?), string metricnamespace = null, string metricnames = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.Monitor.Models.AutoscaleSettingPredicativeResult>> GetPredictiveMetricAsync(string aggregation, string timespan = null, System.TimeSpan? interval = default(System.TimeSpan?), string metricnamespace = null, string metricnames = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.Response<Azure.ResourceManager.Monitor.AutoscaleSettingResource> RemoveTag(string key, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.Monitor.AutoscaleSettingResource>> RemoveTagAsync(string key, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.Response<Azure.ResourceManager.Monitor.AutoscaleSettingResource> SetTags(System.Collections.Generic.IDictionary<string, string> tags, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
@@ -843,17 +843,17 @@ namespace Azure.ResourceManager.Monitor.Models
         public ActionGroupEnableContent(string receiverName) { }
         public string ReceiverName { get { throw null; } }
     }
+    public partial class ActionGroupForActivityLogAlerts
+    {
+        public ActionGroupForActivityLogAlerts(string actionGroupId) { }
+        public string ActionGroupId { get { throw null; } set { } }
+        public System.Collections.Generic.IDictionary<string, string> WebhookProperties { get { throw null; } }
+    }
     public partial class ActionGroupPatch
     {
         public ActionGroupPatch() { }
         public bool? IsEnabled { get { throw null; } set { } }
         public System.Collections.Generic.IDictionary<string, string> Tags { get { throw null; } }
-    }
-    public partial class ActivityLogAlertActionGroup
-    {
-        public ActivityLogAlertActionGroup(Azure.Core.ResourceIdentifier actionGroupId) { }
-        public Azure.Core.ResourceIdentifier ActionGroupId { get { throw null; } set { } }
-        public System.Collections.Generic.IDictionary<string, string> WebhookProperties { get { throw null; } }
     }
     public partial class ActivityLogAlertAnyOfOrLeafCondition : Azure.ResourceManager.Monitor.Models.AlertRuleLeafCondition
     {
@@ -1626,7 +1626,6 @@ namespace Azure.ResourceManager.Monitor.Models
         GreaterThanOrEqual = 1,
         LessThan = 2,
         LessThanOrEqual = 3,
-        EqualsValue = 4,
     }
     public partial class MonitorDimension
     {
@@ -1983,6 +1982,27 @@ namespace Azure.ResourceManager.Monitor.Models
         public static bool operator !=(Azure.ResourceManager.Monitor.Models.OnboardingStatus left, Azure.ResourceManager.Monitor.Models.OnboardingStatus right) { throw null; }
         public override string ToString() { throw null; }
     }
+    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    public readonly partial struct OperatorForCondition : System.IEquatable<Azure.ResourceManager.Monitor.Models.OperatorForCondition>
+    {
+        private readonly object _dummy;
+        private readonly int _dummyPrimitive;
+        public OperatorForCondition(string value) { throw null; }
+        public static Azure.ResourceManager.Monitor.Models.OperatorForCondition EqualsValue { get { throw null; } }
+        public static Azure.ResourceManager.Monitor.Models.OperatorForCondition GreaterThan { get { throw null; } }
+        public static Azure.ResourceManager.Monitor.Models.OperatorForCondition GreaterThanOrEqual { get { throw null; } }
+        public static Azure.ResourceManager.Monitor.Models.OperatorForCondition LessThan { get { throw null; } }
+        public static Azure.ResourceManager.Monitor.Models.OperatorForCondition LessThanOrEqual { get { throw null; } }
+        public bool Equals(Azure.ResourceManager.Monitor.Models.OperatorForCondition other) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override bool Equals(object obj) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override int GetHashCode() { throw null; }
+        public static bool operator ==(Azure.ResourceManager.Monitor.Models.OperatorForCondition left, Azure.ResourceManager.Monitor.Models.OperatorForCondition right) { throw null; }
+        public static implicit operator Azure.ResourceManager.Monitor.Models.OperatorForCondition (string value) { throw null; }
+        public static bool operator !=(Azure.ResourceManager.Monitor.Models.OperatorForCondition left, Azure.ResourceManager.Monitor.Models.OperatorForCondition right) { throw null; }
+        public override string ToString() { throw null; }
+    }
     public partial class PerfCounterDataSource
     {
         public PerfCounterDataSource() { }
@@ -2126,7 +2146,7 @@ namespace Azure.ResourceManager.Monitor.Models
         public Azure.ResourceManager.Monitor.Models.ConditionFailingPeriods FailingPeriods { get { throw null; } set { } }
         public string MetricMeasureColumn { get { throw null; } set { } }
         public string MetricName { get { throw null; } set { } }
-        public Azure.ResourceManager.Monitor.Models.MonitorConditionOperator? Operator { get { throw null; } set { } }
+        public Azure.ResourceManager.Monitor.Models.OperatorForCondition? Operator { get { throw null; } set { } }
         public string Query { get { throw null; } set { } }
         public string ResourceIdColumn { get { throw null; } set { } }
         public double? Threshold { get { throw null; } set { } }

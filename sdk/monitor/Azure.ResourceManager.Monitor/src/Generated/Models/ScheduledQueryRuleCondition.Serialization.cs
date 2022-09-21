@@ -49,7 +49,7 @@ namespace Azure.ResourceManager.Monitor.Models
             if (Optional.IsDefined(Operator))
             {
                 writer.WritePropertyName("operator");
-                writer.WriteStringValue(Operator.Value.ToSerialString());
+                writer.WriteStringValue(Operator.Value.ToString());
             }
             if (Optional.IsDefined(Threshold))
             {
@@ -76,7 +76,7 @@ namespace Azure.ResourceManager.Monitor.Models
             Optional<string> metricMeasureColumn = default;
             Optional<string> resourceIdColumn = default;
             Optional<IList<MonitorDimension>> dimensions = default;
-            Optional<MonitorConditionOperator> @operator = default;
+            Optional<OperatorForCondition> @operator = default;
             Optional<double> threshold = default;
             Optional<ConditionFailingPeriods> failingPeriods = default;
             Optional<string> metricName = default;
@@ -129,7 +129,7 @@ namespace Azure.ResourceManager.Monitor.Models
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    @operator = property.Value.GetString().ToMonitorConditionOperator();
+                    @operator = new OperatorForCondition(property.Value.GetString());
                     continue;
                 }
                 if (property.NameEquals("threshold"))

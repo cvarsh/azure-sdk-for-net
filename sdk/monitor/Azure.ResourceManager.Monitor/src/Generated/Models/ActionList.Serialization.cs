@@ -31,7 +31,7 @@ namespace Azure.ResourceManager.Monitor.Models
 
         internal static ActionList DeserializeActionList(JsonElement element)
         {
-            Optional<IList<ActivityLogAlertActionGroup>> actionGroups = default;
+            Optional<IList<ActionGroupForActivityLogAlerts>> actionGroups = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("actionGroups"))
@@ -41,10 +41,10 @@ namespace Azure.ResourceManager.Monitor.Models
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    List<ActivityLogAlertActionGroup> array = new List<ActivityLogAlertActionGroup>();
+                    List<ActionGroupForActivityLogAlerts> array = new List<ActionGroupForActivityLogAlerts>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
-                        array.Add(ActivityLogAlertActionGroup.DeserializeActivityLogAlertActionGroup(item));
+                        array.Add(ActionGroupForActivityLogAlerts.DeserializeActionGroupForActivityLogAlerts(item));
                     }
                     actionGroups = array;
                     continue;
