@@ -119,7 +119,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for List all certificate orders in a subscription.
+        /// List all certificate orders in a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders
         /// Operation Id: AppServiceCertificateOrders_List
         /// </summary>
@@ -161,7 +161,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for List all certificate orders in a subscription.
+        /// List all certificate orders in a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders
         /// Operation Id: AppServiceCertificateOrders_List
         /// </summary>
@@ -203,7 +203,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Validate information for a certificate order.
+        /// Validate information for a certificate order.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/validateCertificateRegistrationInformation
         /// Operation Id: AppServiceCertificateOrders_ValidatePurchaseInformation
         /// </summary>
@@ -226,7 +226,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Validate information for a certificate order.
+        /// Validate information for a certificate order.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/validateCertificateRegistrationInformation
         /// Operation Id: AppServiceCertificateOrders_ValidatePurchaseInformation
         /// </summary>
@@ -249,7 +249,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Check if a domain is available for registration.
+        /// Check if a domain is available for registration.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/checkDomainAvailability
         /// Operation Id: Domains_CheckAvailability
         /// </summary>
@@ -272,7 +272,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Check if a domain is available for registration.
+        /// Check if a domain is available for registration.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/checkDomainAvailability
         /// Operation Id: Domains_CheckAvailability
         /// </summary>
@@ -295,7 +295,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all domains in a subscription.
+        /// Get all domains in a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains
         /// Operation Id: Domains_List
         /// </summary>
@@ -337,7 +337,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all domains in a subscription.
+        /// Get all domains in a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains
         /// Operation Id: Domains_List
         /// </summary>
@@ -379,7 +379,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Generate a single sign-on request for the domain management portal.
+        /// Generate a single sign-on request for the domain management portal.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/generateSsoRequest
         /// Operation Id: Domains_GetControlCenterSsoRequest
         /// </summary>
@@ -401,7 +401,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Generate a single sign-on request for the domain management portal.
+        /// Generate a single sign-on request for the domain management portal.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/generateSsoRequest
         /// Operation Id: Domains_GetControlCenterSsoRequest
         /// </summary>
@@ -423,7 +423,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get domain name recommendations based on keywords.
+        /// Get domain name recommendations based on keywords.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/listDomainRecommendations
         /// Operation Id: Domains_ListRecommendations
         /// </summary>
@@ -466,7 +466,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get domain name recommendations based on keywords.
+        /// Get domain name recommendations based on keywords.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/listDomainRecommendations
         /// Operation Id: Domains_ListRecommendations
         /// </summary>
@@ -509,7 +509,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all App Service Environments for a subscription.
+        /// Get all App Service Environments for a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments
         /// Operation Id: AppServiceEnvironments_List
         /// </summary>
@@ -551,7 +551,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all App Service Environments for a subscription.
+        /// Get all App Service Environments for a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments
         /// Operation Id: AppServiceEnvironments_List
         /// </summary>
@@ -593,7 +593,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all App Service plans for a subscription.
+        /// Get all App Service plans for a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms
         /// Operation Id: AppServicePlans_List
         /// </summary>
@@ -639,7 +639,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all App Service plans for a subscription.
+        /// Get all App Service plans for a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms
         /// Operation Id: AppServicePlans_List
         /// </summary>
@@ -685,7 +685,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all certificates for a subscription.
+        /// Get all certificates for a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates
         /// Operation Id: Certificates_List
         /// </summary>
@@ -728,7 +728,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all certificates for a subscription.
+        /// Get all certificates for a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates
         /// Operation Id: Certificates_List
         /// </summary>
@@ -771,7 +771,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all deleted apps for a subscription at location
+        /// Get all deleted apps for a subscription at location
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/deletedSites
         /// Operation Id: DeletedWebApps_ListByLocation
         /// </summary>
@@ -814,7 +814,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all deleted apps for a subscription at location
+        /// Get all deleted apps for a subscription at location
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/deletedSites
         /// Operation Id: DeletedWebApps_ListByLocation
         /// </summary>
@@ -857,7 +857,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get deleted app for a subscription at location.
+        /// Get deleted app for a subscription at location.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/deletedSites/{deletedSiteId}
         /// Operation Id: DeletedWebApps_GetDeletedWebAppByLocation
         /// </summary>
@@ -881,7 +881,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get deleted app for a subscription at location.
+        /// Get deleted app for a subscription at location.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/deletedSites/{deletedSiteId}
         /// Operation Id: DeletedWebApps_GetDeletedWebAppByLocation
         /// </summary>
@@ -905,7 +905,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all Kubernetes Environments for a subscription.
+        /// Get all Kubernetes Environments for a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/kubeEnvironments
         /// Operation Id: KubeEnvironments_ListBySubscription
         /// </summary>
@@ -947,7 +947,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all Kubernetes Environments for a subscription.
+        /// Get all Kubernetes Environments for a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/kubeEnvironments
         /// Operation Id: KubeEnvironments_ListBySubscription
         /// </summary>
@@ -989,7 +989,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get available application frameworks and their versions
+        /// Get available application frameworks and their versions
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/availableStacks
         /// Operation Id: Provider_GetAvailableStacksOnPrem
         /// </summary>
@@ -1032,7 +1032,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get available application frameworks and their versions
+        /// Get available application frameworks and their versions
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/availableStacks
         /// Operation Id: Provider_GetAvailableStacksOnPrem
         /// </summary>
@@ -1075,7 +1075,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for List all recommendations for a subscription.
+        /// List all recommendations for a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations
         /// Operation Id: Recommendations_List
         /// </summary>
@@ -1119,7 +1119,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for List all recommendations for a subscription.
+        /// List all recommendations for a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations
         /// Operation Id: Recommendations_List
         /// </summary>
@@ -1163,7 +1163,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Reset all recommendation opt-out settings for a subscription.
+        /// Reset all recommendation opt-out settings for a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/reset
         /// Operation Id: Recommendations_ResetAllFilters
         /// </summary>
@@ -1185,7 +1185,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Reset all recommendation opt-out settings for a subscription.
+        /// Reset all recommendation opt-out settings for a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/reset
         /// Operation Id: Recommendations_ResetAllFilters
         /// </summary>
@@ -1207,7 +1207,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Disables the specified rule so it will not apply to a subscription in the future.
+        /// Disables the specified rule so it will not apply to a subscription in the future.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/{name}/disable
         /// Operation Id: Recommendations_DisableRecommendationForSubscription
         /// </summary>
@@ -1230,7 +1230,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Disables the specified rule so it will not apply to a subscription in the future.
+        /// Disables the specified rule so it will not apply to a subscription in the future.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/{name}/disable
         /// Operation Id: Recommendations_DisableRecommendationForSubscription
         /// </summary>
@@ -1253,7 +1253,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for List all ResourceHealthMetadata for all sites in the subscription.
+        /// List all ResourceHealthMetadata for all sites in the subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/resourceHealthMetadata
         /// Operation Id: ResourceHealthMetadata_List
         /// </summary>
@@ -1295,7 +1295,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for List all ResourceHealthMetadata for all sites in the subscription.
+        /// List all ResourceHealthMetadata for all sites in the subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/resourceHealthMetadata
         /// Operation Id: ResourceHealthMetadata_List
         /// </summary>
@@ -1337,7 +1337,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a list of meters for a given location.
+        /// Gets a list of meters for a given location.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/billingMeters
         /// Operation Id: ListBillingMeters
         /// </summary>
@@ -1381,7 +1381,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a list of meters for a given location.
+        /// Gets a list of meters for a given location.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/billingMeters
         /// Operation Id: ListBillingMeters
         /// </summary>
@@ -1425,7 +1425,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Check if a resource name is available.
+        /// Check if a resource name is available.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/checknameavailability
         /// Operation Id: CheckNameAvailability
         /// </summary>
@@ -1448,7 +1448,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Check if a resource name is available.
+        /// Check if a resource name is available.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/checknameavailability
         /// Operation Id: CheckNameAvailability
         /// </summary>
@@ -1471,7 +1471,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets list of available geo regions plus ministamps
+        /// Gets list of available geo regions plus ministamps
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/deploymentLocations
         /// Operation Id: GetSubscriptionDeploymentLocations
         /// </summary>
@@ -1493,7 +1493,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets list of available geo regions plus ministamps
+        /// Gets list of available geo regions plus ministamps
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/deploymentLocations
         /// Operation Id: GetSubscriptionDeploymentLocations
         /// </summary>
@@ -1515,7 +1515,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get a list of available geographical regions.
+        /// Get a list of available geographical regions.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/geoRegions
         /// Operation Id: ListGeoRegions
         /// </summary>
@@ -1561,7 +1561,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get a list of available geographical regions.
+        /// Get a list of available geographical regions.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/geoRegions
         /// Operation Id: ListGeoRegions
         /// </summary>
@@ -1607,7 +1607,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for List all apps that are assigned to a hostname.
+        /// List all apps that are assigned to a hostname.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/listSitesAssignedToHostName
         /// Operation Id: ListSiteIdentifiersAssignedToHostName
         /// </summary>
@@ -1650,7 +1650,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for List all apps that are assigned to a hostname.
+        /// List all apps that are assigned to a hostname.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/listSitesAssignedToHostName
         /// Operation Id: ListSiteIdentifiersAssignedToHostName
         /// </summary>
@@ -1693,7 +1693,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for List all premier add-on offers.
+        /// List all premier add-on offers.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/premieraddonoffers
         /// Operation Id: ListPremierAddOnOffers
         /// </summary>
@@ -1735,7 +1735,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for List all premier add-on offers.
+        /// List all premier add-on offers.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/premieraddonoffers
         /// Operation Id: ListPremierAddOnOffers
         /// </summary>
@@ -1777,7 +1777,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for List all SKUs.
+        /// List all SKUs.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/skus
         /// Operation Id: ListSkus
         /// </summary>
@@ -1799,7 +1799,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for List all SKUs.
+        /// List all SKUs.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/skus
         /// Operation Id: ListSkus
         /// </summary>
@@ -1821,7 +1821,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network Security Group rules.
+        /// Verifies if this VNET is compatible with an App Service Environment by analyzing the Network Security Group rules.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/verifyHostingEnvironmentVnet
         /// Operation Id: VerifyHostingEnvironmentVnet
         /// </summary>
@@ -1844,7 +1844,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network Security Group rules.
+        /// Verifies if this VNET is compatible with an App Service Environment by analyzing the Network Security Group rules.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/verifyHostingEnvironmentVnet
         /// Operation Id: VerifyHostingEnvironmentVnet
         /// </summary>
@@ -1867,7 +1867,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Generates a preview workflow file for the static site
+        /// Generates a preview workflow file for the static site
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/previewStaticSiteWorkflowFile
         /// Operation Id: StaticSites_PreviewWorkflow
         /// </summary>
@@ -1891,7 +1891,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Generates a preview workflow file for the static site
+        /// Generates a preview workflow file for the static site
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/previewStaticSiteWorkflowFile
         /// Operation Id: StaticSites_PreviewWorkflow
         /// </summary>
@@ -1915,7 +1915,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all Static Sites for a subscription.
+        /// Get all Static Sites for a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/staticSites
         /// Operation Id: StaticSites_List
         /// </summary>
@@ -1957,7 +1957,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all Static Sites for a subscription.
+        /// Get all Static Sites for a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/staticSites
         /// Operation Id: StaticSites_List
         /// </summary>
@@ -1999,7 +1999,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all apps for a subscription.
+        /// Get all apps for a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/sites
         /// Operation Id: WebApps_List
         /// </summary>
@@ -2041,7 +2041,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all apps for a subscription.
+        /// Get all apps for a subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Web/sites
         /// Operation Id: WebApps_List
         /// </summary>

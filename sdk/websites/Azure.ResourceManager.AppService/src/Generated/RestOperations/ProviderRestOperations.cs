@@ -56,7 +56,7 @@ namespace Azure.ResourceManager.AppService
             return message;
         }
 
-        /// <summary> Description for Get available application frameworks and their versions. </summary>
+        /// <summary> Get available application frameworks and their versions. </summary>
         /// <param name="osTypeSelected"> The ProviderOSTypeSelected to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public async Task<Response<ApplicationStackCollection>> GetAvailableStacksAsync(ProviderOSTypeSelected? osTypeSelected = null, CancellationToken cancellationToken = default)
@@ -77,7 +77,7 @@ namespace Azure.ResourceManager.AppService
             }
         }
 
-        /// <summary> Description for Get available application frameworks and their versions. </summary>
+        /// <summary> Get available application frameworks and their versions. </summary>
         /// <param name="osTypeSelected"> The ProviderOSTypeSelected to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public Response<ApplicationStackCollection> GetAvailableStacks(ProviderOSTypeSelected? osTypeSelected = null, CancellationToken cancellationToken = default)
@@ -117,7 +117,7 @@ namespace Azure.ResourceManager.AppService
             return message;
         }
 
-        /// <summary> Description for Get available Function app frameworks and their versions. </summary>
+        /// <summary> Get available Function app frameworks and their versions. </summary>
         /// <param name="stackOSType"> Stack OS Type. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public async Task<Response<FunctionAppStackCollection>> GetFunctionAppStacksAsync(ProviderStackOSType? stackOSType = null, CancellationToken cancellationToken = default)
@@ -138,7 +138,7 @@ namespace Azure.ResourceManager.AppService
             }
         }
 
-        /// <summary> Description for Get available Function app frameworks and their versions. </summary>
+        /// <summary> Get available Function app frameworks and their versions. </summary>
         /// <param name="stackOSType"> Stack OS Type. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public Response<FunctionAppStackCollection> GetFunctionAppStacks(ProviderStackOSType? stackOSType = null, CancellationToken cancellationToken = default)
@@ -180,7 +180,7 @@ namespace Azure.ResourceManager.AppService
             return message;
         }
 
-        /// <summary> Description for Get available Function app frameworks and their versions for location. </summary>
+        /// <summary> Get available Function app frameworks and their versions for location. </summary>
         /// <param name="location"> Function App stack location. </param>
         /// <param name="stackOSType"> Stack OS Type. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -202,7 +202,7 @@ namespace Azure.ResourceManager.AppService
             }
         }
 
-        /// <summary> Description for Get available Function app frameworks and their versions for location. </summary>
+        /// <summary> Get available Function app frameworks and their versions for location. </summary>
         /// <param name="location"> Function App stack location. </param>
         /// <param name="stackOSType"> Stack OS Type. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -245,7 +245,7 @@ namespace Azure.ResourceManager.AppService
             return message;
         }
 
-        /// <summary> Description for Get available Web app frameworks and their versions for location. </summary>
+        /// <summary> Get available Web app frameworks and their versions for location. </summary>
         /// <param name="location"> Web App stack location. </param>
         /// <param name="stackOSType"> Stack OS Type. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -267,7 +267,7 @@ namespace Azure.ResourceManager.AppService
             }
         }
 
-        /// <summary> Description for Get available Web app frameworks and their versions for location. </summary>
+        /// <summary> Get available Web app frameworks and their versions for location. </summary>
         /// <param name="location"> Web App stack location. </param>
         /// <param name="stackOSType"> Stack OS Type. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -304,7 +304,7 @@ namespace Azure.ResourceManager.AppService
             return message;
         }
 
-        /// <summary> Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions. </summary>
+        /// <summary> Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions. </summary>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public async Task<Response<CsmOperationCollection>> ListOperationsAsync(CancellationToken cancellationToken = default)
         {
@@ -324,7 +324,7 @@ namespace Azure.ResourceManager.AppService
             }
         }
 
-        /// <summary> Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions. </summary>
+        /// <summary> Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions. </summary>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public Response<CsmOperationCollection> ListOperations(CancellationToken cancellationToken = default)
         {
@@ -363,7 +363,7 @@ namespace Azure.ResourceManager.AppService
             return message;
         }
 
-        /// <summary> Description for Get available Web app frameworks and their versions. </summary>
+        /// <summary> Get available Web app frameworks and their versions. </summary>
         /// <param name="stackOSType"> Stack OS Type. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public async Task<Response<WebAppStackCollection>> GetWebAppStacksAsync(ProviderStackOSType? stackOSType = null, CancellationToken cancellationToken = default)
@@ -384,7 +384,7 @@ namespace Azure.ResourceManager.AppService
             }
         }
 
-        /// <summary> Description for Get available Web app frameworks and their versions. </summary>
+        /// <summary> Get available Web app frameworks and their versions. </summary>
         /// <param name="stackOSType"> Stack OS Type. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public Response<WebAppStackCollection> GetWebAppStacks(ProviderStackOSType? stackOSType = null, CancellationToken cancellationToken = default)
@@ -426,7 +426,7 @@ namespace Azure.ResourceManager.AppService
             return message;
         }
 
-        /// <summary> Description for Get available application frameworks and their versions. </summary>
+        /// <summary> Get available application frameworks and their versions. </summary>
         /// <param name="subscriptionId"> Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). </param>
         /// <param name="osTypeSelected"> The ProviderOSTypeSelected to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -452,7 +452,7 @@ namespace Azure.ResourceManager.AppService
             }
         }
 
-        /// <summary> Description for Get available application frameworks and their versions. </summary>
+        /// <summary> Get available application frameworks and their versions. </summary>
         /// <param name="subscriptionId"> Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). </param>
         /// <param name="osTypeSelected"> The ProviderOSTypeSelected to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -492,7 +492,7 @@ namespace Azure.ResourceManager.AppService
             return message;
         }
 
-        /// <summary> Description for Get available application frameworks and their versions. </summary>
+        /// <summary> Get available application frameworks and their versions. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="osTypeSelected"> The ProviderOSTypeSelected to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -517,7 +517,7 @@ namespace Azure.ResourceManager.AppService
             }
         }
 
-        /// <summary> Description for Get available application frameworks and their versions. </summary>
+        /// <summary> Get available application frameworks and their versions. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="osTypeSelected"> The ProviderOSTypeSelected to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -556,7 +556,7 @@ namespace Azure.ResourceManager.AppService
             return message;
         }
 
-        /// <summary> Description for Get available Function app frameworks and their versions. </summary>
+        /// <summary> Get available Function app frameworks and their versions. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="stackOSType"> Stack OS Type. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -581,7 +581,7 @@ namespace Azure.ResourceManager.AppService
             }
         }
 
-        /// <summary> Description for Get available Function app frameworks and their versions. </summary>
+        /// <summary> Get available Function app frameworks and their versions. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="stackOSType"> Stack OS Type. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -620,7 +620,7 @@ namespace Azure.ResourceManager.AppService
             return message;
         }
 
-        /// <summary> Description for Get available Function app frameworks and their versions for location. </summary>
+        /// <summary> Get available Function app frameworks and their versions for location. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="location"> Function App stack location. </param>
         /// <param name="stackOSType"> Stack OS Type. </param>
@@ -646,7 +646,7 @@ namespace Azure.ResourceManager.AppService
             }
         }
 
-        /// <summary> Description for Get available Function app frameworks and their versions for location. </summary>
+        /// <summary> Get available Function app frameworks and their versions for location. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="location"> Function App stack location. </param>
         /// <param name="stackOSType"> Stack OS Type. </param>
@@ -686,7 +686,7 @@ namespace Azure.ResourceManager.AppService
             return message;
         }
 
-        /// <summary> Description for Get available Web app frameworks and their versions for location. </summary>
+        /// <summary> Get available Web app frameworks and their versions for location. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="location"> Web App stack location. </param>
         /// <param name="stackOSType"> Stack OS Type. </param>
@@ -712,7 +712,7 @@ namespace Azure.ResourceManager.AppService
             }
         }
 
-        /// <summary> Description for Get available Web app frameworks and their versions for location. </summary>
+        /// <summary> Get available Web app frameworks and their versions for location. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="location"> Web App stack location. </param>
         /// <param name="stackOSType"> Stack OS Type. </param>
@@ -752,7 +752,7 @@ namespace Azure.ResourceManager.AppService
             return message;
         }
 
-        /// <summary> Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions. </summary>
+        /// <summary> Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="nextLink"/> is null. </exception>
@@ -776,7 +776,7 @@ namespace Azure.ResourceManager.AppService
             }
         }
 
-        /// <summary> Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions. </summary>
+        /// <summary> Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="nextLink"/> is null. </exception>
@@ -814,7 +814,7 @@ namespace Azure.ResourceManager.AppService
             return message;
         }
 
-        /// <summary> Description for Get available Web app frameworks and their versions. </summary>
+        /// <summary> Get available Web app frameworks and their versions. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="stackOSType"> Stack OS Type. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -839,7 +839,7 @@ namespace Azure.ResourceManager.AppService
             }
         }
 
-        /// <summary> Description for Get available Web app frameworks and their versions. </summary>
+        /// <summary> Get available Web app frameworks and their versions. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="stackOSType"> Stack OS Type. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -878,7 +878,7 @@ namespace Azure.ResourceManager.AppService
             return message;
         }
 
-        /// <summary> Description for Get available application frameworks and their versions. </summary>
+        /// <summary> Get available application frameworks and their versions. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="subscriptionId"> Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). </param>
         /// <param name="osTypeSelected"> The ProviderOSTypeSelected to use. </param>
@@ -906,7 +906,7 @@ namespace Azure.ResourceManager.AppService
             }
         }
 
-        /// <summary> Description for Get available application frameworks and their versions. </summary>
+        /// <summary> Get available application frameworks and their versions. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="subscriptionId"> Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). </param>
         /// <param name="osTypeSelected"> The ProviderOSTypeSelected to use. </param>

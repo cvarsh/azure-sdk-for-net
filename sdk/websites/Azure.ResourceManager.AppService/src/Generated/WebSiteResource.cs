@@ -107,7 +107,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get site detector response
+        /// Get site detector response
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/detectors/{detectorName}
         /// Operation Id: Diagnostics_GetSiteDetectorResponse
         /// </summary>
@@ -125,7 +125,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get site detector response
+        /// Get site detector response
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/detectors/{detectorName}
         /// Operation Id: Diagnostics_GetSiteDetectorResponse
         /// </summary>
@@ -150,7 +150,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a private endpoint connection
+        /// Gets a private endpoint connection
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/privateEndpointConnections/{privateEndpointConnectionName}
         /// Operation Id: WebApps_GetPrivateEndpointConnection
         /// </summary>
@@ -165,7 +165,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a private endpoint connection
+        /// Gets a private endpoint connection
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/privateEndpointConnections/{privateEndpointConnectionName}
         /// Operation Id: WebApps_GetPrivateEndpointConnection
         /// </summary>
@@ -187,7 +187,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
+        /// Retrieves a specific Service Bus Hybrid Connection used by this Web App.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}
         /// Operation Id: WebApps_GetHybridConnection
         /// </summary>
@@ -203,7 +203,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
+        /// Retrieves a specific Service Bus Hybrid Connection used by this Web App.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}
         /// Operation Id: WebApps_GetHybridConnection
         /// </summary>
@@ -226,7 +226,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a virtual network the app (or deployment slot) is connected to by name.
+        /// Gets a virtual network the app (or deployment slot) is connected to by name.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}
         /// Operation Id: WebApps_GetVnetConnection
         /// </summary>
@@ -241,7 +241,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a virtual network the app (or deployment slot) is connected to by name.
+        /// Gets a virtual network the app (or deployment slot) is connected to by name.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}
         /// Operation Id: WebApps_GetVnetConnection
         /// </summary>
@@ -263,7 +263,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get Diagnostics Category
+        /// Get Diagnostics Category
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}
         /// Operation Id: Diagnostics_GetSiteDiagnosticCategory
         /// </summary>
@@ -278,7 +278,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get Diagnostics Category
+        /// Get Diagnostics Category
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}
         /// Operation Id: Diagnostics_GetSiteDiagnosticCategory
         /// </summary>
@@ -300,7 +300,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get a recommendation rule for an app.
+        /// Get a recommendation rule for an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/{name}
         /// Operation Id: Recommendations_GetRuleDetailsByWebApp
         /// </summary>
@@ -317,7 +317,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get a recommendation rule for an app.
+        /// Get a recommendation rule for an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/{name}
         /// Operation Id: Recommendations_GetRuleDetailsByWebApp
         /// </summary>
@@ -348,7 +348,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the details of a web, mobile, or API app.
+        /// Gets the details of a web, mobile, or API app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}
         /// Operation Id: WebApps_GetSlot
         /// </summary>
@@ -363,7 +363,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the details of a web, mobile, or API app.
+        /// Gets the details of a web, mobile, or API app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}
         /// Operation Id: WebApps_GetSlot
         /// </summary>
@@ -385,7 +385,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a backup of an app by its ID.
+        /// Gets a backup of an app by its ID.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}
         /// Operation Id: WebApps_GetBackupStatus
         /// </summary>
@@ -400,7 +400,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a backup of an app by its ID.
+        /// Gets a backup of an app by its ID.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}
         /// Operation Id: WebApps_GetBackupStatus
         /// </summary>
@@ -436,7 +436,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the config reference and status of an app
+        /// Gets the config reference and status of an app
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/configreferences/appsettings/{appSettingKey}
         /// Operation Id: WebApps_GetAppSettingKeyVaultReference
         /// </summary>
@@ -451,7 +451,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the config reference and status of an app
+        /// Gets the config reference and status of an app
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/configreferences/appsettings/{appSettingKey}
         /// Operation Id: WebApps_GetAppSettingKeyVaultReference
         /// </summary>
@@ -473,7 +473,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the config reference and status of an app
+        /// Gets the config reference and status of an app
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/configreferences/connectionstrings/{connectionStringKey}
         /// Operation Id: WebApps_GetSiteConnectionStringKeyVaultReference
         /// </summary>
@@ -488,7 +488,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the config reference and status of an app
+        /// Gets the config reference and status of an app
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/configreferences/connectionstrings/{connectionStringKey}
         /// Operation Id: WebApps_GetSiteConnectionStringKeyVaultReference
         /// </summary>
@@ -531,7 +531,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a continuous web job by its ID for an app, or a deployment slot.
+        /// Gets a continuous web job by its ID for an app, or a deployment slot.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/continuouswebjobs/{webJobName}
         /// Operation Id: WebApps_GetContinuousWebJob
         /// </summary>
@@ -546,7 +546,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a continuous web job by its ID for an app, or a deployment slot.
+        /// Gets a continuous web job by its ID for an app, or a deployment slot.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/continuouswebjobs/{webJobName}
         /// Operation Id: WebApps_GetContinuousWebJob
         /// </summary>
@@ -568,7 +568,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get a deployment by its ID for an app, or a deployment slot.
+        /// Get a deployment by its ID for an app, or a deployment slot.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}
         /// Operation Id: WebApps_GetDeployment
         /// </summary>
@@ -583,7 +583,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get a deployment by its ID for an app, or a deployment slot.
+        /// Get a deployment by its ID for an app, or a deployment slot.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}
         /// Operation Id: WebApps_GetDeployment
         /// </summary>
@@ -605,7 +605,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get domain ownership identifier for web app.
+        /// Get domain ownership identifier for web app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}
         /// Operation Id: WebApps_GetDomainOwnershipIdentifier
         /// </summary>
@@ -620,7 +620,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get domain ownership identifier for web app.
+        /// Get domain ownership identifier for web app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}
         /// Operation Id: WebApps_GetDomainOwnershipIdentifier
         /// </summary>
@@ -649,7 +649,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get function information by its ID for web site, or a deployment slot.
+        /// Get function information by its ID for web site, or a deployment slot.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}
         /// Operation Id: WebApps_GetFunction
         /// </summary>
@@ -664,7 +664,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get function information by its ID for web site, or a deployment slot.
+        /// Get function information by its ID for web site, or a deployment slot.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}
         /// Operation Id: WebApps_GetFunction
         /// </summary>
@@ -686,7 +686,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get the named hostname binding for an app (or deployment slot, if specified).
+        /// Get the named hostname binding for an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings/{hostName}
         /// Operation Id: WebApps_GetHostNameBinding
         /// </summary>
@@ -701,7 +701,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get the named hostname binding for an app (or deployment slot, if specified).
+        /// Get the named hostname binding for an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings/{hostName}
         /// Operation Id: WebApps_GetHostNameBinding
         /// </summary>
@@ -723,7 +723,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a hybrid connection configuration by its name.
+        /// Gets a hybrid connection configuration by its name.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection/{entityName}
         /// Operation Id: WebApps_GetRelayServiceConnection
         /// </summary>
@@ -738,7 +738,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a hybrid connection configuration by its name.
+        /// Gets a hybrid connection configuration by its name.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection/{entityName}
         /// Operation Id: WebApps_GetRelayServiceConnection
         /// </summary>
@@ -760,7 +760,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets all scale-out instances of an app.
+        /// Gets all scale-out instances of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}
         /// Operation Id: WebApps_GetInstanceInfo
         /// </summary>
@@ -775,7 +775,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets all scale-out instances of an app.
+        /// Gets all scale-out instances of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}
         /// Operation Id: WebApps_GetInstanceInfo
         /// </summary>
@@ -797,7 +797,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get process information by its ID for a specific scaled-out instance in a web site.
+        /// Get process information by its ID for a specific scaled-out instance in a web site.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes/{processId}
         /// Operation Id: WebApps_GetProcess
         /// </summary>
@@ -812,7 +812,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get process information by its ID for a specific scaled-out instance in a web site.
+        /// Get process information by its ID for a specific scaled-out instance in a web site.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes/{processId}
         /// Operation Id: WebApps_GetProcess
         /// </summary>
@@ -841,7 +841,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a named add-on of an app.
+        /// Gets a named add-on of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons/{premierAddOnName}
         /// Operation Id: WebApps_GetPremierAddOn
         /// </summary>
@@ -856,7 +856,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a named add-on of an app.
+        /// Gets a named add-on of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons/{premierAddOnName}
         /// Operation Id: WebApps_GetPremierAddOn
         /// </summary>
@@ -885,7 +885,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get the named public certificate for an app (or deployment slot, if specified).
+        /// Get the named public certificate for an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publicCertificates/{publicCertificateName}
         /// Operation Id: WebApps_GetPublicCertificate
         /// </summary>
@@ -900,7 +900,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get the named public certificate for an app (or deployment slot, if specified).
+        /// Get the named public certificate for an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publicCertificates/{publicCertificateName}
         /// Operation Id: WebApps_GetPublicCertificate
         /// </summary>
@@ -922,7 +922,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get site extension information by its ID for a web site, or a deployment slot.
+        /// Get site extension information by its ID for a web site, or a deployment slot.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/siteextensions/{siteExtensionId}
         /// Operation Id: WebApps_GetSiteExtension
         /// </summary>
@@ -937,7 +937,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get site extension information by its ID for a web site, or a deployment slot.
+        /// Get site extension information by its ID for a web site, or a deployment slot.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/siteextensions/{siteExtensionId}
         /// Operation Id: WebApps_GetSiteExtension
         /// </summary>
@@ -966,7 +966,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a triggered web job by its ID for an app, or a deployment slot.
+        /// Gets a triggered web job by its ID for an app, or a deployment slot.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/triggeredwebjobs/{webJobName}
         /// Operation Id: WebApps_GetTriggeredWebJob
         /// </summary>
@@ -981,7 +981,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a triggered web job by its ID for an app, or a deployment slot.
+        /// Gets a triggered web job by its ID for an app, or a deployment slot.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/triggeredwebjobs/{webJobName}
         /// Operation Id: WebApps_GetTriggeredWebJob
         /// </summary>
@@ -1003,7 +1003,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get webjob information for an app, or a deployment slot.
+        /// Get webjob information for an app, or a deployment slot.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/webjobs/{webJobName}
         /// Operation Id: WebApps_GetWebJob
         /// </summary>
@@ -1018,7 +1018,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get webjob information for an app, or a deployment slot.
+        /// Get webjob information for an app, or a deployment slot.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/webjobs/{webJobName}
         /// Operation Id: WebApps_GetWebJob
         /// </summary>
@@ -1033,7 +1033,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the details of a web, mobile, or API app.
+        /// Gets the details of a web, mobile, or API app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}
         /// Operation Id: WebApps_Get
         /// </summary>
@@ -1057,7 +1057,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the details of a web, mobile, or API app.
+        /// Gets the details of a web, mobile, or API app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}
         /// Operation Id: WebApps_Get
         /// </summary>
@@ -1081,7 +1081,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Deletes a web, mobile, or API app, or one of the deployment slots.
+        /// Deletes a web, mobile, or API app, or one of the deployment slots.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}
         /// Operation Id: WebApps_Delete
         /// </summary>
@@ -1109,7 +1109,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Deletes a web, mobile, or API app, or one of the deployment slots.
+        /// Deletes a web, mobile, or API app, or one of the deployment slots.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}
         /// Operation Id: WebApps_Delete
         /// </summary>
@@ -1137,7 +1137,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
+        /// Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}
         /// Operation Id: WebApps_Update
         /// </summary>
@@ -1163,7 +1163,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
+        /// Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}
         /// Operation Id: WebApps_Update
         /// </summary>
@@ -1189,7 +1189,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get past recommendations for an app, optionally specified by the time range.
+        /// Get past recommendations for an app, optionally specified by the time range.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendationHistory
         /// Operation Id: Recommendations_ListHistoryForWebApp
         /// </summary>
@@ -1233,7 +1233,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get past recommendations for an app, optionally specified by the time range.
+        /// Get past recommendations for an app, optionally specified by the time range.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendationHistory
         /// Operation Id: Recommendations_ListHistoryForWebApp
         /// </summary>
@@ -1277,7 +1277,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all recommendations for an app.
+        /// Get all recommendations for an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations
         /// Operation Id: Recommendations_ListRecommendedRulesForWebApp
         /// </summary>
@@ -1321,7 +1321,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get all recommendations for an app.
+        /// Get all recommendations for an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations
         /// Operation Id: Recommendations_ListRecommendedRulesForWebApp
         /// </summary>
@@ -1365,7 +1365,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Disable all recommendations for an app.
+        /// Disable all recommendations for an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/disable
         /// Operation Id: Recommendations_DisableAllForWebApp
         /// </summary>
@@ -1387,7 +1387,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Disable all recommendations for an app.
+        /// Disable all recommendations for an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/disable
         /// Operation Id: Recommendations_DisableAllForWebApp
         /// </summary>
@@ -1409,7 +1409,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Reset all recommendation opt-out settings for an app.
+        /// Reset all recommendation opt-out settings for an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/reset
         /// Operation Id: Recommendations_ResetAllFiltersForWebApp
         /// </summary>
@@ -1431,7 +1431,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Reset all recommendation opt-out settings for an app.
+        /// Reset all recommendation opt-out settings for an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/reset
         /// Operation Id: Recommendations_ResetAllFiltersForWebApp
         /// </summary>
@@ -1453,7 +1453,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Analyze a custom hostname.
+        /// Analyze a custom hostname.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/analyzeCustomHostname
         /// Operation Id: WebApps_AnalyzeCustomHostname
         /// </summary>
@@ -1476,7 +1476,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Analyze a custom hostname.
+        /// Analyze a custom hostname.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/analyzeCustomHostname
         /// Operation Id: WebApps_AnalyzeCustomHostname
         /// </summary>
@@ -1499,7 +1499,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Applies the configuration settings from the target slot onto the current slot.
+        /// Applies the configuration settings from the target slot onto the current slot.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/applySlotConfig
         /// Operation Id: WebApps_ApplySlotConfigToProduction
         /// </summary>
@@ -1525,7 +1525,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Applies the configuration settings from the target slot onto the current slot.
+        /// Applies the configuration settings from the target slot onto the current slot.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/applySlotConfig
         /// Operation Id: WebApps_ApplySlotConfigToProduction
         /// </summary>
@@ -1551,7 +1551,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Creates a backup of an app.
+        /// Creates a backup of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backup
         /// Operation Id: WebApps_Backup
         /// </summary>
@@ -1577,7 +1577,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Creates a backup of an app.
+        /// Creates a backup of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backup
         /// Operation Id: WebApps_Backup
         /// </summary>
@@ -1603,7 +1603,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for List the configurations of an app
+        /// List the configurations of an app
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config
         /// Operation Id: WebApps_ListConfigurations
         /// </summary>
@@ -1645,7 +1645,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for List the configurations of an app
+        /// List the configurations of an app
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config
         /// Operation Id: WebApps_ListConfigurations
         /// </summary>
@@ -1687,7 +1687,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Replaces the application settings of an app.
+        /// Replaces the application settings of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/appsettings
         /// Operation Id: WebApps_UpdateApplicationSettings
         /// </summary>
@@ -1713,7 +1713,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Replaces the application settings of an app.
+        /// Replaces the application settings of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/appsettings
         /// Operation Id: WebApps_UpdateApplicationSettings
         /// </summary>
@@ -1739,7 +1739,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the application settings of an app.
+        /// Gets the application settings of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/appsettings/list
         /// Operation Id: WebApps_ListApplicationSettings
         /// </summary>
@@ -1761,7 +1761,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the application settings of an app.
+        /// Gets the application settings of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/appsettings/list
         /// Operation Id: WebApps_ListApplicationSettings
         /// </summary>
@@ -1783,7 +1783,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Updates the Authentication / Authorization settings associated with web app.
+        /// Updates the Authentication / Authorization settings associated with web app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettings
         /// Operation Id: WebApps_UpdateAuthSettings
         /// </summary>
@@ -1809,7 +1809,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Updates the Authentication / Authorization settings associated with web app.
+        /// Updates the Authentication / Authorization settings associated with web app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettings
         /// Operation Id: WebApps_UpdateAuthSettings
         /// </summary>
@@ -1835,7 +1835,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the Authentication/Authorization settings of an app.
+        /// Gets the Authentication/Authorization settings of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettings/list
         /// Operation Id: WebApps_GetAuthSettings
         /// </summary>
@@ -1857,7 +1857,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the Authentication/Authorization settings of an app.
+        /// Gets the Authentication/Authorization settings of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettings/list
         /// Operation Id: WebApps_GetAuthSettings
         /// </summary>
@@ -1879,7 +1879,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Updates site&apos;s Authentication / Authorization settings for apps via the V2 format
+        /// Updates site&apos;s Authentication / Authorization settings for apps via the V2 format
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettingsV2
         /// Operation Id: WebApps_UpdateAuthSettingsV2
         /// </summary>
@@ -1905,7 +1905,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Updates site&apos;s Authentication / Authorization settings for apps via the V2 format
+        /// Updates site&apos;s Authentication / Authorization settings for apps via the V2 format
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettingsV2
         /// Operation Id: WebApps_UpdateAuthSettingsV2
         /// </summary>
@@ -1931,7 +1931,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets site&apos;s Authentication / Authorization settings for apps via the V2 format
+        /// Gets site&apos;s Authentication / Authorization settings for apps via the V2 format
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettingsV2/list
         /// Operation Id: WebApps_GetAuthSettingsV2
         /// </summary>
@@ -1953,7 +1953,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets site&apos;s Authentication / Authorization settings for apps via the V2 format
+        /// Gets site&apos;s Authentication / Authorization settings for apps via the V2 format
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettingsV2/list
         /// Operation Id: WebApps_GetAuthSettingsV2
         /// </summary>
@@ -1975,7 +1975,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Updates the Azure storage account configurations of an app.
+        /// Updates the Azure storage account configurations of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/azurestorageaccounts
         /// Operation Id: WebApps_UpdateAzureStorageAccounts
         /// </summary>
@@ -2001,7 +2001,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Updates the Azure storage account configurations of an app.
+        /// Updates the Azure storage account configurations of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/azurestorageaccounts
         /// Operation Id: WebApps_UpdateAzureStorageAccounts
         /// </summary>
@@ -2027,7 +2027,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the Azure storage account configurations of an app.
+        /// Gets the Azure storage account configurations of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/azurestorageaccounts/list
         /// Operation Id: WebApps_ListAzureStorageAccounts
         /// </summary>
@@ -2049,7 +2049,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the Azure storage account configurations of an app.
+        /// Gets the Azure storage account configurations of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/azurestorageaccounts/list
         /// Operation Id: WebApps_ListAzureStorageAccounts
         /// </summary>
@@ -2071,7 +2071,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Updates the backup configuration of an app.
+        /// Updates the backup configuration of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup
         /// Operation Id: WebApps_UpdateBackupConfiguration
         /// </summary>
@@ -2097,7 +2097,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Updates the backup configuration of an app.
+        /// Updates the backup configuration of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup
         /// Operation Id: WebApps_UpdateBackupConfiguration
         /// </summary>
@@ -2123,7 +2123,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Deletes the backup configuration of an app.
+        /// Deletes the backup configuration of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup
         /// Operation Id: WebApps_DeleteBackupConfiguration
         /// </summary>
@@ -2145,7 +2145,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Deletes the backup configuration of an app.
+        /// Deletes the backup configuration of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup
         /// Operation Id: WebApps_DeleteBackupConfiguration
         /// </summary>
@@ -2167,7 +2167,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the backup configuration of an app.
+        /// Gets the backup configuration of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup/list
         /// Operation Id: WebApps_GetBackupConfiguration
         /// </summary>
@@ -2189,7 +2189,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the backup configuration of an app.
+        /// Gets the backup configuration of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup/list
         /// Operation Id: WebApps_GetBackupConfiguration
         /// </summary>
@@ -2211,7 +2211,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Replaces the connection strings of an app.
+        /// Replaces the connection strings of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/connectionstrings
         /// Operation Id: WebApps_UpdateConnectionStrings
         /// </summary>
@@ -2237,7 +2237,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Replaces the connection strings of an app.
+        /// Replaces the connection strings of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/connectionstrings
         /// Operation Id: WebApps_UpdateConnectionStrings
         /// </summary>
@@ -2263,7 +2263,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the connection strings of an app.
+        /// Gets the connection strings of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/connectionstrings/list
         /// Operation Id: WebApps_ListConnectionStrings
         /// </summary>
@@ -2285,7 +2285,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the connection strings of an app.
+        /// Gets the connection strings of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/connectionstrings/list
         /// Operation Id: WebApps_ListConnectionStrings
         /// </summary>
@@ -2307,7 +2307,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Replaces the metadata of an app.
+        /// Replaces the metadata of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/metadata
         /// Operation Id: WebApps_UpdateMetadata
         /// </summary>
@@ -2333,7 +2333,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Replaces the metadata of an app.
+        /// Replaces the metadata of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/metadata
         /// Operation Id: WebApps_UpdateMetadata
         /// </summary>
@@ -2359,7 +2359,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the metadata of an app.
+        /// Gets the metadata of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/metadata/list
         /// Operation Id: WebApps_ListMetadata
         /// </summary>
@@ -2381,7 +2381,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the metadata of an app.
+        /// Gets the metadata of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/metadata/list
         /// Operation Id: WebApps_ListMetadata
         /// </summary>
@@ -2403,7 +2403,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the Git/FTP publishing credentials of an app.
+        /// Gets the Git/FTP publishing credentials of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/publishingcredentials/list
         /// Operation Id: WebApps_ListPublishingCredentials
         /// </summary>
@@ -2429,7 +2429,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the Git/FTP publishing credentials of an app.
+        /// Gets the Git/FTP publishing credentials of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/publishingcredentials/list
         /// Operation Id: WebApps_ListPublishingCredentials
         /// </summary>
@@ -2455,7 +2455,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Updates the Push settings associated with web app.
+        /// Updates the Push settings associated with web app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/pushsettings
         /// Operation Id: WebApps_UpdateSitePushSettings
         /// </summary>
@@ -2481,7 +2481,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Updates the Push settings associated with web app.
+        /// Updates the Push settings associated with web app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/pushsettings
         /// Operation Id: WebApps_UpdateSitePushSettings
         /// </summary>
@@ -2507,7 +2507,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the Push settings associated with web app.
+        /// Gets the Push settings associated with web app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/pushsettings/list
         /// Operation Id: WebApps_ListSitePushSettings
         /// </summary>
@@ -2529,7 +2529,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the Push settings associated with web app.
+        /// Gets the Push settings associated with web app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/pushsettings/list
         /// Operation Id: WebApps_ListSitePushSettings
         /// </summary>
@@ -2551,7 +2551,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the last lines of docker logs for the given site
+        /// Gets the last lines of docker logs for the given site
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/containerlogs
         /// Operation Id: WebApps_GetWebSiteContainerLogs
         /// </summary>
@@ -2573,7 +2573,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the last lines of docker logs for the given site
+        /// Gets the last lines of docker logs for the given site
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/containerlogs
         /// Operation Id: WebApps_GetWebSiteContainerLogs
         /// </summary>
@@ -2595,7 +2595,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the ZIP archived docker log files for the given site
+        /// Gets the ZIP archived docker log files for the given site
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/containerlogs/zip/download
         /// Operation Id: WebApps_GetContainerLogsZip
         /// </summary>
@@ -2617,7 +2617,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the ZIP archived docker log files for the given site
+        /// Gets the ZIP archived docker log files for the given site
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/containerlogs/zip/download
         /// Operation Id: WebApps_GetContainerLogsZip
         /// </summary>
@@ -2639,7 +2639,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+        /// Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/discoverbackup
         /// Operation Id: WebApps_DiscoverBackup
         /// </summary>
@@ -2665,7 +2665,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+        /// Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/discoverbackup
         /// Operation Id: WebApps_DiscoverBackup
         /// </summary>
@@ -2691,7 +2691,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Fetch a short lived token that can be exchanged for a master key.
+        /// Fetch a short lived token that can be exchanged for a master key.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/admin/token
         /// Operation Id: WebApps_GetFunctionsAdminToken
         /// </summary>
@@ -2713,7 +2713,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Fetch a short lived token that can be exchanged for a master key.
+        /// Fetch a short lived token that can be exchanged for a master key.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/admin/token
         /// Operation Id: WebApps_GetFunctionsAdminToken
         /// </summary>
@@ -2735,7 +2735,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get host secrets for a function app.
+        /// Get host secrets for a function app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/listkeys
         /// Operation Id: WebApps_ListHostKeys
         /// </summary>
@@ -2757,7 +2757,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get host secrets for a function app.
+        /// Get host secrets for a function app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/listkeys
         /// Operation Id: WebApps_ListHostKeys
         /// </summary>
@@ -2779,7 +2779,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for This is to allow calling via powershell and ARM template.
+        /// This is to allow calling via powershell and ARM template.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/listsyncstatus
         /// Operation Id: WebApps_ListSyncStatus
         /// </summary>
@@ -2801,7 +2801,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for This is to allow calling via powershell and ARM template.
+        /// This is to allow calling via powershell and ARM template.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/listsyncstatus
         /// Operation Id: WebApps_ListSyncStatus
         /// </summary>
@@ -2823,7 +2823,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Syncs function trigger metadata to the management database
+        /// Syncs function trigger metadata to the management database
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/sync
         /// Operation Id: WebApps_SyncFunctions
         /// </summary>
@@ -2845,7 +2845,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Syncs function trigger metadata to the management database
+        /// Syncs function trigger metadata to the management database
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/sync
         /// Operation Id: WebApps_SyncFunctions
         /// </summary>
@@ -2867,7 +2867,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Add or update a host level secret.
+        /// Add or update a host level secret.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/{keyType}/{keyName}
         /// Operation Id: WebApps_CreateOrUpdateHostSecret
         /// </summary>
@@ -2898,7 +2898,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Add or update a host level secret.
+        /// Add or update a host level secret.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/{keyType}/{keyName}
         /// Operation Id: WebApps_CreateOrUpdateHostSecret
         /// </summary>
@@ -2929,7 +2929,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Delete a host level secret.
+        /// Delete a host level secret.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/{keyType}/{keyName}
         /// Operation Id: WebApps_DeleteHostSecret
         /// </summary>
@@ -2958,7 +2958,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Delete a host level secret.
+        /// Delete a host level secret.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/{keyType}/{keyName}
         /// Operation Id: WebApps_DeleteHostSecret
         /// </summary>
@@ -2987,7 +2987,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Retrieves all Service Bus Hybrid Connections used by this Web App.
+        /// Retrieves all Service Bus Hybrid Connections used by this Web App.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridConnectionRelays
         /// Operation Id: WebApps_ListHybridConnections
         /// </summary>
@@ -3009,7 +3009,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Retrieves all Service Bus Hybrid Connections used by this Web App.
+        /// Retrieves all Service Bus Hybrid Connections used by this Web App.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridConnectionRelays
         /// Operation Id: WebApps_ListHybridConnections
         /// </summary>
@@ -3031,7 +3031,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets hybrid connections configured for an app (or deployment slot, if specified).
+        /// Gets hybrid connections configured for an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection
         /// Operation Id: WebApps_ListRelayServiceConnections
         /// </summary>
@@ -3053,7 +3053,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets hybrid connections configured for an app (or deployment slot, if specified).
+        /// Gets hybrid connections configured for an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection
         /// Operation Id: WebApps_ListRelayServiceConnections
         /// </summary>
@@ -3075,7 +3075,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Shows whether an app can be cloned to another resource group or subscription.
+        /// Shows whether an app can be cloned to another resource group or subscription.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/iscloneable
         /// Operation Id: WebApps_IsCloneable
         /// </summary>
@@ -3097,7 +3097,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Shows whether an app can be cloned to another resource group or subscription.
+        /// Shows whether an app can be cloned to another resource group or subscription.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/iscloneable
         /// Operation Id: WebApps_IsCloneable
         /// </summary>
@@ -3119,7 +3119,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets existing backups of an app.
+        /// Gets existing backups of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/listbackups
         /// Operation Id: WebApps_ListSiteBackups
         /// </summary>
@@ -3161,7 +3161,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets existing backups of an app.
+        /// Gets existing backups of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/listbackups
         /// Operation Id: WebApps_ListSiteBackups
         /// </summary>
@@ -3203,7 +3203,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for This is to allow calling via powershell and ARM template.
+        /// This is to allow calling via powershell and ARM template.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/listsyncfunctiontriggerstatus
         /// Operation Id: WebApps_ListSyncFunctionTriggers
         /// </summary>
@@ -3225,7 +3225,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for This is to allow calling via powershell and ARM template.
+        /// This is to allow calling via powershell and ARM template.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/listsyncfunctiontriggerstatus
         /// Operation Id: WebApps_ListSyncFunctionTriggers
         /// </summary>
@@ -3247,7 +3247,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Restores a web app.
+        /// Restores a web app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migrate
         /// Operation Id: WebApps_MigrateStorage
         /// </summary>
@@ -3279,7 +3279,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Restores a web app.
+        /// Restores a web app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migrate
         /// Operation Id: WebApps_MigrateStorage
         /// </summary>
@@ -3311,7 +3311,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Migrates a local (in-app) MySql database to a remote MySql database.
+        /// Migrates a local (in-app) MySql database to a remote MySql database.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migratemysql
         /// Operation Id: WebApps_MigrateMySql
         /// </summary>
@@ -3341,7 +3341,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Migrates a local (in-app) MySql database to a remote MySql database.
+        /// Migrates a local (in-app) MySql database to a remote MySql database.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migratemysql
         /// Operation Id: WebApps_MigrateMySql
         /// </summary>
@@ -3371,7 +3371,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled
+        /// Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migratemysql/status
         /// Operation Id: WebApps_GetMigrateMySqlStatus
         /// </summary>
@@ -3393,7 +3393,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled
+        /// Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migratemysql/status
         /// Operation Id: WebApps_GetMigrateMySqlStatus
         /// </summary>
@@ -3415,7 +3415,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets all network features used by the app (or deployment slot, if specified).
+        /// Gets all network features used by the app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkFeatures/{view}
         /// Operation Id: WebApps_ListNetworkFeatures
         /// </summary>
@@ -3442,7 +3442,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets all network features used by the app (or deployment slot, if specified).
+        /// Gets all network features used by the app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkFeatures/{view}
         /// Operation Id: WebApps_ListNetworkFeatures
         /// </summary>
@@ -3469,7 +3469,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
+        /// Gets a named operation for a network trace capturing (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/operationresults/{operationId}
         /// Operation Id: WebApps_GetNetworkTraceOperation
         /// </summary>
@@ -3501,7 +3501,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
+        /// Gets a named operation for a network trace capturing (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/operationresults/{operationId}
         /// Operation Id: WebApps_GetNetworkTraceOperation
         /// </summary>
@@ -3533,7 +3533,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Start capturing network packets for the site (To be deprecated).
+        /// Start capturing network packets for the site (To be deprecated).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/start
         /// Operation Id: WebApps_StartWebSiteNetworkTrace
         /// </summary>
@@ -3558,7 +3558,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Start capturing network packets for the site (To be deprecated).
+        /// Start capturing network packets for the site (To be deprecated).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/start
         /// Operation Id: WebApps_StartWebSiteNetworkTrace
         /// </summary>
@@ -3583,7 +3583,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Start capturing network packets for the site.
+        /// Start capturing network packets for the site.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/startOperation
         /// Operation Id: WebApps_StartWebSiteNetworkTraceOperation
         /// </summary>
@@ -3612,7 +3612,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Start capturing network packets for the site.
+        /// Start capturing network packets for the site.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/startOperation
         /// Operation Id: WebApps_StartWebSiteNetworkTraceOperation
         /// </summary>
@@ -3641,7 +3641,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Stop ongoing capturing network packets for the site.
+        /// Stop ongoing capturing network packets for the site.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/stop
         /// Operation Id: WebApps_StopWebSiteNetworkTrace
         /// </summary>
@@ -3663,7 +3663,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Stop ongoing capturing network packets for the site.
+        /// Stop ongoing capturing network packets for the site.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/stop
         /// Operation Id: WebApps_StopWebSiteNetworkTrace
         /// </summary>
@@ -3685,7 +3685,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
+        /// Gets a named operation for a network trace capturing (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/{operationId}
         /// Operation Id: WebApps_GetNetworkTraces
         /// </summary>
@@ -3717,7 +3717,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
+        /// Gets a named operation for a network trace capturing (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/{operationId}
         /// Operation Id: WebApps_GetNetworkTraces
         /// </summary>
@@ -3749,7 +3749,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
+        /// Gets a named operation for a network trace capturing (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTraces/current/operationresults/{operationId}
         /// Operation Id: WebApps_GetNetworkTraceOperationV2
         /// </summary>
@@ -3781,7 +3781,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
+        /// Gets a named operation for a network trace capturing (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTraces/current/operationresults/{operationId}
         /// Operation Id: WebApps_GetNetworkTraceOperationV2
         /// </summary>
@@ -3813,7 +3813,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
+        /// Gets a named operation for a network trace capturing (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTraces/{operationId}
         /// Operation Id: WebApps_GetNetworkTracesV2
         /// </summary>
@@ -3845,7 +3845,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
+        /// Gets a named operation for a network trace capturing (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTraces/{operationId}
         /// Operation Id: WebApps_GetNetworkTracesV2
         /// </summary>
@@ -3877,7 +3877,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Generates a new publishing password for an app (or deployment slot, if specified).
+        /// Generates a new publishing password for an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/newpassword
         /// Operation Id: WebApps_GenerateNewSitePublishingPassword
         /// </summary>
@@ -3899,7 +3899,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Generates a new publishing password for an app (or deployment slot, if specified).
+        /// Generates a new publishing password for an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/newpassword
         /// Operation Id: WebApps_GenerateNewSitePublishingPassword
         /// </summary>
@@ -3921,7 +3921,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets perfmon counters for web app.
+        /// Gets perfmon counters for web app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/perfcounters
         /// Operation Id: WebApps_ListPerfMonCounters
         /// </summary>
@@ -3964,7 +3964,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets perfmon counters for web app.
+        /// Gets perfmon counters for web app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/perfcounters
         /// Operation Id: WebApps_ListPerfMonCounters
         /// </summary>
@@ -4007,7 +4007,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets web app&apos;s event logs.
+        /// Gets web app&apos;s event logs.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/phplogging
         /// Operation Id: WebApps_GetSitePhpErrorLogFlag
         /// </summary>
@@ -4029,7 +4029,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets web app&apos;s event logs.
+        /// Gets web app&apos;s event logs.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/phplogging
         /// Operation Id: WebApps_GetSitePhpErrorLogFlag
         /// </summary>
@@ -4051,7 +4051,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the premier add-ons of an app.
+        /// Gets the premier add-ons of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons
         /// Operation Id: WebApps_ListPremierAddOns
         /// </summary>
@@ -4073,7 +4073,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the premier add-ons of an app.
+        /// Gets the premier add-ons of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons
         /// Operation Id: WebApps_ListPremierAddOns
         /// </summary>
@@ -4095,7 +4095,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the private link resources
+        /// Gets the private link resources
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/privateLinkResources
         /// Operation Id: WebApps_GetPrivateLinkResources
         /// </summary>
@@ -4122,7 +4122,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the private link resources
+        /// Gets the private link resources
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/privateLinkResources
         /// Operation Id: WebApps_GetPrivateLinkResources
         /// </summary>
@@ -4149,7 +4149,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the publishing profile for an app (or deployment slot, if specified).
+        /// Gets the publishing profile for an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publishxml
         /// Operation Id: WebApps_ListPublishingProfileXmlWithSecrets
         /// </summary>
@@ -4175,7 +4175,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the publishing profile for an app (or deployment slot, if specified).
+        /// Gets the publishing profile for an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publishxml
         /// Operation Id: WebApps_ListPublishingProfileXmlWithSecrets
         /// </summary>
@@ -4201,7 +4201,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Resets the configuration settings of the current slot if they were previously modified by calling the API with POST.
+        /// Resets the configuration settings of the current slot if they were previously modified by calling the API with POST.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/resetSlotConfig
         /// Operation Id: WebApps_ResetProductionSlotConfig
         /// </summary>
@@ -4223,7 +4223,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Resets the configuration settings of the current slot if they were previously modified by calling the API with POST.
+        /// Resets the configuration settings of the current slot if they were previously modified by calling the API with POST.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/resetSlotConfig
         /// Operation Id: WebApps_ResetProductionSlotConfig
         /// </summary>
@@ -4245,7 +4245,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Restarts an app (or deployment slot, if specified).
+        /// Restarts an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restart
         /// Operation Id: WebApps_Restart
         /// </summary>
@@ -4269,7 +4269,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Restarts an app (or deployment slot, if specified).
+        /// Restarts an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restart
         /// Operation Id: WebApps_Restart
         /// </summary>
@@ -4293,7 +4293,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Restores an app from a backup blob in Azure Storage.
+        /// Restores an app from a backup blob in Azure Storage.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restoreFromBackupBlob
         /// Operation Id: WebApps_RestoreFromBackupBlob
         /// </summary>
@@ -4323,7 +4323,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Restores an app from a backup blob in Azure Storage.
+        /// Restores an app from a backup blob in Azure Storage.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restoreFromBackupBlob
         /// Operation Id: WebApps_RestoreFromBackupBlob
         /// </summary>
@@ -4353,7 +4353,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Restores a deleted web app to this web app.
+        /// Restores a deleted web app to this web app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restoreFromDeletedApp
         /// Operation Id: WebApps_RestoreFromDeletedApp
         /// </summary>
@@ -4383,7 +4383,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Restores a deleted web app to this web app.
+        /// Restores a deleted web app to this web app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restoreFromDeletedApp
         /// Operation Id: WebApps_RestoreFromDeletedApp
         /// </summary>
@@ -4413,7 +4413,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Restores a web app from a snapshot.
+        /// Restores a web app from a snapshot.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restoreSnapshot
         /// Operation Id: WebApps_RestoreSnapshot
         /// </summary>
@@ -4443,7 +4443,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Restores a web app from a snapshot.
+        /// Restores a web app from a snapshot.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restoreSnapshot
         /// Operation Id: WebApps_RestoreSnapshot
         /// </summary>
@@ -4473,7 +4473,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get the difference in configuration settings between two web app slots.
+        /// Get the difference in configuration settings between two web app slots.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsdiffs
         /// Operation Id: WebApps_ListSlotDifferencesFromProduction
         /// </summary>
@@ -4519,7 +4519,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Get the difference in configuration settings between two web app slots.
+        /// Get the difference in configuration settings between two web app slots.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsdiffs
         /// Operation Id: WebApps_ListSlotDifferencesFromProduction
         /// </summary>
@@ -4565,7 +4565,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Swaps two deployment slots of an app.
+        /// Swaps two deployment slots of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsswap
         /// Operation Id: WebApps_SwapSlotWithProduction
         /// </summary>
@@ -4595,7 +4595,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Swaps two deployment slots of an app.
+        /// Swaps two deployment slots of an app.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsswap
         /// Operation Id: WebApps_SwapSlotWithProduction
         /// </summary>
@@ -4625,7 +4625,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Returns all Snapshots to the user.
+        /// Returns all Snapshots to the user.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshots
         /// Operation Id: WebApps_ListSnapshots
         /// </summary>
@@ -4667,7 +4667,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Returns all Snapshots to the user.
+        /// Returns all Snapshots to the user.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshots
         /// Operation Id: WebApps_ListSnapshots
         /// </summary>
@@ -4709,7 +4709,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Returns all Snapshots to the user from DRSecondary endpoint.
+        /// Returns all Snapshots to the user from DRSecondary endpoint.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshotsdr
         /// Operation Id: WebApps_ListSnapshotsFromDRSecondary
         /// </summary>
@@ -4751,7 +4751,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Returns all Snapshots to the user from DRSecondary endpoint.
+        /// Returns all Snapshots to the user from DRSecondary endpoint.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshotsdr
         /// Operation Id: WebApps_ListSnapshotsFromDRSecondary
         /// </summary>
@@ -4793,7 +4793,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Starts an app (or deployment slot, if specified).
+        /// Starts an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/start
         /// Operation Id: WebApps_Start
         /// </summary>
@@ -4815,7 +4815,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Starts an app (or deployment slot, if specified).
+        /// Starts an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/start
         /// Operation Id: WebApps_Start
         /// </summary>
@@ -4837,7 +4837,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Start capturing network packets for the site.
+        /// Start capturing network packets for the site.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/startNetworkTrace
         /// Operation Id: WebApps_StartNetworkTrace
         /// </summary>
@@ -4866,7 +4866,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Start capturing network packets for the site.
+        /// Start capturing network packets for the site.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/startNetworkTrace
         /// Operation Id: WebApps_StartNetworkTrace
         /// </summary>
@@ -4895,7 +4895,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Stops an app (or deployment slot, if specified).
+        /// Stops an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/stop
         /// Operation Id: WebApps_Stop
         /// </summary>
@@ -4917,7 +4917,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Stops an app (or deployment slot, if specified).
+        /// Stops an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/stop
         /// Operation Id: WebApps_Stop
         /// </summary>
@@ -4939,7 +4939,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Stop ongoing capturing network packets for the site.
+        /// Stop ongoing capturing network packets for the site.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/stopNetworkTrace
         /// Operation Id: WebApps_StopNetworkTrace
         /// </summary>
@@ -4961,7 +4961,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Stop ongoing capturing network packets for the site.
+        /// Stop ongoing capturing network packets for the site.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/stopNetworkTrace
         /// Operation Id: WebApps_StopNetworkTrace
         /// </summary>
@@ -4983,7 +4983,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Sync web app repository.
+        /// Sync web app repository.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sync
         /// Operation Id: WebApps_SyncRepository
         /// </summary>
@@ -5005,7 +5005,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Sync web app repository.
+        /// Sync web app repository.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sync
         /// Operation Id: WebApps_SyncRepository
         /// </summary>
@@ -5027,7 +5027,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Syncs function trigger metadata to the management database
+        /// Syncs function trigger metadata to the management database
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/syncfunctiontriggers
         /// Operation Id: WebApps_SyncFunctionTriggers
         /// </summary>
@@ -5049,7 +5049,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Syncs function trigger metadata to the management database
+        /// Syncs function trigger metadata to the management database
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/syncfunctiontriggers
         /// Operation Id: WebApps_SyncFunctionTriggers
         /// </summary>
@@ -5071,7 +5071,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the quota usage information of an app (or deployment slot, if specified).
+        /// Gets the quota usage information of an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/usages
         /// Operation Id: WebApps_ListUsages
         /// </summary>
@@ -5114,7 +5114,7 @@ namespace Azure.ResourceManager.AppService
         }
 
         /// <summary>
-        /// Description for Gets the quota usage information of an app (or deployment slot, if specified).
+        /// Gets the quota usage information of an app (or deployment slot, if specified).
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/usages
         /// Operation Id: WebApps_ListUsages
         /// </summary>
