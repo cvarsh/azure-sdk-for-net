@@ -165,6 +165,7 @@ namespace Azure.ResourceManager.EventHubs
             {
                 case 200:
                 case 201:
+                case 202:
                     {
                         EventHubsPrivateEndpointConnectionData value = default;
                         using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
@@ -199,6 +200,7 @@ namespace Azure.ResourceManager.EventHubs
             {
                 case 200:
                 case 201:
+                case 202:
                     {
                         EventHubsPrivateEndpointConnectionData value = default;
                         using var document = JsonDocument.Parse(message.Response.ContentStream);
