@@ -71,7 +71,7 @@ namespace Azure.ResourceManager.AppConfiguration
         }
 
         /// <summary>
-        /// Lists the configuration stores for a given subscription.
+        /// Lists the configuration stores for given subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/configurationStores
         /// Operation Id: ConfigurationStores_List
         /// </summary>
@@ -85,7 +85,7 @@ namespace Azure.ResourceManager.AppConfiguration
         }
 
         /// <summary>
-        /// Lists the configuration stores for a given subscription.
+        /// Lists the configuration stores for given subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/configurationStores
         /// Operation Id: ConfigurationStores_List
         /// </summary>
