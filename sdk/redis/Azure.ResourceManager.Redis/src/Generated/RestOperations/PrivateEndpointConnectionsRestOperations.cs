@@ -251,6 +251,7 @@ namespace Azure.ResourceManager.Redis
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
+                case 200:
                 case 201:
                     return message.Response;
                 default:
@@ -279,6 +280,7 @@ namespace Azure.ResourceManager.Redis
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
+                case 200:
                 case 201:
                     return message.Response;
                 default:
