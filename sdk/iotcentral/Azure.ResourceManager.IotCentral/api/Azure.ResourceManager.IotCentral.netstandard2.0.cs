@@ -253,6 +253,7 @@ namespace Azure.ResourceManager.IotCentral.Models
     public partial class IotCentralNetworkRuleSetIPRule
     {
         public IotCentralNetworkRuleSetIPRule() { }
+        public Azure.ResourceManager.IotCentral.Models.IPRuleAction? Action { get { throw null; } }
         public string FilterName { get { throw null; } set { } }
         public string IPMask { get { throw null; } set { } }
     }
@@ -348,6 +349,23 @@ namespace Azure.ResourceManager.IotCentral.Models
         public static bool operator ==(Azure.ResourceManager.IotCentral.Models.IotCentralPublicNetworkAccess left, Azure.ResourceManager.IotCentral.Models.IotCentralPublicNetworkAccess right) { throw null; }
         public static implicit operator Azure.ResourceManager.IotCentral.Models.IotCentralPublicNetworkAccess (string value) { throw null; }
         public static bool operator !=(Azure.ResourceManager.IotCentral.Models.IotCentralPublicNetworkAccess left, Azure.ResourceManager.IotCentral.Models.IotCentralPublicNetworkAccess right) { throw null; }
+        public override string ToString() { throw null; }
+    }
+    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    public readonly partial struct IPRuleAction : System.IEquatable<Azure.ResourceManager.IotCentral.Models.IPRuleAction>
+    {
+        private readonly object _dummy;
+        private readonly int _dummyPrimitive;
+        public IPRuleAction(string value) { throw null; }
+        public static Azure.ResourceManager.IotCentral.Models.IPRuleAction Allow { get { throw null; } }
+        public bool Equals(Azure.ResourceManager.IotCentral.Models.IPRuleAction other) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override bool Equals(object obj) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override int GetHashCode() { throw null; }
+        public static bool operator ==(Azure.ResourceManager.IotCentral.Models.IPRuleAction left, Azure.ResourceManager.IotCentral.Models.IPRuleAction right) { throw null; }
+        public static implicit operator Azure.ResourceManager.IotCentral.Models.IPRuleAction (string value) { throw null; }
+        public static bool operator !=(Azure.ResourceManager.IotCentral.Models.IPRuleAction left, Azure.ResourceManager.IotCentral.Models.IPRuleAction right) { throw null; }
         public override string ToString() { throw null; }
     }
 }
