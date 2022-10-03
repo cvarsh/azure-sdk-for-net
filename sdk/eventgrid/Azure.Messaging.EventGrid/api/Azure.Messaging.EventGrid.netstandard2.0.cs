@@ -85,6 +85,17 @@ namespace Azure.Messaging.EventGrid
         public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementProductCreatedEventData ApiManagementProductCreatedEventData(string resourceUri = null) { throw null; }
         public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementProductDeletedEventData ApiManagementProductDeletedEventData(string resourceUri = null) { throw null; }
         public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementProductUpdatedEventData ApiManagementProductUpdatedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementSelfHostedGatewayApiAddedEventData ApiManagementSelfHostedGatewayApiAddedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementSelfHostedGatewayApiRemovedEventData ApiManagementSelfHostedGatewayApiRemovedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementSelfHostedGatewayCertificateAuthorityCreatedEventData ApiManagementSelfHostedGatewayCertificateAuthorityCreatedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementSelfHostedGatewayCertificateAuthorityDeletedEventData ApiManagementSelfHostedGatewayCertificateAuthorityDeletedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementSelfHostedGatewayCertificateAuthorityUpdatedEventData ApiManagementSelfHostedGatewayCertificateAuthorityUpdatedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementSelfHostedGatewayCreatedEventData ApiManagementSelfHostedGatewayCreatedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementSelfHostedGatewayDeletedEventData ApiManagementSelfHostedGatewayDeletedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementSelfHostedGatewayHostnameConfigurationCreatedEventData ApiManagementSelfHostedGatewayHostnameConfigurationCreatedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementSelfHostedGatewayHostnameConfigurationDeletedEventData ApiManagementSelfHostedGatewayHostnameConfigurationDeletedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementSelfHostedGatewayHostnameConfigurationUpdatedEventData ApiManagementSelfHostedGatewayHostnameConfigurationUpdatedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementSelfHostedGatewayUpdatedEventData ApiManagementSelfHostedGatewayUpdatedEventData(string resourceUri = null) { throw null; }
         public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementSubscriptionCreatedEventData ApiManagementSubscriptionCreatedEventData(string resourceUri = null) { throw null; }
         public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementSubscriptionDeletedEventData ApiManagementSubscriptionDeletedEventData(string resourceUri = null) { throw null; }
         public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementSubscriptionUpdatedEventData ApiManagementSubscriptionUpdatedEventData(string resourceUri = null) { throw null; }
@@ -303,6 +314,17 @@ namespace Azure.Messaging.EventGrid
         public const string ApiManagementProductCreated = "Microsoft.ApiManagement.ProductCreated";
         public const string ApiManagementProductDeleted = "Microsoft.ApiManagement.ProductDeleted";
         public const string ApiManagementProductUpdated = "Microsoft.ApiManagement.ProductUpdated";
+        public const string ApiManagementSelfHostedGatewayApiAdded = "Microsoft.ApiManagement.SelfHostedGateway";
+        public const string ApiManagementSelfHostedGatewayApiRemoved = "Microsoft.ApiManagement.SelfHostedGateway";
+        public const string ApiManagementSelfHostedGatewayCertificateAuthorityCreated = "Microsoft.ApiManagement.SelfHostedGateway";
+        public const string ApiManagementSelfHostedGatewayCertificateAuthorityDeleted = "Microsoft.ApiManagement.SelfHostedGateway";
+        public const string ApiManagementSelfHostedGatewayCertificateAuthorityUpdated = "Microsoft.ApiManagement.SelfHostedGateway";
+        public const string ApiManagementSelfHostedGatewayCreated = "Microsoft.ApiManagement.SelfHostedGateway";
+        public const string ApiManagementSelfHostedGatewayDeleted = "Microsoft.ApiManagement.SelfHostedGateway";
+        public const string ApiManagementSelfHostedGatewayHostnameConfigurationCreated = "Microsoft.ApiManagement.SelfHostedGateway";
+        public const string ApiManagementSelfHostedGatewayHostnameConfigurationDeleted = "Microsoft.ApiManagement.SelfHostedGateway";
+        public const string ApiManagementSelfHostedGatewayHostnameConfigurationUpdated = "Microsoft.ApiManagement.SelfHostedGateway";
+        public const string ApiManagementSelfHostedGatewayUpdated = "Microsoft.ApiManagement.SelfHostedGateway";
         public const string ApiManagementSubscriptionCreated = "Microsoft.ApiManagement.SubscriptionCreated";
         public const string ApiManagementSubscriptionDeleted = "Microsoft.ApiManagement.SubscriptionDeleted";
         public const string ApiManagementSubscriptionUpdated = "Microsoft.ApiManagement.SubscriptionUpdated";
@@ -801,6 +823,61 @@ namespace Azure.Messaging.EventGrid.SystemEvents
     public partial class ApiManagementProductUpdatedEventData
     {
         internal ApiManagementProductUpdatedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementSelfHostedGatewayApiAddedEventData
+    {
+        internal ApiManagementSelfHostedGatewayApiAddedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementSelfHostedGatewayApiRemovedEventData
+    {
+        internal ApiManagementSelfHostedGatewayApiRemovedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementSelfHostedGatewayCertificateAuthorityCreatedEventData
+    {
+        internal ApiManagementSelfHostedGatewayCertificateAuthorityCreatedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementSelfHostedGatewayCertificateAuthorityDeletedEventData
+    {
+        internal ApiManagementSelfHostedGatewayCertificateAuthorityDeletedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementSelfHostedGatewayCertificateAuthorityUpdatedEventData
+    {
+        internal ApiManagementSelfHostedGatewayCertificateAuthorityUpdatedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementSelfHostedGatewayCreatedEventData
+    {
+        internal ApiManagementSelfHostedGatewayCreatedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementSelfHostedGatewayDeletedEventData
+    {
+        internal ApiManagementSelfHostedGatewayDeletedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementSelfHostedGatewayHostnameConfigurationCreatedEventData
+    {
+        internal ApiManagementSelfHostedGatewayHostnameConfigurationCreatedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementSelfHostedGatewayHostnameConfigurationDeletedEventData
+    {
+        internal ApiManagementSelfHostedGatewayHostnameConfigurationDeletedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementSelfHostedGatewayHostnameConfigurationUpdatedEventData
+    {
+        internal ApiManagementSelfHostedGatewayHostnameConfigurationUpdatedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementSelfHostedGatewayUpdatedEventData
+    {
+        internal ApiManagementSelfHostedGatewayUpdatedEventData() { }
         public string ResourceUri { get { throw null; } }
     }
     public partial class ApiManagementSubscriptionCreatedEventData

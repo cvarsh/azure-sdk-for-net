@@ -1872,6 +1872,94 @@ namespace Azure.Messaging.EventGrid
             return new ApiManagementApiReleaseDeletedEventData(resourceUri);
         }
 
+        /// <summary> Initializes a new instance of ApiManagementSelfHostedGatewayCreatedEventData. </summary>
+        /// <param name="resourceUri"> The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource type. Uses the format, `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;ResourceName&gt;`. </param>
+        /// <returns> A new <see cref="SystemEvents.ApiManagementSelfHostedGatewayCreatedEventData"/> instance for mocking. </returns>
+        public static ApiManagementSelfHostedGatewayCreatedEventData ApiManagementSelfHostedGatewayCreatedEventData(string resourceUri = null)
+        {
+            return new ApiManagementSelfHostedGatewayCreatedEventData(resourceUri);
+        }
+
+        /// <summary> Initializes a new instance of ApiManagementSelfHostedGatewayUpdatedEventData. </summary>
+        /// <param name="resourceUri"> The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource type. Uses the format, `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;ResourceName&gt;`. </param>
+        /// <returns> A new <see cref="SystemEvents.ApiManagementSelfHostedGatewayUpdatedEventData"/> instance for mocking. </returns>
+        public static ApiManagementSelfHostedGatewayUpdatedEventData ApiManagementSelfHostedGatewayUpdatedEventData(string resourceUri = null)
+        {
+            return new ApiManagementSelfHostedGatewayUpdatedEventData(resourceUri);
+        }
+
+        /// <summary> Initializes a new instance of ApiManagementSelfHostedGatewayDeletedEventData. </summary>
+        /// <param name="resourceUri"> The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource type. Uses the format, `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;ResourceName&gt;`. </param>
+        /// <returns> A new <see cref="SystemEvents.ApiManagementSelfHostedGatewayDeletedEventData"/> instance for mocking. </returns>
+        public static ApiManagementSelfHostedGatewayDeletedEventData ApiManagementSelfHostedGatewayDeletedEventData(string resourceUri = null)
+        {
+            return new ApiManagementSelfHostedGatewayDeletedEventData(resourceUri);
+        }
+
+        /// <summary> Initializes a new instance of ApiManagementSelfHostedGatewayHostnameConfigurationCreatedEventData. </summary>
+        /// <param name="resourceUri"> The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource type. Uses the format, `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/hostnameConfigurations/&lt;ResourceName&gt;`. </param>
+        /// <returns> A new <see cref="SystemEvents.ApiManagementSelfHostedGatewayHostnameConfigurationCreatedEventData"/> instance for mocking. </returns>
+        public static ApiManagementSelfHostedGatewayHostnameConfigurationCreatedEventData ApiManagementSelfHostedGatewayHostnameConfigurationCreatedEventData(string resourceUri = null)
+        {
+            return new ApiManagementSelfHostedGatewayHostnameConfigurationCreatedEventData(resourceUri);
+        }
+
+        /// <summary> Initializes a new instance of ApiManagementSelfHostedGatewayHostnameConfigurationUpdatedEventData. </summary>
+        /// <param name="resourceUri"> The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource type. Uses the format, `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/hostnameConfigurations/&lt;ResourceName&gt;`. </param>
+        /// <returns> A new <see cref="SystemEvents.ApiManagementSelfHostedGatewayHostnameConfigurationUpdatedEventData"/> instance for mocking. </returns>
+        public static ApiManagementSelfHostedGatewayHostnameConfigurationUpdatedEventData ApiManagementSelfHostedGatewayHostnameConfigurationUpdatedEventData(string resourceUri = null)
+        {
+            return new ApiManagementSelfHostedGatewayHostnameConfigurationUpdatedEventData(resourceUri);
+        }
+
+        /// <summary> Initializes a new instance of ApiManagementSelfHostedGatewayHostnameConfigurationDeletedEventData. </summary>
+        /// <param name="resourceUri"> The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource type. Uses the format, `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/hostnameConfigurations/&lt;ResourceName&gt;`. </param>
+        /// <returns> A new <see cref="SystemEvents.ApiManagementSelfHostedGatewayHostnameConfigurationDeletedEventData"/> instance for mocking. </returns>
+        public static ApiManagementSelfHostedGatewayHostnameConfigurationDeletedEventData ApiManagementSelfHostedGatewayHostnameConfigurationDeletedEventData(string resourceUri = null)
+        {
+            return new ApiManagementSelfHostedGatewayHostnameConfigurationDeletedEventData(resourceUri);
+        }
+
+        /// <summary> Initializes a new instance of ApiManagementSelfHostedGatewayCertificateAuthorityCreatedEventData. </summary>
+        /// <param name="resourceUri"> The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource type. Uses the format, `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/certificateAuthorities/&lt;ResourceName&gt;`. </param>
+        /// <returns> A new <see cref="SystemEvents.ApiManagementSelfHostedGatewayCertificateAuthorityCreatedEventData"/> instance for mocking. </returns>
+        public static ApiManagementSelfHostedGatewayCertificateAuthorityCreatedEventData ApiManagementSelfHostedGatewayCertificateAuthorityCreatedEventData(string resourceUri = null)
+        {
+            return new ApiManagementSelfHostedGatewayCertificateAuthorityCreatedEventData(resourceUri);
+        }
+
+        /// <summary> Initializes a new instance of ApiManagementSelfHostedGatewayCertificateAuthorityUpdatedEventData. </summary>
+        /// <param name="resourceUri"> The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource type. Uses the format, `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/certificateAuthorities/&lt;ResourceName&gt;`. </param>
+        /// <returns> A new <see cref="SystemEvents.ApiManagementSelfHostedGatewayCertificateAuthorityUpdatedEventData"/> instance for mocking. </returns>
+        public static ApiManagementSelfHostedGatewayCertificateAuthorityUpdatedEventData ApiManagementSelfHostedGatewayCertificateAuthorityUpdatedEventData(string resourceUri = null)
+        {
+            return new ApiManagementSelfHostedGatewayCertificateAuthorityUpdatedEventData(resourceUri);
+        }
+
+        /// <summary> Initializes a new instance of ApiManagementSelfHostedGatewayCertificateAuthorityDeletedEventData. </summary>
+        /// <param name="resourceUri"> The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource type. Uses the format, `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/certificateAuthorities/&lt;ResourceName&gt;`. </param>
+        /// <returns> A new <see cref="SystemEvents.ApiManagementSelfHostedGatewayCertificateAuthorityDeletedEventData"/> instance for mocking. </returns>
+        public static ApiManagementSelfHostedGatewayCertificateAuthorityDeletedEventData ApiManagementSelfHostedGatewayCertificateAuthorityDeletedEventData(string resourceUri = null)
+        {
+            return new ApiManagementSelfHostedGatewayCertificateAuthorityDeletedEventData(resourceUri);
+        }
+
+        /// <summary> Initializes a new instance of ApiManagementSelfHostedGatewayApiAddedEventData. </summary>
+        /// <param name="resourceUri"> The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource type. Uses the format, `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/apis/&lt;ResourceName&gt;`. </param>
+        /// <returns> A new <see cref="SystemEvents.ApiManagementSelfHostedGatewayApiAddedEventData"/> instance for mocking. </returns>
+        public static ApiManagementSelfHostedGatewayApiAddedEventData ApiManagementSelfHostedGatewayApiAddedEventData(string resourceUri = null)
+        {
+            return new ApiManagementSelfHostedGatewayApiAddedEventData(resourceUri);
+        }
+
+        /// <summary> Initializes a new instance of ApiManagementSelfHostedGatewayApiRemovedEventData. </summary>
+        /// <param name="resourceUri"> The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource type. Uses the format, `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/apis/&lt;ResourceName&gt;`. </param>
+        /// <returns> A new <see cref="SystemEvents.ApiManagementSelfHostedGatewayApiRemovedEventData"/> instance for mocking. </returns>
+        public static ApiManagementSelfHostedGatewayApiRemovedEventData ApiManagementSelfHostedGatewayApiRemovedEventData(string resourceUri = null)
+        {
+            return new ApiManagementSelfHostedGatewayApiRemovedEventData(resourceUri);
+        }
+
         /// <summary> Initializes a new instance of HealthcareFhirResourceCreatedEventData. </summary>
         /// <param name="fhirResourceType"> Type of HL7 FHIR resource. </param>
         /// <param name="fhirServiceHostName"> Domain name of FHIR account for this resource. </param>
