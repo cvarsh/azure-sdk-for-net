@@ -114,7 +114,8 @@ function Get-dotnet-PackageInfoFromPackageFile ($pkg, $workingDirectory)
 # Return list of nupkg artifacts
 function Get-dotnet-Package-Artifacts ($Location)
 {
-  $pkgs = Get-ChildItem "${Location}" -Recurse | Where-Object -FilterScript {$_.Name.EndsWith(".nupkg") -and -not $_.Name.EndsWith(".symbols.nupkg")}
+  Get-ChildItem $Location -Recurse
+  $pkgs = Get-ChildItem $Location -Recurse | Where-Object -FilterScript {$_.Name.EndsWith(".nupkg") -and -not $_.Name.EndsWith(".symbols.nupkg")}
   if (!$pkgs)
   {
     Write-Host "$($Location) does not have any package"
