@@ -12,6 +12,8 @@ namespace Microsoft.Azure.Management.ContainerService.Models
 {
     using Microsoft.Rest;
     using Newtonsoft.Json;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
@@ -33,13 +35,18 @@ namespace Microsoft.Azure.Management.ContainerService.Models
         /// class.
         /// </summary>
         /// <param name="networkPlugin">Network plugin used for building the
-        /// Kubernetes network. Possible values include: 'azure',
-        /// 'kubenet'</param>
+        /// Kubernetes network. Possible values include: 'azure', 'kubenet',
+        /// 'none'</param>
+        /// <param name="networkPluginMode">Network plugin mode used for
+        /// building the Kubernetes network. Possible values include:
+        /// 'Overlay'</param>
         /// <param name="networkPolicy">Network policy used for building the
         /// Kubernetes network. Possible values include: 'calico',
         /// 'azure'</param>
         /// <param name="networkMode">The network mode Azure CNI is configured
         /// with.</param>
+        /// <param name="ebpfDataplane">The eBPF dataplane used for building
+        /// the Kubernetes network. Possible values include: 'cilium'</param>
         /// <param name="podCidr">A CIDR notation IP range from which to assign
         /// pod IPs when kubenet is used.</param>
         /// <param name="serviceCidr">A CIDR notation IP range from which to
@@ -59,11 +66,26 @@ namespace Microsoft.Azure.Management.ContainerService.Models
         /// balancer.</param>
         /// <param name="natGatewayProfile">Profile of the cluster NAT
         /// gateway.</param>
-        public ContainerServiceNetworkProfile(string networkPlugin = default(string), string networkPolicy = default(string), string networkMode = default(string), string podCidr = default(string), string serviceCidr = default(string), string dnsServiceIP = default(string), string dockerBridgeCidr = default(string), string outboundType = default(string), string loadBalancerSku = default(string), ManagedClusterLoadBalancerProfile loadBalancerProfile = default(ManagedClusterLoadBalancerProfile), ManagedClusterNATGatewayProfile natGatewayProfile = default(ManagedClusterNATGatewayProfile))
+        /// <param name="podCidrs">The CIDR notation IP ranges from which to
+        /// assign pod IPs.</param>
+        /// <param name="serviceCidrs">The CIDR notation IP ranges from which
+        /// to assign service cluster IPs.</param>
+        /// <param name="ipFamilies">The IP families used to specify IP
+        /// versions available to the cluster.</param>
+        /// <param name="kubeProxyConfig">Holds configuration customizations
+        /// for kube-proxy. Any values not defined will use the kube-proxy
+        /// defaulting behavior. See
+        /// https://v&lt;version&gt;.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/
+        /// where &lt;version&gt; is represented by a &lt;major
+        /// version&gt;-&lt;minor version&gt; string. Kubernetes version 1.23
+        /// would be '1-23'.</param>
+        public ContainerServiceNetworkProfile(string networkPlugin = default(string), string networkPluginMode = default(string), string networkPolicy = default(string), string networkMode = default(string), string ebpfDataplane = default(string), string podCidr = default(string), string serviceCidr = default(string), string dnsServiceIP = default(string), string dockerBridgeCidr = default(string), string outboundType = default(string), string loadBalancerSku = default(string), ManagedClusterLoadBalancerProfile loadBalancerProfile = default(ManagedClusterLoadBalancerProfile), ManagedClusterNATGatewayProfile natGatewayProfile = default(ManagedClusterNATGatewayProfile), IList<string> podCidrs = default(IList<string>), IList<string> serviceCidrs = default(IList<string>), IList<string> ipFamilies = default(IList<string>), ContainerServiceNetworkProfileKubeProxyConfig kubeProxyConfig = default(ContainerServiceNetworkProfileKubeProxyConfig))
         {
             NetworkPlugin = networkPlugin;
+            NetworkPluginMode = networkPluginMode;
             NetworkPolicy = networkPolicy;
             NetworkMode = networkMode;
+            EbpfDataplane = ebpfDataplane;
             PodCidr = podCidr;
             ServiceCidr = serviceCidr;
             DnsServiceIP = dnsServiceIP;
@@ -72,6 +94,10 @@ namespace Microsoft.Azure.Management.ContainerService.Models
             LoadBalancerSku = loadBalancerSku;
             LoadBalancerProfile = loadBalancerProfile;
             NatGatewayProfile = natGatewayProfile;
+            PodCidrs = podCidrs;
+            ServiceCidrs = serviceCidrs;
+            IpFamilies = ipFamilies;
+            KubeProxyConfig = kubeProxyConfig;
             CustomInit();
         }
 
@@ -82,10 +108,17 @@ namespace Microsoft.Azure.Management.ContainerService.Models
 
         /// <summary>
         /// Gets or sets network plugin used for building the Kubernetes
-        /// network. Possible values include: 'azure', 'kubenet'
+        /// network. Possible values include: 'azure', 'kubenet', 'none'
         /// </summary>
         [JsonProperty(PropertyName = "networkPlugin")]
         public string NetworkPlugin { get; set; }
+
+        /// <summary>
+        /// Gets or sets network plugin mode used for building the Kubernetes
+        /// network. Possible values include: 'Overlay'
+        /// </summary>
+        [JsonProperty(PropertyName = "networkPluginMode")]
+        public string NetworkPluginMode { get; set; }
 
         /// <summary>
         /// Gets or sets network policy used for building the Kubernetes
@@ -103,6 +136,13 @@ namespace Microsoft.Azure.Management.ContainerService.Models
         /// </remarks>
         [JsonProperty(PropertyName = "networkMode")]
         public string NetworkMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the eBPF dataplane used for building the Kubernetes
+        /// network. Possible values include: 'cilium'
+        /// </summary>
+        [JsonProperty(PropertyName = "ebpfDataplane")]
+        public string EbpfDataplane { get; set; }
 
         /// <summary>
         /// Gets or sets a CIDR notation IP range from which to assign pod IPs
@@ -170,6 +210,53 @@ namespace Microsoft.Azure.Management.ContainerService.Models
         /// </summary>
         [JsonProperty(PropertyName = "natGatewayProfile")]
         public ManagedClusterNATGatewayProfile NatGatewayProfile { get; set; }
+
+        /// <summary>
+        /// Gets or sets the CIDR notation IP ranges from which to assign pod
+        /// IPs.
+        /// </summary>
+        /// <remarks>
+        /// One IPv4 CIDR is expected for single-stack networking. Two CIDRs,
+        /// one for each IP family (IPv4/IPv6), is expected for dual-stack
+        /// networking.
+        /// </remarks>
+        [JsonProperty(PropertyName = "podCidrs")]
+        public IList<string> PodCidrs { get; set; }
+
+        /// <summary>
+        /// Gets or sets the CIDR notation IP ranges from which to assign
+        /// service cluster IPs.
+        /// </summary>
+        /// <remarks>
+        /// One IPv4 CIDR is expected for single-stack networking. Two CIDRs,
+        /// one for each IP family (IPv4/IPv6), is expected for dual-stack
+        /// networking. They must not overlap with any Subnet IP ranges.
+        /// </remarks>
+        [JsonProperty(PropertyName = "serviceCidrs")]
+        public IList<string> ServiceCidrs { get; set; }
+
+        /// <summary>
+        /// Gets or sets the IP families used to specify IP versions available
+        /// to the cluster.
+        /// </summary>
+        /// <remarks>
+        /// IP families are used to determine single-stack or dual-stack
+        /// clusters. For single-stack, the expected value is IPv4. For
+        /// dual-stack, the expected values are IPv4 and IPv6.
+        /// </remarks>
+        [JsonProperty(PropertyName = "ipFamilies")]
+        public IList<string> IpFamilies { get; set; }
+
+        /// <summary>
+        /// Gets or sets holds configuration customizations for kube-proxy. Any
+        /// values not defined will use the kube-proxy defaulting behavior. See
+        /// https://v&amp;lt;version&amp;gt;.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/
+        /// where &amp;lt;version&amp;gt; is represented by a &amp;lt;major
+        /// version&amp;gt;-&amp;lt;minor version&amp;gt; string. Kubernetes
+        /// version 1.23 would be '1-23'.
+        /// </summary>
+        [JsonProperty(PropertyName = "kubeProxyConfig")]
+        public ContainerServiceNetworkProfileKubeProxyConfig KubeProxyConfig { get; set; }
 
         /// <summary>
         /// Validate the object.

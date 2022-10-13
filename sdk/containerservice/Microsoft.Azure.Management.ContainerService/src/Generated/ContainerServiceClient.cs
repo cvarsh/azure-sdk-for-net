@@ -47,14 +47,12 @@ namespace Microsoft.Azure.Management.ContainerService
         public ServiceClientCredentials Credentials { get; private set; }
 
         /// <summary>
-        /// Subscription credentials which uniquely identify Microsoft Azure
-        /// subscription. The subscription ID forms part of the URI for every service
-        /// call.
+        /// The ID of the target subscription.
         /// </summary>
         public string SubscriptionId { get; set; }
 
         /// <summary>
-        /// Client Api Version.
+        /// The API version to use for this operation.
         /// </summary>
         public string ApiVersion { get; private set; }
 
@@ -110,6 +108,36 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Gets the IResolvePrivateLinkServiceIdOperations.
         /// </summary>
         public virtual IResolvePrivateLinkServiceIdOperations ResolvePrivateLinkServiceId { get; private set; }
+
+        /// <summary>
+        /// Gets the ISnapshotsOperations.
+        /// </summary>
+        public virtual ISnapshotsOperations Snapshots { get; private set; }
+
+        /// <summary>
+        /// Gets the IManagedClusterSnapshotsOperations.
+        /// </summary>
+        public virtual IManagedClusterSnapshotsOperations ManagedClusterSnapshots { get; private set; }
+
+        /// <summary>
+        /// Gets the ITrustedAccessRolesOperations.
+        /// </summary>
+        public virtual ITrustedAccessRolesOperations TrustedAccessRoles { get; private set; }
+
+        /// <summary>
+        /// Gets the ITrustedAccessRoleBindingsOperations.
+        /// </summary>
+        public virtual ITrustedAccessRoleBindingsOperations TrustedAccessRoleBindings { get; private set; }
+
+        /// <summary>
+        /// Gets the IFleetsOperations.
+        /// </summary>
+        public virtual IFleetsOperations Fleets { get; private set; }
+
+        /// <summary>
+        /// Gets the IFleetMembersOperations.
+        /// </summary>
+        public virtual IFleetMembersOperations FleetMembers { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the ContainerServiceClient class.
@@ -359,8 +387,14 @@ namespace Microsoft.Azure.Management.ContainerService
             PrivateEndpointConnections = new PrivateEndpointConnectionsOperations(this);
             PrivateLinkResources = new PrivateLinkResourcesOperations(this);
             ResolvePrivateLinkServiceId = new ResolvePrivateLinkServiceIdOperations(this);
+            Snapshots = new SnapshotsOperations(this);
+            ManagedClusterSnapshots = new ManagedClusterSnapshotsOperations(this);
+            TrustedAccessRoles = new TrustedAccessRolesOperations(this);
+            TrustedAccessRoleBindings = new TrustedAccessRoleBindingsOperations(this);
+            Fleets = new FleetsOperations(this);
+            FleetMembers = new FleetMembersOperations(this);
             BaseUri = new System.Uri("https://management.azure.com");
-            ApiVersion = "2021-07-01";
+            ApiVersion = "2022-09-02-preview";
             AcceptLanguage = "en-US";
             LongRunningOperationRetryTimeout = 30;
             GenerateClientRequestId = true;

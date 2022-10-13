@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='location'>
-            /// The name of a supported Azure region.
+            /// The name of Azure region.
             /// </param>
             /// <param name='resourceType'>
             /// The resource type for which the OS options needs to be returned
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='location'>
-            /// The name of a supported Azure region.
+            /// The name of Azure region.
             /// </param>
             /// <param name='resourceType'>
             /// The resource type for which the OS options needs to be returned
@@ -98,7 +98,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             public static IPage<ManagedCluster> ListByResourceGroup(this IManagedClustersOperations operations, string resourceGroupName)
             {
@@ -112,7 +112,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -132,7 +132,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -149,7 +149,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -179,7 +179,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -207,7 +207,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -234,7 +234,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -254,7 +254,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -280,7 +280,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -288,9 +288,15 @@ namespace Microsoft.Azure.Management.ContainerService
             /// <param name='serverFqdn'>
             /// server fqdn type for credentials to be returned
             /// </param>
-            public static CredentialResults ListClusterUserCredentials(this IManagedClustersOperations operations, string resourceGroupName, string resourceName, string serverFqdn = default(string))
+            /// <param name='format'>
+            /// Only apply to AAD clusters, specifies the format of returned kubeconfig.
+            /// Format 'azure' will return azure auth-provider kubeconfig; format 'exec'
+            /// will return exec format kubeconfig, which requires kubelogin binary in the
+            /// path. Possible values include: 'azure', 'exec'
+            /// </param>
+            public static CredentialResults ListClusterUserCredentials(this IManagedClustersOperations operations, string resourceGroupName, string resourceName, string serverFqdn = default(string), string format = default(string))
             {
-                return operations.ListClusterUserCredentialsAsync(resourceGroupName, resourceName, serverFqdn).GetAwaiter().GetResult();
+                return operations.ListClusterUserCredentialsAsync(resourceGroupName, resourceName, serverFqdn, format).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -300,7 +306,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -308,12 +314,18 @@ namespace Microsoft.Azure.Management.ContainerService
             /// <param name='serverFqdn'>
             /// server fqdn type for credentials to be returned
             /// </param>
+            /// <param name='format'>
+            /// Only apply to AAD clusters, specifies the format of returned kubeconfig.
+            /// Format 'azure' will return azure auth-provider kubeconfig; format 'exec'
+            /// will return exec format kubeconfig, which requires kubelogin binary in the
+            /// path. Possible values include: 'azure', 'exec'
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<CredentialResults> ListClusterUserCredentialsAsync(this IManagedClustersOperations operations, string resourceGroupName, string resourceName, string serverFqdn = default(string), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<CredentialResults> ListClusterUserCredentialsAsync(this IManagedClustersOperations operations, string resourceGroupName, string resourceName, string serverFqdn = default(string), string format = default(string), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.ListClusterUserCredentialsWithHttpMessagesAsync(resourceGroupName, resourceName, serverFqdn, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.ListClusterUserCredentialsWithHttpMessagesAsync(resourceGroupName, resourceName, serverFqdn, format, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -326,7 +338,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -346,7 +358,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -372,7 +384,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -389,7 +401,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -412,7 +424,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -432,7 +444,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -458,7 +470,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -478,7 +490,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -504,14 +516,18 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
             /// </param>
-            public static void Delete(this IManagedClustersOperations operations, string resourceGroupName, string resourceName)
+            /// <param name='ignorePodDisruptionBudget'>
+            /// ignore-pod-disruption-budget=true to delete those pods on a node without
+            /// considering Pod Disruption Budget
+            /// </param>
+            public static void Delete(this IManagedClustersOperations operations, string resourceGroupName, string resourceName, bool? ignorePodDisruptionBudget = default(bool?))
             {
-                operations.DeleteAsync(resourceGroupName, resourceName).GetAwaiter().GetResult();
+                operations.DeleteAsync(resourceGroupName, resourceName, ignorePodDisruptionBudget).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -521,17 +537,21 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
             /// </param>
+            /// <param name='ignorePodDisruptionBudget'>
+            /// ignore-pod-disruption-budget=true to delete those pods on a node without
+            /// considering Pod Disruption Budget
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task DeleteAsync(this IManagedClustersOperations operations, string resourceGroupName, string resourceName, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task DeleteAsync(this IManagedClustersOperations operations, string resourceGroupName, string resourceName, bool? ignorePodDisruptionBudget = default(bool?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.DeleteWithHttpMessagesAsync(resourceGroupName, resourceName, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                (await operations.DeleteWithHttpMessagesAsync(resourceGroupName, resourceName, ignorePodDisruptionBudget, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -545,7 +565,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -569,7 +589,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -592,7 +612,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -612,7 +632,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -629,6 +649,59 @@ namespace Microsoft.Azure.Management.ContainerService
             }
 
             /// <summary>
+            /// Aborts last operation running on managed cluster.
+            /// </summary>
+            /// <remarks>
+            /// Aborting last running operation on managed cluster.  We return a 204 no
+            /// content code here to indicate that the operation has been accepted and an
+            /// abort will be attempted but is not guaranteed to complete successfully.
+            /// Please look up the provisioning state of the managed cluster to keep track
+            /// of whether it changes to Canceled. A canceled provisioning state indicates
+            /// that the abort was successful
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group. The name is case insensitive.
+            /// </param>
+            /// <param name='resourceName'>
+            /// The name of the managed cluster resource.
+            /// </param>
+            public static void AbortLatestOperation(this IManagedClustersOperations operations, string resourceGroupName, string resourceName)
+            {
+                operations.AbortLatestOperationAsync(resourceGroupName, resourceName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Aborts last operation running on managed cluster.
+            /// </summary>
+            /// <remarks>
+            /// Aborting last running operation on managed cluster.  We return a 204 no
+            /// content code here to indicate that the operation has been accepted and an
+            /// abort will be attempted but is not guaranteed to complete successfully.
+            /// Please look up the provisioning state of the managed cluster to keep track
+            /// of whether it changes to Canceled. A canceled provisioning state indicates
+            /// that the abort was successful
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group. The name is case insensitive.
+            /// </param>
+            /// <param name='resourceName'>
+            /// The name of the managed cluster resource.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task AbortLatestOperationAsync(this IManagedClustersOperations operations, string resourceGroupName, string resourceName, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                (await operations.AbortLatestOperationWithHttpMessagesAsync(resourceGroupName, resourceName, null, cancellationToken).ConfigureAwait(false)).Dispose();
+            }
+
+            /// <summary>
             /// Rotates the certificates of a managed cluster.
             /// </summary>
             /// <remarks>
@@ -640,7 +713,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -662,7 +735,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -673,6 +746,43 @@ namespace Microsoft.Azure.Management.ContainerService
             public static async Task RotateClusterCertificatesAsync(this IManagedClustersOperations operations, string resourceGroupName, string resourceName, CancellationToken cancellationToken = default(CancellationToken))
             {
                 (await operations.RotateClusterCertificatesWithHttpMessagesAsync(resourceGroupName, resourceName, null, cancellationToken).ConfigureAwait(false)).Dispose();
+            }
+
+            /// <summary>
+            /// Rotates the service account signing keys of a managed cluster.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group. The name is case insensitive.
+            /// </param>
+            /// <param name='resourceName'>
+            /// The name of the managed cluster resource.
+            /// </param>
+            public static void RotateServiceAccountSigningKeys(this IManagedClustersOperations operations, string resourceGroupName, string resourceName)
+            {
+                operations.RotateServiceAccountSigningKeysAsync(resourceGroupName, resourceName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Rotates the service account signing keys of a managed cluster.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group. The name is case insensitive.
+            /// </param>
+            /// <param name='resourceName'>
+            /// The name of the managed cluster resource.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task RotateServiceAccountSigningKeysAsync(this IManagedClustersOperations operations, string resourceGroupName, string resourceName, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                (await operations.RotateServiceAccountSigningKeysWithHttpMessagesAsync(resourceGroupName, resourceName, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -690,7 +800,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -715,7 +825,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -740,7 +850,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -762,7 +872,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -787,7 +897,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -812,7 +922,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -838,7 +948,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -858,7 +968,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -890,7 +1000,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -913,7 +1023,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -936,7 +1046,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -956,7 +1066,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -982,7 +1092,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -1002,7 +1112,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -1028,14 +1138,18 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
             /// </param>
-            public static void BeginDelete(this IManagedClustersOperations operations, string resourceGroupName, string resourceName)
+            /// <param name='ignorePodDisruptionBudget'>
+            /// ignore-pod-disruption-budget=true to delete those pods on a node without
+            /// considering Pod Disruption Budget
+            /// </param>
+            public static void BeginDelete(this IManagedClustersOperations operations, string resourceGroupName, string resourceName, bool? ignorePodDisruptionBudget = default(bool?))
             {
-                operations.BeginDeleteAsync(resourceGroupName, resourceName).GetAwaiter().GetResult();
+                operations.BeginDeleteAsync(resourceGroupName, resourceName, ignorePodDisruptionBudget).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -1045,17 +1159,21 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
             /// </param>
+            /// <param name='ignorePodDisruptionBudget'>
+            /// ignore-pod-disruption-budget=true to delete those pods on a node without
+            /// considering Pod Disruption Budget
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task BeginDeleteAsync(this IManagedClustersOperations operations, string resourceGroupName, string resourceName, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task BeginDeleteAsync(this IManagedClustersOperations operations, string resourceGroupName, string resourceName, bool? ignorePodDisruptionBudget = default(bool?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.BeginDeleteWithHttpMessagesAsync(resourceGroupName, resourceName, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                (await operations.BeginDeleteWithHttpMessagesAsync(resourceGroupName, resourceName, ignorePodDisruptionBudget, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -1069,7 +1187,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -1093,7 +1211,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -1116,7 +1234,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -1136,7 +1254,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -1164,7 +1282,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -1186,7 +1304,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -1197,6 +1315,43 @@ namespace Microsoft.Azure.Management.ContainerService
             public static async Task BeginRotateClusterCertificatesAsync(this IManagedClustersOperations operations, string resourceGroupName, string resourceName, CancellationToken cancellationToken = default(CancellationToken))
             {
                 (await operations.BeginRotateClusterCertificatesWithHttpMessagesAsync(resourceGroupName, resourceName, null, cancellationToken).ConfigureAwait(false)).Dispose();
+            }
+
+            /// <summary>
+            /// Rotates the service account signing keys of a managed cluster.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group. The name is case insensitive.
+            /// </param>
+            /// <param name='resourceName'>
+            /// The name of the managed cluster resource.
+            /// </param>
+            public static void BeginRotateServiceAccountSigningKeys(this IManagedClustersOperations operations, string resourceGroupName, string resourceName)
+            {
+                operations.BeginRotateServiceAccountSigningKeysAsync(resourceGroupName, resourceName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Rotates the service account signing keys of a managed cluster.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group. The name is case insensitive.
+            /// </param>
+            /// <param name='resourceName'>
+            /// The name of the managed cluster resource.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task BeginRotateServiceAccountSigningKeysAsync(this IManagedClustersOperations operations, string resourceGroupName, string resourceName, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                (await operations.BeginRotateServiceAccountSigningKeysWithHttpMessagesAsync(resourceGroupName, resourceName, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -1214,7 +1369,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -1239,7 +1394,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -1264,7 +1419,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -1286,7 +1441,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -1311,7 +1466,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -1336,7 +1491,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.

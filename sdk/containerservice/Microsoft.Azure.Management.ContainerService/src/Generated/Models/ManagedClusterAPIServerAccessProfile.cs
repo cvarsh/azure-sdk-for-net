@@ -41,12 +41,21 @@ namespace Microsoft.Azure.Management.ContainerService.Models
         /// cluster.</param>
         /// <param name="enablePrivateClusterPublicFQDN">Whether to create
         /// additional public FQDN for private cluster or not.</param>
-        public ManagedClusterAPIServerAccessProfile(IList<string> authorizedIPRanges = default(IList<string>), bool? enablePrivateCluster = default(bool?), string privateDNSZone = default(string), bool? enablePrivateClusterPublicFQDN = default(bool?))
+        /// <param name="disableRunCommand">Whether to disable run command for
+        /// the cluster or not.</param>
+        /// <param name="enableVnetIntegration">Whether to enable apiserver
+        /// vnet integration for the cluster or not.</param>
+        /// <param name="subnetId">The subnet to be used when apiserver vnet
+        /// integration is enabled.</param>
+        public ManagedClusterAPIServerAccessProfile(IList<string> authorizedIPRanges = default(IList<string>), bool? enablePrivateCluster = default(bool?), string privateDNSZone = default(string), bool? enablePrivateClusterPublicFQDN = default(bool?), bool? disableRunCommand = default(bool?), bool? enableVnetIntegration = default(bool?), string subnetId = default(string))
         {
             AuthorizedIPRanges = authorizedIPRanges;
             EnablePrivateCluster = enablePrivateCluster;
             PrivateDNSZone = privateDNSZone;
             EnablePrivateClusterPublicFQDN = enablePrivateClusterPublicFQDN;
+            DisableRunCommand = disableRunCommand;
+            EnableVnetIntegration = enableVnetIntegration;
+            SubnetId = subnetId;
             CustomInit();
         }
 
@@ -97,6 +106,30 @@ namespace Microsoft.Azure.Management.ContainerService.Models
         /// </summary>
         [JsonProperty(PropertyName = "enablePrivateClusterPublicFQDN")]
         public bool? EnablePrivateClusterPublicFQDN { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether to disable run command for the cluster or not.
+        /// </summary>
+        [JsonProperty(PropertyName = "disableRunCommand")]
+        public bool? DisableRunCommand { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether to enable apiserver vnet integration for the
+        /// cluster or not.
+        /// </summary>
+        [JsonProperty(PropertyName = "enableVnetIntegration")]
+        public bool? EnableVnetIntegration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the subnet to be used when apiserver vnet integration
+        /// is enabled.
+        /// </summary>
+        /// <remarks>
+        /// It is required when: 1. creating a new cluster with BYO Vnet; 2.
+        /// updating an existing cluster to enable apiserver vnet integration.
+        /// </remarks>
+        [JsonProperty(PropertyName = "subnetId")]
+        public string SubnetId { get; set; }
 
     }
 }

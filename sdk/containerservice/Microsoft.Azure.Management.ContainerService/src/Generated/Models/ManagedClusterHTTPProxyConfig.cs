@@ -39,13 +39,17 @@ namespace Microsoft.Azure.Management.ContainerService.Models
         /// use.</param>
         /// <param name="noProxy">The endpoints that should not go through
         /// proxy.</param>
+        /// <param name="effectiveNoProxy">A read-only list of all endpoints
+        /// for which traffic should not be sent to the proxy. This list is a
+        /// superset of noProxy and values injected by AKS.</param>
         /// <param name="trustedCa">Alternative CA cert to use for connecting
         /// to proxy servers.</param>
-        public ManagedClusterHTTPProxyConfig(string httpProxy = default(string), string httpsProxy = default(string), IList<string> noProxy = default(IList<string>), string trustedCa = default(string))
+        public ManagedClusterHTTPProxyConfig(string httpProxy = default(string), string httpsProxy = default(string), IList<string> noProxy = default(IList<string>), IList<string> effectiveNoProxy = default(IList<string>), string trustedCa = default(string))
         {
             HttpProxy = httpProxy;
             HttpsProxy = httpsProxy;
             NoProxy = noProxy;
+            EffectiveNoProxy = effectiveNoProxy;
             TrustedCa = trustedCa;
             CustomInit();
         }
@@ -72,6 +76,14 @@ namespace Microsoft.Azure.Management.ContainerService.Models
         /// </summary>
         [JsonProperty(PropertyName = "noProxy")]
         public IList<string> NoProxy { get; set; }
+
+        /// <summary>
+        /// Gets a read-only list of all endpoints for which traffic should not
+        /// be sent to the proxy. This list is a superset of noProxy and values
+        /// injected by AKS.
+        /// </summary>
+        [JsonProperty(PropertyName = "effectiveNoProxy")]
+        public IList<string> EffectiveNoProxy { get; private set; }
 
         /// <summary>
         /// Gets or sets alternative CA cert to use for connecting to proxy

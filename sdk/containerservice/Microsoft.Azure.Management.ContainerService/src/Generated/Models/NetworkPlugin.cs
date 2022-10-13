@@ -28,5 +28,10 @@ namespace Microsoft.Azure.Management.ContainerService.Models
         /// for more information.
         /// </summary>
         public const string Kubenet = "kubenet";
+        /// <summary>
+        /// Do not use a network plugin. A custom CNI will need to be installed
+        /// after cluster creation for networking functionality.
+        /// </summary>
+        public const string None = "none";
     }
 }

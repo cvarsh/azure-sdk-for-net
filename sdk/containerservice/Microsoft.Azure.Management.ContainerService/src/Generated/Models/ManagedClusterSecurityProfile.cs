@@ -11,6 +11,8 @@
 namespace Microsoft.Azure.Management.ContainerService.Models
 {
     using Newtonsoft.Json;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
@@ -31,11 +33,32 @@ namespace Microsoft.Azure.Management.ContainerService.Models
         /// Initializes a new instance of the ManagedClusterSecurityProfile
         /// class.
         /// </summary>
-        /// <param name="azureDefender">Azure Defender settings for the
-        /// security profile.</param>
-        public ManagedClusterSecurityProfile(ManagedClusterSecurityProfileAzureDefender azureDefender = default(ManagedClusterSecurityProfileAzureDefender))
+        /// <param name="defender">Microsoft Defender settings for the security
+        /// profile.</param>
+        /// <param name="azureKeyVaultKms">Azure Key Vault [key management
+        /// service](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/)
+        /// settings for the security profile.</param>
+        /// <param name="workloadIdentity">[Workload
+        /// Identity](https://azure.github.io/azure-workload-identity/docs/)
+        /// settings for the security profile.</param>
+        /// <param name="imageCleaner">ImageCleaner settings for the security
+        /// profile.</param>
+        /// <param name="nodeRestriction">[Node
+        /// Restriction](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction)
+        /// settings for the security profile.</param>
+        /// <param name="customCATrustCertificates">A list of up to 10 base64
+        /// encoded CAs that will be added to the trust store on nodes with the
+        /// Custom CA Trust feature enabled. For more information see [Custom
+        /// CA Trust
+        /// Certificates](https://learn.microsoft.com/en-us/azure/aks/custom-certificate-authority)</param>
+        public ManagedClusterSecurityProfile(ManagedClusterSecurityProfileDefender defender = default(ManagedClusterSecurityProfileDefender), AzureKeyVaultKms azureKeyVaultKms = default(AzureKeyVaultKms), ManagedClusterSecurityProfileWorkloadIdentity workloadIdentity = default(ManagedClusterSecurityProfileWorkloadIdentity), ManagedClusterSecurityProfileImageCleaner imageCleaner = default(ManagedClusterSecurityProfileImageCleaner), ManagedClusterSecurityProfileNodeRestriction nodeRestriction = default(ManagedClusterSecurityProfileNodeRestriction), IList<byte[]> customCATrustCertificates = default(IList<byte[]>))
         {
-            AzureDefender = azureDefender;
+            Defender = defender;
+            AzureKeyVaultKms = azureKeyVaultKms;
+            WorkloadIdentity = workloadIdentity;
+            ImageCleaner = imageCleaner;
+            NodeRestriction = nodeRestriction;
+            CustomCATrustCertificates = customCATrustCertificates;
             CustomInit();
         }
 
@@ -45,10 +68,49 @@ namespace Microsoft.Azure.Management.ContainerService.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets azure Defender settings for the security profile.
+        /// Gets or sets microsoft Defender settings for the security profile.
         /// </summary>
-        [JsonProperty(PropertyName = "azureDefender")]
-        public ManagedClusterSecurityProfileAzureDefender AzureDefender { get; set; }
+        [JsonProperty(PropertyName = "defender")]
+        public ManagedClusterSecurityProfileDefender Defender { get; set; }
+
+        /// <summary>
+        /// Gets or sets azure Key Vault [key management
+        /// service](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/)
+        /// settings for the security profile.
+        /// </summary>
+        [JsonProperty(PropertyName = "azureKeyVaultKms")]
+        public AzureKeyVaultKms AzureKeyVaultKms { get; set; }
+
+        /// <summary>
+        /// Gets or sets [Workload
+        /// Identity](https://azure.github.io/azure-workload-identity/docs/)
+        /// settings for the security profile.
+        /// </summary>
+        [JsonProperty(PropertyName = "workloadIdentity")]
+        public ManagedClusterSecurityProfileWorkloadIdentity WorkloadIdentity { get; set; }
+
+        /// <summary>
+        /// Gets or sets imageCleaner settings for the security profile.
+        /// </summary>
+        [JsonProperty(PropertyName = "imageCleaner")]
+        public ManagedClusterSecurityProfileImageCleaner ImageCleaner { get; set; }
+
+        /// <summary>
+        /// Gets or sets [Node
+        /// Restriction](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction)
+        /// settings for the security profile.
+        /// </summary>
+        [JsonProperty(PropertyName = "nodeRestriction")]
+        public ManagedClusterSecurityProfileNodeRestriction NodeRestriction { get; set; }
+
+        /// <summary>
+        /// Gets or sets a list of up to 10 base64 encoded CAs that will be
+        /// added to the trust store on nodes with the Custom CA Trust feature
+        /// enabled. For more information see [Custom CA Trust
+        /// Certificates](https://learn.microsoft.com/en-us/azure/aks/custom-certificate-authority)
+        /// </summary>
+        [JsonProperty(PropertyName = "customCATrustCertificates")]
+        public IList<byte[]> CustomCATrustCertificates { get; set; }
 
     }
 }
