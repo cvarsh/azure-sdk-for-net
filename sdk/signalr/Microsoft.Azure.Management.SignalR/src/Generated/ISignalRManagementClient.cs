@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Management.SignalR
     using Newtonsoft.Json;
 
     /// <summary>
-    /// REST API for Azure SignalR Service
+    /// REST API for Azure SignalR Service - test
     /// </summary>
     public partial interface ISignalRManagementClient : System.IDisposable
     {
@@ -85,6 +85,16 @@ namespace Microsoft.Azure.Management.SignalR
         /// Gets the IUsagesOperations.
         /// </summary>
         IUsagesOperations Usages { get; }
+
+        /// <summary>
+        /// Gets the ISignalRCustomCertificatesOperations.
+        /// </summary>
+        ISignalRCustomCertificatesOperations SignalRCustomCertificates { get; }
+
+        /// <summary>
+        /// Gets the ISignalRCustomDomainsOperations.
+        /// </summary>
+        ISignalRCustomDomainsOperations SignalRCustomDomains { get; }
 
         /// <summary>
         /// Gets the ISignalRPrivateEndpointConnectionsOperations.

@@ -33,11 +33,8 @@ namespace Microsoft.Azure.Management.SignalR.Models
         /// <param name="name">The name of the SKU. Required.
         ///
         /// Allowed values: Standard_S1, Free_F1</param>
-        /// <param name="tier">Optional tier of this particular SKU. 'Standard'
-        /// or 'Free'.
-        ///
-        /// `Basic` is deprecated, use `Standard` instead. Possible values
-        /// include: 'Free', 'Basic', 'Standard', 'Premium'</param>
+        /// <param name="tier">Possible values include: 'Free', 'Basic',
+        /// 'Standard', 'Premium'</param>
         /// <param name="size">Not used. Retained for future use.</param>
         /// <param name="family">Not used. Retained for future use.</param>
         /// <param name="capacity">Optional, integer. The unit count of the
@@ -70,11 +67,8 @@ namespace Microsoft.Azure.Management.SignalR.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets optional tier of this particular SKU. 'Standard' or
-        /// 'Free'.
-        ///
-        /// `Basic` is deprecated, use `Standard` instead. Possible values
-        /// include: 'Free', 'Basic', 'Standard', 'Premium'
+        /// Gets or sets possible values include: 'Free', 'Basic', 'Standard',
+        /// 'Premium'
         /// </summary>
         [JsonProperty(PropertyName = "tier")]
         public string Tier { get; set; }

@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Management.SignalR
     using System.Net.Http;
 
     /// <summary>
-    /// REST API for Azure SignalR Service
+    /// REST API for Azure SignalR Service - test
     /// </summary>
     public partial class SignalRManagementClient : ServiceClient<SignalRManagementClient>, ISignalRManagementClient, IAzureClient
     {
@@ -90,6 +90,16 @@ namespace Microsoft.Azure.Management.SignalR
         /// Gets the IUsagesOperations.
         /// </summary>
         public virtual IUsagesOperations Usages { get; private set; }
+
+        /// <summary>
+        /// Gets the ISignalRCustomCertificatesOperations.
+        /// </summary>
+        public virtual ISignalRCustomCertificatesOperations SignalRCustomCertificates { get; private set; }
+
+        /// <summary>
+        /// Gets the ISignalRCustomDomainsOperations.
+        /// </summary>
+        public virtual ISignalRCustomDomainsOperations SignalRCustomDomains { get; private set; }
 
         /// <summary>
         /// Gets the ISignalRPrivateEndpointConnectionsOperations.
@@ -350,11 +360,13 @@ namespace Microsoft.Azure.Management.SignalR
             Operations = new Operations(this);
             SignalR = new SignalROperations(this);
             Usages = new UsagesOperations(this);
+            SignalRCustomCertificates = new SignalRCustomCertificatesOperations(this);
+            SignalRCustomDomains = new SignalRCustomDomainsOperations(this);
             SignalRPrivateEndpointConnections = new SignalRPrivateEndpointConnectionsOperations(this);
             SignalRPrivateLinkResources = new SignalRPrivateLinkResourcesOperations(this);
             SignalRSharedPrivateLinkResources = new SignalRSharedPrivateLinkResourcesOperations(this);
             BaseUri = new System.Uri("https://management.azure.com");
-            ApiVersion = "2021-06-01-preview";
+            ApiVersion = "2022-02-01";
             AcceptLanguage = "en-US";
             LongRunningOperationRetryTimeout = 30;
             GenerateClientRequestId = true;
