@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Gets supported OS options in the specified subscription.
         /// </summary>
         /// <param name='location'>
-        /// The name of a supported Azure region.
+        /// The name of Azure region.
         /// </param>
         /// <param name='resourceType'>
         /// The resource type for which the OS options needs to be returned
@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// group.
         /// </summary>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Gets the upgrade profile of a managed cluster.
         /// </summary>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// .
         /// </remarks>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -155,7 +155,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Lists the admin credentials of a managed cluster.
         /// </summary>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -183,13 +183,20 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Lists the user credentials of a managed cluster.
         /// </summary>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
         /// </param>
         /// <param name='serverFqdn'>
         /// server fqdn type for credentials to be returned
+        /// </param>
+        /// <param name='format'>
+        /// Only apply to AAD clusters, specifies the format of returned
+        /// kubeconfig. Format 'azure' will return azure auth-provider
+        /// kubeconfig; format 'exec' will return exec format kubeconfig, which
+        /// requires kubelogin binary in the path. Possible values include:
+        /// 'azure', 'exec'
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -206,12 +213,12 @@ namespace Microsoft.Azure.Management.ContainerService
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<CredentialResults>> ListClusterUserCredentialsWithHttpMessagesAsync(string resourceGroupName, string resourceName, string serverFqdn = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<CredentialResults>> ListClusterUserCredentialsWithHttpMessagesAsync(string resourceGroupName, string resourceName, string serverFqdn = default(string), string format = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Lists the cluster monitoring user credentials of a managed cluster.
         /// </summary>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -239,7 +246,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Gets a managed cluster.
         /// </summary>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -264,7 +271,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Creates or updates a managed cluster.
         /// </summary>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -292,7 +299,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Updates tags on a managed cluster.
         /// </summary>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -320,10 +327,14 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Deletes a managed cluster.
         /// </summary>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
+        /// </param>
+        /// <param name='ignorePodDisruptionBudget'>
+        /// ignore-pod-disruption-budget=true to delete those pods on a node
+        /// without considering Pod Disruption Budget
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -337,7 +348,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string resourceName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string resourceName, bool? ignorePodDisruptionBudget = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Reset the Service Principal Profile of a managed cluster.
         /// </summary>
@@ -346,7 +357,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// service principal
         /// </remarks>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -371,7 +382,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Reset the AAD Profile of a managed cluster.
         /// </summary>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -393,6 +404,36 @@ namespace Microsoft.Azure.Management.ContainerService
         /// </exception>
         Task<AzureOperationResponse> ResetAADProfileWithHttpMessagesAsync(string resourceGroupName, string resourceName, ManagedClusterAADProfile parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
+        /// Aborts last operation running on managed cluster.
+        /// </summary>
+        /// <remarks>
+        /// Aborting last running operation on managed cluster.  We return a
+        /// 204 no content code here to indicate that the operation has been
+        /// accepted and an abort will be attempted but is not guaranteed to
+        /// complete successfully. Please look up the provisioning state of the
+        /// managed cluster to keep track of whether it changes to Canceled. A
+        /// canceled provisioning state indicates that the abort was successful
+        /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group. The name is case insensitive.
+        /// </param>
+        /// <param name='resourceName'>
+        /// The name of the managed cluster resource.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.Azure.CloudException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        Task<AzureOperationResponse> AbortLatestOperationWithHttpMessagesAsync(string resourceGroupName, string resourceName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
         /// Rotates the certificates of a managed cluster.
         /// </summary>
         /// <remarks>
@@ -401,7 +442,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// for more details about rotating managed cluster certificates.
         /// </remarks>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -420,6 +461,28 @@ namespace Microsoft.Azure.Management.ContainerService
         /// </exception>
         Task<AzureOperationResponse> RotateClusterCertificatesWithHttpMessagesAsync(string resourceGroupName, string resourceName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
+        /// Rotates the service account signing keys of a managed cluster.
+        /// </summary>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group. The name is case insensitive.
+        /// </param>
+        /// <param name='resourceName'>
+        /// The name of the managed cluster resource.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.Azure.CloudException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        Task<AzureOperationResponse> RotateServiceAccountSigningKeysWithHttpMessagesAsync(string resourceGroupName, string resourceName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
         /// Stops a Managed Cluster
         /// </summary>
         /// <remarks>
@@ -432,7 +495,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// for more details about stopping a cluster.
         /// </remarks>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -459,7 +522,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// for more details about starting a cluster.
         /// </remarks>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -486,7 +549,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
         /// </remarks>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -515,7 +578,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Cluster.
         /// </summary>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -549,7 +612,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// returns properties of each egress endpoint.
         /// </remarks>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -574,7 +637,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Creates or updates a managed cluster.
         /// </summary>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -602,7 +665,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Updates tags on a managed cluster.
         /// </summary>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -630,10 +693,14 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Deletes a managed cluster.
         /// </summary>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
+        /// </param>
+        /// <param name='ignorePodDisruptionBudget'>
+        /// ignore-pod-disruption-budget=true to delete those pods on a node
+        /// without considering Pod Disruption Budget
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -647,7 +714,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse> BeginDeleteWithHttpMessagesAsync(string resourceGroupName, string resourceName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse> BeginDeleteWithHttpMessagesAsync(string resourceGroupName, string resourceName, bool? ignorePodDisruptionBudget = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Reset the Service Principal Profile of a managed cluster.
         /// </summary>
@@ -656,7 +723,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// service principal
         /// </remarks>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -681,7 +748,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Reset the AAD Profile of a managed cluster.
         /// </summary>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -711,7 +778,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// for more details about rotating managed cluster certificates.
         /// </remarks>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -730,6 +797,28 @@ namespace Microsoft.Azure.Management.ContainerService
         /// </exception>
         Task<AzureOperationResponse> BeginRotateClusterCertificatesWithHttpMessagesAsync(string resourceGroupName, string resourceName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
+        /// Rotates the service account signing keys of a managed cluster.
+        /// </summary>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group. The name is case insensitive.
+        /// </param>
+        /// <param name='resourceName'>
+        /// The name of the managed cluster resource.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.Azure.CloudException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        Task<AzureOperationResponse> BeginRotateServiceAccountSigningKeysWithHttpMessagesAsync(string resourceGroupName, string resourceName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
         /// Stops a Managed Cluster
         /// </summary>
         /// <remarks>
@@ -742,7 +831,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// for more details about stopping a cluster.
         /// </remarks>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -769,7 +858,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// for more details about starting a cluster.
         /// </remarks>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.
@@ -796,7 +885,7 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
         /// </remarks>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group.
+        /// The name of the resource group. The name is case insensitive.
         /// </param>
         /// <param name='resourceName'>
         /// The name of the managed cluster resource.

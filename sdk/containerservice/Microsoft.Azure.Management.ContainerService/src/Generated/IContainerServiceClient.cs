@@ -41,14 +41,12 @@ namespace Microsoft.Azure.Management.ContainerService
         ServiceClientCredentials Credentials { get; }
 
         /// <summary>
-        /// Subscription credentials which uniquely identify Microsoft Azure
-        /// subscription. The subscription ID forms part of the URI for every
-        /// service call.
+        /// The ID of the target subscription.
         /// </summary>
         string SubscriptionId { get; set; }
 
         /// <summary>
-        /// Client Api Version.
+        /// The API version to use for this operation.
         /// </summary>
         string ApiVersion { get; }
 
@@ -105,6 +103,36 @@ namespace Microsoft.Azure.Management.ContainerService
         /// Gets the IResolvePrivateLinkServiceIdOperations.
         /// </summary>
         IResolvePrivateLinkServiceIdOperations ResolvePrivateLinkServiceId { get; }
+
+        /// <summary>
+        /// Gets the ISnapshotsOperations.
+        /// </summary>
+        ISnapshotsOperations Snapshots { get; }
+
+        /// <summary>
+        /// Gets the IManagedClusterSnapshotsOperations.
+        /// </summary>
+        IManagedClusterSnapshotsOperations ManagedClusterSnapshots { get; }
+
+        /// <summary>
+        /// Gets the ITrustedAccessRolesOperations.
+        /// </summary>
+        ITrustedAccessRolesOperations TrustedAccessRoles { get; }
+
+        /// <summary>
+        /// Gets the ITrustedAccessRoleBindingsOperations.
+        /// </summary>
+        ITrustedAccessRoleBindingsOperations TrustedAccessRoleBindings { get; }
+
+        /// <summary>
+        /// Gets the IFleetsOperations.
+        /// </summary>
+        IFleetsOperations Fleets { get; }
+
+        /// <summary>
+        /// Gets the IFleetMembersOperations.
+        /// </summary>
+        IFleetMembersOperations FleetMembers { get; }
 
     }
 }

@@ -22,13 +22,72 @@ namespace Microsoft.Azure.Management.ContainerService
     public static partial class AgentPoolsOperationsExtensions
     {
             /// <summary>
+            /// Aborts last operation running on agent pool.
+            /// </summary>
+            /// <remarks>
+            /// Aborting last running operation on agent pool. We return a 204 no content
+            /// code here to indicate that the operation has been accepted and an abort
+            /// will be attempted but is not guaranteed to complete successfully. Please
+            /// look up the provisioning state of the agent pool to keep track of whether
+            /// it changes to Canceled. A canceled provisioning state indicates that the
+            /// abort was successful
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group. The name is case insensitive.
+            /// </param>
+            /// <param name='resourceName'>
+            /// The name of the managed cluster resource.
+            /// </param>
+            /// <param name='agentPoolName'>
+            /// The name of the agent pool.
+            /// </param>
+            public static void AbortLatestOperation(this IAgentPoolsOperations operations, string resourceGroupName, string resourceName, string agentPoolName)
+            {
+                operations.AbortLatestOperationAsync(resourceGroupName, resourceName, agentPoolName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Aborts last operation running on agent pool.
+            /// </summary>
+            /// <remarks>
+            /// Aborting last running operation on agent pool. We return a 204 no content
+            /// code here to indicate that the operation has been accepted and an abort
+            /// will be attempted but is not guaranteed to complete successfully. Please
+            /// look up the provisioning state of the agent pool to keep track of whether
+            /// it changes to Canceled. A canceled provisioning state indicates that the
+            /// abort was successful
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group. The name is case insensitive.
+            /// </param>
+            /// <param name='resourceName'>
+            /// The name of the managed cluster resource.
+            /// </param>
+            /// <param name='agentPoolName'>
+            /// The name of the agent pool.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task AbortLatestOperationAsync(this IAgentPoolsOperations operations, string resourceGroupName, string resourceName, string agentPoolName, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                (await operations.AbortLatestOperationWithHttpMessagesAsync(resourceGroupName, resourceName, agentPoolName, null, cancellationToken).ConfigureAwait(false)).Dispose();
+            }
+
+            /// <summary>
             /// Gets a list of agent pools in the specified managed cluster.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -45,7 +104,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -68,7 +127,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -88,7 +147,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -114,7 +173,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -137,7 +196,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -166,7 +225,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -174,9 +233,13 @@ namespace Microsoft.Azure.Management.ContainerService
             /// <param name='agentPoolName'>
             /// The name of the agent pool.
             /// </param>
-            public static void Delete(this IAgentPoolsOperations operations, string resourceGroupName, string resourceName, string agentPoolName)
+            /// <param name='ignorePodDisruptionBudget'>
+            /// ignore-pod-disruption-budget=true to delete those pods on a node without
+            /// considering Pod Disruption Budget
+            /// </param>
+            public static void Delete(this IAgentPoolsOperations operations, string resourceGroupName, string resourceName, string agentPoolName, bool? ignorePodDisruptionBudget = default(bool?))
             {
-                operations.DeleteAsync(resourceGroupName, resourceName, agentPoolName).GetAwaiter().GetResult();
+                operations.DeleteAsync(resourceGroupName, resourceName, agentPoolName, ignorePodDisruptionBudget).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -186,7 +249,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -194,12 +257,16 @@ namespace Microsoft.Azure.Management.ContainerService
             /// <param name='agentPoolName'>
             /// The name of the agent pool.
             /// </param>
+            /// <param name='ignorePodDisruptionBudget'>
+            /// ignore-pod-disruption-budget=true to delete those pods on a node without
+            /// considering Pod Disruption Budget
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task DeleteAsync(this IAgentPoolsOperations operations, string resourceGroupName, string resourceName, string agentPoolName, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task DeleteAsync(this IAgentPoolsOperations operations, string resourceGroupName, string resourceName, string agentPoolName, bool? ignorePodDisruptionBudget = default(bool?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.DeleteWithHttpMessagesAsync(resourceGroupName, resourceName, agentPoolName, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                (await operations.DeleteWithHttpMessagesAsync(resourceGroupName, resourceName, agentPoolName, ignorePodDisruptionBudget, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -209,7 +276,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -229,7 +296,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -260,7 +327,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -282,7 +349,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -311,7 +378,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -337,7 +404,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -363,7 +430,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -386,7 +453,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -415,7 +482,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -423,9 +490,13 @@ namespace Microsoft.Azure.Management.ContainerService
             /// <param name='agentPoolName'>
             /// The name of the agent pool.
             /// </param>
-            public static void BeginDelete(this IAgentPoolsOperations operations, string resourceGroupName, string resourceName, string agentPoolName)
+            /// <param name='ignorePodDisruptionBudget'>
+            /// ignore-pod-disruption-budget=true to delete those pods on a node without
+            /// considering Pod Disruption Budget
+            /// </param>
+            public static void BeginDelete(this IAgentPoolsOperations operations, string resourceGroupName, string resourceName, string agentPoolName, bool? ignorePodDisruptionBudget = default(bool?))
             {
-                operations.BeginDeleteAsync(resourceGroupName, resourceName, agentPoolName).GetAwaiter().GetResult();
+                operations.BeginDeleteAsync(resourceGroupName, resourceName, agentPoolName, ignorePodDisruptionBudget).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -435,7 +506,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -443,12 +514,16 @@ namespace Microsoft.Azure.Management.ContainerService
             /// <param name='agentPoolName'>
             /// The name of the agent pool.
             /// </param>
+            /// <param name='ignorePodDisruptionBudget'>
+            /// ignore-pod-disruption-budget=true to delete those pods on a node without
+            /// considering Pod Disruption Budget
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task BeginDeleteAsync(this IAgentPoolsOperations operations, string resourceGroupName, string resourceName, string agentPoolName, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task BeginDeleteAsync(this IAgentPoolsOperations operations, string resourceGroupName, string resourceName, string agentPoolName, bool? ignorePodDisruptionBudget = default(bool?), CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.BeginDeleteWithHttpMessagesAsync(resourceGroupName, resourceName, agentPoolName, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                (await operations.BeginDeleteWithHttpMessagesAsync(resourceGroupName, resourceName, agentPoolName, ignorePodDisruptionBudget, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -464,7 +539,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.
@@ -490,7 +565,7 @@ namespace Microsoft.Azure.Management.ContainerService
             /// The operations group for this extension method.
             /// </param>
             /// <param name='resourceGroupName'>
-            /// The name of the resource group.
+            /// The name of the resource group. The name is case insensitive.
             /// </param>
             /// <param name='resourceName'>
             /// The name of the managed cluster resource.

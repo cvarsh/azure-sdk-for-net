@@ -18,5 +18,8 @@ namespace Microsoft.Azure.Management.ContainerService.Models
     {
         public const string Ubuntu = "Ubuntu";
         public const string CBLMariner = "CBLMariner";
+        public const string Mariner = "Mariner";
+        public const string Windows2019 = "Windows2019";
+        public const string Windows2022 = "Windows2022";
     }
 }
