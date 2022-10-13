@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
     /// API spec for Microsoft.SecurityInsights (Azure Security Insights)
     /// resource provider
     /// </summary>
-    public partial interface ISecurityInsights : System.IDisposable
+    public partial interface ISecurityInsightsClient : System.IDisposable
     {
         /// <summary>
         /// The base URI of the service.
@@ -151,6 +151,11 @@ namespace Microsoft.Azure.Management.SecurityInsights
         IEntityQueryTemplatesOperations EntityQueryTemplates { get; }
 
         /// <summary>
+        /// Gets the IFileImportsOperations.
+        /// </summary>
+        IFileImportsOperations FileImports { get; }
+
+        /// <summary>
         /// Gets the IIncidentCommentsOperations.
         /// </summary>
         IIncidentCommentsOperations IncidentComments { get; }
@@ -174,6 +179,11 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// Gets the ISentinelOnboardingStatesOperations.
         /// </summary>
         ISentinelOnboardingStatesOperations SentinelOnboardingStates { get; }
+
+        /// <summary>
+        /// Gets the ISecurityMLAnalyticsSettingsOperations.
+        /// </summary>
+        ISecurityMLAnalyticsSettingsOperations SecurityMLAnalyticsSettings { get; }
 
         /// <summary>
         /// Gets the IProductSettingsOperations.
@@ -229,6 +239,11 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// Gets the IOperations.
         /// </summary>
         IOperations Operations { get; }
+
+        /// <summary>
+        /// Gets the ISummariesOperations.
+        /// </summary>
+        ISummariesOperations Summaries { get; }
 
     }
 }
