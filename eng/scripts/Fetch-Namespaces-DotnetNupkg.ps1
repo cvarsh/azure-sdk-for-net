@@ -30,7 +30,7 @@ $nupkgFile = Get-dotnet-Package-Artifacts -Location "$DotnetNupkgLocation/$Artif
 $version = $nupkgFile.Name -replace "$([Regex]::Escape($ArtifactName))\.(.*\d)\.nupkg", '$1'
 Write-Host "The full version: $version"
 $originalVersion = [AzureEngSemanticVersion]::ParseVersionString($version)
-Write-Host "The origin version: $originalVersion"
+Write-Host "The original version: $originalVersion"
 $metadataMoniker = 'latest'
 if ($originalVersion -and $originalVersion.IsPrerelease) {
   $metadataMoniker = 'preview'
