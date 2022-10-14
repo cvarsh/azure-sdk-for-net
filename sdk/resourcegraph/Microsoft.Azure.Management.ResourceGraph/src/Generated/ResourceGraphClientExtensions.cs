@@ -13,6 +13,8 @@ namespace Microsoft.Azure.Management.ResourceGraph
     using Microsoft.Rest;
     using Microsoft.Rest.Azure;
     using Models;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -54,6 +56,40 @@ namespace Microsoft.Azure.Management.ResourceGraph
             public static async Task<QueryResponse> ResourcesAsync(this IResourceGraphClient operations, QueryRequest query, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.ResourcesWithHttpMessagesAsync(query, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// List all snapshots of a resource for a given time interval.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='request'>
+            /// Request specifying the query and its options.
+            /// </param>
+            public static IDictionary<string, object> ResourcesHistory(this IResourceGraphClient operations, ResourcesHistoryRequest request)
+            {
+                return operations.ResourcesHistoryAsync(request).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// List all snapshots of a resource for a given time interval.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='request'>
+            /// Request specifying the query and its options.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<IDictionary<string, object>> ResourcesHistoryAsync(this IResourceGraphClient operations, ResourcesHistoryRequest request, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.ResourcesHistoryWithHttpMessagesAsync(request, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
