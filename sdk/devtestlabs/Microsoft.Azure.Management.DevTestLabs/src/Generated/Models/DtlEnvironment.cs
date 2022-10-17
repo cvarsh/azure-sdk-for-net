@@ -34,13 +34,19 @@ namespace Microsoft.Azure.Management.DevTestLabs.Models
         /// <summary>
         /// Initializes a new instance of the DtlEnvironment class.
         /// </summary>
-        /// <param name="id">The identifier of the resource.</param>
-        /// <param name="name">The name of the resource.</param>
-        /// <param name="type">The type of the resource.</param>
-        /// <param name="location">The location of the resource.</param>
-        /// <param name="tags">The tags of the resource.</param>
-        /// <param name="deploymentProperties">The deployment properties of the
-        /// environment.</param>
+        /// <param name="id">Fully qualified resource ID for the resource. Ex -
+        /// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}</param>
+        /// <param name="name">The name of the resource</param>
+        /// <param name="type">The type of the resource. E.g.
+        /// "Microsoft.Compute/virtualMachines" or
+        /// "Microsoft.Storage/storageAccounts"</param>
+        /// <param name="tags">Resource tags.</param>
+        /// <param name="location">The geo-location where the resource
+        /// lives</param>
+        /// <param name="armTemplateId">The Azure Resource Manager template's
+        /// identifier.</param>
+        /// <param name="parameters">The parameters of the Azure Resource
+        /// Manager template.</param>
         /// <param name="armTemplateDisplayName">The display name of the Azure
         /// Resource Manager template that produced the environment.</param>
         /// <param name="resourceGroupId">The identifier of the resource group
@@ -50,15 +56,19 @@ namespace Microsoft.Azure.Management.DevTestLabs.Models
         /// resource.</param>
         /// <param name="uniqueIdentifier">The unique immutable identifier of a
         /// resource (Guid).</param>
-        public DtlEnvironment(string id = default(string), string name = default(string), string type = default(string), string location = default(string), IDictionary<string, string> tags = default(IDictionary<string, string>), EnvironmentDeploymentProperties deploymentProperties = default(EnvironmentDeploymentProperties), string armTemplateDisplayName = default(string), string resourceGroupId = default(string), string createdByUser = default(string), string provisioningState = default(string), string uniqueIdentifier = default(string))
-            : base(id, name, type, location, tags)
+        /// <param name="systemData">The system metadata relating to this
+        /// resource</param>
+        public DtlEnvironment(string id = default(string), string name = default(string), string type = default(string), IDictionary<string, string> tags = default(IDictionary<string, string>), string location = default(string), string armTemplateId = default(string), IList<ArmTemplateParameterProperties> parameters = default(IList<ArmTemplateParameterProperties>), string armTemplateDisplayName = default(string), string resourceGroupId = default(string), string createdByUser = default(string), string provisioningState = default(string), string uniqueIdentifier = default(string), SystemData systemData = default(SystemData))
+            : base(id, name, type, tags, location)
         {
-            DeploymentProperties = deploymentProperties;
+            ArmTemplateId = armTemplateId;
+            Parameters = parameters;
             ArmTemplateDisplayName = armTemplateDisplayName;
             ResourceGroupId = resourceGroupId;
             CreatedByUser = createdByUser;
             ProvisioningState = provisioningState;
             UniqueIdentifier = uniqueIdentifier;
+            SystemData = systemData;
             CustomInit();
         }
 
@@ -68,10 +78,16 @@ namespace Microsoft.Azure.Management.DevTestLabs.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the deployment properties of the environment.
+        /// Gets or sets the Azure Resource Manager template's identifier.
         /// </summary>
-        [JsonProperty(PropertyName = "properties.deploymentProperties")]
-        public EnvironmentDeploymentProperties DeploymentProperties { get; set; }
+        [JsonProperty(PropertyName = "properties.deploymentProperties.armTemplateId")]
+        public string ArmTemplateId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the parameters of the Azure Resource Manager template.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.deploymentProperties.parameters")]
+        public IList<ArmTemplateParameterProperties> Parameters { get; set; }
 
         /// <summary>
         /// Gets or sets the display name of the Azure Resource Manager
@@ -104,6 +120,12 @@ namespace Microsoft.Azure.Management.DevTestLabs.Models
         /// </summary>
         [JsonProperty(PropertyName = "properties.uniqueIdentifier")]
         public string UniqueIdentifier { get; private set; }
+
+        /// <summary>
+        /// Gets the system metadata relating to this resource
+        /// </summary>
+        [JsonProperty(PropertyName = "systemData")]
+        public SystemData SystemData { get; private set; }
 
     }
 }

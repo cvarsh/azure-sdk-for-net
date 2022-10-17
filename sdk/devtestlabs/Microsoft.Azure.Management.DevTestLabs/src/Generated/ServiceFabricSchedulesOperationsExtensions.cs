@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the user profile.
             /// </param>
             /// <param name='serviceFabricName'>
-            /// The name of the service Fabric.
+            /// The name of the service fabric.
             /// </param>
             /// <param name='odataQuery'>
             /// OData parameters to apply to the operation.
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the user profile.
             /// </param>
             /// <param name='serviceFabricName'>
-            /// The name of the service Fabric.
+            /// The name of the service fabric.
             /// </param>
             /// <param name='odataQuery'>
             /// OData parameters to apply to the operation.
@@ -96,7 +96,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the user profile.
             /// </param>
             /// <param name='serviceFabricName'>
-            /// The name of the service Fabric.
+            /// The name of the service fabric.
             /// </param>
             /// <param name='name'>
             /// The name of the schedule.
@@ -125,7 +125,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the user profile.
             /// </param>
             /// <param name='serviceFabricName'>
-            /// The name of the service Fabric.
+            /// The name of the service fabric.
             /// </param>
             /// <param name='name'>
             /// The name of the schedule.
@@ -160,7 +160,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the user profile.
             /// </param>
             /// <param name='serviceFabricName'>
-            /// The name of the service Fabric.
+            /// The name of the service fabric.
             /// </param>
             /// <param name='name'>
             /// The name of the schedule.
@@ -189,7 +189,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the user profile.
             /// </param>
             /// <param name='serviceFabricName'>
-            /// The name of the service Fabric.
+            /// The name of the service fabric.
             /// </param>
             /// <param name='name'>
             /// The name of the schedule.
@@ -224,7 +224,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the user profile.
             /// </param>
             /// <param name='serviceFabricName'>
-            /// The name of the service Fabric.
+            /// The name of the service fabric.
             /// </param>
             /// <param name='name'>
             /// The name of the schedule.
@@ -250,7 +250,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the user profile.
             /// </param>
             /// <param name='serviceFabricName'>
-            /// The name of the service Fabric.
+            /// The name of the service fabric.
             /// </param>
             /// <param name='name'>
             /// The name of the schedule.
@@ -264,7 +264,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             }
 
             /// <summary>
-            /// Modify properties of schedules.
+            /// Allows modifying tags of schedules. All other properties will be ignored.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -279,13 +279,13 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the user profile.
             /// </param>
             /// <param name='serviceFabricName'>
-            /// The name of the service Fabric.
+            /// The name of the service fabric.
             /// </param>
             /// <param name='name'>
             /// The name of the schedule.
             /// </param>
             /// <param name='schedule'>
-            /// A schedule.
+            /// Allows modifying tags of schedules. All other properties will be ignored.
             /// </param>
             public static Schedule Update(this IServiceFabricSchedulesOperations operations, string resourceGroupName, string labName, string userName, string serviceFabricName, string name, ScheduleFragment schedule)
             {
@@ -293,7 +293,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             }
 
             /// <summary>
-            /// Modify properties of schedules.
+            /// Allows modifying tags of schedules. All other properties will be ignored.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -308,13 +308,13 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the user profile.
             /// </param>
             /// <param name='serviceFabricName'>
-            /// The name of the service Fabric.
+            /// The name of the service fabric.
             /// </param>
             /// <param name='name'>
             /// The name of the schedule.
             /// </param>
             /// <param name='schedule'>
-            /// A schedule.
+            /// Allows modifying tags of schedules. All other properties will be ignored.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -343,7 +343,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the user profile.
             /// </param>
             /// <param name='serviceFabricName'>
-            /// The name of the service Fabric.
+            /// The name of the service fabric.
             /// </param>
             /// <param name='name'>
             /// The name of the schedule.
@@ -369,7 +369,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the user profile.
             /// </param>
             /// <param name='serviceFabricName'>
-            /// The name of the service Fabric.
+            /// The name of the service fabric.
             /// </param>
             /// <param name='name'>
             /// The name of the schedule.
@@ -398,7 +398,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the user profile.
             /// </param>
             /// <param name='serviceFabricName'>
-            /// The name of the service Fabric.
+            /// The name of the service fabric.
             /// </param>
             /// <param name='name'>
             /// The name of the schedule.
@@ -424,7 +424,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the user profile.
             /// </param>
             /// <param name='serviceFabricName'>
-            /// The name of the service Fabric.
+            /// The name of the service fabric.
             /// </param>
             /// <param name='name'>
             /// The name of the schedule.

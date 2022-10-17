@@ -494,7 +494,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        public async Task<AzureOperationResponse<User>> CreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string labName, string name, User user, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<User>> CreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string labName, string name, User user = default(User), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Send Request
             AzureOperationResponse<User> _response = await BeginCreateOrUpdateWithHttpMessagesAsync(resourceGroupName, labName, name, user, customHeaders, cancellationToken).ConfigureAwait(false);
@@ -527,7 +527,8 @@ namespace Microsoft.Azure.Management.DevTestLabs
         }
 
         /// <summary>
-        /// Modify properties of user profiles.
+        /// Allows modifying tags of user profiles. All other properties will be
+        /// ignored.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
@@ -539,7 +540,8 @@ namespace Microsoft.Azure.Management.DevTestLabs
         /// The name of the user profile.
         /// </param>
         /// <param name='user'>
-        /// Profile of a lab user.
+        /// Allows modifying tags of user profiles. All other properties will be
+        /// ignored.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -782,7 +784,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<User>> BeginCreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string labName, string name, User user, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<User>> BeginCreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string labName, string name, User user = default(User), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client.SubscriptionId == null)
             {
@@ -799,10 +801,6 @@ namespace Microsoft.Azure.Management.DevTestLabs
             if (name == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "name");
-            }
-            if (user == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "user");
             }
             if (Client.ApiVersion == null)
             {

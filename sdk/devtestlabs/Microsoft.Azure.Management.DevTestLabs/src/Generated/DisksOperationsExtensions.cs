@@ -242,7 +242,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             }
 
             /// <summary>
-            /// Modify properties of disks.
+            /// Allows modifying tags of disks. All other properties will be ignored.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -260,7 +260,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the disk.
             /// </param>
             /// <param name='disk'>
-            /// A Disk.
+            /// Allows modifying tags of disks. All other properties will be ignored.
             /// </param>
             public static Disk Update(this IDisksOperations operations, string resourceGroupName, string labName, string userName, string name, DiskFragment disk)
             {
@@ -268,7 +268,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             }
 
             /// <summary>
-            /// Modify properties of disks.
+            /// Allows modifying tags of disks. All other properties will be ignored.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -286,7 +286,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the disk.
             /// </param>
             /// <param name='disk'>
-            /// A Disk.
+            /// Allows modifying tags of disks. All other properties will be ignored.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.

@@ -551,7 +551,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
         }
 
         /// <summary>
-        /// Modify properties of disks.
+        /// Allows modifying tags of disks. All other properties will be ignored.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
@@ -566,7 +566,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
         /// The name of the disk.
         /// </param>
         /// <param name='disk'>
-        /// A Disk.
+        /// Allows modifying tags of disks. All other properties will be ignored.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.

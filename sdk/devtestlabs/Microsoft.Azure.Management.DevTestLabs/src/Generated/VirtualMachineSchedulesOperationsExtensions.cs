@@ -240,7 +240,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             }
 
             /// <summary>
-            /// Modify properties of schedules.
+            /// Allows modifying tags of schedules. All other properties will be ignored.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -258,7 +258,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the schedule.
             /// </param>
             /// <param name='schedule'>
-            /// A schedule.
+            /// Allows modifying tags of schedules. All other properties will be ignored.
             /// </param>
             public static Schedule Update(this IVirtualMachineSchedulesOperations operations, string resourceGroupName, string labName, string virtualMachineName, string name, ScheduleFragment schedule)
             {
@@ -266,7 +266,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             }
 
             /// <summary>
-            /// Modify properties of schedules.
+            /// Allows modifying tags of schedules. All other properties will be ignored.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -284,7 +284,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the schedule.
             /// </param>
             /// <param name='schedule'>
-            /// A schedule.
+            /// Allows modifying tags of schedules. All other properties will be ignored.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.

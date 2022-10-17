@@ -154,7 +154,8 @@ namespace Microsoft.Azure.Management.DevTestLabs
         /// </exception>
         Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string labName, string userName, string name, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Modify properties of environments.
+        /// Allows modifying tags of environments. All other properties will be
+        /// ignored.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
@@ -169,7 +170,8 @@ namespace Microsoft.Azure.Management.DevTestLabs
         /// The name of the environment.
         /// </param>
         /// <param name='dtlEnvironment'>
-        /// An environment, which is essentially an ARM template deployment.
+        /// Allows modifying tags of environments. All other properties will be
+        /// ignored.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.

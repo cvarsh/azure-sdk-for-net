@@ -930,7 +930,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
         }
 
         /// <summary>
-        /// Modify properties of schedules.
+        /// Allows modifying tags of schedules. All other properties will be ignored.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
@@ -945,7 +945,7 @@ namespace Microsoft.Azure.Management.DevTestLabs
         /// The name of the schedule.
         /// </param>
         /// <param name='schedule'>
-        /// A schedule.
+        /// Allows modifying tags of schedules. All other properties will be ignored.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.

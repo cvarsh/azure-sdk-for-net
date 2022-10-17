@@ -218,7 +218,8 @@ namespace Microsoft.Azure.Management.DevTestLabs
             }
 
             /// <summary>
-            /// Modify properties of custom images.
+            /// Allows modifying tags of custom images. All other properties will be
+            /// ignored.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -233,7 +234,8 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the custom image.
             /// </param>
             /// <param name='customImage'>
-            /// A custom image.
+            /// Allows modifying tags of custom images. All other properties will be
+            /// ignored.
             /// </param>
             public static CustomImage Update(this ICustomImagesOperations operations, string resourceGroupName, string labName, string name, CustomImageFragment customImage)
             {
@@ -241,7 +243,8 @@ namespace Microsoft.Azure.Management.DevTestLabs
             }
 
             /// <summary>
-            /// Modify properties of custom images.
+            /// Allows modifying tags of custom images. All other properties will be
+            /// ignored.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -256,7 +259,8 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the custom image.
             /// </param>
             /// <param name='customImage'>
-            /// A custom image.
+            /// Allows modifying tags of custom images. All other properties will be
+            /// ignored.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.

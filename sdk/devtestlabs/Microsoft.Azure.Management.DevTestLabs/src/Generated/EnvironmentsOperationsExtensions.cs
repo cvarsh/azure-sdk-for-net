@@ -244,7 +244,8 @@ namespace Microsoft.Azure.Management.DevTestLabs
             }
 
             /// <summary>
-            /// Modify properties of environments.
+            /// Allows modifying tags of environments. All other properties will be
+            /// ignored.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -262,7 +263,8 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the environment.
             /// </param>
             /// <param name='dtlEnvironment'>
-            /// An environment, which is essentially an ARM template deployment.
+            /// Allows modifying tags of environments. All other properties will be
+            /// ignored.
             /// </param>
             public static DtlEnvironment Update(this IEnvironmentsOperations operations, string resourceGroupName, string labName, string userName, string name, DtlEnvironmentFragment dtlEnvironment)
             {
@@ -270,7 +272,8 @@ namespace Microsoft.Azure.Management.DevTestLabs
             }
 
             /// <summary>
-            /// Modify properties of environments.
+            /// Allows modifying tags of environments. All other properties will be
+            /// ignored.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -288,7 +291,8 @@ namespace Microsoft.Azure.Management.DevTestLabs
             /// The name of the environment.
             /// </param>
             /// <param name='dtlEnvironment'>
-            /// An environment, which is essentially an ARM template deployment.
+            /// Allows modifying tags of environments. All other properties will be
+            /// ignored.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
