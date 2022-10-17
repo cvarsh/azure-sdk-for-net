@@ -28,7 +28,9 @@ namespace Azure.ResourceManager.Storage.Models
         /// <param name="includeBlobVersions"> Includes blob versions in blob inventory when value is set to true. The definition.schemaFields values &apos;VersionId and IsCurrentVersion&apos; are required if this property is set to true, else they must be excluded. </param>
         /// <param name="includeSnapshots"> Includes blob snapshots in blob inventory when value is set to true. The definition.schemaFields value &apos;Snapshot&apos; is required if this property is set to true, else it must be excluded. </param>
         /// <param name="includeDeleted"> For &apos;Container&apos; definition.objectType the definition.schemaFields must include &apos;Deleted, Version, DeletedTime and RemainingRetentionDays&apos;. For &apos;Blob&apos; definition.objectType and HNS enabled storage accounts the definition.schemaFields must include &apos;DeletionId, Deleted, DeletedTime and RemainingRetentionDays&apos; and for Hns disabled accounts the definition.schemaFields must include &apos;Deleted and RemainingRetentionDays&apos;, else it must be excluded. </param>
-        internal BlobInventoryPolicyFilter(IList<string> includePrefix, IList<string> excludePrefix, IList<string> blobTypes, bool? includeBlobVersions, bool? includeSnapshots, bool? includeDeleted)
+        /// <param name="creationTime"> *************. </param>
+        /// <param name="lastModified"> *************. </param>
+        internal BlobInventoryPolicyFilter(IList<string> includePrefix, IList<string> excludePrefix, IList<string> blobTypes, bool? includeBlobVersions, bool? includeSnapshots, bool? includeDeleted, BlobInventoryPolicyFilterTime creationTime, BlobInventoryPolicyFilterTime lastModified)
         {
             IncludePrefix = includePrefix;
             ExcludePrefix = excludePrefix;
@@ -36,6 +38,8 @@ namespace Azure.ResourceManager.Storage.Models
             IncludeBlobVersions = includeBlobVersions;
             IncludeSnapshots = includeSnapshots;
             IncludeDeleted = includeDeleted;
+            CreationTime = creationTime;
+            LastModified = lastModified;
         }
 
         /// <summary> An array of strings with maximum 10 blob prefixes to be included in the inventory. </summary>
@@ -50,5 +54,32 @@ namespace Azure.ResourceManager.Storage.Models
         public bool? IncludeSnapshots { get; set; }
         /// <summary> For &apos;Container&apos; definition.objectType the definition.schemaFields must include &apos;Deleted, Version, DeletedTime and RemainingRetentionDays&apos;. For &apos;Blob&apos; definition.objectType and HNS enabled storage accounts the definition.schemaFields must include &apos;DeletionId, Deleted, DeletedTime and RemainingRetentionDays&apos; and for Hns disabled accounts the definition.schemaFields must include &apos;Deleted and RemainingRetentionDays&apos;, else it must be excluded. </summary>
         public bool? IncludeDeleted { get; set; }
+        /// <summary> *************. </summary>
+        internal BlobInventoryPolicyFilterTime CreationTime { get; set; }
+        /// <summary> *************. </summary>
+        public int? CreationTimeLastNDays
+        {
+            get => CreationTime is null ? default : CreationTime.LastNDays;
+            set
+            {
+                if (CreationTime is null)
+                    CreationTime = new BlobInventoryPolicyFilterTime();
+                CreationTime.LastNDays = value;
+            }
+        }
+
+        /// <summary> *************. </summary>
+        internal BlobInventoryPolicyFilterTime LastModified { get; set; }
+        /// <summary> *************. </summary>
+        public int? LastNDays
+        {
+            get => LastModified is null ? default : LastModified.LastNDays;
+            set
+            {
+                if (LastModified is null)
+                    LastModified = new BlobInventoryPolicyFilterTime();
+                LastModified.LastNDays = value;
+            }
+        }
     }
 }

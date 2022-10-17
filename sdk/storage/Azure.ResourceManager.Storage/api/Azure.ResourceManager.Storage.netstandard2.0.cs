@@ -819,11 +819,13 @@ namespace Azure.ResourceManager.Storage.Models
     {
         public BlobInventoryPolicyFilter() { }
         public System.Collections.Generic.IList<string> BlobTypes { get { throw null; } }
+        public int? CreationTimeLastNDays { get { throw null; } set { } }
         public System.Collections.Generic.IList<string> ExcludePrefix { get { throw null; } }
         public bool? IncludeBlobVersions { get { throw null; } set { } }
         public bool? IncludeDeleted { get { throw null; } set { } }
         public System.Collections.Generic.IList<string> IncludePrefix { get { throw null; } }
         public bool? IncludeSnapshots { get { throw null; } set { } }
+        public int? LastNDays { get { throw null; } set { } }
     }
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly partial struct BlobInventoryPolicyFormat : System.IEquatable<Azure.ResourceManager.Storage.Models.BlobInventoryPolicyFormat>

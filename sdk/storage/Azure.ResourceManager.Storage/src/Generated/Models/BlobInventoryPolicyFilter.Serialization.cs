@@ -61,6 +61,16 @@ namespace Azure.ResourceManager.Storage.Models
                 writer.WritePropertyName("includeDeleted");
                 writer.WriteBooleanValue(IncludeDeleted.Value);
             }
+            if (Optional.IsDefined(CreationTime))
+            {
+                writer.WritePropertyName("Creation-Time");
+                writer.WriteObjectValue(CreationTime);
+            }
+            if (Optional.IsDefined(LastModified))
+            {
+                writer.WritePropertyName("Last-Modified");
+                writer.WriteObjectValue(LastModified);
+            }
             writer.WriteEndObject();
         }
 
@@ -72,6 +82,8 @@ namespace Azure.ResourceManager.Storage.Models
             Optional<bool> includeBlobVersions = default;
             Optional<bool> includeSnapshots = default;
             Optional<bool> includeDeleted = default;
+            Optional<BlobInventoryPolicyFilterTime> creationTime = default;
+            Optional<BlobInventoryPolicyFilterTime> lastModified = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("prefixMatch"))
@@ -149,8 +161,28 @@ namespace Azure.ResourceManager.Storage.Models
                     includeDeleted = property.Value.GetBoolean();
                     continue;
                 }
+                if (property.NameEquals("Creation-Time"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    creationTime = BlobInventoryPolicyFilterTime.DeserializeBlobInventoryPolicyFilterTime(property.Value);
+                    continue;
+                }
+                if (property.NameEquals("Last-Modified"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    lastModified = BlobInventoryPolicyFilterTime.DeserializeBlobInventoryPolicyFilterTime(property.Value);
+                    continue;
+                }
             }
-            return new BlobInventoryPolicyFilter(Optional.ToList(prefixMatch), Optional.ToList(excludePrefix), Optional.ToList(blobTypes), Optional.ToNullable(includeBlobVersions), Optional.ToNullable(includeSnapshots), Optional.ToNullable(includeDeleted));
+            return new BlobInventoryPolicyFilter(Optional.ToList(prefixMatch), Optional.ToList(excludePrefix), Optional.ToList(blobTypes), Optional.ToNullable(includeBlobVersions), Optional.ToNullable(includeSnapshots), Optional.ToNullable(includeDeleted), creationTime.Value, lastModified.Value);
         }
     }
 }
