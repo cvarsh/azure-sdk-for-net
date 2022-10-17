@@ -13,6 +13,7 @@ using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
 using Azure.ResourceManager;
+using Azure.ResourceManager.Logic.Models;
 
 namespace Azure.ResourceManager.Logic
 {
@@ -25,6 +26,8 @@ namespace Azure.ResourceManager.Logic
         private IntegrationAccountsRestOperations _integrationAccountRestClient;
         private ClientDiagnostics _integrationServiceEnvironmentClientDiagnostics;
         private IntegrationServiceEnvironmentsRestOperations _integrationServiceEnvironmentRestClient;
+        private ClientDiagnostics _locationsClientDiagnostics;
+        private LocationsRestOperations _locationsRestClient;
 
         /// <summary> Initializes a new instance of the <see cref="SubscriptionResourceExtensionClient"/> class for mocking. </summary>
         protected SubscriptionResourceExtensionClient()
@@ -44,6 +47,8 @@ namespace Azure.ResourceManager.Logic
         private IntegrationAccountsRestOperations IntegrationAccountRestClient => _integrationAccountRestClient ??= new IntegrationAccountsRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, GetApiVersionOrNull(IntegrationAccountResource.ResourceType));
         private ClientDiagnostics IntegrationServiceEnvironmentClientDiagnostics => _integrationServiceEnvironmentClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.Logic", IntegrationServiceEnvironmentResource.ResourceType.Namespace, Diagnostics);
         private IntegrationServiceEnvironmentsRestOperations IntegrationServiceEnvironmentRestClient => _integrationServiceEnvironmentRestClient ??= new IntegrationServiceEnvironmentsRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, GetApiVersionOrNull(IntegrationServiceEnvironmentResource.ResourceType));
+        private ClientDiagnostics LocationsClientDiagnostics => _locationsClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.Logic", ProviderConstants.DefaultProviderNamespace, Diagnostics);
+        private LocationsRestOperations LocationsRestClient => _locationsRestClient ??= new LocationsRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
 
         private string GetApiVersionOrNull(ResourceType resourceType)
         {
@@ -309,6 +314,102 @@ namespace Azure.ResourceManager.Logic
                 }
             }
             return PageableHelpers.CreateEnumerable(FirstPageFunc, NextPageFunc);
+        }
+
+        /// <summary>
+        /// Validates the workflow export.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Logic/locations/{location}/validateWorkflowExport
+        /// Operation Id: Locations_ValidateWorkflowExport
+        /// </summary>
+        /// <param name="location"> The name of Azure region. </param>
+        /// <param name="workflowExportRequest"> The workflow export request. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual async Task<Response<WorkflowExportValidityResult>> ValidateWorkflowExportLocationAsync(AzureLocation location, WorkflowExportRequest workflowExportRequest, CancellationToken cancellationToken = default)
+        {
+            using var scope = LocationsClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.ValidateWorkflowExportLocation");
+            scope.Start();
+            try
+            {
+                var response = await LocationsRestClient.ValidateWorkflowExportAsync(Id.SubscriptionId, location, workflowExportRequest, cancellationToken).ConfigureAwait(false);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Validates the workflow export.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Logic/locations/{location}/validateWorkflowExport
+        /// Operation Id: Locations_ValidateWorkflowExport
+        /// </summary>
+        /// <param name="location"> The name of Azure region. </param>
+        /// <param name="workflowExportRequest"> The workflow export request. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual Response<WorkflowExportValidityResult> ValidateWorkflowExportLocation(AzureLocation location, WorkflowExportRequest workflowExportRequest, CancellationToken cancellationToken = default)
+        {
+            using var scope = LocationsClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.ValidateWorkflowExportLocation");
+            scope.Start();
+            try
+            {
+                var response = LocationsRestClient.ValidateWorkflowExport(Id.SubscriptionId, location, workflowExportRequest, cancellationToken);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Executes the workflow export.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Logic/locations/{location}/workflowExport
+        /// Operation Id: Locations_WorkflowExport
+        /// </summary>
+        /// <param name="location"> The name of Azure region. </param>
+        /// <param name="workflowExportRequest"> The workflow export request. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual async Task<Response<WorkflowExportResult>> WorkflowExportLocationAsync(AzureLocation location, WorkflowExportRequest workflowExportRequest, CancellationToken cancellationToken = default)
+        {
+            using var scope = LocationsClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.WorkflowExportLocation");
+            scope.Start();
+            try
+            {
+                var response = await LocationsRestClient.WorkflowExportAsync(Id.SubscriptionId, location, workflowExportRequest, cancellationToken).ConfigureAwait(false);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Executes the workflow export.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Logic/locations/{location}/workflowExport
+        /// Operation Id: Locations_WorkflowExport
+        /// </summary>
+        /// <param name="location"> The name of Azure region. </param>
+        /// <param name="workflowExportRequest"> The workflow export request. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual Response<WorkflowExportResult> WorkflowExportLocation(AzureLocation location, WorkflowExportRequest workflowExportRequest, CancellationToken cancellationToken = default)
+        {
+            using var scope = LocationsClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.WorkflowExportLocation");
+            scope.Start();
+            try
+            {
+                var response = LocationsRestClient.WorkflowExport(Id.SubscriptionId, location, workflowExportRequest, cancellationToken);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
         }
     }
 }

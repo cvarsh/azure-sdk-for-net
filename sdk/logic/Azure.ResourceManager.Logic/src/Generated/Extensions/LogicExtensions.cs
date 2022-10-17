@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Azure;
 using Azure.Core;
 using Azure.ResourceManager;
+using Azure.ResourceManager.Logic.Models;
 using Azure.ResourceManager.Resources;
 
 namespace Azure.ResourceManager.Logic
@@ -111,6 +112,74 @@ namespace Azure.ResourceManager.Logic
         public static Pageable<IntegrationServiceEnvironmentResource> GetIntegrationServiceEnvironments(this SubscriptionResource subscriptionResource, int? top = null, CancellationToken cancellationToken = default)
         {
             return GetExtensionClient(subscriptionResource).GetIntegrationServiceEnvironments(top, cancellationToken);
+        }
+
+        /// <summary>
+        /// Validates the workflow export.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Logic/locations/{location}/validateWorkflowExport
+        /// Operation Id: Locations_ValidateWorkflowExport
+        /// </summary>
+        /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
+        /// <param name="location"> The name of Azure region. </param>
+        /// <param name="workflowExportRequest"> The workflow export request. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="workflowExportRequest"/> is null. </exception>
+        public static async Task<Response<WorkflowExportValidityResult>> ValidateWorkflowExportLocationAsync(this SubscriptionResource subscriptionResource, AzureLocation location, WorkflowExportRequest workflowExportRequest, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(workflowExportRequest, nameof(workflowExportRequest));
+
+            return await GetExtensionClient(subscriptionResource).ValidateWorkflowExportLocationAsync(location, workflowExportRequest, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Validates the workflow export.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Logic/locations/{location}/validateWorkflowExport
+        /// Operation Id: Locations_ValidateWorkflowExport
+        /// </summary>
+        /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
+        /// <param name="location"> The name of Azure region. </param>
+        /// <param name="workflowExportRequest"> The workflow export request. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="workflowExportRequest"/> is null. </exception>
+        public static Response<WorkflowExportValidityResult> ValidateWorkflowExportLocation(this SubscriptionResource subscriptionResource, AzureLocation location, WorkflowExportRequest workflowExportRequest, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(workflowExportRequest, nameof(workflowExportRequest));
+
+            return GetExtensionClient(subscriptionResource).ValidateWorkflowExportLocation(location, workflowExportRequest, cancellationToken);
+        }
+
+        /// <summary>
+        /// Executes the workflow export.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Logic/locations/{location}/workflowExport
+        /// Operation Id: Locations_WorkflowExport
+        /// </summary>
+        /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
+        /// <param name="location"> The name of Azure region. </param>
+        /// <param name="workflowExportRequest"> The workflow export request. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="workflowExportRequest"/> is null. </exception>
+        public static async Task<Response<WorkflowExportResult>> WorkflowExportLocationAsync(this SubscriptionResource subscriptionResource, AzureLocation location, WorkflowExportRequest workflowExportRequest, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(workflowExportRequest, nameof(workflowExportRequest));
+
+            return await GetExtensionClient(subscriptionResource).WorkflowExportLocationAsync(location, workflowExportRequest, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Executes the workflow export.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Logic/locations/{location}/workflowExport
+        /// Operation Id: Locations_WorkflowExport
+        /// </summary>
+        /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
+        /// <param name="location"> The name of Azure region. </param>
+        /// <param name="workflowExportRequest"> The workflow export request. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="workflowExportRequest"/> is null. </exception>
+        public static Response<WorkflowExportResult> WorkflowExportLocation(this SubscriptionResource subscriptionResource, AzureLocation location, WorkflowExportRequest workflowExportRequest, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(workflowExportRequest, nameof(workflowExportRequest));
+
+            return GetExtensionClient(subscriptionResource).WorkflowExportLocation(location, workflowExportRequest, cancellationToken);
         }
 
         private static ResourceGroupResourceExtensionClient GetExtensionClient(ResourceGroupResource resourceGroupResource)
