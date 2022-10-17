@@ -6,9 +6,6 @@
 #nullable disable
 
 using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Threading.Tasks;
 using Azure;
 using Azure.Core;
@@ -24,7 +21,6 @@ namespace Azure.Analytics.Purview.Account
         private readonly TokenCredential _tokenCredential;
         private readonly HttpPipeline _pipeline;
         private readonly Uri _endpoint;
-        private readonly string _apiVersion;
 
         /// <summary> The ClientDiagnostics is used to provide tracing support for the client library. </summary>
         internal ClientDiagnostics ClientDiagnostics { get; }
@@ -38,167 +34,165 @@ namespace Azure.Analytics.Purview.Account
         }
 
         /// <summary> Initializes a new instance of PurviewAccountClient. </summary>
-        /// <param name="endpoint"> The account endpoint of your Purview account. Example: https://{accountName}.purview.azure.com/account/. </param>
         /// <param name="credential"> A credential used to authenticate to an Azure Service. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="endpoint"/> or <paramref name="credential"/> is null. </exception>
-        public PurviewAccountClient(Uri endpoint, TokenCredential credential) : this(endpoint, credential, new PurviewAccountClientOptions())
+        /// <exception cref="ArgumentNullException"> <paramref name="credential"/> is null. </exception>
+        public PurviewAccountClient(TokenCredential credential) : this(credential, new Uri(""), new PurviewAccountClientOptions())
         {
         }
 
         /// <summary> Initializes a new instance of PurviewAccountClient. </summary>
-        /// <param name="endpoint"> The account endpoint of your Purview account. Example: https://{accountName}.purview.azure.com/account/. </param>
         /// <param name="credential"> A credential used to authenticate to an Azure Service. </param>
+        /// <param name="endpoint"> server parameter. </param>
         /// <param name="options"> The options for configuring the client. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="endpoint"/> or <paramref name="credential"/> is null. </exception>
-        public PurviewAccountClient(Uri endpoint, TokenCredential credential, PurviewAccountClientOptions options)
+        /// <exception cref="ArgumentNullException"> <paramref name="credential"/> or <paramref name="endpoint"/> is null. </exception>
+        public PurviewAccountClient(TokenCredential credential, Uri endpoint, PurviewAccountClientOptions options)
         {
-            Argument.AssertNotNull(endpoint, nameof(endpoint));
             Argument.AssertNotNull(credential, nameof(credential));
+            Argument.AssertNotNull(endpoint, nameof(endpoint));
             options ??= new PurviewAccountClientOptions();
 
             ClientDiagnostics = new ClientDiagnostics(options, true);
             _tokenCredential = credential;
             _pipeline = HttpPipelineBuilder.Build(options, Array.Empty<HttpPipelinePolicy>(), new HttpPipelinePolicy[] { new BearerTokenAuthenticationPolicy(_tokenCredential, AuthorizationScopes) }, new ResponseClassifier());
             _endpoint = endpoint;
-            _apiVersion = options.Version;
         }
 
-        /// <summary> Get an account. </summary>
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
         /// <example>
-        /// This sample shows how to call GetAccountPropertiesAsync and parse the result.
+        /// This sample shows how to call CreateAlertAsync with required parameters and parse the result.
         /// <code><![CDATA[
         /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
+        /// var client = new PurviewAccountClient(credential);
         /// 
-        /// Response response = await client.GetAccountPropertiesAsync();
+        /// var data = new {};
+        /// 
+        /// Response response = await client.CreateAlertAsync("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call CreateAlertAsync with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     id = "<id>",
+        ///     name = "<name>",
+        ///     description = "<description>",
+        ///     status = "ACTIVE",
+        ///     notificationFrequency = "IMMEDIATE",
+        ///     notificationType = "EMAIL",
+        ///     condition = "<condition>",
+        ///     alertingScopes = new[] {
+        ///         new {
+        ///             level = "CATALOG_PATH",
+        ///             type = "<type>",
+        ///             id = "<id>",
+        ///         }
+        ///     },
+        ///     createdOn = "2022-05-10T18:57:31.2311892Z",
+        ///     createdBy = "<createdBy>",
+        ///     lastUpdatedOn = "2022-05-10T18:57:31.2311892Z",
+        ///     lastUpdatedBy = "<lastUpdatedBy>",
+        ///     lastActivatedOn = "2022-05-10T18:57:31.2311892Z",
+        ///     activatedCount = 1234,
+        /// };
+        /// 
+        /// Response response = await client.CreateAlertAsync("<accountId>", RequestContent.Create(data));
         /// 
         /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
         /// Console.WriteLine(result.GetProperty("id").ToString());
-        /// Console.WriteLine(result.GetProperty("identity").GetProperty("principalId").ToString());
-        /// Console.WriteLine(result.GetProperty("identity").GetProperty("tenantId").ToString());
-        /// Console.WriteLine(result.GetProperty("identity").GetProperty("type").ToString());
-        /// Console.WriteLine(result.GetProperty("location").ToString());
         /// Console.WriteLine(result.GetProperty("name").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("cloudConnectors").GetProperty("awsExternalId").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("createdAt").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("createdBy").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("createdByObjectId").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("endpoints").GetProperty("catalog").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("endpoints").GetProperty("guardian").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("endpoints").GetProperty("scan").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("friendlyName").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("managedResourceGroupName").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("managedResources").GetProperty("eventHubNamespace").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("managedResources").GetProperty("resourceGroup").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("managedResources").GetProperty("storageAccount").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("id").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("name").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("privateEndpoint").GetProperty("id").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("privateLinkServiceConnectionState").GetProperty("actionsRequired").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("privateLinkServiceConnectionState").GetProperty("description").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("privateLinkServiceConnectionState").GetProperty("status").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("provisioningState").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("type").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("provisioningState").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("publicNetworkAccess").ToString());
-        /// Console.WriteLine(result.GetProperty("sku").GetProperty("capacity").ToString());
-        /// Console.WriteLine(result.GetProperty("sku").GetProperty("name").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("createdAt").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("createdBy").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("createdByType").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedAt").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedBy").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedByType").ToString());
-        /// Console.WriteLine(result.GetProperty("tags").GetProperty("<test>").ToString());
-        /// Console.WriteLine(result.GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("status").ToString());
+        /// Console.WriteLine(result.GetProperty("notificationFrequency").ToString());
+        /// Console.WriteLine(result.GetProperty("notificationType").ToString());
+        /// Console.WriteLine(result.GetProperty("condition").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("level").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("createdOn").ToString());
+        /// Console.WriteLine(result.GetProperty("createdBy").ToString());
+        /// Console.WriteLine(result.GetProperty("lastUpdatedOn").ToString());
+        /// Console.WriteLine(result.GetProperty("lastUpdatedBy").ToString());
+        /// Console.WriteLine(result.GetProperty("lastActivatedOn").ToString());
+        /// Console.WriteLine(result.GetProperty("activatedCount").ToString());
         /// ]]></code>
         /// </example>
         /// <remarks>
-        /// Below is the JSON schema for the response payload.
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>DQAlert</c>:
+        /// <code>{
+        ///   id: string, # Optional.
+        ///   name: string, # Optional.
+        ///   description: string, # Optional.
+        ///   status: &quot;ACTIVE&quot; | &quot;DELETED&quot; | &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. Status of the entity - can be active or deleted. Deleted entities are not removed from Atlas store.
+        ///   notificationFrequency: &quot;IMMEDIATE&quot;, # Optional.
+        ///   notificationType: &quot;EMAIL&quot;, # Optional.
+        ///   condition: string, # Optional.
+        ///   alertingScopes: [
+        ///     {
+        ///       level: &quot;CATALOG_PATH&quot;, # Optional.
+        ///       type: string, # Optional.
+        ///       id: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   createdOn: string (ISO 8601 Format), # Optional.
+        ///   createdBy: string, # Optional.
+        ///   lastUpdatedOn: string (ISO 8601 Format), # Optional.
+        ///   lastUpdatedBy: string, # Optional.
+        ///   lastActivatedOn: string (ISO 8601 Format), # Optional.
+        ///   activatedCount: number, # Optional.
+        /// }
+        /// </code>
         /// 
         /// Response Body:
         /// 
-        /// Schema for <c>Account</c>:
+        /// Schema for <c>DQAlert</c>:
         /// <code>{
-        ///   id: string, # Optional. Gets or sets the identifier.
-        ///   identity: {
-        ///     principalId: string, # Optional. Service principal object Id
-        ///     tenantId: string, # Optional. Tenant Id
-        ///     type: &quot;SystemAssigned&quot;, # Optional. Identity Type
-        ///   }, # Optional. Identity Info on the tracked resource
-        ///   location: string, # Optional. Gets or sets the location.
-        ///   name: string, # Optional. Gets or sets the name.
-        ///   properties: {
-        ///     cloudConnectors: {
-        ///       awsExternalId: string, # Optional. AWS external identifier.
-        /// Configured in AWS to allow use of the role arn used for scanning
-        ///     }, # Optional. Cloud connectors.
-        /// External cloud identifier used as part of scanning configuration.
-        ///     createdAt: string (ISO 8601 Format), # Optional. Gets the time at which the entity was created.
-        ///     createdBy: string, # Optional. Gets the creator of the entity.
-        ///     createdByObjectId: string, # Optional. Gets the creators of the entity&apos;s object id.
-        ///     endpoints: {
-        ///       catalog: string, # Optional. Gets the catalog endpoint.
-        ///       guardian: string, # Optional. Gets the guardian endpoint.
-        ///       scan: string, # Optional. Gets the scan endpoint.
-        ///     }, # Optional. The URIs that are the public endpoints of the account.
-        ///     friendlyName: string, # Optional. Gets or sets the friendly name.
-        ///     managedResourceGroupName: string, # Optional. Gets or sets the managed resource group name
-        ///     managedResources: {
-        ///       eventHubNamespace: string, # Optional. Gets the managed event hub namespace resource identifier.
-        ///       resourceGroup: string, # Optional. Gets the managed resource group resource identifier. This resource group will host resource dependencies for the account.
-        ///       storageAccount: string, # Optional. Gets the managed storage account resource identifier.
-        ///     }, # Optional. Gets the resource identifiers of the managed resources.
-        ///     privateEndpointConnections: [
-        ///       {
-        ///         id: string, # Optional. Gets or sets the identifier.
-        ///         name: string, # Optional. Gets or sets the name.
-        ///         properties: {
-        ///           privateEndpoint: {
-        ///             id: string, # Optional. The private endpoint identifier.
-        ///           }, # Optional. The private endpoint information.
-        ///           privateLinkServiceConnectionState: {
-        ///             actionsRequired: string, # Optional. The required actions.
-        ///             description: string, # Optional. The description.
-        ///             status: &quot;Unknown&quot; | &quot;Pending&quot; | &quot;Approved&quot; | &quot;Rejected&quot; | &quot;Disconnected&quot;, # Optional. The status.
-        ///           }, # Optional. The private link service connection state.
-        ///           provisioningState: string, # Optional. The provisioning state.
-        ///         }, # Optional. The connection identifier.
-        ///         type: string, # Optional. Gets or sets the type.
-        ///       }
-        ///     ], # Optional. Gets the private endpoint connections information.
-        ///     provisioningState: &quot;Unknown&quot; | &quot;Creating&quot; | &quot;Moving&quot; | &quot;Deleting&quot; | &quot;SoftDeleting&quot; | &quot;SoftDeleted&quot; | &quot;Failed&quot; | &quot;Succeeded&quot; | &quot;Canceled&quot;, # Optional. Gets or sets the state of the provisioning.
-        ///     publicNetworkAccess: &quot;NotSpecified&quot; | &quot;Enabled&quot; | &quot;Disabled&quot;, # Optional. Gets or sets the public network access.
-        ///   }, # Optional. Gets or sets the properties.
-        ///   sku: {
-        ///     capacity: number, # Optional. Gets or sets the sku capacity. Possible values include: 4, 16
-        ///     name: &quot;Standard&quot;, # Optional. Gets or sets the sku name.
-        ///   }, # Optional. Gets or sets the Sku.
-        ///   systemData: {
-        ///     createdAt: string (ISO 8601 Format), # Optional. The timestamp of resource creation (UTC).
-        ///     createdBy: string, # Optional. The identity that created the resource.
-        ///     createdByType: &quot;User&quot; | &quot;Application&quot; | &quot;ManagedIdentity&quot; | &quot;Key&quot;, # Optional. The type of identity that created the resource.
-        ///     lastModifiedAt: string (ISO 8601 Format), # Optional. The timestamp of the last modification the resource (UTC).
-        ///     lastModifiedBy: string, # Optional. The identity that last modified the resource.
-        ///     lastModifiedByType: &quot;User&quot; | &quot;Application&quot; | &quot;ManagedIdentity&quot; | &quot;Key&quot;, # Optional. The type of identity that last modified the resource.
-        ///   }, # Optional. Metadata pertaining to creation and last modification of the resource.
-        ///   tags: Dictionary&lt;string, string&gt;, # Optional. Tags on the azure resource.
-        ///   type: string, # Optional. Gets or sets the type.
+        ///   id: string, # Optional.
+        ///   name: string, # Optional.
+        ///   description: string, # Optional.
+        ///   status: &quot;ACTIVE&quot; | &quot;DELETED&quot; | &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. Status of the entity - can be active or deleted. Deleted entities are not removed from Atlas store.
+        ///   notificationFrequency: &quot;IMMEDIATE&quot;, # Optional.
+        ///   notificationType: &quot;EMAIL&quot;, # Optional.
+        ///   condition: string, # Optional.
+        ///   alertingScopes: [
+        ///     {
+        ///       level: &quot;CATALOG_PATH&quot;, # Optional.
+        ///       type: string, # Optional.
+        ///       id: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   createdOn: string (ISO 8601 Format), # Optional.
+        ///   createdBy: string, # Optional.
+        ///   lastUpdatedOn: string (ISO 8601 Format), # Optional.
+        ///   lastUpdatedBy: string, # Optional.
+        ///   lastActivatedOn: string (ISO 8601 Format), # Optional.
+        ///   activatedCount: number, # Optional.
         /// }
         /// </code>
         /// 
         /// </remarks>
-        public virtual async Task<Response> GetAccountPropertiesAsync(RequestContext context = null)
+        public virtual async Task<Response> CreateAlertAsync(string accountId, RequestContent content, RequestContext context = null)
         {
-            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetAccountProperties");
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CreateAlert");
             scope.Start();
             try
             {
-                using HttpMessage message = CreateGetAccountPropertiesRequest(context);
+                using HttpMessage message = CreateCreateAlertRequest(accountId, content, context);
                 return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
             }
             catch (Exception e)
@@ -208,142 +202,142 @@ namespace Azure.Analytics.Purview.Account
             }
         }
 
-        /// <summary> Get an account. </summary>
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
         /// <example>
-        /// This sample shows how to call GetAccountProperties and parse the result.
+        /// This sample shows how to call CreateAlert with required parameters and parse the result.
         /// <code><![CDATA[
         /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
+        /// var client = new PurviewAccountClient(credential);
         /// 
-        /// Response response = client.GetAccountProperties();
+        /// var data = new {};
+        /// 
+        /// Response response = client.CreateAlert("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call CreateAlert with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     id = "<id>",
+        ///     name = "<name>",
+        ///     description = "<description>",
+        ///     status = "ACTIVE",
+        ///     notificationFrequency = "IMMEDIATE",
+        ///     notificationType = "EMAIL",
+        ///     condition = "<condition>",
+        ///     alertingScopes = new[] {
+        ///         new {
+        ///             level = "CATALOG_PATH",
+        ///             type = "<type>",
+        ///             id = "<id>",
+        ///         }
+        ///     },
+        ///     createdOn = "2022-05-10T18:57:31.2311892Z",
+        ///     createdBy = "<createdBy>",
+        ///     lastUpdatedOn = "2022-05-10T18:57:31.2311892Z",
+        ///     lastUpdatedBy = "<lastUpdatedBy>",
+        ///     lastActivatedOn = "2022-05-10T18:57:31.2311892Z",
+        ///     activatedCount = 1234,
+        /// };
+        /// 
+        /// Response response = client.CreateAlert("<accountId>", RequestContent.Create(data));
         /// 
         /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
         /// Console.WriteLine(result.GetProperty("id").ToString());
-        /// Console.WriteLine(result.GetProperty("identity").GetProperty("principalId").ToString());
-        /// Console.WriteLine(result.GetProperty("identity").GetProperty("tenantId").ToString());
-        /// Console.WriteLine(result.GetProperty("identity").GetProperty("type").ToString());
-        /// Console.WriteLine(result.GetProperty("location").ToString());
         /// Console.WriteLine(result.GetProperty("name").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("cloudConnectors").GetProperty("awsExternalId").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("createdAt").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("createdBy").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("createdByObjectId").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("endpoints").GetProperty("catalog").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("endpoints").GetProperty("guardian").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("endpoints").GetProperty("scan").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("friendlyName").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("managedResourceGroupName").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("managedResources").GetProperty("eventHubNamespace").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("managedResources").GetProperty("resourceGroup").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("managedResources").GetProperty("storageAccount").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("id").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("name").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("privateEndpoint").GetProperty("id").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("privateLinkServiceConnectionState").GetProperty("actionsRequired").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("privateLinkServiceConnectionState").GetProperty("description").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("privateLinkServiceConnectionState").GetProperty("status").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("provisioningState").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("type").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("provisioningState").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("publicNetworkAccess").ToString());
-        /// Console.WriteLine(result.GetProperty("sku").GetProperty("capacity").ToString());
-        /// Console.WriteLine(result.GetProperty("sku").GetProperty("name").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("createdAt").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("createdBy").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("createdByType").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedAt").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedBy").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedByType").ToString());
-        /// Console.WriteLine(result.GetProperty("tags").GetProperty("<test>").ToString());
-        /// Console.WriteLine(result.GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("status").ToString());
+        /// Console.WriteLine(result.GetProperty("notificationFrequency").ToString());
+        /// Console.WriteLine(result.GetProperty("notificationType").ToString());
+        /// Console.WriteLine(result.GetProperty("condition").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("level").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("createdOn").ToString());
+        /// Console.WriteLine(result.GetProperty("createdBy").ToString());
+        /// Console.WriteLine(result.GetProperty("lastUpdatedOn").ToString());
+        /// Console.WriteLine(result.GetProperty("lastUpdatedBy").ToString());
+        /// Console.WriteLine(result.GetProperty("lastActivatedOn").ToString());
+        /// Console.WriteLine(result.GetProperty("activatedCount").ToString());
         /// ]]></code>
         /// </example>
         /// <remarks>
-        /// Below is the JSON schema for the response payload.
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>DQAlert</c>:
+        /// <code>{
+        ///   id: string, # Optional.
+        ///   name: string, # Optional.
+        ///   description: string, # Optional.
+        ///   status: &quot;ACTIVE&quot; | &quot;DELETED&quot; | &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. Status of the entity - can be active or deleted. Deleted entities are not removed from Atlas store.
+        ///   notificationFrequency: &quot;IMMEDIATE&quot;, # Optional.
+        ///   notificationType: &quot;EMAIL&quot;, # Optional.
+        ///   condition: string, # Optional.
+        ///   alertingScopes: [
+        ///     {
+        ///       level: &quot;CATALOG_PATH&quot;, # Optional.
+        ///       type: string, # Optional.
+        ///       id: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   createdOn: string (ISO 8601 Format), # Optional.
+        ///   createdBy: string, # Optional.
+        ///   lastUpdatedOn: string (ISO 8601 Format), # Optional.
+        ///   lastUpdatedBy: string, # Optional.
+        ///   lastActivatedOn: string (ISO 8601 Format), # Optional.
+        ///   activatedCount: number, # Optional.
+        /// }
+        /// </code>
         /// 
         /// Response Body:
         /// 
-        /// Schema for <c>Account</c>:
+        /// Schema for <c>DQAlert</c>:
         /// <code>{
-        ///   id: string, # Optional. Gets or sets the identifier.
-        ///   identity: {
-        ///     principalId: string, # Optional. Service principal object Id
-        ///     tenantId: string, # Optional. Tenant Id
-        ///     type: &quot;SystemAssigned&quot;, # Optional. Identity Type
-        ///   }, # Optional. Identity Info on the tracked resource
-        ///   location: string, # Optional. Gets or sets the location.
-        ///   name: string, # Optional. Gets or sets the name.
-        ///   properties: {
-        ///     cloudConnectors: {
-        ///       awsExternalId: string, # Optional. AWS external identifier.
-        /// Configured in AWS to allow use of the role arn used for scanning
-        ///     }, # Optional. Cloud connectors.
-        /// External cloud identifier used as part of scanning configuration.
-        ///     createdAt: string (ISO 8601 Format), # Optional. Gets the time at which the entity was created.
-        ///     createdBy: string, # Optional. Gets the creator of the entity.
-        ///     createdByObjectId: string, # Optional. Gets the creators of the entity&apos;s object id.
-        ///     endpoints: {
-        ///       catalog: string, # Optional. Gets the catalog endpoint.
-        ///       guardian: string, # Optional. Gets the guardian endpoint.
-        ///       scan: string, # Optional. Gets the scan endpoint.
-        ///     }, # Optional. The URIs that are the public endpoints of the account.
-        ///     friendlyName: string, # Optional. Gets or sets the friendly name.
-        ///     managedResourceGroupName: string, # Optional. Gets or sets the managed resource group name
-        ///     managedResources: {
-        ///       eventHubNamespace: string, # Optional. Gets the managed event hub namespace resource identifier.
-        ///       resourceGroup: string, # Optional. Gets the managed resource group resource identifier. This resource group will host resource dependencies for the account.
-        ///       storageAccount: string, # Optional. Gets the managed storage account resource identifier.
-        ///     }, # Optional. Gets the resource identifiers of the managed resources.
-        ///     privateEndpointConnections: [
-        ///       {
-        ///         id: string, # Optional. Gets or sets the identifier.
-        ///         name: string, # Optional. Gets or sets the name.
-        ///         properties: {
-        ///           privateEndpoint: {
-        ///             id: string, # Optional. The private endpoint identifier.
-        ///           }, # Optional. The private endpoint information.
-        ///           privateLinkServiceConnectionState: {
-        ///             actionsRequired: string, # Optional. The required actions.
-        ///             description: string, # Optional. The description.
-        ///             status: &quot;Unknown&quot; | &quot;Pending&quot; | &quot;Approved&quot; | &quot;Rejected&quot; | &quot;Disconnected&quot;, # Optional. The status.
-        ///           }, # Optional. The private link service connection state.
-        ///           provisioningState: string, # Optional. The provisioning state.
-        ///         }, # Optional. The connection identifier.
-        ///         type: string, # Optional. Gets or sets the type.
-        ///       }
-        ///     ], # Optional. Gets the private endpoint connections information.
-        ///     provisioningState: &quot;Unknown&quot; | &quot;Creating&quot; | &quot;Moving&quot; | &quot;Deleting&quot; | &quot;SoftDeleting&quot; | &quot;SoftDeleted&quot; | &quot;Failed&quot; | &quot;Succeeded&quot; | &quot;Canceled&quot;, # Optional. Gets or sets the state of the provisioning.
-        ///     publicNetworkAccess: &quot;NotSpecified&quot; | &quot;Enabled&quot; | &quot;Disabled&quot;, # Optional. Gets or sets the public network access.
-        ///   }, # Optional. Gets or sets the properties.
-        ///   sku: {
-        ///     capacity: number, # Optional. Gets or sets the sku capacity. Possible values include: 4, 16
-        ///     name: &quot;Standard&quot;, # Optional. Gets or sets the sku name.
-        ///   }, # Optional. Gets or sets the Sku.
-        ///   systemData: {
-        ///     createdAt: string (ISO 8601 Format), # Optional. The timestamp of resource creation (UTC).
-        ///     createdBy: string, # Optional. The identity that created the resource.
-        ///     createdByType: &quot;User&quot; | &quot;Application&quot; | &quot;ManagedIdentity&quot; | &quot;Key&quot;, # Optional. The type of identity that created the resource.
-        ///     lastModifiedAt: string (ISO 8601 Format), # Optional. The timestamp of the last modification the resource (UTC).
-        ///     lastModifiedBy: string, # Optional. The identity that last modified the resource.
-        ///     lastModifiedByType: &quot;User&quot; | &quot;Application&quot; | &quot;ManagedIdentity&quot; | &quot;Key&quot;, # Optional. The type of identity that last modified the resource.
-        ///   }, # Optional. Metadata pertaining to creation and last modification of the resource.
-        ///   tags: Dictionary&lt;string, string&gt;, # Optional. Tags on the azure resource.
-        ///   type: string, # Optional. Gets or sets the type.
+        ///   id: string, # Optional.
+        ///   name: string, # Optional.
+        ///   description: string, # Optional.
+        ///   status: &quot;ACTIVE&quot; | &quot;DELETED&quot; | &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. Status of the entity - can be active or deleted. Deleted entities are not removed from Atlas store.
+        ///   notificationFrequency: &quot;IMMEDIATE&quot;, # Optional.
+        ///   notificationType: &quot;EMAIL&quot;, # Optional.
+        ///   condition: string, # Optional.
+        ///   alertingScopes: [
+        ///     {
+        ///       level: &quot;CATALOG_PATH&quot;, # Optional.
+        ///       type: string, # Optional.
+        ///       id: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   createdOn: string (ISO 8601 Format), # Optional.
+        ///   createdBy: string, # Optional.
+        ///   lastUpdatedOn: string (ISO 8601 Format), # Optional.
+        ///   lastUpdatedBy: string, # Optional.
+        ///   lastActivatedOn: string (ISO 8601 Format), # Optional.
+        ///   activatedCount: number, # Optional.
         /// }
         /// </code>
         /// 
         /// </remarks>
-        public virtual Response GetAccountProperties(RequestContext context = null)
+        public virtual Response CreateAlert(string accountId, RequestContent content, RequestContext context = null)
         {
-            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetAccountProperties");
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CreateAlert");
             scope.Start();
             try
             {
-                using HttpMessage message = CreateGetAccountPropertiesRequest(context);
+                using HttpMessage message = CreateCreateAlertRequest(accountId, content, context);
                 return _pipeline.ProcessMessage(message, context);
             }
             catch (Exception e)
@@ -353,1300 +347,6505 @@ namespace Azure.Analytics.Purview.Account
             }
         }
 
-        /// <summary> Updates an account. </summary>
-        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="content"/> is null. </exception>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
-        /// <example>
-        /// This sample shows how to call UpdateAccountPropertiesAsync and parse the result.
-        /// <code><![CDATA[
-        /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
-        /// 
-        /// var data = new {};
-        /// 
-        /// Response response = await client.UpdateAccountPropertiesAsync(RequestContent.Create(data));
-        /// 
-        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
-        /// Console.WriteLine(result.ToString());
-        /// ]]></code>
-        /// This sample shows how to call UpdateAccountPropertiesAsync with all request content, and how to parse the result.
-        /// <code><![CDATA[
-        /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
-        /// 
-        /// var data = new {
-        ///     friendlyName = "<friendlyName>",
-        /// };
-        /// 
-        /// Response response = await client.UpdateAccountPropertiesAsync(RequestContent.Create(data));
-        /// 
-        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
-        /// Console.WriteLine(result.GetProperty("id").ToString());
-        /// Console.WriteLine(result.GetProperty("identity").GetProperty("principalId").ToString());
-        /// Console.WriteLine(result.GetProperty("identity").GetProperty("tenantId").ToString());
-        /// Console.WriteLine(result.GetProperty("identity").GetProperty("type").ToString());
-        /// Console.WriteLine(result.GetProperty("location").ToString());
-        /// Console.WriteLine(result.GetProperty("name").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("cloudConnectors").GetProperty("awsExternalId").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("createdAt").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("createdBy").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("createdByObjectId").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("endpoints").GetProperty("catalog").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("endpoints").GetProperty("guardian").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("endpoints").GetProperty("scan").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("friendlyName").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("managedResourceGroupName").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("managedResources").GetProperty("eventHubNamespace").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("managedResources").GetProperty("resourceGroup").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("managedResources").GetProperty("storageAccount").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("id").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("name").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("privateEndpoint").GetProperty("id").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("privateLinkServiceConnectionState").GetProperty("actionsRequired").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("privateLinkServiceConnectionState").GetProperty("description").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("privateLinkServiceConnectionState").GetProperty("status").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("provisioningState").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("type").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("provisioningState").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("publicNetworkAccess").ToString());
-        /// Console.WriteLine(result.GetProperty("sku").GetProperty("capacity").ToString());
-        /// Console.WriteLine(result.GetProperty("sku").GetProperty("name").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("createdAt").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("createdBy").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("createdByType").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedAt").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedBy").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedByType").ToString());
-        /// Console.WriteLine(result.GetProperty("tags").GetProperty("<test>").ToString());
-        /// Console.WriteLine(result.GetProperty("type").ToString());
-        /// ]]></code>
-        /// </example>
-        /// <remarks>
-        /// Below is the JSON schema for the request and response payloads.
-        /// 
-        /// Request Body:
-        /// 
-        /// Schema for <c>DataPlaneAccountUpdateParameters</c>:
-        /// <code>{
-        ///   friendlyName: string, # Optional. The friendly name for the azure resource.
-        /// }
-        /// </code>
-        /// 
-        /// Response Body:
-        /// 
-        /// Schema for <c>Account</c>:
-        /// <code>{
-        ///   id: string, # Optional. Gets or sets the identifier.
-        ///   identity: {
-        ///     principalId: string, # Optional. Service principal object Id
-        ///     tenantId: string, # Optional. Tenant Id
-        ///     type: &quot;SystemAssigned&quot;, # Optional. Identity Type
-        ///   }, # Optional. Identity Info on the tracked resource
-        ///   location: string, # Optional. Gets or sets the location.
-        ///   name: string, # Optional. Gets or sets the name.
-        ///   properties: {
-        ///     cloudConnectors: {
-        ///       awsExternalId: string, # Optional. AWS external identifier.
-        /// Configured in AWS to allow use of the role arn used for scanning
-        ///     }, # Optional. Cloud connectors.
-        /// External cloud identifier used as part of scanning configuration.
-        ///     createdAt: string (ISO 8601 Format), # Optional. Gets the time at which the entity was created.
-        ///     createdBy: string, # Optional. Gets the creator of the entity.
-        ///     createdByObjectId: string, # Optional. Gets the creators of the entity&apos;s object id.
-        ///     endpoints: {
-        ///       catalog: string, # Optional. Gets the catalog endpoint.
-        ///       guardian: string, # Optional. Gets the guardian endpoint.
-        ///       scan: string, # Optional. Gets the scan endpoint.
-        ///     }, # Optional. The URIs that are the public endpoints of the account.
-        ///     friendlyName: string, # Optional. Gets or sets the friendly name.
-        ///     managedResourceGroupName: string, # Optional. Gets or sets the managed resource group name
-        ///     managedResources: {
-        ///       eventHubNamespace: string, # Optional. Gets the managed event hub namespace resource identifier.
-        ///       resourceGroup: string, # Optional. Gets the managed resource group resource identifier. This resource group will host resource dependencies for the account.
-        ///       storageAccount: string, # Optional. Gets the managed storage account resource identifier.
-        ///     }, # Optional. Gets the resource identifiers of the managed resources.
-        ///     privateEndpointConnections: [
-        ///       {
-        ///         id: string, # Optional. Gets or sets the identifier.
-        ///         name: string, # Optional. Gets or sets the name.
-        ///         properties: {
-        ///           privateEndpoint: {
-        ///             id: string, # Optional. The private endpoint identifier.
-        ///           }, # Optional. The private endpoint information.
-        ///           privateLinkServiceConnectionState: {
-        ///             actionsRequired: string, # Optional. The required actions.
-        ///             description: string, # Optional. The description.
-        ///             status: &quot;Unknown&quot; | &quot;Pending&quot; | &quot;Approved&quot; | &quot;Rejected&quot; | &quot;Disconnected&quot;, # Optional. The status.
-        ///           }, # Optional. The private link service connection state.
-        ///           provisioningState: string, # Optional. The provisioning state.
-        ///         }, # Optional. The connection identifier.
-        ///         type: string, # Optional. Gets or sets the type.
-        ///       }
-        ///     ], # Optional. Gets the private endpoint connections information.
-        ///     provisioningState: &quot;Unknown&quot; | &quot;Creating&quot; | &quot;Moving&quot; | &quot;Deleting&quot; | &quot;SoftDeleting&quot; | &quot;SoftDeleted&quot; | &quot;Failed&quot; | &quot;Succeeded&quot; | &quot;Canceled&quot;, # Optional. Gets or sets the state of the provisioning.
-        ///     publicNetworkAccess: &quot;NotSpecified&quot; | &quot;Enabled&quot; | &quot;Disabled&quot;, # Optional. Gets or sets the public network access.
-        ///   }, # Optional. Gets or sets the properties.
-        ///   sku: {
-        ///     capacity: number, # Optional. Gets or sets the sku capacity. Possible values include: 4, 16
-        ///     name: &quot;Standard&quot;, # Optional. Gets or sets the sku name.
-        ///   }, # Optional. Gets or sets the Sku.
-        ///   systemData: {
-        ///     createdAt: string (ISO 8601 Format), # Optional. The timestamp of resource creation (UTC).
-        ///     createdBy: string, # Optional. The identity that created the resource.
-        ///     createdByType: &quot;User&quot; | &quot;Application&quot; | &quot;ManagedIdentity&quot; | &quot;Key&quot;, # Optional. The type of identity that created the resource.
-        ///     lastModifiedAt: string (ISO 8601 Format), # Optional. The timestamp of the last modification the resource (UTC).
-        ///     lastModifiedBy: string, # Optional. The identity that last modified the resource.
-        ///     lastModifiedByType: &quot;User&quot; | &quot;Application&quot; | &quot;ManagedIdentity&quot; | &quot;Key&quot;, # Optional. The type of identity that last modified the resource.
-        ///   }, # Optional. Metadata pertaining to creation and last modification of the resource.
-        ///   tags: Dictionary&lt;string, string&gt;, # Optional. Tags on the azure resource.
-        ///   type: string, # Optional. Gets or sets the type.
-        /// }
-        /// </code>
-        /// 
-        /// </remarks>
-        public virtual async Task<Response> UpdateAccountPropertiesAsync(RequestContent content, RequestContext context = null)
-        {
-            Argument.AssertNotNull(content, nameof(content));
-
-            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.UpdateAccountProperties");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateUpdateAccountPropertiesRequest(content, context);
-                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
-        /// <summary> Updates an account. </summary>
-        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="content"/> is null. </exception>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
-        /// <example>
-        /// This sample shows how to call UpdateAccountProperties and parse the result.
-        /// <code><![CDATA[
-        /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
-        /// 
-        /// var data = new {};
-        /// 
-        /// Response response = client.UpdateAccountProperties(RequestContent.Create(data));
-        /// 
-        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
-        /// Console.WriteLine(result.ToString());
-        /// ]]></code>
-        /// This sample shows how to call UpdateAccountProperties with all request content, and how to parse the result.
-        /// <code><![CDATA[
-        /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
-        /// 
-        /// var data = new {
-        ///     friendlyName = "<friendlyName>",
-        /// };
-        /// 
-        /// Response response = client.UpdateAccountProperties(RequestContent.Create(data));
-        /// 
-        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
-        /// Console.WriteLine(result.GetProperty("id").ToString());
-        /// Console.WriteLine(result.GetProperty("identity").GetProperty("principalId").ToString());
-        /// Console.WriteLine(result.GetProperty("identity").GetProperty("tenantId").ToString());
-        /// Console.WriteLine(result.GetProperty("identity").GetProperty("type").ToString());
-        /// Console.WriteLine(result.GetProperty("location").ToString());
-        /// Console.WriteLine(result.GetProperty("name").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("cloudConnectors").GetProperty("awsExternalId").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("createdAt").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("createdBy").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("createdByObjectId").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("endpoints").GetProperty("catalog").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("endpoints").GetProperty("guardian").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("endpoints").GetProperty("scan").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("friendlyName").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("managedResourceGroupName").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("managedResources").GetProperty("eventHubNamespace").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("managedResources").GetProperty("resourceGroup").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("managedResources").GetProperty("storageAccount").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("id").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("name").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("privateEndpoint").GetProperty("id").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("privateLinkServiceConnectionState").GetProperty("actionsRequired").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("privateLinkServiceConnectionState").GetProperty("description").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("privateLinkServiceConnectionState").GetProperty("status").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("properties").GetProperty("provisioningState").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("privateEndpointConnections")[0].GetProperty("type").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("provisioningState").ToString());
-        /// Console.WriteLine(result.GetProperty("properties").GetProperty("publicNetworkAccess").ToString());
-        /// Console.WriteLine(result.GetProperty("sku").GetProperty("capacity").ToString());
-        /// Console.WriteLine(result.GetProperty("sku").GetProperty("name").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("createdAt").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("createdBy").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("createdByType").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedAt").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedBy").ToString());
-        /// Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedByType").ToString());
-        /// Console.WriteLine(result.GetProperty("tags").GetProperty("<test>").ToString());
-        /// Console.WriteLine(result.GetProperty("type").ToString());
-        /// ]]></code>
-        /// </example>
-        /// <remarks>
-        /// Below is the JSON schema for the request and response payloads.
-        /// 
-        /// Request Body:
-        /// 
-        /// Schema for <c>DataPlaneAccountUpdateParameters</c>:
-        /// <code>{
-        ///   friendlyName: string, # Optional. The friendly name for the azure resource.
-        /// }
-        /// </code>
-        /// 
-        /// Response Body:
-        /// 
-        /// Schema for <c>Account</c>:
-        /// <code>{
-        ///   id: string, # Optional. Gets or sets the identifier.
-        ///   identity: {
-        ///     principalId: string, # Optional. Service principal object Id
-        ///     tenantId: string, # Optional. Tenant Id
-        ///     type: &quot;SystemAssigned&quot;, # Optional. Identity Type
-        ///   }, # Optional. Identity Info on the tracked resource
-        ///   location: string, # Optional. Gets or sets the location.
-        ///   name: string, # Optional. Gets or sets the name.
-        ///   properties: {
-        ///     cloudConnectors: {
-        ///       awsExternalId: string, # Optional. AWS external identifier.
-        /// Configured in AWS to allow use of the role arn used for scanning
-        ///     }, # Optional. Cloud connectors.
-        /// External cloud identifier used as part of scanning configuration.
-        ///     createdAt: string (ISO 8601 Format), # Optional. Gets the time at which the entity was created.
-        ///     createdBy: string, # Optional. Gets the creator of the entity.
-        ///     createdByObjectId: string, # Optional. Gets the creators of the entity&apos;s object id.
-        ///     endpoints: {
-        ///       catalog: string, # Optional. Gets the catalog endpoint.
-        ///       guardian: string, # Optional. Gets the guardian endpoint.
-        ///       scan: string, # Optional. Gets the scan endpoint.
-        ///     }, # Optional. The URIs that are the public endpoints of the account.
-        ///     friendlyName: string, # Optional. Gets or sets the friendly name.
-        ///     managedResourceGroupName: string, # Optional. Gets or sets the managed resource group name
-        ///     managedResources: {
-        ///       eventHubNamespace: string, # Optional. Gets the managed event hub namespace resource identifier.
-        ///       resourceGroup: string, # Optional. Gets the managed resource group resource identifier. This resource group will host resource dependencies for the account.
-        ///       storageAccount: string, # Optional. Gets the managed storage account resource identifier.
-        ///     }, # Optional. Gets the resource identifiers of the managed resources.
-        ///     privateEndpointConnections: [
-        ///       {
-        ///         id: string, # Optional. Gets or sets the identifier.
-        ///         name: string, # Optional. Gets or sets the name.
-        ///         properties: {
-        ///           privateEndpoint: {
-        ///             id: string, # Optional. The private endpoint identifier.
-        ///           }, # Optional. The private endpoint information.
-        ///           privateLinkServiceConnectionState: {
-        ///             actionsRequired: string, # Optional. The required actions.
-        ///             description: string, # Optional. The description.
-        ///             status: &quot;Unknown&quot; | &quot;Pending&quot; | &quot;Approved&quot; | &quot;Rejected&quot; | &quot;Disconnected&quot;, # Optional. The status.
-        ///           }, # Optional. The private link service connection state.
-        ///           provisioningState: string, # Optional. The provisioning state.
-        ///         }, # Optional. The connection identifier.
-        ///         type: string, # Optional. Gets or sets the type.
-        ///       }
-        ///     ], # Optional. Gets the private endpoint connections information.
-        ///     provisioningState: &quot;Unknown&quot; | &quot;Creating&quot; | &quot;Moving&quot; | &quot;Deleting&quot; | &quot;SoftDeleting&quot; | &quot;SoftDeleted&quot; | &quot;Failed&quot; | &quot;Succeeded&quot; | &quot;Canceled&quot;, # Optional. Gets or sets the state of the provisioning.
-        ///     publicNetworkAccess: &quot;NotSpecified&quot; | &quot;Enabled&quot; | &quot;Disabled&quot;, # Optional. Gets or sets the public network access.
-        ///   }, # Optional. Gets or sets the properties.
-        ///   sku: {
-        ///     capacity: number, # Optional. Gets or sets the sku capacity. Possible values include: 4, 16
-        ///     name: &quot;Standard&quot;, # Optional. Gets or sets the sku name.
-        ///   }, # Optional. Gets or sets the Sku.
-        ///   systemData: {
-        ///     createdAt: string (ISO 8601 Format), # Optional. The timestamp of resource creation (UTC).
-        ///     createdBy: string, # Optional. The identity that created the resource.
-        ///     createdByType: &quot;User&quot; | &quot;Application&quot; | &quot;ManagedIdentity&quot; | &quot;Key&quot;, # Optional. The type of identity that created the resource.
-        ///     lastModifiedAt: string (ISO 8601 Format), # Optional. The timestamp of the last modification the resource (UTC).
-        ///     lastModifiedBy: string, # Optional. The identity that last modified the resource.
-        ///     lastModifiedByType: &quot;User&quot; | &quot;Application&quot; | &quot;ManagedIdentity&quot; | &quot;Key&quot;, # Optional. The type of identity that last modified the resource.
-        ///   }, # Optional. Metadata pertaining to creation and last modification of the resource.
-        ///   tags: Dictionary&lt;string, string&gt;, # Optional. Tags on the azure resource.
-        ///   type: string, # Optional. Gets or sets the type.
-        /// }
-        /// </code>
-        /// 
-        /// </remarks>
-        public virtual Response UpdateAccountProperties(RequestContent content, RequestContext context = null)
-        {
-            Argument.AssertNotNull(content, nameof(content));
-
-            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.UpdateAccountProperties");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateUpdateAccountPropertiesRequest(content, context);
-                return _pipeline.ProcessMessage(message, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
-        /// <summary> List the authorization keys associated with this account. </summary>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
-        /// <example>
-        /// This sample shows how to call GetAccessKeysAsync and parse the result.
-        /// <code><![CDATA[
-        /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
-        /// 
-        /// Response response = await client.GetAccessKeysAsync();
-        /// 
-        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
-        /// Console.WriteLine(result.GetProperty("atlasKafkaPrimaryEndpoint").ToString());
-        /// Console.WriteLine(result.GetProperty("atlasKafkaSecondaryEndpoint").ToString());
-        /// ]]></code>
-        /// </example>
-        /// <remarks>
-        /// Below is the JSON schema for the response payload.
-        /// 
-        /// Response Body:
-        /// 
-        /// Schema for <c>AccessKeys</c>:
-        /// <code>{
-        ///   atlasKafkaPrimaryEndpoint: string, # Optional. Gets or sets the primary connection string.
-        ///   atlasKafkaSecondaryEndpoint: string, # Optional. Gets or sets the secondary connection string.
-        /// }
-        /// </code>
-        /// 
-        /// </remarks>
-        public virtual async Task<Response> GetAccessKeysAsync(RequestContext context = null)
-        {
-            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetAccessKeys");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateGetAccessKeysRequest(context);
-                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
-        /// <summary> List the authorization keys associated with this account. </summary>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
-        /// <example>
-        /// This sample shows how to call GetAccessKeys and parse the result.
-        /// <code><![CDATA[
-        /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
-        /// 
-        /// Response response = client.GetAccessKeys();
-        /// 
-        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
-        /// Console.WriteLine(result.GetProperty("atlasKafkaPrimaryEndpoint").ToString());
-        /// Console.WriteLine(result.GetProperty("atlasKafkaSecondaryEndpoint").ToString());
-        /// ]]></code>
-        /// </example>
-        /// <remarks>
-        /// Below is the JSON schema for the response payload.
-        /// 
-        /// Response Body:
-        /// 
-        /// Schema for <c>AccessKeys</c>:
-        /// <code>{
-        ///   atlasKafkaPrimaryEndpoint: string, # Optional. Gets or sets the primary connection string.
-        ///   atlasKafkaSecondaryEndpoint: string, # Optional. Gets or sets the secondary connection string.
-        /// }
-        /// </code>
-        /// 
-        /// </remarks>
-        public virtual Response GetAccessKeys(RequestContext context = null)
-        {
-            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetAccessKeys");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateGetAccessKeysRequest(context);
-                return _pipeline.ProcessMessage(message, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
-        /// <summary> Regenerate the authorization keys associated with this data catalog. </summary>
-        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="content"/> is null. </exception>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
-        /// <example>
-        /// This sample shows how to call RegenerateAccessKeyAsync and parse the result.
-        /// <code><![CDATA[
-        /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
-        /// 
-        /// var data = new {};
-        /// 
-        /// Response response = await client.RegenerateAccessKeyAsync(RequestContent.Create(data));
-        /// 
-        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
-        /// Console.WriteLine(result.ToString());
-        /// ]]></code>
-        /// This sample shows how to call RegenerateAccessKeyAsync with all request content, and how to parse the result.
-        /// <code><![CDATA[
-        /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
-        /// 
-        /// var data = new {
-        ///     keyType = "PrimaryAtlasKafkaKey",
-        /// };
-        /// 
-        /// Response response = await client.RegenerateAccessKeyAsync(RequestContent.Create(data));
-        /// 
-        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
-        /// Console.WriteLine(result.GetProperty("atlasKafkaPrimaryEndpoint").ToString());
-        /// Console.WriteLine(result.GetProperty("atlasKafkaSecondaryEndpoint").ToString());
-        /// ]]></code>
-        /// </example>
-        /// <remarks>
-        /// Below is the JSON schema for the request and response payloads.
-        /// 
-        /// Request Body:
-        /// 
-        /// Schema for <c>AccessKeyOptions</c>:
-        /// <code>{
-        ///   keyType: &quot;PrimaryAtlasKafkaKey&quot; | &quot;SecondaryAtlasKafkaKey&quot;, # Optional. The access key type.
-        /// }
-        /// </code>
-        /// 
-        /// Response Body:
-        /// 
-        /// Schema for <c>AccessKeys</c>:
-        /// <code>{
-        ///   atlasKafkaPrimaryEndpoint: string, # Optional. Gets or sets the primary connection string.
-        ///   atlasKafkaSecondaryEndpoint: string, # Optional. Gets or sets the secondary connection string.
-        /// }
-        /// </code>
-        /// 
-        /// </remarks>
-        public virtual async Task<Response> RegenerateAccessKeyAsync(RequestContent content, RequestContext context = null)
-        {
-            Argument.AssertNotNull(content, nameof(content));
-
-            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.RegenerateAccessKey");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateRegenerateAccessKeyRequest(content, context);
-                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
-        /// <summary> Regenerate the authorization keys associated with this data catalog. </summary>
-        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="content"/> is null. </exception>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
-        /// <example>
-        /// This sample shows how to call RegenerateAccessKey and parse the result.
-        /// <code><![CDATA[
-        /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
-        /// 
-        /// var data = new {};
-        /// 
-        /// Response response = client.RegenerateAccessKey(RequestContent.Create(data));
-        /// 
-        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
-        /// Console.WriteLine(result.ToString());
-        /// ]]></code>
-        /// This sample shows how to call RegenerateAccessKey with all request content, and how to parse the result.
-        /// <code><![CDATA[
-        /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
-        /// 
-        /// var data = new {
-        ///     keyType = "PrimaryAtlasKafkaKey",
-        /// };
-        /// 
-        /// Response response = client.RegenerateAccessKey(RequestContent.Create(data));
-        /// 
-        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
-        /// Console.WriteLine(result.GetProperty("atlasKafkaPrimaryEndpoint").ToString());
-        /// Console.WriteLine(result.GetProperty("atlasKafkaSecondaryEndpoint").ToString());
-        /// ]]></code>
-        /// </example>
-        /// <remarks>
-        /// Below is the JSON schema for the request and response payloads.
-        /// 
-        /// Request Body:
-        /// 
-        /// Schema for <c>AccessKeyOptions</c>:
-        /// <code>{
-        ///   keyType: &quot;PrimaryAtlasKafkaKey&quot; | &quot;SecondaryAtlasKafkaKey&quot;, # Optional. The access key type.
-        /// }
-        /// </code>
-        /// 
-        /// Response Body:
-        /// 
-        /// Schema for <c>AccessKeys</c>:
-        /// <code>{
-        ///   atlasKafkaPrimaryEndpoint: string, # Optional. Gets or sets the primary connection string.
-        ///   atlasKafkaSecondaryEndpoint: string, # Optional. Gets or sets the secondary connection string.
-        /// }
-        /// </code>
-        /// 
-        /// </remarks>
-        public virtual Response RegenerateAccessKey(RequestContent content, RequestContext context = null)
-        {
-            Argument.AssertNotNull(content, nameof(content));
-
-            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.RegenerateAccessKey");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateRegenerateAccessKeyRequest(content, context);
-                return _pipeline.ProcessMessage(message, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
-        /// <summary> List the collections in the account. </summary>
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="level"> The String to use. </param>
+        /// <param name="scopeId"> The String to use. </param>
+        /// <param name="skipDetails"> The Boolean to use. </param>
         /// <param name="skipToken"> The String to use. </param>
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The <see cref="AsyncPageable{T}"/> from the service containing a list of <see cref="BinaryData"/> objects. Details of the body schema for each item in the collection are in the Remarks section below. </returns>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
         /// <example>
-        /// This sample shows how to call GetCollectionsAsync and parse the result.
+        /// This sample shows how to call GetAllMatchedAlertsAsync with required parameters and parse the result.
         /// <code><![CDATA[
         /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
+        /// var client = new PurviewAccountClient(credential);
         /// 
-        /// await foreach (var data in client.GetCollectionsAsync())
-        /// {
-        ///     JsonElement result = JsonDocument.Parse(data.ToStream()).RootElement;
-        ///     Console.WriteLine(result.ToString());
-        /// }
+        /// Response response = await client.GetAllMatchedAlertsAsync("<accountId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].GetProperty("values")[0].ToString());
         /// ]]></code>
-        /// This sample shows how to call GetCollectionsAsync with all parameters, and how to parse the result.
+        /// This sample shows how to call GetAllMatchedAlertsAsync with all parameters, and how to parse the result.
         /// <code><![CDATA[
         /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
+        /// var client = new PurviewAccountClient(credential);
         /// 
-        /// await foreach (var data in client.GetCollectionsAsync("<skipToken>"))
-        /// {
-        ///     JsonElement result = JsonDocument.Parse(data.ToStream()).RootElement;
-        ///     Console.WriteLine(result.GetProperty("collectionProvisioningState").ToString());
-        ///     Console.WriteLine(result.GetProperty("description").ToString());
-        ///     Console.WriteLine(result.GetProperty("friendlyName").ToString());
-        ///     Console.WriteLine(result.GetProperty("name").ToString());
-        ///     Console.WriteLine(result.GetProperty("parentCollection").GetProperty("referenceName").ToString());
-        ///     Console.WriteLine(result.GetProperty("parentCollection").GetProperty("type").ToString());
-        ///     Console.WriteLine(result.GetProperty("systemData").GetProperty("createdAt").ToString());
-        ///     Console.WriteLine(result.GetProperty("systemData").GetProperty("createdBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("systemData").GetProperty("createdByType").ToString());
-        ///     Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedAt").ToString());
-        ///     Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedByType").ToString());
-        /// }
+        /// Response response = await client.GetAllMatchedAlertsAsync("<accountId>", "<level>", "<scopeId>", true, "<skipToken>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("description").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("status").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("notificationFrequency").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("notificationType").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("condition").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("alertingScopes")[0].GetProperty("level").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("alertingScopes")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("alertingScopes")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("createdOn").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("createdBy").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("lastUpdatedOn").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("lastUpdatedBy").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("lastActivatedOn").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("activatedCount").ToString());
+        /// Console.WriteLine(result[0].GetProperty("nextLink").ToString());
+        /// Console.WriteLine(result[0].GetProperty("count").ToString());
         /// ]]></code>
         /// </example>
         /// <remarks>
-        /// Below is the JSON schema for one item in the pageable response.
+        /// Below is the JSON schema for the response payload.
         /// 
         /// Response Body:
         /// 
-        /// Schema for <c>CollectionListValue</c>:
+        /// Schema for <c>DQAlertPagedResults</c>:
         /// <code>{
-        ///   collectionProvisioningState: &quot;Unknown&quot; | &quot;Creating&quot; | &quot;Moving&quot; | &quot;Deleting&quot; | &quot;Failed&quot; | &quot;Succeeded&quot;, # Optional. Gets the state of the provisioning.
-        ///   description: string, # Optional. Gets or sets the description.
-        ///   friendlyName: string, # Optional. Gets or sets the friendly name of the collection.
-        ///   name: string, # Optional. Gets the name.
-        ///   parentCollection: {
-        ///     referenceName: string, # Optional. Gets or sets the reference name.
-        ///     type: string, # Optional. Gets the reference type property.
-        ///   }, # Optional. Gets or sets the parent collection reference.
-        ///   systemData: {
-        ///     createdAt: string (ISO 8601 Format), # Optional. The timestamp of resource creation (UTC).
-        ///     createdBy: string, # Optional. The identity that created the resource.
-        ///     createdByType: &quot;User&quot; | &quot;Application&quot; | &quot;ManagedIdentity&quot; | &quot;Key&quot;, # Optional. The type of identity that created the resource.
-        ///     lastModifiedAt: string (ISO 8601 Format), # Optional. The timestamp of the last modification the resource (UTC).
-        ///     lastModifiedBy: string, # Optional. The identity that last modified the resource.
-        ///     lastModifiedByType: &quot;User&quot; | &quot;Application&quot; | &quot;ManagedIdentity&quot; | &quot;Key&quot;, # Optional. The type of identity that last modified the resource.
-        ///   }, # Optional. Gets the system data that contains information about who and when created and updated the resource.
+        ///   values: [
+        ///     {
+        ///       id: string, # Optional.
+        ///       name: string, # Optional.
+        ///       description: string, # Optional.
+        ///       status: &quot;ACTIVE&quot; | &quot;DELETED&quot; | &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. Status of the entity - can be active or deleted. Deleted entities are not removed from Atlas store.
+        ///       notificationFrequency: &quot;IMMEDIATE&quot;, # Optional.
+        ///       notificationType: &quot;EMAIL&quot;, # Optional.
+        ///       condition: string, # Optional.
+        ///       alertingScopes: [
+        ///         {
+        ///           level: &quot;CATALOG_PATH&quot;, # Optional.
+        ///           type: string, # Optional.
+        ///           id: string, # Optional.
+        ///         }
+        ///       ], # Optional.
+        ///       createdOn: string (ISO 8601 Format), # Optional.
+        ///       createdBy: string, # Optional.
+        ///       lastUpdatedOn: string (ISO 8601 Format), # Optional.
+        ///       lastUpdatedBy: string, # Optional.
+        ///       lastActivatedOn: string (ISO 8601 Format), # Optional.
+        ///       activatedCount: number, # Optional.
+        ///     }
+        ///   ], # Required.
+        ///   nextLink: string, # Optional.
+        ///   count: number, # Optional.
         /// }
         /// </code>
         /// 
         /// </remarks>
-        public virtual AsyncPageable<BinaryData> GetCollectionsAsync(string skipToken = null, RequestContext context = null)
+        public virtual async Task<Response> GetAllMatchedAlertsAsync(string accountId, string level = null, string scopeId = null, bool? skipDetails = null, string skipToken = null, RequestContext context = null)
         {
-            return GetCollectionsImplementationAsync("PurviewAccountClient.GetCollections", skipToken, context);
-        }
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
 
-        private AsyncPageable<BinaryData> GetCollectionsImplementationAsync(string diagnosticsScopeName, string skipToken, RequestContext context)
-        {
-            return PageableHelpers.CreateAsyncPageable(CreateEnumerableAsync, ClientDiagnostics, diagnosticsScopeName);
-            async IAsyncEnumerable<Page<BinaryData>> CreateEnumerableAsync(string nextLink, int? pageSizeHint, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetAllMatchedAlerts");
+            scope.Start();
+            try
             {
-                do
-                {
-                    var message = string.IsNullOrEmpty(nextLink)
-                        ? CreateGetCollectionsRequest(skipToken, context)
-                        : CreateGetCollectionsNextPageRequest(nextLink, skipToken, context);
-                    var page = await LowLevelPageableHelpers.ProcessMessageAsync(_pipeline, message, context, "value", "nextLink", cancellationToken).ConfigureAwait(false);
-                    nextLink = page.ContinuationToken;
-                    yield return page;
-                } while (!string.IsNullOrEmpty(nextLink));
+                using HttpMessage message = CreateGetAllMatchedAlertsRequest(accountId, level, scopeId, skipDetails, skipToken, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
             }
         }
 
-        /// <summary> List the collections in the account. </summary>
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="level"> The String to use. </param>
+        /// <param name="scopeId"> The String to use. </param>
+        /// <param name="skipDetails"> The Boolean to use. </param>
         /// <param name="skipToken"> The String to use. </param>
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The <see cref="Pageable{T}"/> from the service containing a list of <see cref="BinaryData"/> objects. Details of the body schema for each item in the collection are in the Remarks section below. </returns>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
         /// <example>
-        /// This sample shows how to call GetCollections and parse the result.
+        /// This sample shows how to call GetAllMatchedAlerts with required parameters and parse the result.
         /// <code><![CDATA[
         /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
+        /// var client = new PurviewAccountClient(credential);
         /// 
-        /// foreach (var data in client.GetCollections())
-        /// {
-        ///     JsonElement result = JsonDocument.Parse(data.ToStream()).RootElement;
-        ///     Console.WriteLine(result.ToString());
-        /// }
+        /// Response response = client.GetAllMatchedAlerts("<accountId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].GetProperty("values")[0].ToString());
         /// ]]></code>
-        /// This sample shows how to call GetCollections with all parameters, and how to parse the result.
+        /// This sample shows how to call GetAllMatchedAlerts with all parameters, and how to parse the result.
         /// <code><![CDATA[
         /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
+        /// var client = new PurviewAccountClient(credential);
         /// 
-        /// foreach (var data in client.GetCollections("<skipToken>"))
-        /// {
-        ///     JsonElement result = JsonDocument.Parse(data.ToStream()).RootElement;
-        ///     Console.WriteLine(result.GetProperty("collectionProvisioningState").ToString());
-        ///     Console.WriteLine(result.GetProperty("description").ToString());
-        ///     Console.WriteLine(result.GetProperty("friendlyName").ToString());
-        ///     Console.WriteLine(result.GetProperty("name").ToString());
-        ///     Console.WriteLine(result.GetProperty("parentCollection").GetProperty("referenceName").ToString());
-        ///     Console.WriteLine(result.GetProperty("parentCollection").GetProperty("type").ToString());
-        ///     Console.WriteLine(result.GetProperty("systemData").GetProperty("createdAt").ToString());
-        ///     Console.WriteLine(result.GetProperty("systemData").GetProperty("createdBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("systemData").GetProperty("createdByType").ToString());
-        ///     Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedAt").ToString());
-        ///     Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("systemData").GetProperty("lastModifiedByType").ToString());
-        /// }
+        /// Response response = client.GetAllMatchedAlerts("<accountId>", "<level>", "<scopeId>", true, "<skipToken>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("description").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("status").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("notificationFrequency").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("notificationType").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("condition").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("alertingScopes")[0].GetProperty("level").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("alertingScopes")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("alertingScopes")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("createdOn").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("createdBy").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("lastUpdatedOn").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("lastUpdatedBy").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("lastActivatedOn").ToString());
+        /// Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("activatedCount").ToString());
+        /// Console.WriteLine(result[0].GetProperty("nextLink").ToString());
+        /// Console.WriteLine(result[0].GetProperty("count").ToString());
         /// ]]></code>
         /// </example>
         /// <remarks>
-        /// Below is the JSON schema for one item in the pageable response.
+        /// Below is the JSON schema for the response payload.
         /// 
         /// Response Body:
         /// 
-        /// Schema for <c>CollectionListValue</c>:
+        /// Schema for <c>DQAlertPagedResults</c>:
         /// <code>{
-        ///   collectionProvisioningState: &quot;Unknown&quot; | &quot;Creating&quot; | &quot;Moving&quot; | &quot;Deleting&quot; | &quot;Failed&quot; | &quot;Succeeded&quot;, # Optional. Gets the state of the provisioning.
-        ///   description: string, # Optional. Gets or sets the description.
-        ///   friendlyName: string, # Optional. Gets or sets the friendly name of the collection.
-        ///   name: string, # Optional. Gets the name.
-        ///   parentCollection: {
-        ///     referenceName: string, # Optional. Gets or sets the reference name.
-        ///     type: string, # Optional. Gets the reference type property.
-        ///   }, # Optional. Gets or sets the parent collection reference.
-        ///   systemData: {
-        ///     createdAt: string (ISO 8601 Format), # Optional. The timestamp of resource creation (UTC).
-        ///     createdBy: string, # Optional. The identity that created the resource.
-        ///     createdByType: &quot;User&quot; | &quot;Application&quot; | &quot;ManagedIdentity&quot; | &quot;Key&quot;, # Optional. The type of identity that created the resource.
-        ///     lastModifiedAt: string (ISO 8601 Format), # Optional. The timestamp of the last modification the resource (UTC).
-        ///     lastModifiedBy: string, # Optional. The identity that last modified the resource.
-        ///     lastModifiedByType: &quot;User&quot; | &quot;Application&quot; | &quot;ManagedIdentity&quot; | &quot;Key&quot;, # Optional. The type of identity that last modified the resource.
-        ///   }, # Optional. Gets the system data that contains information about who and when created and updated the resource.
+        ///   values: [
+        ///     {
+        ///       id: string, # Optional.
+        ///       name: string, # Optional.
+        ///       description: string, # Optional.
+        ///       status: &quot;ACTIVE&quot; | &quot;DELETED&quot; | &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. Status of the entity - can be active or deleted. Deleted entities are not removed from Atlas store.
+        ///       notificationFrequency: &quot;IMMEDIATE&quot;, # Optional.
+        ///       notificationType: &quot;EMAIL&quot;, # Optional.
+        ///       condition: string, # Optional.
+        ///       alertingScopes: [
+        ///         {
+        ///           level: &quot;CATALOG_PATH&quot;, # Optional.
+        ///           type: string, # Optional.
+        ///           id: string, # Optional.
+        ///         }
+        ///       ], # Optional.
+        ///       createdOn: string (ISO 8601 Format), # Optional.
+        ///       createdBy: string, # Optional.
+        ///       lastUpdatedOn: string (ISO 8601 Format), # Optional.
+        ///       lastUpdatedBy: string, # Optional.
+        ///       lastActivatedOn: string (ISO 8601 Format), # Optional.
+        ///       activatedCount: number, # Optional.
+        ///     }
+        ///   ], # Required.
+        ///   nextLink: string, # Optional.
+        ///   count: number, # Optional.
         /// }
         /// </code>
         /// 
         /// </remarks>
-        public virtual Pageable<BinaryData> GetCollections(string skipToken = null, RequestContext context = null)
+        public virtual Response GetAllMatchedAlerts(string accountId, string level = null, string scopeId = null, bool? skipDetails = null, string skipToken = null, RequestContext context = null)
         {
-            return GetCollectionsImplementation("PurviewAccountClient.GetCollections", skipToken, context);
-        }
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
 
-        private Pageable<BinaryData> GetCollectionsImplementation(string diagnosticsScopeName, string skipToken, RequestContext context)
-        {
-            return PageableHelpers.CreatePageable(CreateEnumerable, ClientDiagnostics, diagnosticsScopeName);
-            IEnumerable<Page<BinaryData>> CreateEnumerable(string nextLink, int? pageSizeHint)
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetAllMatchedAlerts");
+            scope.Start();
+            try
             {
-                do
-                {
-                    var message = string.IsNullOrEmpty(nextLink)
-                        ? CreateGetCollectionsRequest(skipToken, context)
-                        : CreateGetCollectionsNextPageRequest(nextLink, skipToken, context);
-                    var page = LowLevelPageableHelpers.ProcessMessage(_pipeline, message, context, "value", "nextLink");
-                    nextLink = page.ContinuationToken;
-                    yield return page;
-                } while (!string.IsNullOrEmpty(nextLink));
+                using HttpMessage message = CreateGetAllMatchedAlertsRequest(accountId, level, scopeId, skipDetails, skipToken, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
             }
         }
 
-        /// <summary> Get a resource set config service model. </summary>
-        /// <param name="skipToken"> The String to use. </param>
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="alertId"> The String to use. </param>
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="alertId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="alertId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The <see cref="AsyncPageable{T}"/> from the service containing a list of <see cref="BinaryData"/> objects. Details of the body schema for each item in the collection are in the Remarks section below. </returns>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
         /// <example>
-        /// This sample shows how to call GetResourceSetRulesAsync and parse the result.
+        /// This sample shows how to call GetAlertDetailsAsync with required parameters and parse the result.
         /// <code><![CDATA[
         /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
+        /// var client = new PurviewAccountClient(credential);
         /// 
-        /// await foreach (var data in client.GetResourceSetRulesAsync())
-        /// {
-        ///     JsonElement result = JsonDocument.Parse(data.ToStream()).RootElement;
-        ///     Console.WriteLine(result.ToString());
-        /// }
-        /// ]]></code>
-        /// This sample shows how to call GetResourceSetRulesAsync with all parameters, and how to parse the result.
-        /// <code><![CDATA[
-        /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
+        /// Response response = await client.GetAlertDetailsAsync("<accountId>", "<alertId>");
         /// 
-        /// await foreach (var data in client.GetResourceSetRulesAsync("<skipToken>"))
-        /// {
-        ///     JsonElement result = JsonDocument.Parse(data.ToStream()).RootElement;
-        ///     Console.WriteLine(result.GetProperty("advancedResourceSet").GetProperty("modifiedAt").ToString());
-        ///     Console.WriteLine(result.GetProperty("advancedResourceSet").GetProperty("resourceSetProcessing").ToString());
-        ///     Console.WriteLine(result.GetProperty("name").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("acceptedPatterns")[0].GetProperty("createdBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("acceptedPatterns")[0].GetProperty("filterType").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("acceptedPatterns")[0].GetProperty("lastUpdatedTimestamp").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("acceptedPatterns")[0].GetProperty("modifiedBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("acceptedPatterns")[0].GetProperty("name").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("acceptedPatterns")[0].GetProperty("path").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("complexReplacers")[0].GetProperty("createdBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("complexReplacers")[0].GetProperty("description").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("complexReplacers")[0].GetProperty("disabled").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("complexReplacers")[0].GetProperty("disableRecursiveReplacerApplication").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("complexReplacers")[0].GetProperty("lastUpdatedTimestamp").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("complexReplacers")[0].GetProperty("modifiedBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("complexReplacers")[0].GetProperty("name").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("complexReplacers")[0].GetProperty("typeName").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("createdBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("enableDefaultPatterns").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("lastUpdatedTimestamp").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("modifiedBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("description").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("disabled").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("dynamicReplacement").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("entityTypes")[0].ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("lastUpdatedTimestamp").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("name").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("maxDigits").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("maxLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("minDashes").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("minDigits").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("minDigitsOrLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("minDots").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("minHex").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("minLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("minUnderscores").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("options").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("regexStr").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("replaceWith").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("version").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("condition").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("createdBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("description").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("disabled").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("disableRecursiveReplacerApplication").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("maxDigits").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("maxLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("minDashes").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("minDigits").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("minDigitsOrLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("minDots").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("minHex").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("minLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("minUnderscores").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("options").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("regexStr").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("lastUpdatedTimestamp").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("modifiedBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("name").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("maxDigits").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("maxLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("minDashes").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("minDigits").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("minDigitsOrLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("minDots").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("minHex").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("minLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("minUnderscores").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("options").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("regexStr").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("replaceWith").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("rejectedPatterns")[0].GetProperty("createdBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("rejectedPatterns")[0].GetProperty("filterType").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("rejectedPatterns")[0].GetProperty("lastUpdatedTimestamp").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("rejectedPatterns")[0].GetProperty("modifiedBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("rejectedPatterns")[0].GetProperty("name").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("rejectedPatterns")[0].GetProperty("path").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("scopedRules")[0].GetProperty("bindingUrl").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("scopedRules")[0].GetProperty("rules")[0].GetProperty("displayName").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("scopedRules")[0].GetProperty("rules")[0].GetProperty("isResourceSet").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("scopedRules")[0].GetProperty("rules")[0].GetProperty("lastUpdatedTimestamp").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("scopedRules")[0].GetProperty("rules")[0].GetProperty("name").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("scopedRules")[0].GetProperty("rules")[0].GetProperty("qualifiedName").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("scopedRules")[0].GetProperty("storeType").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("version").ToString());
-        /// }
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("status").ToString());
+        /// Console.WriteLine(result.GetProperty("notificationFrequency").ToString());
+        /// Console.WriteLine(result.GetProperty("notificationType").ToString());
+        /// Console.WriteLine(result.GetProperty("condition").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("level").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("createdOn").ToString());
+        /// Console.WriteLine(result.GetProperty("createdBy").ToString());
+        /// Console.WriteLine(result.GetProperty("lastUpdatedOn").ToString());
+        /// Console.WriteLine(result.GetProperty("lastUpdatedBy").ToString());
+        /// Console.WriteLine(result.GetProperty("lastActivatedOn").ToString());
+        /// Console.WriteLine(result.GetProperty("activatedCount").ToString());
         /// ]]></code>
         /// </example>
         /// <remarks>
-        /// Below is the JSON schema for one item in the pageable response.
+        /// Below is the JSON schema for the response payload.
         /// 
         /// Response Body:
         /// 
-        /// Schema for <c>ResourceSetRuleConfigListValue</c>:
+        /// Schema for <c>DQAlert</c>:
         /// <code>{
-        ///   advancedResourceSet: {
-        ///     modifiedAt: string (ISO 8601 Format), # Optional. Date at which ResourceSetProcessing property of the account is updated.
-        ///     resourceSetProcessing: &quot;Default&quot; | &quot;Advanced&quot;, # Optional. The advanced resource property of the account.
-        ///   }, # Optional. Gets or sets the advanced resource set property of the account.
-        ///   name: string, # Optional. The name of the rule
-        ///   pathPatternConfig: {
-        ///     acceptedPatterns: [
+        ///   id: string, # Optional.
+        ///   name: string, # Optional.
+        ///   description: string, # Optional.
+        ///   status: &quot;ACTIVE&quot; | &quot;DELETED&quot; | &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. Status of the entity - can be active or deleted. Deleted entities are not removed from Atlas store.
+        ///   notificationFrequency: &quot;IMMEDIATE&quot;, # Optional.
+        ///   notificationType: &quot;EMAIL&quot;, # Optional.
+        ///   condition: string, # Optional.
+        ///   alertingScopes: [
+        ///     {
+        ///       level: &quot;CATALOG_PATH&quot;, # Optional.
+        ///       type: string, # Optional.
+        ///       id: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   createdOn: string (ISO 8601 Format), # Optional.
+        ///   createdBy: string, # Optional.
+        ///   lastUpdatedOn: string (ISO 8601 Format), # Optional.
+        ///   lastUpdatedBy: string, # Optional.
+        ///   lastActivatedOn: string (ISO 8601 Format), # Optional.
+        ///   activatedCount: number, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> GetAlertDetailsAsync(string accountId, string alertId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(alertId, nameof(alertId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetAlertDetails");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetAlertDetailsRequest(accountId, alertId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="alertId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="alertId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="alertId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetAlertDetails with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.GetAlertDetails("<accountId>", "<alertId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("status").ToString());
+        /// Console.WriteLine(result.GetProperty("notificationFrequency").ToString());
+        /// Console.WriteLine(result.GetProperty("notificationType").ToString());
+        /// Console.WriteLine(result.GetProperty("condition").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("level").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("createdOn").ToString());
+        /// Console.WriteLine(result.GetProperty("createdBy").ToString());
+        /// Console.WriteLine(result.GetProperty("lastUpdatedOn").ToString());
+        /// Console.WriteLine(result.GetProperty("lastUpdatedBy").ToString());
+        /// Console.WriteLine(result.GetProperty("lastActivatedOn").ToString());
+        /// Console.WriteLine(result.GetProperty("activatedCount").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>DQAlert</c>:
+        /// <code>{
+        ///   id: string, # Optional.
+        ///   name: string, # Optional.
+        ///   description: string, # Optional.
+        ///   status: &quot;ACTIVE&quot; | &quot;DELETED&quot; | &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. Status of the entity - can be active or deleted. Deleted entities are not removed from Atlas store.
+        ///   notificationFrequency: &quot;IMMEDIATE&quot;, # Optional.
+        ///   notificationType: &quot;EMAIL&quot;, # Optional.
+        ///   condition: string, # Optional.
+        ///   alertingScopes: [
+        ///     {
+        ///       level: &quot;CATALOG_PATH&quot;, # Optional.
+        ///       type: string, # Optional.
+        ///       id: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   createdOn: string (ISO 8601 Format), # Optional.
+        ///   createdBy: string, # Optional.
+        ///   lastUpdatedOn: string (ISO 8601 Format), # Optional.
+        ///   lastUpdatedBy: string, # Optional.
+        ///   lastActivatedOn: string (ISO 8601 Format), # Optional.
+        ///   activatedCount: number, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response GetAlertDetails(string accountId, string alertId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(alertId, nameof(alertId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetAlertDetails");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetAlertDetailsRequest(accountId, alertId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="alertId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="alertId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="alertId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call UpdateAlertAsync with required parameters and request content and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = await client.UpdateAlertAsync("<accountId>", "<alertId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("status").ToString());
+        /// Console.WriteLine(result.GetProperty("notificationFrequency").ToString());
+        /// Console.WriteLine(result.GetProperty("notificationType").ToString());
+        /// Console.WriteLine(result.GetProperty("condition").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("level").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("createdOn").ToString());
+        /// Console.WriteLine(result.GetProperty("createdBy").ToString());
+        /// Console.WriteLine(result.GetProperty("lastUpdatedOn").ToString());
+        /// Console.WriteLine(result.GetProperty("lastUpdatedBy").ToString());
+        /// Console.WriteLine(result.GetProperty("lastActivatedOn").ToString());
+        /// Console.WriteLine(result.GetProperty("activatedCount").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>DQAlert</c>:
+        /// <code>{
+        ///   id: string, # Optional.
+        ///   name: string, # Optional.
+        ///   description: string, # Optional.
+        ///   status: &quot;ACTIVE&quot; | &quot;DELETED&quot; | &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. Status of the entity - can be active or deleted. Deleted entities are not removed from Atlas store.
+        ///   notificationFrequency: &quot;IMMEDIATE&quot;, # Optional.
+        ///   notificationType: &quot;EMAIL&quot;, # Optional.
+        ///   condition: string, # Optional.
+        ///   alertingScopes: [
+        ///     {
+        ///       level: &quot;CATALOG_PATH&quot;, # Optional.
+        ///       type: string, # Optional.
+        ///       id: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   createdOn: string (ISO 8601 Format), # Optional.
+        ///   createdBy: string, # Optional.
+        ///   lastUpdatedOn: string (ISO 8601 Format), # Optional.
+        ///   lastUpdatedBy: string, # Optional.
+        ///   lastActivatedOn: string (ISO 8601 Format), # Optional.
+        ///   activatedCount: number, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> UpdateAlertAsync(string accountId, string alertId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(alertId, nameof(alertId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.UpdateAlert");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateUpdateAlertRequest(accountId, alertId, content, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="alertId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="alertId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="alertId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call UpdateAlert with required parameters and request content and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = client.UpdateAlert("<accountId>", "<alertId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("status").ToString());
+        /// Console.WriteLine(result.GetProperty("notificationFrequency").ToString());
+        /// Console.WriteLine(result.GetProperty("notificationType").ToString());
+        /// Console.WriteLine(result.GetProperty("condition").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("level").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("createdOn").ToString());
+        /// Console.WriteLine(result.GetProperty("createdBy").ToString());
+        /// Console.WriteLine(result.GetProperty("lastUpdatedOn").ToString());
+        /// Console.WriteLine(result.GetProperty("lastUpdatedBy").ToString());
+        /// Console.WriteLine(result.GetProperty("lastActivatedOn").ToString());
+        /// Console.WriteLine(result.GetProperty("activatedCount").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>DQAlert</c>:
+        /// <code>{
+        ///   id: string, # Optional.
+        ///   name: string, # Optional.
+        ///   description: string, # Optional.
+        ///   status: &quot;ACTIVE&quot; | &quot;DELETED&quot; | &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. Status of the entity - can be active or deleted. Deleted entities are not removed from Atlas store.
+        ///   notificationFrequency: &quot;IMMEDIATE&quot;, # Optional.
+        ///   notificationType: &quot;EMAIL&quot;, # Optional.
+        ///   condition: string, # Optional.
+        ///   alertingScopes: [
+        ///     {
+        ///       level: &quot;CATALOG_PATH&quot;, # Optional.
+        ///       type: string, # Optional.
+        ///       id: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   createdOn: string (ISO 8601 Format), # Optional.
+        ///   createdBy: string, # Optional.
+        ///   lastUpdatedOn: string (ISO 8601 Format), # Optional.
+        ///   lastUpdatedBy: string, # Optional.
+        ///   lastActivatedOn: string (ISO 8601 Format), # Optional.
+        ///   activatedCount: number, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response UpdateAlert(string accountId, string alertId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(alertId, nameof(alertId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.UpdateAlert");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateUpdateAlertRequest(accountId, alertId, content, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="alertId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="alertId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="alertId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call DeleteAlertAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.DeleteAlertAsync("<accountId>", "<alertId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual async Task<Response> DeleteAlertAsync(string accountId, string alertId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(alertId, nameof(alertId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.DeleteAlert");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateDeleteAlertRequest(accountId, alertId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="alertId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="alertId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="alertId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call DeleteAlert with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.DeleteAlert("<accountId>", "<alertId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual Response DeleteAlert(string accountId, string alertId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(alertId, nameof(alertId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.DeleteAlert");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateDeleteAlertRequest(accountId, alertId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call CheckAlertNameScopeUniquenessAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = await client.CheckAlertNameScopeUniquenessAsync("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call CheckAlertNameScopeUniquenessAsync with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     alertName = "<alertName>",
+        ///     values = new[] {
+        ///         new {
+        ///             level = "CATALOG_PATH",
+        ///             type = "<type>",
+        ///             id = "<id>",
+        ///         }
+        ///     },
+        /// };
+        /// 
+        /// Response response = await client.CheckAlertNameScopeUniquenessAsync("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request payload.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>AlertNameValidation</c>:
+        /// <code>{
+        ///   alertName: string, # Optional.
+        ///   values: [
+        ///     {
+        ///       level: &quot;CATALOG_PATH&quot;, # Optional.
+        ///       type: string, # Optional.
+        ///       id: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> CheckAlertNameScopeUniquenessAsync(string accountId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CheckAlertNameScopeUniqueness");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCheckAlertNameScopeUniquenessRequest(accountId, content, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call CheckAlertNameScopeUniqueness with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = client.CheckAlertNameScopeUniqueness("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call CheckAlertNameScopeUniqueness with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     alertName = "<alertName>",
+        ///     values = new[] {
+        ///         new {
+        ///             level = "CATALOG_PATH",
+        ///             type = "<type>",
+        ///             id = "<id>",
+        ///         }
+        ///     },
+        /// };
+        /// 
+        /// Response response = client.CheckAlertNameScopeUniqueness("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request payload.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>AlertNameValidation</c>:
+        /// <code>{
+        ///   alertName: string, # Optional.
+        ///   values: [
+        ///     {
+        ///       level: &quot;CATALOG_PATH&quot;, # Optional.
+        ///       type: string, # Optional.
+        ///       id: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response CheckAlertNameScopeUniqueness(string accountId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CheckAlertNameScopeUniqueness");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCheckAlertNameScopeUniquenessRequest(accountId, content, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call CreateRulesAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = await client.CreateRulesAsync("<accountId>", "<assetId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call CreateRulesAsync with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     modelVersion = "<modelVersion>",
+        ///     dataSourceId = "<dataSourceId>",
+        ///     dataSourceFQN = "<dataSourceFQN>",
+        ///     favouriteFields = new[] {
+        ///         "<String>"
+        ///     },
+        ///     schemaAtSource = new {
+        ///         schemaProvider = "CATALOG",
+        ///         schema = "<schema>",
+        ///         refreshedAt = 1234L,
+        ///     },
+        ///     schemaReference = new {
+        ///         key = new {
+        ///             properties = new {
+        ///                 key = "<String>",
+        ///             },
+        ///         },
+        ///     },
+        ///     dataSourceType = "None",
+        ///     rules = new[] {
+        ///         new {
+        ///             id = "<id>",
+        ///             name = "<name>",
+        ///             description = "<description>",
+        ///             status = "INCOMPLETE",
+        ///             level = "ASSET",
+        ///             type = "enum",
+        ///             tags = new[] {
+        ///                 "<String>"
+        ///             },
+        ///             typeProperties = new {},
+        ///         }
+        ///     },
+        /// };
+        /// 
+        /// Response response = await client.CreateRulesAsync("<accountId>", "<assetId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("modelVersion").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceId").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceFQN").ToString());
+        /// Console.WriteLine(result.GetProperty("favouriteFields")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schemaProvider").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schema").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("refreshedAt").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaReference").GetProperty("<test>").GetProperty("properties").GetProperty("<test>").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceType").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("status").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("level").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("tags")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("typeProperties").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>DataQualityRules</c>:
+        /// <code>{
+        ///   modelVersion: string, # Optional.
+        ///   dataSourceId: string, # Optional.
+        ///   dataSourceFQN: string, # Optional.
+        ///   favouriteFields: [string], # Optional.
+        ///   schemaAtSource: {
+        ///     schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional.
+        ///     schema: string, # Optional.
+        ///     refreshedAt: number, # Optional.
+        ///   }, # Optional.
+        ///   schemaReference: Dictionary&lt;string, DataTypeProperties&gt;, # Optional. Dictionary of &lt;DataTypeProperties&gt;
+        ///   dataSourceType: &quot;None&quot; | &quot;AzureSubscription&quot; | &quot;AzureResourceGroup&quot; | &quot;AzureSynapseWorkspace&quot; | &quot;AzureSynapse&quot; | &quot;AdlsGen1&quot; | &quot;AdlsGen2&quot; | &quot;AmazonAccount&quot; | &quot;AmazonS3&quot; | &quot;AmazonSql&quot; | &quot;AzureCosmosDb&quot; | &quot;AzureDataExplorer&quot; | &quot;AzureFileService&quot; | &quot;AzureSqlDatabase&quot; | &quot;AmazonPostgreSql&quot; | &quot;AzurePostgreSql&quot; | &quot;SqlServerDatabase&quot; | &quot;AzureSqlDatabaseManagedInstance&quot; | &quot;AzureSqlDataWarehouse&quot; | &quot;AzureMySql&quot; | &quot;AzureStorage&quot; | &quot;Teradata&quot; | &quot;Oracle&quot; | &quot;SapS4Hana&quot; | &quot;SapEcc&quot; | &quot;PowerBI&quot; | &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional.
+        ///   rules: [Rule], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>DataQualityRules</c>:
+        /// <code>{
+        ///   modelVersion: string, # Optional.
+        ///   dataSourceId: string, # Optional.
+        ///   dataSourceFQN: string, # Optional.
+        ///   favouriteFields: [string], # Optional.
+        ///   schemaAtSource: {
+        ///     schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional.
+        ///     schema: string, # Optional.
+        ///     refreshedAt: number, # Optional.
+        ///   }, # Optional.
+        ///   schemaReference: Dictionary&lt;string, DataTypeProperties&gt;, # Optional. Dictionary of &lt;DataTypeProperties&gt;
+        ///   dataSourceType: &quot;None&quot; | &quot;AzureSubscription&quot; | &quot;AzureResourceGroup&quot; | &quot;AzureSynapseWorkspace&quot; | &quot;AzureSynapse&quot; | &quot;AdlsGen1&quot; | &quot;AdlsGen2&quot; | &quot;AmazonAccount&quot; | &quot;AmazonS3&quot; | &quot;AmazonSql&quot; | &quot;AzureCosmosDb&quot; | &quot;AzureDataExplorer&quot; | &quot;AzureFileService&quot; | &quot;AzureSqlDatabase&quot; | &quot;AmazonPostgreSql&quot; | &quot;AzurePostgreSql&quot; | &quot;SqlServerDatabase&quot; | &quot;AzureSqlDatabaseManagedInstance&quot; | &quot;AzureSqlDataWarehouse&quot; | &quot;AzureMySql&quot; | &quot;AzureStorage&quot; | &quot;Teradata&quot; | &quot;Oracle&quot; | &quot;SapS4Hana&quot; | &quot;SapEcc&quot; | &quot;PowerBI&quot; | &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional.
+        ///   rules: [Rule], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> CreateRulesAsync(string accountId, string assetId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CreateRules");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCreateRulesRequest(accountId, assetId, content, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call CreateRules with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = client.CreateRules("<accountId>", "<assetId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call CreateRules with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     modelVersion = "<modelVersion>",
+        ///     dataSourceId = "<dataSourceId>",
+        ///     dataSourceFQN = "<dataSourceFQN>",
+        ///     favouriteFields = new[] {
+        ///         "<String>"
+        ///     },
+        ///     schemaAtSource = new {
+        ///         schemaProvider = "CATALOG",
+        ///         schema = "<schema>",
+        ///         refreshedAt = 1234L,
+        ///     },
+        ///     schemaReference = new {
+        ///         key = new {
+        ///             properties = new {
+        ///                 key = "<String>",
+        ///             },
+        ///         },
+        ///     },
+        ///     dataSourceType = "None",
+        ///     rules = new[] {
+        ///         new {
+        ///             id = "<id>",
+        ///             name = "<name>",
+        ///             description = "<description>",
+        ///             status = "INCOMPLETE",
+        ///             level = "ASSET",
+        ///             type = "enum",
+        ///             tags = new[] {
+        ///                 "<String>"
+        ///             },
+        ///             typeProperties = new {},
+        ///         }
+        ///     },
+        /// };
+        /// 
+        /// Response response = client.CreateRules("<accountId>", "<assetId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("modelVersion").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceId").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceFQN").ToString());
+        /// Console.WriteLine(result.GetProperty("favouriteFields")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schemaProvider").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schema").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("refreshedAt").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaReference").GetProperty("<test>").GetProperty("properties").GetProperty("<test>").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceType").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("status").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("level").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("tags")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("typeProperties").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>DataQualityRules</c>:
+        /// <code>{
+        ///   modelVersion: string, # Optional.
+        ///   dataSourceId: string, # Optional.
+        ///   dataSourceFQN: string, # Optional.
+        ///   favouriteFields: [string], # Optional.
+        ///   schemaAtSource: {
+        ///     schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional.
+        ///     schema: string, # Optional.
+        ///     refreshedAt: number, # Optional.
+        ///   }, # Optional.
+        ///   schemaReference: Dictionary&lt;string, DataTypeProperties&gt;, # Optional. Dictionary of &lt;DataTypeProperties&gt;
+        ///   dataSourceType: &quot;None&quot; | &quot;AzureSubscription&quot; | &quot;AzureResourceGroup&quot; | &quot;AzureSynapseWorkspace&quot; | &quot;AzureSynapse&quot; | &quot;AdlsGen1&quot; | &quot;AdlsGen2&quot; | &quot;AmazonAccount&quot; | &quot;AmazonS3&quot; | &quot;AmazonSql&quot; | &quot;AzureCosmosDb&quot; | &quot;AzureDataExplorer&quot; | &quot;AzureFileService&quot; | &quot;AzureSqlDatabase&quot; | &quot;AmazonPostgreSql&quot; | &quot;AzurePostgreSql&quot; | &quot;SqlServerDatabase&quot; | &quot;AzureSqlDatabaseManagedInstance&quot; | &quot;AzureSqlDataWarehouse&quot; | &quot;AzureMySql&quot; | &quot;AzureStorage&quot; | &quot;Teradata&quot; | &quot;Oracle&quot; | &quot;SapS4Hana&quot; | &quot;SapEcc&quot; | &quot;PowerBI&quot; | &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional.
+        ///   rules: [Rule], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>DataQualityRules</c>:
+        /// <code>{
+        ///   modelVersion: string, # Optional.
+        ///   dataSourceId: string, # Optional.
+        ///   dataSourceFQN: string, # Optional.
+        ///   favouriteFields: [string], # Optional.
+        ///   schemaAtSource: {
+        ///     schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional.
+        ///     schema: string, # Optional.
+        ///     refreshedAt: number, # Optional.
+        ///   }, # Optional.
+        ///   schemaReference: Dictionary&lt;string, DataTypeProperties&gt;, # Optional. Dictionary of &lt;DataTypeProperties&gt;
+        ///   dataSourceType: &quot;None&quot; | &quot;AzureSubscription&quot; | &quot;AzureResourceGroup&quot; | &quot;AzureSynapseWorkspace&quot; | &quot;AzureSynapse&quot; | &quot;AdlsGen1&quot; | &quot;AdlsGen2&quot; | &quot;AmazonAccount&quot; | &quot;AmazonS3&quot; | &quot;AmazonSql&quot; | &quot;AzureCosmosDb&quot; | &quot;AzureDataExplorer&quot; | &quot;AzureFileService&quot; | &quot;AzureSqlDatabase&quot; | &quot;AmazonPostgreSql&quot; | &quot;AzurePostgreSql&quot; | &quot;SqlServerDatabase&quot; | &quot;AzureSqlDatabaseManagedInstance&quot; | &quot;AzureSqlDataWarehouse&quot; | &quot;AzureMySql&quot; | &quot;AzureStorage&quot; | &quot;Teradata&quot; | &quot;Oracle&quot; | &quot;SapS4Hana&quot; | &quot;SapEcc&quot; | &quot;PowerBI&quot; | &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional.
+        ///   rules: [Rule], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response CreateRules(string accountId, string assetId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CreateRules");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCreateRulesRequest(accountId, assetId, content, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetRulesAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.GetRulesAsync("<accountId>", "<assetId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("modelVersion").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceId").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceFQN").ToString());
+        /// Console.WriteLine(result.GetProperty("favouriteFields")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schemaProvider").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schema").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("refreshedAt").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaReference").GetProperty("<test>").GetProperty("properties").GetProperty("<test>").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceType").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("status").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("level").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("tags")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("typeProperties").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>DataQualityRules</c>:
+        /// <code>{
+        ///   modelVersion: string, # Optional.
+        ///   dataSourceId: string, # Optional.
+        ///   dataSourceFQN: string, # Optional.
+        ///   favouriteFields: [string], # Optional.
+        ///   schemaAtSource: {
+        ///     schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional.
+        ///     schema: string, # Optional.
+        ///     refreshedAt: number, # Optional.
+        ///   }, # Optional.
+        ///   schemaReference: Dictionary&lt;string, DataTypeProperties&gt;, # Optional. Dictionary of &lt;DataTypeProperties&gt;
+        ///   dataSourceType: &quot;None&quot; | &quot;AzureSubscription&quot; | &quot;AzureResourceGroup&quot; | &quot;AzureSynapseWorkspace&quot; | &quot;AzureSynapse&quot; | &quot;AdlsGen1&quot; | &quot;AdlsGen2&quot; | &quot;AmazonAccount&quot; | &quot;AmazonS3&quot; | &quot;AmazonSql&quot; | &quot;AzureCosmosDb&quot; | &quot;AzureDataExplorer&quot; | &quot;AzureFileService&quot; | &quot;AzureSqlDatabase&quot; | &quot;AmazonPostgreSql&quot; | &quot;AzurePostgreSql&quot; | &quot;SqlServerDatabase&quot; | &quot;AzureSqlDatabaseManagedInstance&quot; | &quot;AzureSqlDataWarehouse&quot; | &quot;AzureMySql&quot; | &quot;AzureStorage&quot; | &quot;Teradata&quot; | &quot;Oracle&quot; | &quot;SapS4Hana&quot; | &quot;SapEcc&quot; | &quot;PowerBI&quot; | &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional.
+        ///   rules: [Rule], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> GetRulesAsync(string accountId, string assetId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetRules");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetRulesRequest(accountId, assetId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetRules with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.GetRules("<accountId>", "<assetId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("modelVersion").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceId").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceFQN").ToString());
+        /// Console.WriteLine(result.GetProperty("favouriteFields")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schemaProvider").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schema").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("refreshedAt").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaReference").GetProperty("<test>").GetProperty("properties").GetProperty("<test>").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceType").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("status").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("level").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("tags")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("typeProperties").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>DataQualityRules</c>:
+        /// <code>{
+        ///   modelVersion: string, # Optional.
+        ///   dataSourceId: string, # Optional.
+        ///   dataSourceFQN: string, # Optional.
+        ///   favouriteFields: [string], # Optional.
+        ///   schemaAtSource: {
+        ///     schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional.
+        ///     schema: string, # Optional.
+        ///     refreshedAt: number, # Optional.
+        ///   }, # Optional.
+        ///   schemaReference: Dictionary&lt;string, DataTypeProperties&gt;, # Optional. Dictionary of &lt;DataTypeProperties&gt;
+        ///   dataSourceType: &quot;None&quot; | &quot;AzureSubscription&quot; | &quot;AzureResourceGroup&quot; | &quot;AzureSynapseWorkspace&quot; | &quot;AzureSynapse&quot; | &quot;AdlsGen1&quot; | &quot;AdlsGen2&quot; | &quot;AmazonAccount&quot; | &quot;AmazonS3&quot; | &quot;AmazonSql&quot; | &quot;AzureCosmosDb&quot; | &quot;AzureDataExplorer&quot; | &quot;AzureFileService&quot; | &quot;AzureSqlDatabase&quot; | &quot;AmazonPostgreSql&quot; | &quot;AzurePostgreSql&quot; | &quot;SqlServerDatabase&quot; | &quot;AzureSqlDatabaseManagedInstance&quot; | &quot;AzureSqlDataWarehouse&quot; | &quot;AzureMySql&quot; | &quot;AzureStorage&quot; | &quot;Teradata&quot; | &quot;Oracle&quot; | &quot;SapS4Hana&quot; | &quot;SapEcc&quot; | &quot;PowerBI&quot; | &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional.
+        ///   rules: [Rule], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response GetRules(string accountId, string assetId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetRules");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetRulesRequest(accountId, assetId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call UpdateRulesAsync with required parameters and request content and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = await client.UpdateRulesAsync("<accountId>", "<assetId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("modelVersion").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceId").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceFQN").ToString());
+        /// Console.WriteLine(result.GetProperty("favouriteFields")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schemaProvider").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schema").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("refreshedAt").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaReference").GetProperty("<test>").GetProperty("properties").GetProperty("<test>").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceType").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("status").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("level").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("tags")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("typeProperties").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>DataQualityRules</c>:
+        /// <code>{
+        ///   modelVersion: string, # Optional.
+        ///   dataSourceId: string, # Optional.
+        ///   dataSourceFQN: string, # Optional.
+        ///   favouriteFields: [string], # Optional.
+        ///   schemaAtSource: {
+        ///     schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional.
+        ///     schema: string, # Optional.
+        ///     refreshedAt: number, # Optional.
+        ///   }, # Optional.
+        ///   schemaReference: Dictionary&lt;string, DataTypeProperties&gt;, # Optional. Dictionary of &lt;DataTypeProperties&gt;
+        ///   dataSourceType: &quot;None&quot; | &quot;AzureSubscription&quot; | &quot;AzureResourceGroup&quot; | &quot;AzureSynapseWorkspace&quot; | &quot;AzureSynapse&quot; | &quot;AdlsGen1&quot; | &quot;AdlsGen2&quot; | &quot;AmazonAccount&quot; | &quot;AmazonS3&quot; | &quot;AmazonSql&quot; | &quot;AzureCosmosDb&quot; | &quot;AzureDataExplorer&quot; | &quot;AzureFileService&quot; | &quot;AzureSqlDatabase&quot; | &quot;AmazonPostgreSql&quot; | &quot;AzurePostgreSql&quot; | &quot;SqlServerDatabase&quot; | &quot;AzureSqlDatabaseManagedInstance&quot; | &quot;AzureSqlDataWarehouse&quot; | &quot;AzureMySql&quot; | &quot;AzureStorage&quot; | &quot;Teradata&quot; | &quot;Oracle&quot; | &quot;SapS4Hana&quot; | &quot;SapEcc&quot; | &quot;PowerBI&quot; | &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional.
+        ///   rules: [Rule], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> UpdateRulesAsync(string accountId, string assetId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.UpdateRules");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateUpdateRulesRequest(accountId, assetId, content, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call UpdateRules with required parameters and request content and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = client.UpdateRules("<accountId>", "<assetId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("modelVersion").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceId").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceFQN").ToString());
+        /// Console.WriteLine(result.GetProperty("favouriteFields")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schemaProvider").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schema").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("refreshedAt").ToString());
+        /// Console.WriteLine(result.GetProperty("schemaReference").GetProperty("<test>").GetProperty("properties").GetProperty("<test>").ToString());
+        /// Console.WriteLine(result.GetProperty("dataSourceType").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("status").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("level").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("tags")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("rules")[0].GetProperty("typeProperties").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>DataQualityRules</c>:
+        /// <code>{
+        ///   modelVersion: string, # Optional.
+        ///   dataSourceId: string, # Optional.
+        ///   dataSourceFQN: string, # Optional.
+        ///   favouriteFields: [string], # Optional.
+        ///   schemaAtSource: {
+        ///     schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional.
+        ///     schema: string, # Optional.
+        ///     refreshedAt: number, # Optional.
+        ///   }, # Optional.
+        ///   schemaReference: Dictionary&lt;string, DataTypeProperties&gt;, # Optional. Dictionary of &lt;DataTypeProperties&gt;
+        ///   dataSourceType: &quot;None&quot; | &quot;AzureSubscription&quot; | &quot;AzureResourceGroup&quot; | &quot;AzureSynapseWorkspace&quot; | &quot;AzureSynapse&quot; | &quot;AdlsGen1&quot; | &quot;AdlsGen2&quot; | &quot;AmazonAccount&quot; | &quot;AmazonS3&quot; | &quot;AmazonSql&quot; | &quot;AzureCosmosDb&quot; | &quot;AzureDataExplorer&quot; | &quot;AzureFileService&quot; | &quot;AzureSqlDatabase&quot; | &quot;AmazonPostgreSql&quot; | &quot;AzurePostgreSql&quot; | &quot;SqlServerDatabase&quot; | &quot;AzureSqlDatabaseManagedInstance&quot; | &quot;AzureSqlDataWarehouse&quot; | &quot;AzureMySql&quot; | &quot;AzureStorage&quot; | &quot;Teradata&quot; | &quot;Oracle&quot; | &quot;SapS4Hana&quot; | &quot;SapEcc&quot; | &quot;PowerBI&quot; | &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional.
+        ///   rules: [Rule], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response UpdateRules(string accountId, string assetId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.UpdateRules");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateUpdateRulesRequest(accountId, assetId, content, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="dataSourceFQN"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call SetFavouriteFieldsAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = await client.SetFavouriteFieldsAsync("<accountId>", "<assetId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].ToString());
+        /// ]]></code>
+        /// This sample shows how to call SetFavouriteFieldsAsync with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     modelVersion = "<modelVersion>",
+        ///     dataSourceId = "<dataSourceId>",
+        ///     dataSourceFQN = "<dataSourceFQN>",
+        ///     favouriteFields = new[] {
+        ///         "<String>"
+        ///     },
+        ///     schemaAtSource = new {
+        ///         schemaProvider = "CATALOG",
+        ///         schema = "<schema>",
+        ///         refreshedAt = 1234L,
+        ///     },
+        ///     schemaReference = new {
+        ///         key = new {
+        ///             properties = new {
+        ///                 key = "<String>",
+        ///             },
+        ///         },
+        ///     },
+        ///     dataSourceType = "None",
+        ///     rules = new[] {
+        ///         new {
+        ///             id = "<id>",
+        ///             name = "<name>",
+        ///             description = "<description>",
+        ///             status = "INCOMPLETE",
+        ///             level = "ASSET",
+        ///             type = "enum",
+        ///             tags = new[] {
+        ///                 "<String>"
+        ///             },
+        ///             typeProperties = new {},
+        ///         }
+        ///     },
+        /// };
+        /// 
+        /// Response response = await client.SetFavouriteFieldsAsync("<accountId>", "<assetId>", RequestContent.Create(data), "<dataSourceFQN>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request payload.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>DataQualityRules</c>:
+        /// <code>{
+        ///   modelVersion: string, # Optional.
+        ///   dataSourceId: string, # Optional.
+        ///   dataSourceFQN: string, # Optional.
+        ///   favouriteFields: [string], # Optional.
+        ///   schemaAtSource: {
+        ///     schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional.
+        ///     schema: string, # Optional.
+        ///     refreshedAt: number, # Optional.
+        ///   }, # Optional.
+        ///   schemaReference: Dictionary&lt;string, DataTypeProperties&gt;, # Optional. Dictionary of &lt;DataTypeProperties&gt;
+        ///   dataSourceType: &quot;None&quot; | &quot;AzureSubscription&quot; | &quot;AzureResourceGroup&quot; | &quot;AzureSynapseWorkspace&quot; | &quot;AzureSynapse&quot; | &quot;AdlsGen1&quot; | &quot;AdlsGen2&quot; | &quot;AmazonAccount&quot; | &quot;AmazonS3&quot; | &quot;AmazonSql&quot; | &quot;AzureCosmosDb&quot; | &quot;AzureDataExplorer&quot; | &quot;AzureFileService&quot; | &quot;AzureSqlDatabase&quot; | &quot;AmazonPostgreSql&quot; | &quot;AzurePostgreSql&quot; | &quot;SqlServerDatabase&quot; | &quot;AzureSqlDatabaseManagedInstance&quot; | &quot;AzureSqlDataWarehouse&quot; | &quot;AzureMySql&quot; | &quot;AzureStorage&quot; | &quot;Teradata&quot; | &quot;Oracle&quot; | &quot;SapS4Hana&quot; | &quot;SapEcc&quot; | &quot;PowerBI&quot; | &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional.
+        ///   rules: [Rule], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> SetFavouriteFieldsAsync(string accountId, string assetId, RequestContent content, string dataSourceFQN = null, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.SetFavouriteFields");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateSetFavouriteFieldsRequest(accountId, assetId, content, dataSourceFQN, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="dataSourceFQN"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call SetFavouriteFields with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = client.SetFavouriteFields("<accountId>", "<assetId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].ToString());
+        /// ]]></code>
+        /// This sample shows how to call SetFavouriteFields with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     modelVersion = "<modelVersion>",
+        ///     dataSourceId = "<dataSourceId>",
+        ///     dataSourceFQN = "<dataSourceFQN>",
+        ///     favouriteFields = new[] {
+        ///         "<String>"
+        ///     },
+        ///     schemaAtSource = new {
+        ///         schemaProvider = "CATALOG",
+        ///         schema = "<schema>",
+        ///         refreshedAt = 1234L,
+        ///     },
+        ///     schemaReference = new {
+        ///         key = new {
+        ///             properties = new {
+        ///                 key = "<String>",
+        ///             },
+        ///         },
+        ///     },
+        ///     dataSourceType = "None",
+        ///     rules = new[] {
+        ///         new {
+        ///             id = "<id>",
+        ///             name = "<name>",
+        ///             description = "<description>",
+        ///             status = "INCOMPLETE",
+        ///             level = "ASSET",
+        ///             type = "enum",
+        ///             tags = new[] {
+        ///                 "<String>"
+        ///             },
+        ///             typeProperties = new {},
+        ///         }
+        ///     },
+        /// };
+        /// 
+        /// Response response = client.SetFavouriteFields("<accountId>", "<assetId>", RequestContent.Create(data), "<dataSourceFQN>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request payload.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>DataQualityRules</c>:
+        /// <code>{
+        ///   modelVersion: string, # Optional.
+        ///   dataSourceId: string, # Optional.
+        ///   dataSourceFQN: string, # Optional.
+        ///   favouriteFields: [string], # Optional.
+        ///   schemaAtSource: {
+        ///     schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional.
+        ///     schema: string, # Optional.
+        ///     refreshedAt: number, # Optional.
+        ///   }, # Optional.
+        ///   schemaReference: Dictionary&lt;string, DataTypeProperties&gt;, # Optional. Dictionary of &lt;DataTypeProperties&gt;
+        ///   dataSourceType: &quot;None&quot; | &quot;AzureSubscription&quot; | &quot;AzureResourceGroup&quot; | &quot;AzureSynapseWorkspace&quot; | &quot;AzureSynapse&quot; | &quot;AdlsGen1&quot; | &quot;AdlsGen2&quot; | &quot;AmazonAccount&quot; | &quot;AmazonS3&quot; | &quot;AmazonSql&quot; | &quot;AzureCosmosDb&quot; | &quot;AzureDataExplorer&quot; | &quot;AzureFileService&quot; | &quot;AzureSqlDatabase&quot; | &quot;AmazonPostgreSql&quot; | &quot;AzurePostgreSql&quot; | &quot;SqlServerDatabase&quot; | &quot;AzureSqlDatabaseManagedInstance&quot; | &quot;AzureSqlDataWarehouse&quot; | &quot;AzureMySql&quot; | &quot;AzureStorage&quot; | &quot;Teradata&quot; | &quot;Oracle&quot; | &quot;SapS4Hana&quot; | &quot;SapEcc&quot; | &quot;PowerBI&quot; | &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional.
+        ///   rules: [Rule], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response SetFavouriteFields(string accountId, string assetId, RequestContent content, string dataSourceFQN = null, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.SetFavouriteFields");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateSetFavouriteFieldsRequest(accountId, assetId, content, dataSourceFQN, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call SubmitJobAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = await client.SubmitJobAsync("<accountId>", "<assetId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call SubmitJobAsync with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     jobId = "<jobId>",
+        /// };
+        /// 
+        /// Response response = await client.SubmitJobAsync("<accountId>", "<assetId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request payload.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>AssessmentJobDTO</c>:
+        /// <code>{
+        ///   jobId: string, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> SubmitJobAsync(string accountId, string assetId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.SubmitJob");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateSubmitJobRequest(accountId, assetId, content, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call SubmitJob with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = client.SubmitJob("<accountId>", "<assetId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call SubmitJob with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     jobId = "<jobId>",
+        /// };
+        /// 
+        /// Response response = client.SubmitJob("<accountId>", "<assetId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request payload.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>AssessmentJobDTO</c>:
+        /// <code>{
+        ///   jobId: string, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response SubmitJob(string accountId, string assetId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.SubmitJob");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateSubmitJobRequest(accountId, assetId, content, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetAssetRunMetadataAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.GetAssetRunMetadataAsync("<accountId>", "<assetId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].GetProperty("accountId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("assetID").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobID").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobRunId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStartTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobEndTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("totalRunTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").ToString());
+        /// Console.WriteLine(result[0].GetProperty("message").ToString());
+        /// Console.WriteLine(result[0].GetProperty("globalScore").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobEnvironment").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("assetType").ToString());
+        /// Console.WriteLine(result[0].GetProperty("statusCode").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>JobStatusEntity</c>:
+        /// <code>{
+        ///   accountId: string, # Optional.
+        ///   assetID: string, # Optional.
+        ///   jobID: string, # Optional.
+        ///   jobRunId: string, # Optional.
+        ///   jobStartTime: string (ISO 8601 Format), # Optional.
+        ///   jobEndTime: string (ISO 8601 Format), # Optional.
+        ///   totalRunTime: string, # Optional.
+        ///   jobStatus: string, # Optional.
+        ///   message: string, # Optional.
+        ///   globalScore: number, # Optional.
+        ///   jobEnvironment: string, # Optional.
+        ///   scheduleId: string, # Optional.
+        ///   assetType: string, # Optional.
+        ///   statusCode: number, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> GetAssetRunMetadataAsync(string accountId, string assetId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetAssetRunMetadata");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetAssetRunMetadataRequest(accountId, assetId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetAssetRunMetadata with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.GetAssetRunMetadata("<accountId>", "<assetId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].GetProperty("accountId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("assetID").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobID").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobRunId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStartTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobEndTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("totalRunTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").ToString());
+        /// Console.WriteLine(result[0].GetProperty("message").ToString());
+        /// Console.WriteLine(result[0].GetProperty("globalScore").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobEnvironment").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("assetType").ToString());
+        /// Console.WriteLine(result[0].GetProperty("statusCode").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>JobStatusEntity</c>:
+        /// <code>{
+        ///   accountId: string, # Optional.
+        ///   assetID: string, # Optional.
+        ///   jobID: string, # Optional.
+        ///   jobRunId: string, # Optional.
+        ///   jobStartTime: string (ISO 8601 Format), # Optional.
+        ///   jobEndTime: string (ISO 8601 Format), # Optional.
+        ///   totalRunTime: string, # Optional.
+        ///   jobStatus: string, # Optional.
+        ///   message: string, # Optional.
+        ///   globalScore: number, # Optional.
+        ///   jobEnvironment: string, # Optional.
+        ///   scheduleId: string, # Optional.
+        ///   assetType: string, # Optional.
+        ///   statusCode: number, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response GetAssetRunMetadata(string accountId, string assetId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetAssetRunMetadata");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetAssetRunMetadataRequest(accountId, assetId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="assessmentId"> The Guid to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetJobStatusAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.GetJobStatusAsync("<accountId>", "<assetId>", Guid.NewGuid());
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("jobRunId").ToString());
+        /// Console.WriteLine(result.GetProperty("status").ToString());
+        /// Console.WriteLine(result.GetProperty("message").ToString());
+        /// Console.WriteLine(result.GetProperty("runStart").ToString());
+        /// Console.WriteLine(result.GetProperty("runEnd").ToString());
+        /// Console.WriteLine(result.GetProperty("durationInMs").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>JobStatusEntityDTO</c>:
+        /// <code>{
+        ///   jobRunId: string, # Optional.
+        ///   status: string, # Optional.
+        ///   message: string, # Optional.
+        ///   runStart: string (ISO 8601 Format), # Optional.
+        ///   runEnd: string (ISO 8601 Format), # Optional.
+        ///   durationInMs: string, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> GetJobStatusAsync(string accountId, string assetId, Guid assessmentId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetJobStatus");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetJobStatusRequest(accountId, assetId, assessmentId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="assessmentId"> The Guid to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetJobStatus with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.GetJobStatus("<accountId>", "<assetId>", Guid.NewGuid());
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("jobRunId").ToString());
+        /// Console.WriteLine(result.GetProperty("status").ToString());
+        /// Console.WriteLine(result.GetProperty("message").ToString());
+        /// Console.WriteLine(result.GetProperty("runStart").ToString());
+        /// Console.WriteLine(result.GetProperty("runEnd").ToString());
+        /// Console.WriteLine(result.GetProperty("durationInMs").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>JobStatusEntityDTO</c>:
+        /// <code>{
+        ///   jobRunId: string, # Optional.
+        ///   status: string, # Optional.
+        ///   message: string, # Optional.
+        ///   runStart: string (ISO 8601 Format), # Optional.
+        ///   runEnd: string (ISO 8601 Format), # Optional.
+        ///   durationInMs: string, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response GetJobStatus(string accountId, string assetId, Guid assessmentId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetJobStatus");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetJobStatusRequest(accountId, assetId, assessmentId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="assessmentId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/>, <paramref name="assetId"/> or <paramref name="assessmentId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/>, <paramref name="assetId"/> or <paramref name="assessmentId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetJobRunAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.GetJobRunAsync("<accountId>", "<assetId>", "<assessmentId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("ruleLookupIdentifier").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("failingRows").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("passingRows").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("score").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("status").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("ruleType").ToString());
+        /// Console.WriteLine(result.GetProperty("goodRowCount").ToString());
+        /// Console.WriteLine(result.GetProperty("totalRows").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>DQRunResult</c>:
+        /// <code>{
+        ///   scores: [
+        ///     {
+        ///       ruleLookupIdentifier: string, # Optional.
+        ///       failingRows: number, # Optional.
+        ///       passingRows: number, # Optional.
+        ///       score: number, # Optional.
+        ///       status: &quot;INCOMPLETE&quot; | &quot;DRAFT&quot; | &quot;PUBLISHED&quot;, # Optional.
+        ///       ruleType: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   goodRowCount: number, # Optional.
+        ///   totalRows: number, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> GetJobRunAsync(string accountId, string assetId, string assessmentId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+            Argument.AssertNotNullOrEmpty(assessmentId, nameof(assessmentId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetJobRun");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetJobRunRequest(accountId, assetId, assessmentId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="assessmentId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/>, <paramref name="assetId"/> or <paramref name="assessmentId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/>, <paramref name="assetId"/> or <paramref name="assessmentId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetJobRun with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.GetJobRun("<accountId>", "<assetId>", "<assessmentId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("ruleLookupIdentifier").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("failingRows").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("passingRows").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("score").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("status").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("ruleType").ToString());
+        /// Console.WriteLine(result.GetProperty("goodRowCount").ToString());
+        /// Console.WriteLine(result.GetProperty("totalRows").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>DQRunResult</c>:
+        /// <code>{
+        ///   scores: [
+        ///     {
+        ///       ruleLookupIdentifier: string, # Optional.
+        ///       failingRows: number, # Optional.
+        ///       passingRows: number, # Optional.
+        ///       score: number, # Optional.
+        ///       status: &quot;INCOMPLETE&quot; | &quot;DRAFT&quot; | &quot;PUBLISHED&quot;, # Optional.
+        ///       ruleType: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   goodRowCount: number, # Optional.
+        ///   totalRows: number, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response GetJobRun(string accountId, string assetId, string assessmentId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+            Argument.AssertNotNullOrEmpty(assessmentId, nameof(assessmentId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetJobRun");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetJobRunRequest(accountId, assetId, assessmentId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="assessmentId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/>, <paramref name="assetId"/> or <paramref name="assessmentId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/>, <paramref name="assetId"/> or <paramref name="assessmentId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call GetJobRulesAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.GetJobRulesAsync("<accountId>", "<assetId>", "<assessmentId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual async Task<Response> GetJobRulesAsync(string accountId, string assetId, string assessmentId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+            Argument.AssertNotNullOrEmpty(assessmentId, nameof(assessmentId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetJobRules");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetJobRulesRequest(accountId, assetId, assessmentId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="assessmentId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/>, <paramref name="assetId"/> or <paramref name="assessmentId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/>, <paramref name="assetId"/> or <paramref name="assessmentId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call GetJobRules with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.GetJobRules("<accountId>", "<assetId>", "<assessmentId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual Response GetJobRules(string accountId, string assetId, string assessmentId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+            Argument.AssertNotNullOrEmpty(assessmentId, nameof(assessmentId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetJobRules");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetJobRulesRequest(accountId, assetId, assessmentId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="assessmentId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/>, <paramref name="assetId"/> or <paramref name="assessmentId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/>, <paramref name="assetId"/> or <paramref name="assessmentId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call DownloadJobErrorFileAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.DownloadJobErrorFileAsync("<accountId>", "<assetId>", "<assessmentId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual async Task<Response> DownloadJobErrorFileAsync(string accountId, string assetId, string assessmentId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+            Argument.AssertNotNullOrEmpty(assessmentId, nameof(assessmentId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.DownloadJobErrorFile");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateDownloadJobErrorFileRequest(accountId, assetId, assessmentId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="assessmentId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/>, <paramref name="assetId"/> or <paramref name="assessmentId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/>, <paramref name="assetId"/> or <paramref name="assessmentId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call DownloadJobErrorFile with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.DownloadJobErrorFile("<accountId>", "<assetId>", "<assessmentId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual Response DownloadJobErrorFile(string accountId, string assetId, string assessmentId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+            Argument.AssertNotNullOrEmpty(assessmentId, nameof(assessmentId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.DownloadJobErrorFile");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateDownloadJobErrorFileRequest(accountId, assetId, assessmentId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="assessmentId"> The Guid to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call CancelJobAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.CancelJobAsync("<accountId>", "<assetId>", Guid.NewGuid());
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual async Task<Response> CancelJobAsync(string accountId, string assetId, Guid assessmentId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CancelJob");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCancelJobRequest(accountId, assetId, assessmentId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="assessmentId"> The Guid to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call CancelJob with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.CancelJob("<accountId>", "<assetId>", Guid.NewGuid());
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual Response CancelJob(string accountId, string assetId, Guid assessmentId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CancelJob");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCancelJobRequest(accountId, assetId, assessmentId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="runNow"> The Boolean to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call CreateScheduledAssessmentsAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = await client.CreateScheduledAssessmentsAsync("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call CreateScheduledAssessmentsAsync with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     scheduleId = "<scheduleId>",
+        ///     scheduleName = "<scheduleName>",
+        ///     description = "<description>",
+        ///     recurrence = new {
+        ///         frequency = "<frequency>",
+        ///         interval = 1234,
+        ///         startTime = "2022-05-10T18:57:31.2311892Z",
+        ///         endTime = "2022-05-10T18:57:31.2311892Z",
+        ///         schedule = new {},
+        ///         timezone = "<timezone>",
+        ///     },
+        ///     datasources = new[] {
+        ///         new {
+        ///             datasourceKind = "<datasourceKind>",
+        ///             datasourceName = "<datasourceName>",
+        ///             includes = new[] {
+        ///                 "<String>"
+        ///             },
+        ///             properties = new {},
+        ///             credentials = new {
+        ///                 credentialType = "AccountKey",
+        ///                 referenceName = "<referenceName>",
+        ///                 credentialProperties = new {},
+        ///             },
+        ///         }
+        ///     },
+        ///     scheduleStatus = "RUNNING",
+        ///     runOnce = true,
+        /// };
+        /// 
+        /// Response response = await client.CreateScheduledAssessmentsAsync("<accountId>", RequestContent.Create(data), true);
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result.GetProperty("scheduleName").ToString());
+        /// Console.WriteLine(result.GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("frequency").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("interval").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("startTime").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("endTime").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("schedule").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("timezone").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceKind").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceName").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("includes")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("properties").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialType").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("referenceName").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialProperties").ToString());
+        /// Console.WriteLine(result.GetProperty("scheduleStatus").ToString());
+        /// Console.WriteLine(result.GetProperty("runOnce").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>ScheduleMetadataAutoGenerated</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   description: string, # Optional.
+        ///   recurrence: {
+        ///     frequency: string, # Optional.
+        ///     interval: number, # Optional.
+        ///     startTime: string (ISO 8601 Format), # Optional.
+        ///     endTime: string (ISO 8601 Format), # Optional.
+        ///     schedule: any, # Optional. Anything
+        ///     timezone: string, # Optional.
+        ///   }, # Optional.
+        ///   datasources: [
+        ///     {
+        ///       datasourceKind: string, # Optional.
+        ///       datasourceName: string, # Optional.
+        ///       includes: [string], # Optional.
+        ///       properties: any, # Optional. Anything
+        ///       credentials: {
+        ///         credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        ///         referenceName: string, # Optional.
+        ///         credentialProperties: any, # Optional. Anything
+        ///       }, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional.
+        ///   runOnce: boolean, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ScheduleMetadataAutoGenerated</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   description: string, # Optional.
+        ///   recurrence: {
+        ///     frequency: string, # Optional.
+        ///     interval: number, # Optional.
+        ///     startTime: string (ISO 8601 Format), # Optional.
+        ///     endTime: string (ISO 8601 Format), # Optional.
+        ///     schedule: any, # Optional. Anything
+        ///     timezone: string, # Optional.
+        ///   }, # Optional.
+        ///   datasources: [
+        ///     {
+        ///       datasourceKind: string, # Optional.
+        ///       datasourceName: string, # Optional.
+        ///       includes: [string], # Optional.
+        ///       properties: any, # Optional. Anything
+        ///       credentials: {
+        ///         credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        ///         referenceName: string, # Optional.
+        ///         credentialProperties: any, # Optional. Anything
+        ///       }, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional.
+        ///   runOnce: boolean, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> CreateScheduledAssessmentsAsync(string accountId, RequestContent content, bool? runNow = null, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNull(content, nameof(content));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CreateScheduledAssessments");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCreateScheduledAssessmentsRequest(accountId, content, runNow, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="runNow"> The Boolean to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call CreateScheduledAssessments with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = client.CreateScheduledAssessments("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call CreateScheduledAssessments with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     scheduleId = "<scheduleId>",
+        ///     scheduleName = "<scheduleName>",
+        ///     description = "<description>",
+        ///     recurrence = new {
+        ///         frequency = "<frequency>",
+        ///         interval = 1234,
+        ///         startTime = "2022-05-10T18:57:31.2311892Z",
+        ///         endTime = "2022-05-10T18:57:31.2311892Z",
+        ///         schedule = new {},
+        ///         timezone = "<timezone>",
+        ///     },
+        ///     datasources = new[] {
+        ///         new {
+        ///             datasourceKind = "<datasourceKind>",
+        ///             datasourceName = "<datasourceName>",
+        ///             includes = new[] {
+        ///                 "<String>"
+        ///             },
+        ///             properties = new {},
+        ///             credentials = new {
+        ///                 credentialType = "AccountKey",
+        ///                 referenceName = "<referenceName>",
+        ///                 credentialProperties = new {},
+        ///             },
+        ///         }
+        ///     },
+        ///     scheduleStatus = "RUNNING",
+        ///     runOnce = true,
+        /// };
+        /// 
+        /// Response response = client.CreateScheduledAssessments("<accountId>", RequestContent.Create(data), true);
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result.GetProperty("scheduleName").ToString());
+        /// Console.WriteLine(result.GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("frequency").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("interval").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("startTime").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("endTime").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("schedule").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("timezone").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceKind").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceName").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("includes")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("properties").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialType").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("referenceName").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialProperties").ToString());
+        /// Console.WriteLine(result.GetProperty("scheduleStatus").ToString());
+        /// Console.WriteLine(result.GetProperty("runOnce").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>ScheduleMetadataAutoGenerated</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   description: string, # Optional.
+        ///   recurrence: {
+        ///     frequency: string, # Optional.
+        ///     interval: number, # Optional.
+        ///     startTime: string (ISO 8601 Format), # Optional.
+        ///     endTime: string (ISO 8601 Format), # Optional.
+        ///     schedule: any, # Optional. Anything
+        ///     timezone: string, # Optional.
+        ///   }, # Optional.
+        ///   datasources: [
+        ///     {
+        ///       datasourceKind: string, # Optional.
+        ///       datasourceName: string, # Optional.
+        ///       includes: [string], # Optional.
+        ///       properties: any, # Optional. Anything
+        ///       credentials: {
+        ///         credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        ///         referenceName: string, # Optional.
+        ///         credentialProperties: any, # Optional. Anything
+        ///       }, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional.
+        ///   runOnce: boolean, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ScheduleMetadataAutoGenerated</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   description: string, # Optional.
+        ///   recurrence: {
+        ///     frequency: string, # Optional.
+        ///     interval: number, # Optional.
+        ///     startTime: string (ISO 8601 Format), # Optional.
+        ///     endTime: string (ISO 8601 Format), # Optional.
+        ///     schedule: any, # Optional. Anything
+        ///     timezone: string, # Optional.
+        ///   }, # Optional.
+        ///   datasources: [
+        ///     {
+        ///       datasourceKind: string, # Optional.
+        ///       datasourceName: string, # Optional.
+        ///       includes: [string], # Optional.
+        ///       properties: any, # Optional. Anything
+        ///       credentials: {
+        ///         credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        ///         referenceName: string, # Optional.
+        ///         credentialProperties: any, # Optional. Anything
+        ///       }, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional.
+        ///   runOnce: boolean, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response CreateScheduledAssessments(string accountId, RequestContent content, bool? runNow = null, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNull(content, nameof(content));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CreateScheduledAssessments");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCreateScheduledAssessmentsRequest(accountId, content, runNow, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetScheduledAssessmentsAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.GetScheduledAssessmentsAsync("<accountId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("scheduleName").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("recurrence").GetProperty("frequency").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("recurrence").GetProperty("interval").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("recurrence").GetProperty("startTime").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("recurrence").GetProperty("endTime").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("recurrence").GetProperty("schedule").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("recurrence").GetProperty("timezone").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("datasources")[0].GetProperty("datasourceKind").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("datasources")[0].GetProperty("datasourceName").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("datasources")[0].GetProperty("includes")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("datasources")[0].GetProperty("properties").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialType").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("datasources")[0].GetProperty("credentials").GetProperty("referenceName").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialProperties").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("scheduleStatus").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("runOnce").ToString());
+        /// Console.WriteLine(result.GetProperty("nextLink").ToString());
+        /// Console.WriteLine(result.GetProperty("count").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ScheduleMetadataPagedResults</c>:
+        /// <code>{
+        ///   values: [
+        ///     {
+        ///       scheduleId: string, # Optional.
+        ///       scheduleName: string, # Optional.
+        ///       description: string, # Optional.
+        ///       recurrence: {
+        ///         frequency: string, # Optional.
+        ///         interval: number, # Optional.
+        ///         startTime: string (ISO 8601 Format), # Optional.
+        ///         endTime: string (ISO 8601 Format), # Optional.
+        ///         schedule: any, # Optional. Anything
+        ///         timezone: string, # Optional.
+        ///       }, # Optional.
+        ///       datasources: [
+        ///         {
+        ///           datasourceKind: string, # Optional.
+        ///           datasourceName: string, # Optional.
+        ///           includes: [string], # Optional.
+        ///           properties: any, # Optional. Anything
+        ///           credentials: {
+        ///             credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        ///             referenceName: string, # Optional.
+        ///             credentialProperties: any, # Optional. Anything
+        ///           }, # Optional.
+        ///         }
+        ///       ], # Optional.
+        ///       scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional.
+        ///       runOnce: boolean, # Optional.
+        ///     }
+        ///   ], # Required.
+        ///   nextLink: string, # Optional.
+        ///   count: number, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> GetScheduledAssessmentsAsync(string accountId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetScheduledAssessments");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetScheduledAssessmentsRequest(accountId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetScheduledAssessments with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.GetScheduledAssessments("<accountId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("scheduleName").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("recurrence").GetProperty("frequency").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("recurrence").GetProperty("interval").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("recurrence").GetProperty("startTime").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("recurrence").GetProperty("endTime").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("recurrence").GetProperty("schedule").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("recurrence").GetProperty("timezone").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("datasources")[0].GetProperty("datasourceKind").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("datasources")[0].GetProperty("datasourceName").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("datasources")[0].GetProperty("includes")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("datasources")[0].GetProperty("properties").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialType").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("datasources")[0].GetProperty("credentials").GetProperty("referenceName").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialProperties").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("scheduleStatus").ToString());
+        /// Console.WriteLine(result.GetProperty("values")[0].GetProperty("runOnce").ToString());
+        /// Console.WriteLine(result.GetProperty("nextLink").ToString());
+        /// Console.WriteLine(result.GetProperty("count").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ScheduleMetadataPagedResults</c>:
+        /// <code>{
+        ///   values: [
+        ///     {
+        ///       scheduleId: string, # Optional.
+        ///       scheduleName: string, # Optional.
+        ///       description: string, # Optional.
+        ///       recurrence: {
+        ///         frequency: string, # Optional.
+        ///         interval: number, # Optional.
+        ///         startTime: string (ISO 8601 Format), # Optional.
+        ///         endTime: string (ISO 8601 Format), # Optional.
+        ///         schedule: any, # Optional. Anything
+        ///         timezone: string, # Optional.
+        ///       }, # Optional.
+        ///       datasources: [
+        ///         {
+        ///           datasourceKind: string, # Optional.
+        ///           datasourceName: string, # Optional.
+        ///           includes: [string], # Optional.
+        ///           properties: any, # Optional. Anything
+        ///           credentials: {
+        ///             credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        ///             referenceName: string, # Optional.
+        ///             credentialProperties: any, # Optional. Anything
+        ///           }, # Optional.
+        ///         }
+        ///       ], # Optional.
+        ///       scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional.
+        ///       runOnce: boolean, # Optional.
+        ///     }
+        ///   ], # Required.
+        ///   nextLink: string, # Optional.
+        ///   count: number, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response GetScheduledAssessments(string accountId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetScheduledAssessments");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetScheduledAssessmentsRequest(accountId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="scheduleName"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="scheduleName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="scheduleName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call ExistsScheduledAssessmentAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.ExistsScheduledAssessmentAsync("<accountId>", "<scheduleName>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual async Task<Response> ExistsScheduledAssessmentAsync(string accountId, string scheduleName, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(scheduleName, nameof(scheduleName));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.ExistsScheduledAssessment");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateExistsScheduledAssessmentRequest(accountId, scheduleName, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="scheduleName"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="scheduleName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="scheduleName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call ExistsScheduledAssessment with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.ExistsScheduledAssessment("<accountId>", "<scheduleName>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual Response ExistsScheduledAssessment(string accountId, string scheduleName, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(scheduleName, nameof(scheduleName));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.ExistsScheduledAssessment");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateExistsScheduledAssessmentRequest(accountId, scheduleName, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call GetAllScheduleNamesAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.GetAllScheduleNamesAsync("<accountId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual async Task<Response> GetAllScheduleNamesAsync(string accountId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetAllScheduleNames");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetAllScheduleNamesRequest(accountId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call GetAllScheduleNames with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.GetAllScheduleNames("<accountId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual Response GetAllScheduleNames(string accountId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetAllScheduleNames");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetAllScheduleNamesRequest(accountId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="scheduleId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetScheduledAssessmentsRunsAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.GetScheduledAssessmentsRunsAsync("<accountId>", "<scheduleId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scheduleName").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerRunId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerStatus").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerStartTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerLastUpdateTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("assessmentType").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ScheduleTriggerRunEntity</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   triggerRunId: string, # Optional.
+        ///   triggerStatus: string, # Optional.
+        ///   triggerStartTime: string (ISO 8601 Format), # Optional.
+        ///   triggerLastUpdateTime: string (ISO 8601 Format), # Optional.
+        ///   assessmentType: string, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> GetScheduledAssessmentsRunsAsync(string accountId, string scheduleId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(scheduleId, nameof(scheduleId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetScheduledAssessmentsRuns");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetScheduledAssessmentsRunsRequest(accountId, scheduleId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="scheduleId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetScheduledAssessmentsRuns with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.GetScheduledAssessmentsRuns("<accountId>", "<scheduleId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scheduleName").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerRunId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerStatus").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerStartTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerLastUpdateTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("assessmentType").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ScheduleTriggerRunEntity</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   triggerRunId: string, # Optional.
+        ///   triggerStatus: string, # Optional.
+        ///   triggerStartTime: string (ISO 8601 Format), # Optional.
+        ///   triggerLastUpdateTime: string (ISO 8601 Format), # Optional.
+        ///   assessmentType: string, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response GetScheduledAssessmentsRuns(string accountId, string scheduleId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(scheduleId, nameof(scheduleId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetScheduledAssessmentsRuns");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetScheduledAssessmentsRunsRequest(accountId, scheduleId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetScheduledAssessmentsRunsBulkStatusAsync with required parameters and request content and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new[] {
+        ///     new {
+        ///         scheduleId = "<scheduleId>",
+        ///         triggerRunIds = new[] {
+        ///             "<String>"
+        ///         },
+        ///     }
+        /// };
+        /// 
+        /// Response response = await client.GetScheduledAssessmentsRunsBulkStatusAsync("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scheduleName").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerRunId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerStatus").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerStartTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerLastUpdateTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("assessmentType").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("succeeded").GetProperty("count").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("succeeded").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("inProgress").GetProperty("count").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("inProgress").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("queued").GetProperty("count").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("queued").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("failed").GetProperty("count").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("failed").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("cancelled").GetProperty("count").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("cancelled").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("skipped").GetProperty("count").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("skipped").GetProperty("assets")[0].ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>ScheduleBulkRunsStatus</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   triggerRunIds: [string], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ScheduleTriggerRunEntityAssetInfo</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   triggerRunId: string, # Optional.
+        ///   triggerStatus: string, # Optional.
+        ///   triggerStartTime: string (ISO 8601 Format), # Optional.
+        ///   triggerLastUpdateTime: string (ISO 8601 Format), # Optional.
+        ///   assessmentType: string, # Optional.
+        ///   jobStatus: {
+        ///     succeeded: {
+        ///       count: number, # Optional.
+        ///       assets: [string], # Optional.
+        ///     }, # Optional.
+        ///     inProgress: DQAssetList, # Optional.
+        ///     queued: DQAssetList, # Optional.
+        ///     failed: DQAssetList, # Optional.
+        ///     cancelled: DQAssetList, # Optional.
+        ///     skipped: DQAssetList, # Optional.
+        ///   }, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> GetScheduledAssessmentsRunsBulkStatusAsync(string accountId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNull(content, nameof(content));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetScheduledAssessmentsRunsBulkStatus");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetScheduledAssessmentsRunsBulkStatusRequest(accountId, content, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetScheduledAssessmentsRunsBulkStatus with required parameters and request content and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new[] {
+        ///     new {
+        ///         scheduleId = "<scheduleId>",
+        ///         triggerRunIds = new[] {
+        ///             "<String>"
+        ///         },
+        ///     }
+        /// };
+        /// 
+        /// Response response = client.GetScheduledAssessmentsRunsBulkStatus("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scheduleName").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerRunId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerStatus").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerStartTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerLastUpdateTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("assessmentType").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("succeeded").GetProperty("count").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("succeeded").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("inProgress").GetProperty("count").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("inProgress").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("queued").GetProperty("count").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("queued").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("failed").GetProperty("count").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("failed").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("cancelled").GetProperty("count").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("cancelled").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("skipped").GetProperty("count").ToString());
+        /// Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("skipped").GetProperty("assets")[0].ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>ScheduleBulkRunsStatus</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   triggerRunIds: [string], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ScheduleTriggerRunEntityAssetInfo</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   triggerRunId: string, # Optional.
+        ///   triggerStatus: string, # Optional.
+        ///   triggerStartTime: string (ISO 8601 Format), # Optional.
+        ///   triggerLastUpdateTime: string (ISO 8601 Format), # Optional.
+        ///   assessmentType: string, # Optional.
+        ///   jobStatus: {
+        ///     succeeded: {
+        ///       count: number, # Optional.
+        ///       assets: [string], # Optional.
+        ///     }, # Optional.
+        ///     inProgress: DQAssetList, # Optional.
+        ///     queued: DQAssetList, # Optional.
+        ///     failed: DQAssetList, # Optional.
+        ///     cancelled: DQAssetList, # Optional.
+        ///     skipped: DQAssetList, # Optional.
+        ///   }, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response GetScheduledAssessmentsRunsBulkStatus(string accountId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNull(content, nameof(content));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetScheduledAssessmentsRunsBulkStatus");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetScheduledAssessmentsRunsBulkStatusRequest(accountId, content, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="scheduleId"> The String to use. </param>
+        /// <param name="runId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/>, <paramref name="scheduleId"/> or <paramref name="runId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/>, <paramref name="scheduleId"/> or <paramref name="runId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetScheduledAssessmentRunDetailsAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.GetScheduledAssessmentRunDetailsAsync("<accountId>", "<scheduleId>", "<runId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result.GetProperty("scheduleName").ToString());
+        /// Console.WriteLine(result.GetProperty("triggerRunId").ToString());
+        /// Console.WriteLine(result.GetProperty("triggerStatus").ToString());
+        /// Console.WriteLine(result.GetProperty("triggerStartTime").ToString());
+        /// Console.WriteLine(result.GetProperty("triggerLastUpdateTime").ToString());
+        /// Console.WriteLine(result.GetProperty("assessmentType").ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("succeeded").GetProperty("count").ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("succeeded").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("inProgress").GetProperty("count").ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("inProgress").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("queued").GetProperty("count").ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("queued").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("failed").GetProperty("count").ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("failed").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("cancelled").GetProperty("count").ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("cancelled").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("skipped").GetProperty("count").ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("skipped").GetProperty("assets")[0].ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ScheduleTriggerRunEntityAssetInfo</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   triggerRunId: string, # Optional.
+        ///   triggerStatus: string, # Optional.
+        ///   triggerStartTime: string (ISO 8601 Format), # Optional.
+        ///   triggerLastUpdateTime: string (ISO 8601 Format), # Optional.
+        ///   assessmentType: string, # Optional.
+        ///   jobStatus: {
+        ///     succeeded: {
+        ///       count: number, # Optional.
+        ///       assets: [string], # Optional.
+        ///     }, # Optional.
+        ///     inProgress: DQAssetList, # Optional.
+        ///     queued: DQAssetList, # Optional.
+        ///     failed: DQAssetList, # Optional.
+        ///     cancelled: DQAssetList, # Optional.
+        ///     skipped: DQAssetList, # Optional.
+        ///   }, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> GetScheduledAssessmentRunDetailsAsync(string accountId, string scheduleId, string runId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(scheduleId, nameof(scheduleId));
+            Argument.AssertNotNullOrEmpty(runId, nameof(runId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetScheduledAssessmentRunDetails");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetScheduledAssessmentRunDetailsRequest(accountId, scheduleId, runId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="scheduleId"> The String to use. </param>
+        /// <param name="runId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/>, <paramref name="scheduleId"/> or <paramref name="runId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/>, <paramref name="scheduleId"/> or <paramref name="runId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetScheduledAssessmentRunDetails with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.GetScheduledAssessmentRunDetails("<accountId>", "<scheduleId>", "<runId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result.GetProperty("scheduleName").ToString());
+        /// Console.WriteLine(result.GetProperty("triggerRunId").ToString());
+        /// Console.WriteLine(result.GetProperty("triggerStatus").ToString());
+        /// Console.WriteLine(result.GetProperty("triggerStartTime").ToString());
+        /// Console.WriteLine(result.GetProperty("triggerLastUpdateTime").ToString());
+        /// Console.WriteLine(result.GetProperty("assessmentType").ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("succeeded").GetProperty("count").ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("succeeded").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("inProgress").GetProperty("count").ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("inProgress").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("queued").GetProperty("count").ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("queued").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("failed").GetProperty("count").ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("failed").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("cancelled").GetProperty("count").ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("cancelled").GetProperty("assets")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("skipped").GetProperty("count").ToString());
+        /// Console.WriteLine(result.GetProperty("jobStatus").GetProperty("skipped").GetProperty("assets")[0].ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ScheduleTriggerRunEntityAssetInfo</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   triggerRunId: string, # Optional.
+        ///   triggerStatus: string, # Optional.
+        ///   triggerStartTime: string (ISO 8601 Format), # Optional.
+        ///   triggerLastUpdateTime: string (ISO 8601 Format), # Optional.
+        ///   assessmentType: string, # Optional.
+        ///   jobStatus: {
+        ///     succeeded: {
+        ///       count: number, # Optional.
+        ///       assets: [string], # Optional.
+        ///     }, # Optional.
+        ///     inProgress: DQAssetList, # Optional.
+        ///     queued: DQAssetList, # Optional.
+        ///     failed: DQAssetList, # Optional.
+        ///     cancelled: DQAssetList, # Optional.
+        ///     skipped: DQAssetList, # Optional.
+        ///   }, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response GetScheduledAssessmentRunDetails(string accountId, string scheduleId, string runId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(scheduleId, nameof(scheduleId));
+            Argument.AssertNotNullOrEmpty(runId, nameof(runId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetScheduledAssessmentRunDetails");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetScheduledAssessmentRunDetailsRequest(accountId, scheduleId, runId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="scheduleId"> The String to use. </param>
+        /// <param name="runId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/>, <paramref name="scheduleId"/> or <paramref name="runId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/>, <paramref name="scheduleId"/> or <paramref name="runId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call CancelScheduledAssessmentRunAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.CancelScheduledAssessmentRunAsync("<accountId>", "<scheduleId>", "<runId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual async Task<Response> CancelScheduledAssessmentRunAsync(string accountId, string scheduleId, string runId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(scheduleId, nameof(scheduleId));
+            Argument.AssertNotNullOrEmpty(runId, nameof(runId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CancelScheduledAssessmentRun");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCancelScheduledAssessmentRunRequest(accountId, scheduleId, runId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="scheduleId"> The String to use. </param>
+        /// <param name="runId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/>, <paramref name="scheduleId"/> or <paramref name="runId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/>, <paramref name="scheduleId"/> or <paramref name="runId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call CancelScheduledAssessmentRun with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.CancelScheduledAssessmentRun("<accountId>", "<scheduleId>", "<runId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual Response CancelScheduledAssessmentRun(string accountId, string scheduleId, string runId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(scheduleId, nameof(scheduleId));
+            Argument.AssertNotNullOrEmpty(runId, nameof(runId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CancelScheduledAssessmentRun");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCancelScheduledAssessmentRunRequest(accountId, scheduleId, runId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="scheduleId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="runNow"> The Boolean to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/>, <paramref name="scheduleId"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call UpdateScheduledAssessmentsPostAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = await client.UpdateScheduledAssessmentsPostAsync("<accountId>", "<scheduleId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call UpdateScheduledAssessmentsPostAsync with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     scheduleId = "<scheduleId>",
+        ///     scheduleName = "<scheduleName>",
+        ///     description = "<description>",
+        ///     recurrence = new {
+        ///         frequency = "<frequency>",
+        ///         interval = 1234,
+        ///         startTime = "2022-05-10T18:57:31.2311892Z",
+        ///         endTime = "2022-05-10T18:57:31.2311892Z",
+        ///         schedule = new {},
+        ///         timezone = "<timezone>",
+        ///     },
+        ///     datasources = new[] {
+        ///         new {
+        ///             datasourceKind = "<datasourceKind>",
+        ///             datasourceName = "<datasourceName>",
+        ///             includes = new[] {
+        ///                 "<String>"
+        ///             },
+        ///             properties = new {},
+        ///             credentials = new {
+        ///                 credentialType = "AccountKey",
+        ///                 referenceName = "<referenceName>",
+        ///                 credentialProperties = new {},
+        ///             },
+        ///         }
+        ///     },
+        ///     scheduleStatus = "RUNNING",
+        ///     runOnce = true,
+        /// };
+        /// 
+        /// Response response = await client.UpdateScheduledAssessmentsPostAsync("<accountId>", "<scheduleId>", RequestContent.Create(data), true);
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result.GetProperty("scheduleName").ToString());
+        /// Console.WriteLine(result.GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("frequency").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("interval").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("startTime").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("endTime").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("schedule").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("timezone").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceKind").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceName").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("includes")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("properties").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialType").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("referenceName").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialProperties").ToString());
+        /// Console.WriteLine(result.GetProperty("scheduleStatus").ToString());
+        /// Console.WriteLine(result.GetProperty("runOnce").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>ScheduleMetadataAutoGenerated</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   description: string, # Optional.
+        ///   recurrence: {
+        ///     frequency: string, # Optional.
+        ///     interval: number, # Optional.
+        ///     startTime: string (ISO 8601 Format), # Optional.
+        ///     endTime: string (ISO 8601 Format), # Optional.
+        ///     schedule: any, # Optional. Anything
+        ///     timezone: string, # Optional.
+        ///   }, # Optional.
+        ///   datasources: [
+        ///     {
+        ///       datasourceKind: string, # Optional.
+        ///       datasourceName: string, # Optional.
+        ///       includes: [string], # Optional.
+        ///       properties: any, # Optional. Anything
+        ///       credentials: {
+        ///         credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        ///         referenceName: string, # Optional.
+        ///         credentialProperties: any, # Optional. Anything
+        ///       }, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional.
+        ///   runOnce: boolean, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ScheduleMetadataAutoGenerated</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   description: string, # Optional.
+        ///   recurrence: {
+        ///     frequency: string, # Optional.
+        ///     interval: number, # Optional.
+        ///     startTime: string (ISO 8601 Format), # Optional.
+        ///     endTime: string (ISO 8601 Format), # Optional.
+        ///     schedule: any, # Optional. Anything
+        ///     timezone: string, # Optional.
+        ///   }, # Optional.
+        ///   datasources: [
+        ///     {
+        ///       datasourceKind: string, # Optional.
+        ///       datasourceName: string, # Optional.
+        ///       includes: [string], # Optional.
+        ///       properties: any, # Optional. Anything
+        ///       credentials: {
+        ///         credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        ///         referenceName: string, # Optional.
+        ///         credentialProperties: any, # Optional. Anything
+        ///       }, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional.
+        ///   runOnce: boolean, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> UpdateScheduledAssessmentsPostAsync(string accountId, string scheduleId, RequestContent content, bool? runNow = null, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(scheduleId, nameof(scheduleId));
+            Argument.AssertNotNull(content, nameof(content));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.UpdateScheduledAssessmentsPost");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateUpdateScheduledAssessmentsPostRequest(accountId, scheduleId, content, runNow, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="scheduleId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="runNow"> The Boolean to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/>, <paramref name="scheduleId"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call UpdateScheduledAssessmentsPost with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = client.UpdateScheduledAssessmentsPost("<accountId>", "<scheduleId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call UpdateScheduledAssessmentsPost with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     scheduleId = "<scheduleId>",
+        ///     scheduleName = "<scheduleName>",
+        ///     description = "<description>",
+        ///     recurrence = new {
+        ///         frequency = "<frequency>",
+        ///         interval = 1234,
+        ///         startTime = "2022-05-10T18:57:31.2311892Z",
+        ///         endTime = "2022-05-10T18:57:31.2311892Z",
+        ///         schedule = new {},
+        ///         timezone = "<timezone>",
+        ///     },
+        ///     datasources = new[] {
+        ///         new {
+        ///             datasourceKind = "<datasourceKind>",
+        ///             datasourceName = "<datasourceName>",
+        ///             includes = new[] {
+        ///                 "<String>"
+        ///             },
+        ///             properties = new {},
+        ///             credentials = new {
+        ///                 credentialType = "AccountKey",
+        ///                 referenceName = "<referenceName>",
+        ///                 credentialProperties = new {},
+        ///             },
+        ///         }
+        ///     },
+        ///     scheduleStatus = "RUNNING",
+        ///     runOnce = true,
+        /// };
+        /// 
+        /// Response response = client.UpdateScheduledAssessmentsPost("<accountId>", "<scheduleId>", RequestContent.Create(data), true);
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result.GetProperty("scheduleName").ToString());
+        /// Console.WriteLine(result.GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("frequency").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("interval").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("startTime").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("endTime").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("schedule").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("timezone").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceKind").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceName").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("includes")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("properties").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialType").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("referenceName").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialProperties").ToString());
+        /// Console.WriteLine(result.GetProperty("scheduleStatus").ToString());
+        /// Console.WriteLine(result.GetProperty("runOnce").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>ScheduleMetadataAutoGenerated</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   description: string, # Optional.
+        ///   recurrence: {
+        ///     frequency: string, # Optional.
+        ///     interval: number, # Optional.
+        ///     startTime: string (ISO 8601 Format), # Optional.
+        ///     endTime: string (ISO 8601 Format), # Optional.
+        ///     schedule: any, # Optional. Anything
+        ///     timezone: string, # Optional.
+        ///   }, # Optional.
+        ///   datasources: [
+        ///     {
+        ///       datasourceKind: string, # Optional.
+        ///       datasourceName: string, # Optional.
+        ///       includes: [string], # Optional.
+        ///       properties: any, # Optional. Anything
+        ///       credentials: {
+        ///         credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        ///         referenceName: string, # Optional.
+        ///         credentialProperties: any, # Optional. Anything
+        ///       }, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional.
+        ///   runOnce: boolean, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ScheduleMetadataAutoGenerated</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   description: string, # Optional.
+        ///   recurrence: {
+        ///     frequency: string, # Optional.
+        ///     interval: number, # Optional.
+        ///     startTime: string (ISO 8601 Format), # Optional.
+        ///     endTime: string (ISO 8601 Format), # Optional.
+        ///     schedule: any, # Optional. Anything
+        ///     timezone: string, # Optional.
+        ///   }, # Optional.
+        ///   datasources: [
+        ///     {
+        ///       datasourceKind: string, # Optional.
+        ///       datasourceName: string, # Optional.
+        ///       includes: [string], # Optional.
+        ///       properties: any, # Optional. Anything
+        ///       credentials: {
+        ///         credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        ///         referenceName: string, # Optional.
+        ///         credentialProperties: any, # Optional. Anything
+        ///       }, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional.
+        ///   runOnce: boolean, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response UpdateScheduledAssessmentsPost(string accountId, string scheduleId, RequestContent content, bool? runNow = null, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(scheduleId, nameof(scheduleId));
+            Argument.AssertNotNull(content, nameof(content));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.UpdateScheduledAssessmentsPost");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateUpdateScheduledAssessmentsPostRequest(accountId, scheduleId, content, runNow, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="scheduleId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetScheduledAssessmentMetadataAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.GetScheduledAssessmentMetadataAsync("<accountId>", "<scheduleId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result.GetProperty("scheduleName").ToString());
+        /// Console.WriteLine(result.GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("frequency").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("interval").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("startTime").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("endTime").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("schedule").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("timezone").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceKind").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceName").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("includes")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("properties").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialType").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("referenceName").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialProperties").ToString());
+        /// Console.WriteLine(result.GetProperty("scheduleStatus").ToString());
+        /// Console.WriteLine(result.GetProperty("runOnce").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ScheduleMetadataAutoGenerated</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   description: string, # Optional.
+        ///   recurrence: {
+        ///     frequency: string, # Optional.
+        ///     interval: number, # Optional.
+        ///     startTime: string (ISO 8601 Format), # Optional.
+        ///     endTime: string (ISO 8601 Format), # Optional.
+        ///     schedule: any, # Optional. Anything
+        ///     timezone: string, # Optional.
+        ///   }, # Optional.
+        ///   datasources: [
+        ///     {
+        ///       datasourceKind: string, # Optional.
+        ///       datasourceName: string, # Optional.
+        ///       includes: [string], # Optional.
+        ///       properties: any, # Optional. Anything
+        ///       credentials: {
+        ///         credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        ///         referenceName: string, # Optional.
+        ///         credentialProperties: any, # Optional. Anything
+        ///       }, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional.
+        ///   runOnce: boolean, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> GetScheduledAssessmentMetadataAsync(string accountId, string scheduleId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(scheduleId, nameof(scheduleId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetScheduledAssessmentMetadata");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetScheduledAssessmentMetadataRequest(accountId, scheduleId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="scheduleId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetScheduledAssessmentMetadata with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.GetScheduledAssessmentMetadata("<accountId>", "<scheduleId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result.GetProperty("scheduleName").ToString());
+        /// Console.WriteLine(result.GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("frequency").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("interval").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("startTime").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("endTime").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("schedule").ToString());
+        /// Console.WriteLine(result.GetProperty("recurrence").GetProperty("timezone").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceKind").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceName").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("includes")[0].ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("properties").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialType").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("referenceName").ToString());
+        /// Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialProperties").ToString());
+        /// Console.WriteLine(result.GetProperty("scheduleStatus").ToString());
+        /// Console.WriteLine(result.GetProperty("runOnce").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ScheduleMetadataAutoGenerated</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   description: string, # Optional.
+        ///   recurrence: {
+        ///     frequency: string, # Optional.
+        ///     interval: number, # Optional.
+        ///     startTime: string (ISO 8601 Format), # Optional.
+        ///     endTime: string (ISO 8601 Format), # Optional.
+        ///     schedule: any, # Optional. Anything
+        ///     timezone: string, # Optional.
+        ///   }, # Optional.
+        ///   datasources: [
+        ///     {
+        ///       datasourceKind: string, # Optional.
+        ///       datasourceName: string, # Optional.
+        ///       includes: [string], # Optional.
+        ///       properties: any, # Optional. Anything
+        ///       credentials: {
+        ///         credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        ///         referenceName: string, # Optional.
+        ///         credentialProperties: any, # Optional. Anything
+        ///       }, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional.
+        ///   runOnce: boolean, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response GetScheduledAssessmentMetadata(string accountId, string scheduleId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(scheduleId, nameof(scheduleId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetScheduledAssessmentMetadata");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetScheduledAssessmentMetadataRequest(accountId, scheduleId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="scheduleId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call DeleteScheduledAssessmentsAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.DeleteScheduledAssessmentsAsync("<accountId>", "<scheduleId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual async Task<Response> DeleteScheduledAssessmentsAsync(string accountId, string scheduleId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(scheduleId, nameof(scheduleId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.DeleteScheduledAssessments");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateDeleteScheduledAssessmentsRequest(accountId, scheduleId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="scheduleId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call DeleteScheduledAssessments with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.DeleteScheduledAssessments("<accountId>", "<scheduleId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual Response DeleteScheduledAssessments(string accountId, string scheduleId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(scheduleId, nameof(scheduleId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.DeleteScheduledAssessments");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateDeleteScheduledAssessmentsRequest(accountId, scheduleId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="scheduleId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call RunScheduledAssessmentsExternalAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.RunScheduledAssessmentsExternalAsync("<accountId>", "<scheduleId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual async Task<Response> RunScheduledAssessmentsExternalAsync(string accountId, string scheduleId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(scheduleId, nameof(scheduleId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.RunScheduledAssessmentsExternal");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateRunScheduledAssessmentsExternalRequest(accountId, scheduleId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="scheduleId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="scheduleId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call RunScheduledAssessmentsExternal with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.RunScheduledAssessmentsExternal("<accountId>", "<scheduleId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual Response RunScheduledAssessmentsExternal(string accountId, string scheduleId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(scheduleId, nameof(scheduleId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.RunScheduledAssessmentsExternal");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateRunScheduledAssessmentsExternalRequest(accountId, scheduleId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetScheduledAssessmentsRunsFilteredAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = await client.GetScheduledAssessmentsRunsFilteredAsync("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].ToString());
+        /// ]]></code>
+        /// This sample shows how to call GetScheduledAssessmentsRunsFilteredAsync with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     filters = new[] {
+        ///         new {
+        ///             operand = "<operand>",
+        ///             operator = "<operator>",
+        ///             values = new[] {
+        ///                 "<String>"
+        ///             },
+        ///         }
+        ///     },
+        ///     lastUpdatedAfter = "2022-05-10T18:57:31.2311892Z",
+        ///     lastUpdatedBefore = "2022-05-10T18:57:31.2311892Z",
+        /// };
+        /// 
+        /// Response response = await client.GetScheduledAssessmentsRunsFilteredAsync("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scheduleName").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerRunId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerStatus").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerStartTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerLastUpdateTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("assessmentType").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>TableRepositoryQueryPayloadModel</c>:
+        /// <code>{
+        ///   filters: [
+        ///     {
+        ///       operand: string, # Optional.
+        ///       operator: string, # Optional.
+        ///       values: [string], # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   lastUpdatedAfter: string (ISO 8601 Format), # Optional.
+        ///   lastUpdatedBefore: string (ISO 8601 Format), # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ScheduleTriggerRunEntity</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   triggerRunId: string, # Optional.
+        ///   triggerStatus: string, # Optional.
+        ///   triggerStartTime: string (ISO 8601 Format), # Optional.
+        ///   triggerLastUpdateTime: string (ISO 8601 Format), # Optional.
+        ///   assessmentType: string, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> GetScheduledAssessmentsRunsFilteredAsync(string accountId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNull(content, nameof(content));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetScheduledAssessmentsRunsFiltered");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetScheduledAssessmentsRunsFilteredRequest(accountId, content, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetScheduledAssessmentsRunsFiltered with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = client.GetScheduledAssessmentsRunsFiltered("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].ToString());
+        /// ]]></code>
+        /// This sample shows how to call GetScheduledAssessmentsRunsFiltered with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     filters = new[] {
+        ///         new {
+        ///             operand = "<operand>",
+        ///             operator = "<operator>",
+        ///             values = new[] {
+        ///                 "<String>"
+        ///             },
+        ///         }
+        ///     },
+        ///     lastUpdatedAfter = "2022-05-10T18:57:31.2311892Z",
+        ///     lastUpdatedBefore = "2022-05-10T18:57:31.2311892Z",
+        /// };
+        /// 
+        /// Response response = client.GetScheduledAssessmentsRunsFiltered("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].GetProperty("scheduleId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scheduleName").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerRunId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerStatus").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerStartTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("triggerLastUpdateTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("assessmentType").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>TableRepositoryQueryPayloadModel</c>:
+        /// <code>{
+        ///   filters: [
+        ///     {
+        ///       operand: string, # Optional.
+        ///       operator: string, # Optional.
+        ///       values: [string], # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   lastUpdatedAfter: string (ISO 8601 Format), # Optional.
+        ///   lastUpdatedBefore: string (ISO 8601 Format), # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ScheduleTriggerRunEntity</c>:
+        /// <code>{
+        ///   scheduleId: string, # Optional.
+        ///   scheduleName: string, # Optional.
+        ///   triggerRunId: string, # Optional.
+        ///   triggerStatus: string, # Optional.
+        ///   triggerStartTime: string (ISO 8601 Format), # Optional.
+        ///   triggerLastUpdateTime: string (ISO 8601 Format), # Optional.
+        ///   assessmentType: string, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response GetScheduledAssessmentsRunsFiltered(string accountId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNull(content, nameof(content));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetScheduledAssessmentsRunsFiltered");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetScheduledAssessmentsRunsFilteredRequest(accountId, content, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="contentType"> Body Parameter content-type. Allowed values: &quot;application/*+json&quot; | &quot;application/json&quot; | &quot;application/json-patch+json&quot; | &quot;text/json&quot;. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetRulesTrendingsAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = await client.GetRulesTrendingsAsync("<accountId>", "<assetId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].ToString());
+        /// ]]></code>
+        /// This sample shows how to call GetRulesTrendingsAsync with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     jobCount = 1234,
+        ///     ruleId = "<ruleId>",
+        ///     start = 1234L,
+        ///     end = 1234L,
+        /// };
+        /// 
+        /// Response response = await client.GetRulesTrendingsAsync("<accountId>", "<assetId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].GetProperty("ruleId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scores")[0].GetProperty("jobTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scores")[0].GetProperty("jobId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scores")[0].GetProperty("score").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scores")[0].GetProperty("totalRows").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scores")[0].GetProperty("failedRows").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scores")[0].GetProperty("passedRows").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scores")[0].GetProperty("description").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scores")[0].GetProperty("status").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>RuleTrendingQueryPayload</c>:
+        /// <code>{
+        ///   jobCount: number, # Optional.
+        ///   ruleId: string, # Optional.
+        ///   start: number, # Optional.
+        ///   end: number, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>RuleTrending</c>:
+        /// <code>{
+        ///   ruleId: string, # Optional.
+        ///   scores: [
+        ///     {
+        ///       jobTime: string (ISO 8601 Format), # Optional.
+        ///       jobId: string, # Optional.
+        ///       score: number, # Optional.
+        ///       totalRows: number, # Optional.
+        ///       failedRows: number, # Optional.
+        ///       passedRows: number, # Optional.
+        ///       description: string, # Optional.
+        ///       status: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> GetRulesTrendingsAsync(string accountId, string assetId, RequestContent content, ContentType contentType, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetRulesTrendings");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetRulesTrendingsRequest(accountId, assetId, content, contentType, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="contentType"> Body Parameter content-type. Allowed values: &quot;application/*+json&quot; | &quot;application/json&quot; | &quot;application/json-patch+json&quot; | &quot;text/json&quot;. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetRulesTrendings with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = client.GetRulesTrendings("<accountId>", "<assetId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].ToString());
+        /// ]]></code>
+        /// This sample shows how to call GetRulesTrendings with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     jobCount = 1234,
+        ///     ruleId = "<ruleId>",
+        ///     start = 1234L,
+        ///     end = 1234L,
+        /// };
+        /// 
+        /// Response response = client.GetRulesTrendings("<accountId>", "<assetId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].GetProperty("ruleId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scores")[0].GetProperty("jobTime").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scores")[0].GetProperty("jobId").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scores")[0].GetProperty("score").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scores")[0].GetProperty("totalRows").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scores")[0].GetProperty("failedRows").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scores")[0].GetProperty("passedRows").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scores")[0].GetProperty("description").ToString());
+        /// Console.WriteLine(result[0].GetProperty("scores")[0].GetProperty("status").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>RuleTrendingQueryPayload</c>:
+        /// <code>{
+        ///   jobCount: number, # Optional.
+        ///   ruleId: string, # Optional.
+        ///   start: number, # Optional.
+        ///   end: number, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>RuleTrending</c>:
+        /// <code>{
+        ///   ruleId: string, # Optional.
+        ///   scores: [
+        ///     {
+        ///       jobTime: string (ISO 8601 Format), # Optional.
+        ///       jobId: string, # Optional.
+        ///       score: number, # Optional.
+        ///       totalRows: number, # Optional.
+        ///       failedRows: number, # Optional.
+        ///       passedRows: number, # Optional.
+        ///       description: string, # Optional.
+        ///       status: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response GetRulesTrendings(string accountId, string assetId, RequestContent content, ContentType contentType, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetRulesTrendings");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetRulesTrendingsRequest(accountId, assetId, content, contentType, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="contentType"> Body Parameter content-type. Allowed values: &quot;application/*+json&quot; | &quot;application/json&quot; | &quot;application/json-patch+json&quot; | &quot;text/json&quot;. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetRulesTrendingsByRuleIdAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = await client.GetRulesTrendingsByRuleIdAsync("<accountId>", "<assetId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call GetRulesTrendingsByRuleIdAsync with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     jobCount = 1234,
+        ///     ruleId = "<ruleId>",
+        ///     start = 1234L,
+        ///     end = 1234L,
+        /// };
+        /// 
+        /// Response response = await client.GetRulesTrendingsByRuleIdAsync("<accountId>", "<assetId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("ruleId").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("jobTime").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("jobId").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("score").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("totalRows").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("failedRows").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("passedRows").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("status").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>RuleTrendingQueryPayload</c>:
+        /// <code>{
+        ///   jobCount: number, # Optional.
+        ///   ruleId: string, # Optional.
+        ///   start: number, # Optional.
+        ///   end: number, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>RuleTrending</c>:
+        /// <code>{
+        ///   ruleId: string, # Optional.
+        ///   scores: [
+        ///     {
+        ///       jobTime: string (ISO 8601 Format), # Optional.
+        ///       jobId: string, # Optional.
+        ///       score: number, # Optional.
+        ///       totalRows: number, # Optional.
+        ///       failedRows: number, # Optional.
+        ///       passedRows: number, # Optional.
+        ///       description: string, # Optional.
+        ///       status: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> GetRulesTrendingsByRuleIdAsync(string accountId, string assetId, RequestContent content, ContentType contentType, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetRulesTrendingsByRuleId");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetRulesTrendingsByRuleIdRequest(accountId, assetId, content, contentType, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="assetId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="contentType"> Body Parameter content-type. Allowed values: &quot;application/*+json&quot; | &quot;application/json&quot; | &quot;application/json-patch+json&quot; | &quot;text/json&quot;. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="assetId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="assetId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetRulesTrendingsByRuleId with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = client.GetRulesTrendingsByRuleId("<accountId>", "<assetId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call GetRulesTrendingsByRuleId with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     jobCount = 1234,
+        ///     ruleId = "<ruleId>",
+        ///     start = 1234L,
+        ///     end = 1234L,
+        /// };
+        /// 
+        /// Response response = client.GetRulesTrendingsByRuleId("<accountId>", "<assetId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("ruleId").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("jobTime").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("jobId").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("score").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("totalRows").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("failedRows").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("passedRows").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("scores")[0].GetProperty("status").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>RuleTrendingQueryPayload</c>:
+        /// <code>{
+        ///   jobCount: number, # Optional.
+        ///   ruleId: string, # Optional.
+        ///   start: number, # Optional.
+        ///   end: number, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>RuleTrending</c>:
+        /// <code>{
+        ///   ruleId: string, # Optional.
+        ///   scores: [
+        ///     {
+        ///       jobTime: string (ISO 8601 Format), # Optional.
+        ///       jobId: string, # Optional.
+        ///       score: number, # Optional.
+        ///       totalRows: number, # Optional.
+        ///       failedRows: number, # Optional.
+        ///       passedRows: number, # Optional.
+        ///       description: string, # Optional.
+        ///       status: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response GetRulesTrendingsByRuleId(string accountId, string assetId, RequestContent content, ContentType contentType, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(assetId, nameof(assetId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetRulesTrendingsByRuleId");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetRulesTrendingsByRuleIdRequest(accountId, assetId, content, contentType, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="contentType"> Body Parameter content-type. Allowed values: &quot;application/*+json&quot; | &quot;application/json&quot; | &quot;application/json-patch+json&quot; | &quot;text/json&quot;. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call ValidateAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = await client.ValidateAsync("<accountId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call ValidateAsync with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     type = "<type>",
+        ///     properties = new {
+        ///         query = "<query>",
+        ///         inputSchemas = new[] {
+        ///             new {
+        ///                 name = "<name>",
+        ///                 columns = new[] {
+        ///                     new {
+        ///                         name = "<name>",
+        ///                         type = "<type>",
+        ///                     }
+        ///                 },
+        ///             }
+        ///         },
+        ///     },
+        /// };
+        /// 
+        /// Response response = await client.ValidateAsync("<accountId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("outputSchema")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("outputSchema")[0].GetProperty("type").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>ViewSchemaRequest</c>:
+        /// <code>{
+        ///   type: string, # Optional.
+        ///   properties: {
+        ///     query: string, # Optional.
+        ///     inputSchemas: [
         ///       {
-        ///         createdBy: string, # Optional.
-        ///         filterType: &quot;Pattern&quot; | &quot;Regex&quot;, # Optional.
-        ///         lastUpdatedTimestamp: number, # Optional.
-        ///         modifiedBy: string, # Optional.
-        ///         name: string, # Required.
-        ///         path: string, # Required.
-        ///       }
-        ///     ], # Optional.
-        ///     complexReplacers: [
-        ///       {
-        ///         createdBy: string, # Optional.
-        ///         description: string, # Optional.
-        ///         disabled: boolean, # Optional.
-        ///         disableRecursiveReplacerApplication: boolean, # Optional.
-        ///         lastUpdatedTimestamp: number, # Optional.
-        ///         modifiedBy: string, # Optional.
         ///         name: string, # Optional.
-        ///         typeName: string, # Optional.
-        ///       }
-        ///     ], # Optional.
-        ///     createdBy: string, # Required.
-        ///     enableDefaultPatterns: boolean, # Required.
-        ///     lastUpdatedTimestamp: number, # Optional.
-        ///     modifiedBy: string, # Optional.
-        ///     normalizationRules: [
-        ///       {
-        ///         description: string, # Optional.
-        ///         disabled: boolean, # Optional.
-        ///         dynamicReplacement: boolean, # Optional.
-        ///         entityTypes: [string], # Optional.
-        ///         lastUpdatedTimestamp: number, # Optional.
-        ///         name: string, # Optional.
-        ///         regex: {
-        ///           maxDigits: number, # Optional.
-        ///           maxLetters: number, # Optional.
-        ///           minDashes: number, # Optional.
-        ///           minDigits: number, # Optional.
-        ///           minDigitsOrLetters: number, # Optional.
-        ///           minDots: number, # Optional.
-        ///           minHex: number, # Optional.
-        ///           minLetters: number, # Optional.
-        ///           minUnderscores: number, # Optional.
-        ///           options: number, # Optional.
-        ///           regexStr: string, # Optional.
-        ///         }, # Optional.
-        ///         replaceWith: string, # Optional.
-        ///         version: number, # Optional.
-        ///       }
-        ///     ], # Optional.
-        ///     regexReplacers: [
-        ///       {
-        ///         condition: string, # Optional.
-        ///         createdBy: string, # Optional.
-        ///         description: string, # Optional.
-        ///         disabled: boolean, # Required.
-        ///         disableRecursiveReplacerApplication: boolean, # Optional.
-        ///         doNotReplaceRegex: FastRegex, # Optional.
-        ///         lastUpdatedTimestamp: number, # Optional.
-        ///         modifiedBy: string, # Optional.
-        ///         name: string, # Required.
-        ///         regex: FastRegex, # Optional.
-        ///         replaceWith: string, # Optional.
-        ///       }
-        ///     ], # Optional.
-        ///     rejectedPatterns: [Filter], # Optional.
-        ///     scopedRules: [
-        ///       {
-        ///         bindingUrl: string, # Required.
-        ///         rules: [
+        ///         columns: [
         ///           {
-        ///             displayName: string, # Optional.
-        ///             isResourceSet: boolean, # Optional.
-        ///             lastUpdatedTimestamp: number, # Optional.
         ///             name: string, # Optional.
-        ///             qualifiedName: string, # Required.
+        ///             type: string, # Optional.
         ///           }
         ///         ], # Optional.
-        ///         storeType: string, # Required.
         ///       }
         ///     ], # Optional.
-        ///     version: number, # Optional.
-        ///   }, # Optional. The configuration rules for path pattern extraction.
+        ///   }, # Optional.
         /// }
         /// </code>
-        /// 
-        /// </remarks>
-        public virtual AsyncPageable<BinaryData> GetResourceSetRulesAsync(string skipToken = null, RequestContext context = null)
-        {
-            return GetResourceSetRulesImplementationAsync("PurviewAccountClient.GetResourceSetRules", skipToken, context);
-        }
-
-        private AsyncPageable<BinaryData> GetResourceSetRulesImplementationAsync(string diagnosticsScopeName, string skipToken, RequestContext context)
-        {
-            return PageableHelpers.CreateAsyncPageable(CreateEnumerableAsync, ClientDiagnostics, diagnosticsScopeName);
-            async IAsyncEnumerable<Page<BinaryData>> CreateEnumerableAsync(string nextLink, int? pageSizeHint, [EnumeratorCancellation] CancellationToken cancellationToken = default)
-            {
-                do
-                {
-                    var message = string.IsNullOrEmpty(nextLink)
-                        ? CreateGetResourceSetRulesRequest(skipToken, context)
-                        : CreateGetResourceSetRulesNextPageRequest(nextLink, skipToken, context);
-                    var page = await LowLevelPageableHelpers.ProcessMessageAsync(_pipeline, message, context, "value", "nextLink", cancellationToken).ConfigureAwait(false);
-                    nextLink = page.ContinuationToken;
-                    yield return page;
-                } while (!string.IsNullOrEmpty(nextLink));
-            }
-        }
-
-        /// <summary> Get a resource set config service model. </summary>
-        /// <param name="skipToken"> The String to use. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The <see cref="Pageable{T}"/> from the service containing a list of <see cref="BinaryData"/> objects. Details of the body schema for each item in the collection are in the Remarks section below. </returns>
-        /// <example>
-        /// This sample shows how to call GetResourceSetRules and parse the result.
-        /// <code><![CDATA[
-        /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
-        /// 
-        /// foreach (var data in client.GetResourceSetRules())
-        /// {
-        ///     JsonElement result = JsonDocument.Parse(data.ToStream()).RootElement;
-        ///     Console.WriteLine(result.ToString());
-        /// }
-        /// ]]></code>
-        /// This sample shows how to call GetResourceSetRules with all parameters, and how to parse the result.
-        /// <code><![CDATA[
-        /// var credential = new DefaultAzureCredential();
-        /// var endpoint = new Uri("<https://my-service.azure.com>");
-        /// var client = new PurviewAccountClient(endpoint, credential);
-        /// 
-        /// foreach (var data in client.GetResourceSetRules("<skipToken>"))
-        /// {
-        ///     JsonElement result = JsonDocument.Parse(data.ToStream()).RootElement;
-        ///     Console.WriteLine(result.GetProperty("advancedResourceSet").GetProperty("modifiedAt").ToString());
-        ///     Console.WriteLine(result.GetProperty("advancedResourceSet").GetProperty("resourceSetProcessing").ToString());
-        ///     Console.WriteLine(result.GetProperty("name").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("acceptedPatterns")[0].GetProperty("createdBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("acceptedPatterns")[0].GetProperty("filterType").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("acceptedPatterns")[0].GetProperty("lastUpdatedTimestamp").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("acceptedPatterns")[0].GetProperty("modifiedBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("acceptedPatterns")[0].GetProperty("name").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("acceptedPatterns")[0].GetProperty("path").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("complexReplacers")[0].GetProperty("createdBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("complexReplacers")[0].GetProperty("description").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("complexReplacers")[0].GetProperty("disabled").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("complexReplacers")[0].GetProperty("disableRecursiveReplacerApplication").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("complexReplacers")[0].GetProperty("lastUpdatedTimestamp").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("complexReplacers")[0].GetProperty("modifiedBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("complexReplacers")[0].GetProperty("name").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("complexReplacers")[0].GetProperty("typeName").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("createdBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("enableDefaultPatterns").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("lastUpdatedTimestamp").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("modifiedBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("description").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("disabled").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("dynamicReplacement").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("entityTypes")[0].ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("lastUpdatedTimestamp").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("name").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("maxDigits").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("maxLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("minDashes").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("minDigits").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("minDigitsOrLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("minDots").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("minHex").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("minLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("minUnderscores").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("options").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("regex").GetProperty("regexStr").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("replaceWith").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("normalizationRules")[0].GetProperty("version").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("condition").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("createdBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("description").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("disabled").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("disableRecursiveReplacerApplication").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("maxDigits").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("maxLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("minDashes").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("minDigits").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("minDigitsOrLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("minDots").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("minHex").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("minLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("minUnderscores").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("options").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("doNotReplaceRegex").GetProperty("regexStr").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("lastUpdatedTimestamp").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("modifiedBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("name").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("maxDigits").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("maxLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("minDashes").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("minDigits").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("minDigitsOrLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("minDots").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("minHex").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("minLetters").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("minUnderscores").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("options").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("regex").GetProperty("regexStr").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("regexReplacers")[0].GetProperty("replaceWith").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("rejectedPatterns")[0].GetProperty("createdBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("rejectedPatterns")[0].GetProperty("filterType").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("rejectedPatterns")[0].GetProperty("lastUpdatedTimestamp").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("rejectedPatterns")[0].GetProperty("modifiedBy").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("rejectedPatterns")[0].GetProperty("name").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("rejectedPatterns")[0].GetProperty("path").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("scopedRules")[0].GetProperty("bindingUrl").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("scopedRules")[0].GetProperty("rules")[0].GetProperty("displayName").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("scopedRules")[0].GetProperty("rules")[0].GetProperty("isResourceSet").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("scopedRules")[0].GetProperty("rules")[0].GetProperty("lastUpdatedTimestamp").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("scopedRules")[0].GetProperty("rules")[0].GetProperty("name").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("scopedRules")[0].GetProperty("rules")[0].GetProperty("qualifiedName").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("scopedRules")[0].GetProperty("storeType").ToString());
-        ///     Console.WriteLine(result.GetProperty("pathPatternConfig").GetProperty("version").ToString());
-        /// }
-        /// ]]></code>
-        /// </example>
-        /// <remarks>
-        /// Below is the JSON schema for one item in the pageable response.
         /// 
         /// Response Body:
         /// 
-        /// Schema for <c>ResourceSetRuleConfigListValue</c>:
+        /// Schema for <c>ViewSchemaResponse</c>:
         /// <code>{
-        ///   advancedResourceSet: {
-        ///     modifiedAt: string (ISO 8601 Format), # Optional. Date at which ResourceSetProcessing property of the account is updated.
-        ///     resourceSetProcessing: &quot;Default&quot; | &quot;Advanced&quot;, # Optional. The advanced resource property of the account.
-        ///   }, # Optional. Gets or sets the advanced resource set property of the account.
-        ///   name: string, # Optional. The name of the rule
-        ///   pathPatternConfig: {
-        ///     acceptedPatterns: [
-        ///       {
-        ///         createdBy: string, # Optional.
-        ///         filterType: &quot;Pattern&quot; | &quot;Regex&quot;, # Optional.
-        ///         lastUpdatedTimestamp: number, # Optional.
-        ///         modifiedBy: string, # Optional.
-        ///         name: string, # Required.
-        ///         path: string, # Required.
-        ///       }
-        ///     ], # Optional.
-        ///     complexReplacers: [
-        ///       {
-        ///         createdBy: string, # Optional.
-        ///         description: string, # Optional.
-        ///         disabled: boolean, # Optional.
-        ///         disableRecursiveReplacerApplication: boolean, # Optional.
-        ///         lastUpdatedTimestamp: number, # Optional.
-        ///         modifiedBy: string, # Optional.
-        ///         name: string, # Optional.
-        ///         typeName: string, # Optional.
-        ///       }
-        ///     ], # Optional.
-        ///     createdBy: string, # Required.
-        ///     enableDefaultPatterns: boolean, # Required.
-        ///     lastUpdatedTimestamp: number, # Optional.
-        ///     modifiedBy: string, # Optional.
-        ///     normalizationRules: [
-        ///       {
-        ///         description: string, # Optional.
-        ///         disabled: boolean, # Optional.
-        ///         dynamicReplacement: boolean, # Optional.
-        ///         entityTypes: [string], # Optional.
-        ///         lastUpdatedTimestamp: number, # Optional.
-        ///         name: string, # Optional.
-        ///         regex: {
-        ///           maxDigits: number, # Optional.
-        ///           maxLetters: number, # Optional.
-        ///           minDashes: number, # Optional.
-        ///           minDigits: number, # Optional.
-        ///           minDigitsOrLetters: number, # Optional.
-        ///           minDots: number, # Optional.
-        ///           minHex: number, # Optional.
-        ///           minLetters: number, # Optional.
-        ///           minUnderscores: number, # Optional.
-        ///           options: number, # Optional.
-        ///           regexStr: string, # Optional.
-        ///         }, # Optional.
-        ///         replaceWith: string, # Optional.
-        ///         version: number, # Optional.
-        ///       }
-        ///     ], # Optional.
-        ///     regexReplacers: [
-        ///       {
-        ///         condition: string, # Optional.
-        ///         createdBy: string, # Optional.
-        ///         description: string, # Optional.
-        ///         disabled: boolean, # Required.
-        ///         disableRecursiveReplacerApplication: boolean, # Optional.
-        ///         doNotReplaceRegex: FastRegex, # Optional.
-        ///         lastUpdatedTimestamp: number, # Optional.
-        ///         modifiedBy: string, # Optional.
-        ///         name: string, # Required.
-        ///         regex: FastRegex, # Optional.
-        ///         replaceWith: string, # Optional.
-        ///       }
-        ///     ], # Optional.
-        ///     rejectedPatterns: [Filter], # Optional.
-        ///     scopedRules: [
-        ///       {
-        ///         bindingUrl: string, # Required.
-        ///         rules: [
-        ///           {
-        ///             displayName: string, # Optional.
-        ///             isResourceSet: boolean, # Optional.
-        ///             lastUpdatedTimestamp: number, # Optional.
-        ///             name: string, # Optional.
-        ///             qualifiedName: string, # Required.
-        ///           }
-        ///         ], # Optional.
-        ///         storeType: string, # Required.
-        ///       }
-        ///     ], # Optional.
-        ///     version: number, # Optional.
-        ///   }, # Optional. The configuration rules for path pattern extraction.
+        ///   outputSchema: [
+        ///     {
+        ///       name: string, # Optional.
+        ///       type: string, # Optional.
+        ///     }
+        ///   ], # Optional.
         /// }
         /// </code>
         /// 
         /// </remarks>
-        public virtual Pageable<BinaryData> GetResourceSetRules(string skipToken = null, RequestContext context = null)
+        public virtual async Task<Response> ValidateAsync(string accountId, RequestContent content, ContentType contentType, RequestContext context = null)
         {
-            return GetResourceSetRulesImplementation("PurviewAccountClient.GetResourceSetRules", skipToken, context);
-        }
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
 
-        private Pageable<BinaryData> GetResourceSetRulesImplementation(string diagnosticsScopeName, string skipToken, RequestContext context)
-        {
-            return PageableHelpers.CreatePageable(CreateEnumerable, ClientDiagnostics, diagnosticsScopeName);
-            IEnumerable<Page<BinaryData>> CreateEnumerable(string nextLink, int? pageSizeHint)
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.Validate");
+            scope.Start();
+            try
             {
-                do
-                {
-                    var message = string.IsNullOrEmpty(nextLink)
-                        ? CreateGetResourceSetRulesRequest(skipToken, context)
-                        : CreateGetResourceSetRulesNextPageRequest(nextLink, skipToken, context);
-                    var page = LowLevelPageableHelpers.ProcessMessage(_pipeline, message, context, "value", "nextLink");
-                    nextLink = page.ContinuationToken;
-                    yield return page;
-                } while (!string.IsNullOrEmpty(nextLink));
+                using HttpMessage message = CreateValidateRequest(accountId, content, contentType, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
             }
         }
 
-        private PurviewResourceSetRule _cachedPurviewResourceSetRule;
-
-        /// <summary> Initializes a new instance of PurviewCollection. </summary>
-        /// <param name="collectionName"> The String to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="collectionName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="collectionName"/> is an empty string, and was expected to be non-empty. </exception>
-        public virtual PurviewCollection GetPurviewCollectionClient(string collectionName)
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="contentType"> Body Parameter content-type. Allowed values: &quot;application/*+json&quot; | &quot;application/json&quot; | &quot;application/json-patch+json&quot; | &quot;text/json&quot;. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call Validate with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = client.Validate("<accountId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call Validate with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     type = "<type>",
+        ///     properties = new {
+        ///         query = "<query>",
+        ///         inputSchemas = new[] {
+        ///             new {
+        ///                 name = "<name>",
+        ///                 columns = new[] {
+        ///                     new {
+        ///                         name = "<name>",
+        ///                         type = "<type>",
+        ///                     }
+        ///                 },
+        ///             }
+        ///         },
+        ///     },
+        /// };
+        /// 
+        /// Response response = client.Validate("<accountId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("outputSchema")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("outputSchema")[0].GetProperty("type").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request and response payloads.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>ViewSchemaRequest</c>:
+        /// <code>{
+        ///   type: string, # Optional.
+        ///   properties: {
+        ///     query: string, # Optional.
+        ///     inputSchemas: [
+        ///       {
+        ///         name: string, # Optional.
+        ///         columns: [
+        ///           {
+        ///             name: string, # Optional.
+        ///             type: string, # Optional.
+        ///           }
+        ///         ], # Optional.
+        ///       }
+        ///     ], # Optional.
+        ///   }, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ViewSchemaResponse</c>:
+        /// <code>{
+        ///   outputSchema: [
+        ///     {
+        ///       name: string, # Optional.
+        ///       type: string, # Optional.
+        ///     }
+        ///   ], # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response Validate(string accountId, RequestContent content, ContentType contentType, RequestContext context = null)
         {
-            Argument.AssertNotNullOrEmpty(collectionName, nameof(collectionName));
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
 
-            return new PurviewCollection(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint, collectionName, _apiVersion);
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.Validate");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateValidateRequest(accountId, content, contentType, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
         }
 
-        /// <summary> Initializes a new instance of PurviewResourceSetRule. </summary>
-        public virtual PurviewResourceSetRule GetPurviewResourceSetRuleClient()
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="viewSourceName"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="viewSourceName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="viewSourceName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call CreateViewAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = await client.CreateViewAsync("<accountId>", "<viewSourceName>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call CreateViewAsync with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     attributes = new {
+        ///         name = "<name>",
+        ///         description = "<description>",
+        ///     },
+        ///     scriptType = "DSL",
+        ///     script = "<script>",
+        ///     assets = new[] {
+        ///         new {
+        ///             guid = "<guid>",
+        ///             name = "<name>",
+        ///             schema = new[] {
+        ///                 new {
+        ///                     name = "<name>",
+        ///                     type = "<type>",
+        ///                 }
+        ///             },
+        ///         }
+        ///     },
+        ///     schema = new[] {
+        ///         new {
+        ///             name = "<name>",
+        ///             type = "<type>",
+        ///         }
+        ///     },
+        ///     guid = "<guid>",
+        /// };
+        /// 
+        /// Response response = await client.CreateViewAsync("<accountId>", "<viewSourceName>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request payload.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>DataQualityViewAutoGenerated</c>:
+        /// <code>{
+        ///   attributes: {
+        ///     name: string, # Optional.
+        ///     description: string, # Optional.
+        ///     qualifiedName: string, # Optional.
+        ///   }, # Optional.
+        ///   scriptType: &quot;DSL&quot; | &quot;SQL&quot;, # Optional.
+        ///   script: string, # Optional.
+        ///   assets: [
+        ///     {
+        ///       guid: string, # Optional.
+        ///       name: string, # Optional.
+        ///       schema: [
+        ///         {
+        ///           name: string, # Optional.
+        ///           type: string, # Optional.
+        ///         }
+        ///       ], # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   schema: [Schema], # Optional.
+        ///   guid: string, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> CreateViewAsync(string accountId, string viewSourceName, RequestContent content, RequestContext context = null)
         {
-            return Volatile.Read(ref _cachedPurviewResourceSetRule) ?? Interlocked.CompareExchange(ref _cachedPurviewResourceSetRule, new PurviewResourceSetRule(ClientDiagnostics, _pipeline, _tokenCredential, _endpoint, _apiVersion), null) ?? _cachedPurviewResourceSetRule;
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(viewSourceName, nameof(viewSourceName));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CreateView");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCreateViewRequest(accountId, viewSourceName, content, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
         }
 
-        internal HttpMessage CreateGetAccountPropertiesRequest(RequestContext context)
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="viewSourceName"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="viewSourceName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="viewSourceName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call CreateView with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = client.CreateView("<accountId>", "<viewSourceName>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call CreateView with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     attributes = new {
+        ///         name = "<name>",
+        ///         description = "<description>",
+        ///     },
+        ///     scriptType = "DSL",
+        ///     script = "<script>",
+        ///     assets = new[] {
+        ///         new {
+        ///             guid = "<guid>",
+        ///             name = "<name>",
+        ///             schema = new[] {
+        ///                 new {
+        ///                     name = "<name>",
+        ///                     type = "<type>",
+        ///                 }
+        ///             },
+        ///         }
+        ///     },
+        ///     schema = new[] {
+        ///         new {
+        ///             name = "<name>",
+        ///             type = "<type>",
+        ///         }
+        ///     },
+        ///     guid = "<guid>",
+        /// };
+        /// 
+        /// Response response = client.CreateView("<accountId>", "<viewSourceName>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request payload.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>DataQualityViewAutoGenerated</c>:
+        /// <code>{
+        ///   attributes: {
+        ///     name: string, # Optional.
+        ///     description: string, # Optional.
+        ///     qualifiedName: string, # Optional.
+        ///   }, # Optional.
+        ///   scriptType: &quot;DSL&quot; | &quot;SQL&quot;, # Optional.
+        ///   script: string, # Optional.
+        ///   assets: [
+        ///     {
+        ///       guid: string, # Optional.
+        ///       name: string, # Optional.
+        ///       schema: [
+        ///         {
+        ///           name: string, # Optional.
+        ///           type: string, # Optional.
+        ///         }
+        ///       ], # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   schema: [Schema], # Optional.
+        ///   guid: string, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response CreateView(string accountId, string viewSourceName, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(viewSourceName, nameof(viewSourceName));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CreateView");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCreateViewRequest(accountId, viewSourceName, content, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="viewId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="viewId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="viewId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetViewAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.GetViewAsync("<accountId>", "<viewId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("attributes").GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("attributes").GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("attributes").GetProperty("qualifiedName").ToString());
+        /// Console.WriteLine(result.GetProperty("scriptType").ToString());
+        /// Console.WriteLine(result.GetProperty("script").ToString());
+        /// Console.WriteLine(result.GetProperty("assets")[0].GetProperty("guid").ToString());
+        /// Console.WriteLine(result.GetProperty("assets")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("assets")[0].GetProperty("schema")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("assets")[0].GetProperty("schema")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("schema")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("schema")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("guid").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>DataQualityViewAutoGenerated</c>:
+        /// <code>{
+        ///   attributes: {
+        ///     name: string, # Optional.
+        ///     description: string, # Optional.
+        ///     qualifiedName: string, # Optional.
+        ///   }, # Optional.
+        ///   scriptType: &quot;DSL&quot; | &quot;SQL&quot;, # Optional.
+        ///   script: string, # Optional.
+        ///   assets: [
+        ///     {
+        ///       guid: string, # Optional.
+        ///       name: string, # Optional.
+        ///       schema: [
+        ///         {
+        ///           name: string, # Optional.
+        ///           type: string, # Optional.
+        ///         }
+        ///       ], # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   schema: [Schema], # Optional.
+        ///   guid: string, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> GetViewAsync(string accountId, string viewId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(viewId, nameof(viewId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetView");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetViewRequest(accountId, viewId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="viewId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="viewId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="viewId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetView with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.GetView("<accountId>", "<viewId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("attributes").GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("attributes").GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("attributes").GetProperty("qualifiedName").ToString());
+        /// Console.WriteLine(result.GetProperty("scriptType").ToString());
+        /// Console.WriteLine(result.GetProperty("script").ToString());
+        /// Console.WriteLine(result.GetProperty("assets")[0].GetProperty("guid").ToString());
+        /// Console.WriteLine(result.GetProperty("assets")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("assets")[0].GetProperty("schema")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("assets")[0].GetProperty("schema")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("schema")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("schema")[0].GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("guid").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>DataQualityViewAutoGenerated</c>:
+        /// <code>{
+        ///   attributes: {
+        ///     name: string, # Optional.
+        ///     description: string, # Optional.
+        ///     qualifiedName: string, # Optional.
+        ///   }, # Optional.
+        ///   scriptType: &quot;DSL&quot; | &quot;SQL&quot;, # Optional.
+        ///   script: string, # Optional.
+        ///   assets: [
+        ///     {
+        ///       guid: string, # Optional.
+        ///       name: string, # Optional.
+        ///       schema: [
+        ///         {
+        ///           name: string, # Optional.
+        ///           type: string, # Optional.
+        ///         }
+        ///       ], # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   schema: [Schema], # Optional.
+        ///   guid: string, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response GetView(string accountId, string viewId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(viewId, nameof(viewId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetView");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetViewRequest(accountId, viewId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="viewId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="viewId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="viewId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call DeleteViewAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.DeleteViewAsync("<accountId>", "<viewId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual async Task<Response> DeleteViewAsync(string accountId, string viewId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(viewId, nameof(viewId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.DeleteView");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateDeleteViewRequest(accountId, viewId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="viewId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="viewId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="viewId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call DeleteView with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.DeleteView("<accountId>", "<viewId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual Response DeleteView(string accountId, string viewId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(viewId, nameof(viewId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.DeleteView");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateDeleteViewRequest(accountId, viewId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="viewId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="viewId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="viewId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call UpdateViewAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = await client.UpdateViewAsync("<accountId>", "<viewId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call UpdateViewAsync with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     attributes = new {
+        ///         name = "<name>",
+        ///         description = "<description>",
+        ///     },
+        ///     scriptType = "DSL",
+        ///     script = "<script>",
+        ///     assets = new[] {
+        ///         new {
+        ///             guid = "<guid>",
+        ///             name = "<name>",
+        ///             schema = new[] {
+        ///                 new {
+        ///                     name = "<name>",
+        ///                     type = "<type>",
+        ///                 }
+        ///             },
+        ///         }
+        ///     },
+        ///     schema = new[] {
+        ///         new {
+        ///             name = "<name>",
+        ///             type = "<type>",
+        ///         }
+        ///     },
+        ///     guid = "<guid>",
+        /// };
+        /// 
+        /// Response response = await client.UpdateViewAsync("<accountId>", "<viewId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request payload.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>DataQualityViewAutoGenerated</c>:
+        /// <code>{
+        ///   attributes: {
+        ///     name: string, # Optional.
+        ///     description: string, # Optional.
+        ///     qualifiedName: string, # Optional.
+        ///   }, # Optional.
+        ///   scriptType: &quot;DSL&quot; | &quot;SQL&quot;, # Optional.
+        ///   script: string, # Optional.
+        ///   assets: [
+        ///     {
+        ///       guid: string, # Optional.
+        ///       name: string, # Optional.
+        ///       schema: [
+        ///         {
+        ///           name: string, # Optional.
+        ///           type: string, # Optional.
+        ///         }
+        ///       ], # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   schema: [Schema], # Optional.
+        ///   guid: string, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> UpdateViewAsync(string accountId, string viewId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(viewId, nameof(viewId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.UpdateView");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateUpdateViewRequest(accountId, viewId, content, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="viewId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="viewId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="viewId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call UpdateView with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = client.UpdateView("<accountId>", "<viewId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call UpdateView with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     attributes = new {
+        ///         name = "<name>",
+        ///         description = "<description>",
+        ///     },
+        ///     scriptType = "DSL",
+        ///     script = "<script>",
+        ///     assets = new[] {
+        ///         new {
+        ///             guid = "<guid>",
+        ///             name = "<name>",
+        ///             schema = new[] {
+        ///                 new {
+        ///                     name = "<name>",
+        ///                     type = "<type>",
+        ///                 }
+        ///             },
+        ///         }
+        ///     },
+        ///     schema = new[] {
+        ///         new {
+        ///             name = "<name>",
+        ///             type = "<type>",
+        ///         }
+        ///     },
+        ///     guid = "<guid>",
+        /// };
+        /// 
+        /// Response response = client.UpdateView("<accountId>", "<viewId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request payload.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>DataQualityViewAutoGenerated</c>:
+        /// <code>{
+        ///   attributes: {
+        ///     name: string, # Optional.
+        ///     description: string, # Optional.
+        ///     qualifiedName: string, # Optional.
+        ///   }, # Optional.
+        ///   scriptType: &quot;DSL&quot; | &quot;SQL&quot;, # Optional.
+        ///   script: string, # Optional.
+        ///   assets: [
+        ///     {
+        ///       guid: string, # Optional.
+        ///       name: string, # Optional.
+        ///       schema: [
+        ///         {
+        ///           name: string, # Optional.
+        ///           type: string, # Optional.
+        ///         }
+        ///       ], # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   schema: [Schema], # Optional.
+        ///   guid: string, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response UpdateView(string accountId, string viewId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(viewId, nameof(viewId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.UpdateView");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateUpdateViewRequest(accountId, viewId, content, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call CreateViewSourceAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = await client.CreateViewSourceAsync("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call CreateViewSourceAsync with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     kind = "<kind>",
+        ///     name = "<name>",
+        ///     properties = new {
+        ///         description = "<description>",
+        ///         collection = new {
+        ///             type = "<type>",
+        ///             referenceName = "<referenceName>",
+        ///         },
+        ///     },
+        /// };
+        /// 
+        /// Response response = await client.CreateViewSourceAsync("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request payload.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>ViewSource</c>:
+        /// <code>{
+        ///   kind: string, # Optional.
+        ///   name: string, # Optional.
+        ///   properties: {
+        ///     description: string, # Optional.
+        ///     collection: {
+        ///       type: string, # Optional.
+        ///       referenceName: string, # Optional.
+        ///     }, # Optional.
+        ///   }, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> CreateViewSourceAsync(string accountId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CreateViewSource");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCreateViewSourceRequest(accountId, content, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call CreateViewSource with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {};
+        /// 
+        /// Response response = client.CreateViewSource("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// This sample shows how to call CreateViewSource with all parameters and request content, and how to parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// var data = new {
+        ///     kind = "<kind>",
+        ///     name = "<name>",
+        ///     properties = new {
+        ///         description = "<description>",
+        ///         collection = new {
+        ///             type = "<type>",
+        ///             referenceName = "<referenceName>",
+        ///         },
+        ///     },
+        /// };
+        /// 
+        /// Response response = client.CreateViewSource("<accountId>", RequestContent.Create(data));
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the request payload.
+        /// 
+        /// Request Body:
+        /// 
+        /// Schema for <c>ViewSource</c>:
+        /// <code>{
+        ///   kind: string, # Optional.
+        ///   name: string, # Optional.
+        ///   properties: {
+        ///     description: string, # Optional.
+        ///     collection: {
+        ///       type: string, # Optional.
+        ///       referenceName: string, # Optional.
+        ///     }, # Optional.
+        ///   }, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response CreateViewSource(string accountId, RequestContent content, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CreateViewSource");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCreateViewSourceRequest(accountId, content, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetViewSourcesAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.GetViewSourcesAsync("<accountId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result[0].GetProperty("parentCollection").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ViewSourceDTO</c>:
+        /// <code>{
+        ///   name: string, # Optional.
+        ///   parentCollection: string, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> GetViewSourcesAsync(string accountId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetViewSources");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetViewSourcesRequest(accountId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetViewSources with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.GetViewSources("<accountId>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result[0].GetProperty("parentCollection").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ViewSourceDTO</c>:
+        /// <code>{
+        ///   name: string, # Optional.
+        ///   parentCollection: string, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response GetViewSources(string accountId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetViewSources");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetViewSourcesRequest(accountId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="source"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="source"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="source"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call CheckViewSourceNameAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.CheckViewSourceNameAsync("<accountId>", "<source>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual async Task<Response> CheckViewSourceNameAsync(string accountId, string source, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(source, nameof(source));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CheckViewSourceName");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCheckViewSourceNameRequest(accountId, source, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="source"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="source"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="source"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call CheckViewSourceName with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.CheckViewSourceName("<accountId>", "<source>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual Response CheckViewSourceName(string accountId, string source, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(source, nameof(source));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CheckViewSourceName");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCheckViewSourceNameRequest(accountId, source, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="source"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="source"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="source"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetViewSourceAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.GetViewSourceAsync("<accountId>", "<source>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("views")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("views")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("views")[0].GetProperty("updatedTime").ToString());
+        /// Console.WriteLine(result.GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("properties").GetProperty("createdAt").ToString());
+        /// Console.WriteLine(result.GetProperty("properties").GetProperty("lastModifiedAt").ToString());
+        /// Console.WriteLine(result.GetProperty("properties").GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("properties").GetProperty("collection").GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("properties").GetProperty("collection").GetProperty("referenceName").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ViewSourceDetail</c>:
+        /// <code>{
+        ///   views: [
+        ///     {
+        ///       id: string, # Optional.
+        ///       name: string, # Optional.
+        ///       updatedTime: number, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   name: string, # Optional.
+        ///   properties: {
+        ///     createdAt: string, # Optional.
+        ///     lastModifiedAt: string, # Optional.
+        ///     description: string, # Optional.
+        ///     collection: {
+        ///       type: string, # Optional.
+        ///       referenceName: string, # Optional.
+        ///     }, # Optional.
+        ///   }, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual async Task<Response> GetViewSourceAsync(string accountId, string source, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(source, nameof(source));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetViewSource");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetViewSourceRequest(accountId, source, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="source"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/> or <paramref name="source"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/> or <paramref name="source"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
+        /// <example>
+        /// This sample shows how to call GetViewSource with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.GetViewSource("<accountId>", "<source>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.GetProperty("views")[0].GetProperty("id").ToString());
+        /// Console.WriteLine(result.GetProperty("views")[0].GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("views")[0].GetProperty("updatedTime").ToString());
+        /// Console.WriteLine(result.GetProperty("name").ToString());
+        /// Console.WriteLine(result.GetProperty("properties").GetProperty("createdAt").ToString());
+        /// Console.WriteLine(result.GetProperty("properties").GetProperty("lastModifiedAt").ToString());
+        /// Console.WriteLine(result.GetProperty("properties").GetProperty("description").ToString());
+        /// Console.WriteLine(result.GetProperty("properties").GetProperty("collection").GetProperty("type").ToString());
+        /// Console.WriteLine(result.GetProperty("properties").GetProperty("collection").GetProperty("referenceName").ToString());
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Below is the JSON schema for the response payload.
+        /// 
+        /// Response Body:
+        /// 
+        /// Schema for <c>ViewSourceDetail</c>:
+        /// <code>{
+        ///   views: [
+        ///     {
+        ///       id: string, # Optional.
+        ///       name: string, # Optional.
+        ///       updatedTime: number, # Optional.
+        ///     }
+        ///   ], # Optional.
+        ///   name: string, # Optional.
+        ///   properties: {
+        ///     createdAt: string, # Optional.
+        ///     lastModifiedAt: string, # Optional.
+        ///     description: string, # Optional.
+        ///     collection: {
+        ///       type: string, # Optional.
+        ///       referenceName: string, # Optional.
+        ///     }, # Optional.
+        ///   }, # Optional.
+        /// }
+        /// </code>
+        /// 
+        /// </remarks>
+        public virtual Response GetViewSource(string accountId, string source, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(source, nameof(source));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.GetViewSource");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGetViewSourceRequest(accountId, source, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="viewSourceName"> The String to use. </param>
+        /// <param name="viewName"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/>, <paramref name="viewSourceName"/> or <paramref name="viewName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/>, <paramref name="viewSourceName"/> or <paramref name="viewName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call CheckUniqueViewNameAsync with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = await client.CheckUniqueViewNameAsync("<accountId>", "<viewSourceName>", "<viewName>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual async Task<Response> CheckUniqueViewNameAsync(string accountId, string viewSourceName, string viewName, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(viewSourceName, nameof(viewSourceName));
+            Argument.AssertNotNullOrEmpty(viewName, nameof(viewName));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CheckUniqueViewName");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCheckUniqueViewNameRequest(accountId, viewSourceName, viewName, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <param name="accountId"> The String to use. </param>
+        /// <param name="viewSourceName"> The String to use. </param>
+        /// <param name="viewName"> The String to use. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="accountId"/>, <paramref name="viewSourceName"/> or <paramref name="viewName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="accountId"/>, <paramref name="viewSourceName"/> or <paramref name="viewName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <example>
+        /// This sample shows how to call CheckUniqueViewName with required parameters and parse the result.
+        /// <code><![CDATA[
+        /// var credential = new DefaultAzureCredential();
+        /// var client = new PurviewAccountClient(credential);
+        /// 
+        /// Response response = client.CheckUniqueViewName("<accountId>", "<viewSourceName>", "<viewName>");
+        /// 
+        /// JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+        /// Console.WriteLine(result.ToString());
+        /// ]]></code>
+        /// </example>
+        public virtual Response CheckUniqueViewName(string accountId, string viewSourceName, string viewName, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(accountId, nameof(accountId));
+            Argument.AssertNotNullOrEmpty(viewSourceName, nameof(viewSourceName));
+            Argument.AssertNotNullOrEmpty(viewName, nameof(viewName));
+
+            using var scope = ClientDiagnostics.CreateScope("PurviewAccountClient.CheckUniqueViewName");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCheckUniqueViewNameRequest(accountId, viewSourceName, viewName, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        internal HttpMessage CreateCreateAlertRequest(string accountId, RequestContent content, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier201);
+            var request = message.Request;
+            request.Method = RequestMethod.Post;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/alerts", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("Content-Type", "application/json");
+            request.Content = content;
+            return message;
+        }
+
+        internal HttpMessage CreateGetAllMatchedAlertsRequest(string accountId, string level, string scopeId, bool? skipDetails, string skipToken, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier200);
             var request = message.Request;
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/alerts", false);
+            if (level != null)
+            {
+                uri.AppendQuery("Level", level, true);
+            }
+            if (scopeId != null)
+            {
+                uri.AppendQuery("ScopeId", scopeId, true);
+            }
+            if (skipDetails != null)
+            {
+                uri.AppendQuery("SkipDetails", skipDetails.Value, true);
+            }
+            if (skipToken != null)
+            {
+                uri.AppendQuery("SkipToken", skipToken, true);
+            }
+            uri.AppendQuery("api-version", "2022-09-01", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             return message;
         }
 
-        internal HttpMessage CreateUpdateAccountPropertiesRequest(RequestContent content, RequestContext context)
+        internal HttpMessage CreateGetAlertDetailsRequest(string accountId, string alertId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/alerts/", false);
+            uri.AppendPath(alertId, true);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateUpdateAlertRequest(string accountId, string alertId, RequestContent content, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier200);
             var request = message.Request;
             request.Method = RequestMethod.Patch;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/alerts/", false);
+            uri.AppendPath(alertId, true);
+            uri.AppendQuery("api-version", "2022-09-01", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
@@ -1654,29 +6853,34 @@ namespace Azure.Analytics.Purview.Account
             return message;
         }
 
-        internal HttpMessage CreateGetAccessKeysRequest(RequestContext context)
+        internal HttpMessage CreateDeleteAlertRequest(string accountId, string alertId, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier200);
             var request = message.Request;
-            request.Method = RequestMethod.Post;
+            request.Method = RequestMethod.Delete;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/listkeys", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/alerts/", false);
+            uri.AppendPath(alertId, true);
+            uri.AppendQuery("api-version", "2022-09-01", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             return message;
         }
 
-        internal HttpMessage CreateRegenerateAccessKeyRequest(RequestContent content, RequestContext context)
+        internal HttpMessage CreateCheckAlertNameScopeUniquenessRequest(string accountId, RequestContent content, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier200);
             var request = message.Request;
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/regeneratekeys", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/alerts/exist", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
@@ -1684,69 +6888,688 @@ namespace Azure.Analytics.Purview.Account
             return message;
         }
 
-        internal HttpMessage CreateGetCollectionsRequest(string skipToken, RequestContext context)
+        internal HttpMessage CreateCreateRulesRequest(string accountId, string assetId, RequestContent content, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Post;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assets/", false);
+            uri.AppendPath(assetId, true);
+            uri.AppendPath("/rules", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("Content-Type", "application/json");
+            request.Content = content;
+            return message;
+        }
+
+        internal HttpMessage CreateGetRulesRequest(string accountId, string assetId, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier200);
             var request = message.Request;
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/collections", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
-            if (skipToken != null)
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assets/", false);
+            uri.AppendPath(assetId, true);
+            uri.AppendPath("/rules", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateUpdateRulesRequest(string accountId, string assetId, RequestContent content, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Patch;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assets/", false);
+            uri.AppendPath(assetId, true);
+            uri.AppendPath("/rules", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("Content-Type", "application/json");
+            request.Content = content;
+            return message;
+        }
+
+        internal HttpMessage CreateSetFavouriteFieldsRequest(string accountId, string assetId, RequestContent content, string dataSourceFQN, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Put;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assets/", false);
+            uri.AppendPath(assetId, true);
+            uri.AppendPath("/favourite-fields", false);
+            if (dataSourceFQN != null)
             {
-                uri.AppendQuery("$skipToken", skipToken, true);
+                uri.AppendQuery("DataSourceFQN", dataSourceFQN, true);
             }
+            uri.AppendQuery("api-version", "2022-09-01", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("Content-Type", "application/json");
+            request.Content = content;
             return message;
         }
 
-        internal HttpMessage CreateGetResourceSetRulesRequest(string skipToken, RequestContext context)
+        internal HttpMessage CreateSubmitJobRequest(string accountId, string assetId, RequestContent content, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier202);
+            var request = message.Request;
+            request.Method = RequestMethod.Post;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assets/", false);
+            uri.AppendPath(assetId, true);
+            uri.AppendPath("/assessments", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("Content-Type", "application/json");
+            request.Content = content;
+            return message;
+        }
+
+        internal HttpMessage CreateGetAssetRunMetadataRequest(string accountId, string assetId, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier200);
             var request = message.Request;
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/resourceSetRuleConfigs", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
-            if (skipToken != null)
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assets/", false);
+            uri.AppendPath(assetId, true);
+            uri.AppendPath("/assessments", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateGetJobStatusRequest(string accountId, string assetId, Guid assessmentId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assets/", false);
+            uri.AppendPath(assetId, true);
+            uri.AppendPath("/assessments/", false);
+            uri.AppendPath(assessmentId, true);
+            uri.AppendPath("/status", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateGetJobRunRequest(string accountId, string assetId, string assessmentId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assets/", false);
+            uri.AppendPath(assetId, true);
+            uri.AppendPath("/assessments/", false);
+            uri.AppendPath(assessmentId, true);
+            uri.AppendPath("/scores", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateGetJobRulesRequest(string accountId, string assetId, string assessmentId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assets/", false);
+            uri.AppendPath(assetId, true);
+            uri.AppendPath("/assessments/", false);
+            uri.AppendPath(assessmentId, true);
+            uri.AppendPath("/rules", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateDownloadJobErrorFileRequest(string accountId, string assetId, string assessmentId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assets/", false);
+            uri.AppendPath(assetId, true);
+            uri.AppendPath("/assessments/", false);
+            uri.AppendPath(assessmentId, true);
+            uri.AppendPath("/errorfile", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "text/csv, application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateCancelJobRequest(string accountId, string assetId, Guid assessmentId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier202);
+            var request = message.Request;
+            request.Method = RequestMethod.Post;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assets/", false);
+            uri.AppendPath(assetId, true);
+            uri.AppendPath("/assessments/", false);
+            uri.AppendPath(assessmentId, true);
+            uri.AppendPath("/cancel", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateCreateScheduledAssessmentsRequest(string accountId, RequestContent content, bool? runNow, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier201);
+            var request = message.Request;
+            request.Method = RequestMethod.Post;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assessments/schedules", false);
+            if (runNow != null)
             {
-                uri.AppendQuery("$skipToken", skipToken, true);
+                uri.AppendQuery("runNow", runNow.Value, true);
             }
+            uri.AppendQuery("api-version", "2022-09-01", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("Content-Type", "application/json");
+            request.Content = content;
             return message;
         }
 
-        internal HttpMessage CreateGetCollectionsNextPageRequest(string nextLink, string skipToken, RequestContext context)
+        internal HttpMessage CreateGetScheduledAssessmentsRequest(string accountId, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier200);
             var request = message.Request;
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRawNextLink(nextLink, false);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assessments/schedules", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             return message;
         }
 
-        internal HttpMessage CreateGetResourceSetRulesNextPageRequest(string nextLink, string skipToken, RequestContext context)
+        internal HttpMessage CreateExistsScheduledAssessmentRequest(string accountId, string scheduleName, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Head;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assessments/schedules/names/", false);
+            uri.AppendPath(scheduleName, true);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateGetAllScheduleNamesRequest(string accountId, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier200);
             var request = message.Request;
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRawNextLink(nextLink, false);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assessments/schedules/scheduleNames", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             return message;
         }
 
+        internal HttpMessage CreateGetScheduledAssessmentsRunsRequest(string accountId, string scheduleId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assessments/schedules/", false);
+            uri.AppendPath(scheduleId, true);
+            uri.AppendPath("/runs", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateGetScheduledAssessmentsRunsBulkStatusRequest(string accountId, RequestContent content, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Post;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assessments/schedules/runs", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("Content-Type", "application/json");
+            request.Content = content;
+            return message;
+        }
+
+        internal HttpMessage CreateGetScheduledAssessmentRunDetailsRequest(string accountId, string scheduleId, string runId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assessments/schedules/", false);
+            uri.AppendPath(scheduleId, true);
+            uri.AppendPath("/runs/", false);
+            uri.AppendPath(runId, true);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateCancelScheduledAssessmentRunRequest(string accountId, string scheduleId, string runId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Post;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assessments/schedules/", false);
+            uri.AppendPath(scheduleId, true);
+            uri.AppendPath("/runs/", false);
+            uri.AppendPath(runId, true);
+            uri.AppendPath("/cancel", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateUpdateScheduledAssessmentsPostRequest(string accountId, string scheduleId, RequestContent content, bool? runNow, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Put;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assessments/schedules/", false);
+            uri.AppendPath(scheduleId, true);
+            if (runNow != null)
+            {
+                uri.AppendQuery("runNow", runNow.Value, true);
+            }
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("Content-Type", "application/json");
+            request.Content = content;
+            return message;
+        }
+
+        internal HttpMessage CreateGetScheduledAssessmentMetadataRequest(string accountId, string scheduleId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assessments/schedules/", false);
+            uri.AppendPath(scheduleId, true);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateDeleteScheduledAssessmentsRequest(string accountId, string scheduleId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Delete;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assessments/schedules/", false);
+            uri.AppendPath(scheduleId, true);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateRunScheduledAssessmentsExternalRequest(string accountId, string scheduleId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Post;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assessments/schedules/", false);
+            uri.AppendPath(scheduleId, true);
+            uri.AppendPath("/trigger", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateGetScheduledAssessmentsRunsFilteredRequest(string accountId, RequestContent content, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Post;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assessments/schedules/queryFilterRuns", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("Content-Type", "application/json");
+            request.Content = content;
+            return message;
+        }
+
+        internal HttpMessage CreateGetRulesTrendingsRequest(string accountId, string assetId, RequestContent content, ContentType contentType, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Post;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assets/", false);
+            uri.AppendPath(assetId, true);
+            uri.AppendPath("/trends", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json, text/json");
+            request.Headers.Add("Content-Type", contentType.ToString());
+            request.Content = content;
+            return message;
+        }
+
+        internal HttpMessage CreateGetRulesTrendingsByRuleIdRequest(string accountId, string assetId, RequestContent content, ContentType contentType, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Post;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/assets/", false);
+            uri.AppendPath(assetId, true);
+            uri.AppendPath("/trends/rules", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json, text/json");
+            request.Headers.Add("Content-Type", contentType.ToString());
+            request.Content = content;
+            return message;
+        }
+
+        internal HttpMessage CreateValidateRequest(string accountId, RequestContent content, ContentType contentType, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Post;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/validation", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json, text/json");
+            request.Headers.Add("Content-Type", contentType.ToString());
+            request.Content = content;
+            return message;
+        }
+
+        internal HttpMessage CreateCreateViewRequest(string accountId, string viewSourceName, RequestContent content, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier201);
+            var request = message.Request;
+            request.Method = RequestMethod.Post;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/views/viewsource/", false);
+            uri.AppendPath(viewSourceName, true);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("Content-Type", "application/json");
+            request.Content = content;
+            return message;
+        }
+
+        internal HttpMessage CreateGetViewRequest(string accountId, string viewId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/views/", false);
+            uri.AppendPath(viewId, true);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateDeleteViewRequest(string accountId, string viewId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Delete;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/views/", false);
+            uri.AppendPath(viewId, true);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateUpdateViewRequest(string accountId, string viewId, RequestContent content, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Put;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/views/", false);
+            uri.AppendPath(viewId, true);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("Content-Type", "application/json");
+            request.Content = content;
+            return message;
+        }
+
+        internal HttpMessage CreateCreateViewSourceRequest(string accountId, RequestContent content, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier201);
+            var request = message.Request;
+            request.Method = RequestMethod.Post;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/viewsources", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("Content-Type", "application/json");
+            request.Content = content;
+            return message;
+        }
+
+        internal HttpMessage CreateGetViewSourcesRequest(string accountId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/viewsources", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateCheckViewSourceNameRequest(string accountId, string source, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Head;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/viewsources/", false);
+            uri.AppendPath(source, true);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateGetViewSourceRequest(string accountId, string source, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/viewsources/", false);
+            uri.AppendPath(source, true);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateCheckUniqueViewNameRequest(string accountId, string viewSourceName, string viewName, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Head;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/accounts/", false);
+            uri.AppendPath(accountId, true);
+            uri.AppendPath("/viewsources/", false);
+            uri.AppendPath(viewSourceName, true);
+            uri.AppendPath("/views/", false);
+            uri.AppendPath(viewName, true);
+            uri.AppendPath("/validation", false);
+            uri.AppendQuery("api-version", "2022-09-01", true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        private static ResponseClassifier _responseClassifier201;
+        private static ResponseClassifier ResponseClassifier201 => _responseClassifier201 ??= new StatusCodeClassifier(stackalloc ushort[] { 201 });
         private static ResponseClassifier _responseClassifier200;
         private static ResponseClassifier ResponseClassifier200 => _responseClassifier200 ??= new StatusCodeClassifier(stackalloc ushort[] { 200 });
+        private static ResponseClassifier _responseClassifier202;
+        private static ResponseClassifier ResponseClassifier202 => _responseClassifier202 ??= new StatusCodeClassifier(stackalloc ushort[] { 202 });
     }
 }
