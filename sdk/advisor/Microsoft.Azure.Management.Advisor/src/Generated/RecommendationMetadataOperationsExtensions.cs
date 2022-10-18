@@ -22,41 +22,7 @@ namespace Microsoft.Azure.Management.Advisor
     public static partial class RecommendationMetadataOperationsExtensions
     {
             /// <summary>
-            /// Gets the metadata entity.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='name'>
-            /// Name of metadata entity.
-            /// </param>
-            public static object Get(this IRecommendationMetadataOperations operations, string name)
-            {
-                return operations.GetAsync(name).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Gets the metadata entity.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='name'>
-            /// Name of metadata entity.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<object> GetAsync(this IRecommendationMetadataOperations operations, string name, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.GetWithHttpMessagesAsync(name, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Gets the list of metadata entities.
+            /// Gets all the list of metadata entities.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -67,7 +33,7 @@ namespace Microsoft.Azure.Management.Advisor
             }
 
             /// <summary>
-            /// Gets the list of metadata entities.
+            /// Gets all the list of metadata entities.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -84,7 +50,7 @@ namespace Microsoft.Azure.Management.Advisor
             }
 
             /// <summary>
-            /// Gets the list of metadata entities.
+            /// Gets all the list of metadata entities.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -98,7 +64,7 @@ namespace Microsoft.Azure.Management.Advisor
             }
 
             /// <summary>
-            /// Gets the list of metadata entities.
+            /// Gets all the list of metadata entities.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.

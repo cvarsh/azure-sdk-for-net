@@ -30,9 +30,9 @@ namespace Microsoft.Azure.Management.Advisor.Models
         /// Initializes a new instance of the ShortDescription class.
         /// </summary>
         /// <param name="problem">The issue or opportunity identified by the
-        /// recommendation.</param>
-        /// <param name="solution">The remediation action suggested by the
-        /// recommendation.</param>
+        /// recommendation and proposed solution.</param>
+        /// <param name="solution">The issue or opportunity identified by the
+        /// recommendation and proposed solution.</param>
         public ShortDescription(string problem = default(string), string solution = default(string))
         {
             Problem = problem;
@@ -47,14 +47,14 @@ namespace Microsoft.Azure.Management.Advisor.Models
 
         /// <summary>
         /// Gets or sets the issue or opportunity identified by the
-        /// recommendation.
+        /// recommendation and proposed solution.
         /// </summary>
         [JsonProperty(PropertyName = "problem")]
         public string Problem { get; set; }
 
         /// <summary>
-        /// Gets or sets the remediation action suggested by the
-        /// recommendation.
+        /// Gets or sets the issue or opportunity identified by the
+        /// recommendation and proposed solution.
         /// </summary>
         [JsonProperty(PropertyName = "solution")]
         public string Solution { get; set; }

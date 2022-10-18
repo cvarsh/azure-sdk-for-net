@@ -12,14 +12,15 @@ namespace Microsoft.Azure.Management.Advisor.Models
 {
 
     /// <summary>
-    /// Defines values for Category.
+    /// Defines values for Duration.
     /// </summary>
-    public static class Category
+    public static class Duration
     {
-        public const string HighAvailability = "HighAvailability";
-        public const string Security = "Security";
-        public const string Performance = "Performance";
-        public const string Cost = "Cost";
-        public const string OperationalExcellence = "OperationalExcellence";
+        public const string Seven = "7";
+        public const string OneFour = "14";
+        public const string TwoOne = "21";
+        public const string ThreeZero = "30";
+        public const string SixZero = "60";
+        public const string NineZero = "90";
     }
 }

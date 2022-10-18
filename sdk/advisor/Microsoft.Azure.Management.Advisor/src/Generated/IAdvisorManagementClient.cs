@@ -14,6 +14,10 @@ namespace Microsoft.Azure.Management.Advisor
     using Microsoft.Rest.Azure;
     using Models;
     using Newtonsoft.Json;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// REST APIs for Azure Advisor
@@ -70,6 +74,11 @@ namespace Microsoft.Azure.Management.Advisor
 
 
         /// <summary>
+        /// Gets the IOneTwoRecommendationssMetadataOperations.
+        /// </summary>
+        IOneTwoRecommendationssMetadataOperations OneTwoRecommendationssMetadata { get; }
+
+        /// <summary>
         /// Gets the IRecommendationMetadataOperations.
         /// </summary>
         IRecommendationMetadataOperations RecommendationMetadata { get; }
@@ -93,6 +102,20 @@ namespace Microsoft.Azure.Management.Advisor
         /// Gets the ISuppressionsOperations.
         /// </summary>
         ISuppressionsOperations Suppressions { get; }
+
+        /// <summary>
+        /// Predicts a recommendation.
+        /// </summary>
+        /// <param name='predictionRequest'>
+        /// Parameters for predict recommendation.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<AzureOperationResponse<PredictionResponse>> PredictWithHttpMessagesAsync(PredictionRequest predictionRequest, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
     }
 }
