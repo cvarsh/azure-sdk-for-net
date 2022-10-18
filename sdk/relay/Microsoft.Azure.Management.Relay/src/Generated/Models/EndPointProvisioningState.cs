@@ -12,12 +12,15 @@ namespace Microsoft.Azure.Management.Relay.Models
 {
 
     /// <summary>
-    /// Defines values for AccessRights.
+    /// Defines values for EndPointProvisioningState.
     /// </summary>
-    public static class AccessRights
+    public static class EndPointProvisioningState
     {
-        public const string Manage = "Manage";
-        public const string Send = "Send";
-        public const string Listen = "Listen";
+        public const string Creating = "Creating";
+        public const string Updating = "Updating";
+        public const string Deleting = "Deleting";
+        public const string Succeeded = "Succeeded";
+        public const string Canceled = "Canceled";
+        public const string Failed = "Failed";
     }
 }

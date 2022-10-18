@@ -14,34 +14,26 @@ namespace Microsoft.Azure.Management.Relay.Models
     using System.Linq;
 
     /// <summary>
-    /// SKU of the namespace.
+    /// PrivateEndpoint information.
     /// </summary>
-    public partial class Sku
+    public partial class PrivateEndpoint
     {
         /// <summary>
-        /// Initializes a new instance of the Sku class.
+        /// Initializes a new instance of the PrivateEndpoint class.
         /// </summary>
-        public Sku()
+        public PrivateEndpoint()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the Sku class.
+        /// Initializes a new instance of the PrivateEndpoint class.
         /// </summary>
-        /// <param name="tier">The tier of this SKU. Possible values include:
-        /// 'Standard'</param>
-        public Sku(string tier = default(string))
+        /// <param name="id">The ARM identifier for Private Endpoint.</param>
+        public PrivateEndpoint(string id = default(string))
         {
-            Tier = tier;
+            Id = id;
             CustomInit();
-        }
-        /// <summary>
-        /// Static constructor for Sku class.
-        /// </summary>
-        static Sku()
-        {
-            Name = "Standard";
         }
 
         /// <summary>
@@ -50,17 +42,10 @@ namespace Microsoft.Azure.Management.Relay.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the tier of this SKU. Possible values include:
-        /// 'Standard'
+        /// Gets or sets the ARM identifier for Private Endpoint.
         /// </summary>
-        [JsonProperty(PropertyName = "tier")]
-        public string Tier { get; set; }
-
-        /// <summary>
-        /// Name of this SKU.
-        /// </summary>
-        [JsonProperty(PropertyName = "name")]
-        public static string Name { get; private set; }
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
 
     }
 }

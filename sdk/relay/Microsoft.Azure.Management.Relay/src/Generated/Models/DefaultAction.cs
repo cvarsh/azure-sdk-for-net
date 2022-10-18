@@ -12,12 +12,11 @@ namespace Microsoft.Azure.Management.Relay.Models
 {
 
     /// <summary>
-    /// Defines values for AccessRights.
+    /// Defines values for DefaultAction.
     /// </summary>
-    public static class AccessRights
+    public static class DefaultAction
     {
-        public const string Manage = "Manage";
-        public const string Send = "Send";
-        public const string Listen = "Listen";
+        public const string Allow = "Allow";
+        public const string Deny = "Deny";
     }
 }

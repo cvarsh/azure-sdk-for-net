@@ -12,12 +12,13 @@ namespace Microsoft.Azure.Management.Relay.Models
 {
 
     /// <summary>
-    /// Defines values for AccessRights.
+    /// Defines values for CreatedByType.
     /// </summary>
-    public static class AccessRights
+    public static class CreatedByType
     {
-        public const string Manage = "Manage";
-        public const string Send = "Send";
-        public const string Listen = "Listen";
+        public const string User = "User";
+        public const string Application = "Application";
+        public const string ManagedIdentity = "ManagedIdentity";
+        public const string Key = "Key";
     }
 }

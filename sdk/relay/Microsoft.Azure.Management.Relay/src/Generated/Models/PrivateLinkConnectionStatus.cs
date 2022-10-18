@@ -12,12 +12,13 @@ namespace Microsoft.Azure.Management.Relay.Models
 {
 
     /// <summary>
-    /// Defines values for AccessRights.
+    /// Defines values for PrivateLinkConnectionStatus.
     /// </summary>
-    public static class AccessRights
+    public static class PrivateLinkConnectionStatus
     {
-        public const string Manage = "Manage";
-        public const string Send = "Send";
-        public const string Listen = "Listen";
+        public const string Pending = "Pending";
+        public const string Approved = "Approved";
+        public const string Rejected = "Rejected";
+        public const string Disconnected = "Disconnected";
     }
 }

@@ -14,34 +14,28 @@ namespace Microsoft.Azure.Management.Relay.Models
     using System.Linq;
 
     /// <summary>
-    /// SKU of the namespace.
+    /// The resource management error additional info.
     /// </summary>
-    public partial class Sku
+    public partial class ErrorAdditionalInfo
     {
         /// <summary>
-        /// Initializes a new instance of the Sku class.
+        /// Initializes a new instance of the ErrorAdditionalInfo class.
         /// </summary>
-        public Sku()
+        public ErrorAdditionalInfo()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the Sku class.
+        /// Initializes a new instance of the ErrorAdditionalInfo class.
         /// </summary>
-        /// <param name="tier">The tier of this SKU. Possible values include:
-        /// 'Standard'</param>
-        public Sku(string tier = default(string))
+        /// <param name="type">The additional info type.</param>
+        /// <param name="info">The additional info.</param>
+        public ErrorAdditionalInfo(string type = default(string), object info = default(object))
         {
-            Tier = tier;
+            Type = type;
+            Info = info;
             CustomInit();
-        }
-        /// <summary>
-        /// Static constructor for Sku class.
-        /// </summary>
-        static Sku()
-        {
-            Name = "Standard";
         }
 
         /// <summary>
@@ -50,17 +44,16 @@ namespace Microsoft.Azure.Management.Relay.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the tier of this SKU. Possible values include:
-        /// 'Standard'
+        /// Gets the additional info type.
         /// </summary>
-        [JsonProperty(PropertyName = "tier")]
-        public string Tier { get; set; }
+        [JsonProperty(PropertyName = "type")]
+        public string Type { get; private set; }
 
         /// <summary>
-        /// Name of this SKU.
+        /// Gets the additional info.
         /// </summary>
-        [JsonProperty(PropertyName = "name")]
-        public static string Name { get; private set; }
+        [JsonProperty(PropertyName = "info")]
+        public object Info { get; private set; }
 
     }
 }

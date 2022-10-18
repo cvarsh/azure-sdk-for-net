@@ -12,12 +12,12 @@ namespace Microsoft.Azure.Management.Relay.Models
 {
 
     /// <summary>
-    /// Defines values for AccessRights.
+    /// Defines values for PublicNetworkAccess.
     /// </summary>
-    public static class AccessRights
+    public static class PublicNetworkAccess
     {
-        public const string Manage = "Manage";
-        public const string Send = "Send";
-        public const string Listen = "Listen";
+        public const string Enabled = "Enabled";
+        public const string Disabled = "Disabled";
+        public const string SecuredByPerimeter = "SecuredByPerimeter";
     }
 }

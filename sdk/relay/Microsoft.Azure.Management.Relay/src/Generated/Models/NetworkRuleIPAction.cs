@@ -12,12 +12,10 @@ namespace Microsoft.Azure.Management.Relay.Models
 {
 
     /// <summary>
-    /// Defines values for AccessRights.
+    /// Defines values for NetworkRuleIPAction.
     /// </summary>
-    public static class AccessRights
+    public static class NetworkRuleIPAction
     {
-        public const string Manage = "Manage";
-        public const string Send = "Send";
-        public const string Listen = "Listen";
+        public const string Allow = "Allow";
     }
 }
