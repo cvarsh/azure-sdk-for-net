@@ -64,7 +64,7 @@ namespace Azure.ResourceManager.CosmosDB
 
         /// <summary> Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB collections under a specific database.  This helps in scenario where container was accidentally deleted.  This API requires &apos;Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read&apos; permission. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
-        /// <param name="location"> Cosmos DB region, with spaces between words and each word capitalized. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="instanceId"> The instanceId GUID of a restorable database account. </param>
         /// <param name="restorableMongoDBDatabaseRid"> The resource ID of the MongoDB database. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -92,7 +92,7 @@ namespace Azure.ResourceManager.CosmosDB
 
         /// <summary> Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB collections under a specific database.  This helps in scenario where container was accidentally deleted.  This API requires &apos;Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read&apos; permission. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
-        /// <param name="location"> Cosmos DB region, with spaces between words and each word capitalized. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="instanceId"> The instanceId GUID of a restorable database account. </param>
         /// <param name="restorableMongoDBDatabaseRid"> The resource ID of the MongoDB database. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
