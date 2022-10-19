@@ -62,9 +62,11 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
         /// Possible values include: 'Disabled', 'Enabled', 'Updating'</param>
         /// <param name="resourceVersionPolicyConfiguration">Determines
         /// tracking of history for resources.</param>
+        /// <param name="importConfiguration">Fhir Service import
+        /// configuration.</param>
         /// <param name="systemData">Metadata pertaining to creation and last
         /// modification of the resource.</param>
-        public FhirService(IDictionary<string, string> tags = default(IDictionary<string, string>), string location = default(string), ServiceManagedIdentityIdentity identity = default(ServiceManagedIdentityIdentity), string kind = default(string), string provisioningState = default(string), IList<FhirServiceAccessPolicyEntry> accessPolicies = default(IList<FhirServiceAccessPolicyEntry>), FhirServiceAcrConfiguration acrConfiguration = default(FhirServiceAcrConfiguration), FhirServiceAuthenticationConfiguration authenticationConfiguration = default(FhirServiceAuthenticationConfiguration), FhirServiceCorsConfiguration corsConfiguration = default(FhirServiceCorsConfiguration), FhirServiceExportConfiguration exportConfiguration = default(FhirServiceExportConfiguration), IList<PrivateEndpointConnection> privateEndpointConnections = default(IList<PrivateEndpointConnection>), string publicNetworkAccess = default(string), string eventState = default(string), ResourceVersionPolicyConfiguration resourceVersionPolicyConfiguration = default(ResourceVersionPolicyConfiguration), SystemData systemData = default(SystemData))
+        public FhirService(IDictionary<string, string> tags = default(IDictionary<string, string>), string location = default(string), ServiceManagedIdentityIdentity identity = default(ServiceManagedIdentityIdentity), string kind = default(string), string provisioningState = default(string), IList<FhirServiceAccessPolicyEntry> accessPolicies = default(IList<FhirServiceAccessPolicyEntry>), FhirServiceAcrConfiguration acrConfiguration = default(FhirServiceAcrConfiguration), FhirServiceAuthenticationConfiguration authenticationConfiguration = default(FhirServiceAuthenticationConfiguration), FhirServiceCorsConfiguration corsConfiguration = default(FhirServiceCorsConfiguration), FhirServiceExportConfiguration exportConfiguration = default(FhirServiceExportConfiguration), IList<PrivateEndpointConnection> privateEndpointConnections = default(IList<PrivateEndpointConnection>), string publicNetworkAccess = default(string), string eventState = default(string), ResourceVersionPolicyConfiguration resourceVersionPolicyConfiguration = default(ResourceVersionPolicyConfiguration), FhirServiceImportConfiguration importConfiguration = default(FhirServiceImportConfiguration), SystemData systemData = default(SystemData))
         {
             Tags = tags;
             Location = location;
@@ -80,6 +82,7 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
             PublicNetworkAccess = publicNetworkAccess;
             EventState = eventState;
             ResourceVersionPolicyConfiguration = resourceVersionPolicyConfiguration;
+            ImportConfiguration = importConfiguration;
             SystemData = systemData;
             CustomInit();
         }
@@ -181,6 +184,12 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
         /// </summary>
         [JsonProperty(PropertyName = "properties.resourceVersionPolicyConfiguration")]
         public ResourceVersionPolicyConfiguration ResourceVersionPolicyConfiguration { get; set; }
+
+        /// <summary>
+        /// Gets or sets fhir Service import configuration.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.importConfiguration")]
+        public FhirServiceImportConfiguration ImportConfiguration { get; set; }
 
         /// <summary>
         /// Gets or sets metadata pertaining to creation and last modification

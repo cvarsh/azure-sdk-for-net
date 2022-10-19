@@ -44,6 +44,8 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
         /// 'Moving', 'Suspended', 'Warned', 'SystemMaintenance'</param>
         /// <param name="authenticationConfiguration">Dicom Service
         /// authentication configuration.</param>
+        /// <param name="corsConfiguration">Dicom Service Cors
+        /// configuration.</param>
         /// <param name="serviceUrl">The url of the Dicom Services.</param>
         /// <param name="privateEndpointConnections">The list of private
         /// endpoint connections that are set up for this resource.</param>
@@ -52,13 +54,14 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
         /// enabled. Possible values include: 'Enabled', 'Disabled'</param>
         /// <param name="systemData">Metadata pertaining to creation and last
         /// modification of the resource.</param>
-        public DicomService(IDictionary<string, string> tags = default(IDictionary<string, string>), string location = default(string), ServiceManagedIdentityIdentity identity = default(ServiceManagedIdentityIdentity), string provisioningState = default(string), DicomServiceAuthenticationConfiguration authenticationConfiguration = default(DicomServiceAuthenticationConfiguration), string serviceUrl = default(string), IList<PrivateEndpointConnection> privateEndpointConnections = default(IList<PrivateEndpointConnection>), string publicNetworkAccess = default(string), SystemData systemData = default(SystemData))
+        public DicomService(IDictionary<string, string> tags = default(IDictionary<string, string>), string location = default(string), ServiceManagedIdentityIdentity identity = default(ServiceManagedIdentityIdentity), string provisioningState = default(string), DicomServiceAuthenticationConfiguration authenticationConfiguration = default(DicomServiceAuthenticationConfiguration), CorsConfiguration corsConfiguration = default(CorsConfiguration), string serviceUrl = default(string), IList<PrivateEndpointConnection> privateEndpointConnections = default(IList<PrivateEndpointConnection>), string publicNetworkAccess = default(string), SystemData systemData = default(SystemData))
         {
             Tags = tags;
             Location = location;
             Identity = identity;
             ProvisioningState = provisioningState;
             AuthenticationConfiguration = authenticationConfiguration;
+            CorsConfiguration = corsConfiguration;
             ServiceUrl = serviceUrl;
             PrivateEndpointConnections = privateEndpointConnections;
             PublicNetworkAccess = publicNetworkAccess;
@@ -106,6 +109,12 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
         public DicomServiceAuthenticationConfiguration AuthenticationConfiguration { get; set; }
 
         /// <summary>
+        /// Gets or sets dicom Service Cors configuration.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.corsConfiguration")]
+        public CorsConfiguration CorsConfiguration { get; set; }
+
+        /// <summary>
         /// Gets the url of the Dicom Services.
         /// </summary>
         [JsonProperty(PropertyName = "properties.serviceUrl")]
@@ -144,6 +153,10 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
             if (Identity != null)
             {
                 Identity.Validate();
+            }
+            if (CorsConfiguration != null)
+            {
+                CorsConfiguration.Validate();
             }
             if (PrivateEndpointConnections != null)
             {
