@@ -60,7 +60,7 @@ namespace Azure.ResourceManager.ContainerInstance
         /// Operation Id: Location_ListUsage
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="location"> The identifier for the physical azure location. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> An async collection of <see cref="ContainerInstanceUsage" /> that may take multiple service requests to iterate over. </returns>
         public static AsyncPageable<ContainerInstanceUsage> GetUsagesWithLocationAsync(this SubscriptionResource subscriptionResource, AzureLocation location, CancellationToken cancellationToken = default)
@@ -74,7 +74,7 @@ namespace Azure.ResourceManager.ContainerInstance
         /// Operation Id: Location_ListUsage
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="location"> The identifier for the physical azure location. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> A collection of <see cref="ContainerInstanceUsage" /> that may take multiple service requests to iterate over. </returns>
         public static Pageable<ContainerInstanceUsage> GetUsagesWithLocation(this SubscriptionResource subscriptionResource, AzureLocation location, CancellationToken cancellationToken = default)
@@ -88,7 +88,7 @@ namespace Azure.ResourceManager.ContainerInstance
         /// Operation Id: Location_ListCachedImages
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="location"> The identifier for the physical azure location. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> An async collection of <see cref="CachedImages" /> that may take multiple service requests to iterate over. </returns>
         public static AsyncPageable<CachedImages> GetCachedImagesWithLocationAsync(this SubscriptionResource subscriptionResource, AzureLocation location, CancellationToken cancellationToken = default)
@@ -102,7 +102,7 @@ namespace Azure.ResourceManager.ContainerInstance
         /// Operation Id: Location_ListCachedImages
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="location"> The identifier for the physical azure location. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> A collection of <see cref="CachedImages" /> that may take multiple service requests to iterate over. </returns>
         public static Pageable<CachedImages> GetCachedImagesWithLocation(this SubscriptionResource subscriptionResource, AzureLocation location, CancellationToken cancellationToken = default)
@@ -116,7 +116,7 @@ namespace Azure.ResourceManager.ContainerInstance
         /// Operation Id: Location_ListCapabilities
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="location"> The identifier for the physical azure location. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> An async collection of <see cref="ContainerCapabilities" /> that may take multiple service requests to iterate over. </returns>
         public static AsyncPageable<ContainerCapabilities> GetCapabilitiesWithLocationAsync(this SubscriptionResource subscriptionResource, AzureLocation location, CancellationToken cancellationToken = default)
@@ -130,7 +130,7 @@ namespace Azure.ResourceManager.ContainerInstance
         /// Operation Id: Location_ListCapabilities
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="location"> The identifier for the physical azure location. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> A collection of <see cref="ContainerCapabilities" /> that may take multiple service requests to iterate over. </returns>
         public static Pageable<ContainerCapabilities> GetCapabilitiesWithLocation(this SubscriptionResource subscriptionResource, AzureLocation location, CancellationToken cancellationToken = default)
@@ -185,6 +185,46 @@ namespace Azure.ResourceManager.ContainerInstance
         public static Response<ContainerGroupResource> GetContainerGroup(this ResourceGroupResource resourceGroupResource, string containerGroupName, CancellationToken cancellationToken = default)
         {
             return resourceGroupResource.GetContainerGroups().Get(containerGroupName, cancellationToken);
+        }
+
+        /// <summary>
+        /// Delete container group virtual network association links. The operation does not delete other resources provided by the user.
+        /// Request Path: /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/providers/Microsoft.ContainerInstance/serviceAssociationLinks/default
+        /// Operation Id: SubnetServiceAssociationLink_Delete
+        /// </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
+        /// <param name="virtualNetworkName"> The name of the virtual network. </param>
+        /// <param name="subnetName"> The name of the subnet. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="virtualNetworkName"/> or <paramref name="subnetName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="virtualNetworkName"/> or <paramref name="subnetName"/> is null. </exception>
+        public static async Task<ArmOperation> DeleteSubnetServiceAssociationLinkAsync(this ResourceGroupResource resourceGroupResource, WaitUntil waitUntil, string virtualNetworkName, string subnetName, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(virtualNetworkName, nameof(virtualNetworkName));
+            Argument.AssertNotNullOrEmpty(subnetName, nameof(subnetName));
+
+            return await GetExtensionClient(resourceGroupResource).DeleteSubnetServiceAssociationLinkAsync(waitUntil, virtualNetworkName, subnetName, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Delete container group virtual network association links. The operation does not delete other resources provided by the user.
+        /// Request Path: /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/providers/Microsoft.ContainerInstance/serviceAssociationLinks/default
+        /// Operation Id: SubnetServiceAssociationLink_Delete
+        /// </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
+        /// <param name="virtualNetworkName"> The name of the virtual network. </param>
+        /// <param name="subnetName"> The name of the subnet. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="virtualNetworkName"/> or <paramref name="subnetName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="virtualNetworkName"/> or <paramref name="subnetName"/> is null. </exception>
+        public static ArmOperation DeleteSubnetServiceAssociationLink(this ResourceGroupResource resourceGroupResource, WaitUntil waitUntil, string virtualNetworkName, string subnetName, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(virtualNetworkName, nameof(virtualNetworkName));
+            Argument.AssertNotNullOrEmpty(subnetName, nameof(subnetName));
+
+            return GetExtensionClient(resourceGroupResource).DeleteSubnetServiceAssociationLink(waitUntil, virtualNetworkName, subnetName, cancellationToken);
         }
 
         #region ContainerGroupResource

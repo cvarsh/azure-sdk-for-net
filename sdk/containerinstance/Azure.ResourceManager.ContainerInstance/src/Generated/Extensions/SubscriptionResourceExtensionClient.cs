@@ -137,7 +137,7 @@ namespace Azure.ResourceManager.ContainerInstance
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/usages
         /// Operation Id: Location_ListUsage
         /// </summary>
-        /// <param name="location"> The identifier for the physical azure location. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> An async collection of <see cref="ContainerInstanceUsage" /> that may take multiple service requests to iterate over. </returns>
         public virtual AsyncPageable<ContainerInstanceUsage> GetUsagesWithLocationAsync(AzureLocation location, CancellationToken cancellationToken = default)
@@ -165,7 +165,7 @@ namespace Azure.ResourceManager.ContainerInstance
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/usages
         /// Operation Id: Location_ListUsage
         /// </summary>
-        /// <param name="location"> The identifier for the physical azure location. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> A collection of <see cref="ContainerInstanceUsage" /> that may take multiple service requests to iterate over. </returns>
         public virtual Pageable<ContainerInstanceUsage> GetUsagesWithLocation(AzureLocation location, CancellationToken cancellationToken = default)
@@ -193,7 +193,7 @@ namespace Azure.ResourceManager.ContainerInstance
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/cachedImages
         /// Operation Id: Location_ListCachedImages
         /// </summary>
-        /// <param name="location"> The identifier for the physical azure location. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> An async collection of <see cref="CachedImages" /> that may take multiple service requests to iterate over. </returns>
         public virtual AsyncPageable<CachedImages> GetCachedImagesWithLocationAsync(AzureLocation location, CancellationToken cancellationToken = default)
@@ -236,7 +236,7 @@ namespace Azure.ResourceManager.ContainerInstance
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/cachedImages
         /// Operation Id: Location_ListCachedImages
         /// </summary>
-        /// <param name="location"> The identifier for the physical azure location. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> A collection of <see cref="CachedImages" /> that may take multiple service requests to iterate over. </returns>
         public virtual Pageable<CachedImages> GetCachedImagesWithLocation(AzureLocation location, CancellationToken cancellationToken = default)
@@ -279,7 +279,7 @@ namespace Azure.ResourceManager.ContainerInstance
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/capabilities
         /// Operation Id: Location_ListCapabilities
         /// </summary>
-        /// <param name="location"> The identifier for the physical azure location. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> An async collection of <see cref="ContainerCapabilities" /> that may take multiple service requests to iterate over. </returns>
         public virtual AsyncPageable<ContainerCapabilities> GetCapabilitiesWithLocationAsync(AzureLocation location, CancellationToken cancellationToken = default)
@@ -322,7 +322,7 @@ namespace Azure.ResourceManager.ContainerInstance
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/capabilities
         /// Operation Id: Location_ListCapabilities
         /// </summary>
-        /// <param name="location"> The identifier for the physical azure location. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> A collection of <see cref="ContainerCapabilities" /> that may take multiple service requests to iterate over. </returns>
         public virtual Pageable<ContainerCapabilities> GetCapabilitiesWithLocation(AzureLocation location, CancellationToken cancellationToken = default)
