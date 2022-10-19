@@ -760,7 +760,7 @@ namespace Azure.ResourceManager.AppConfiguration
 
         /// <summary> Gets a deleted Azure app configuration store. </summary>
         /// <param name="subscriptionId"> The Microsoft Azure subscription ID. </param>
-        /// <param name="location"> The location in which uniqueness will be verified. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="configStoreName"> The name of the configuration store. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/> or <paramref name="configStoreName"/> is null. </exception>
@@ -790,7 +790,7 @@ namespace Azure.ResourceManager.AppConfiguration
 
         /// <summary> Gets a deleted Azure app configuration store. </summary>
         /// <param name="subscriptionId"> The Microsoft Azure subscription ID. </param>
-        /// <param name="location"> The location in which uniqueness will be verified. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="configStoreName"> The name of the configuration store. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/> or <paramref name="configStoreName"/> is null. </exception>
@@ -841,7 +841,7 @@ namespace Azure.ResourceManager.AppConfiguration
 
         /// <summary> Permanently deletes the specified configuration store. </summary>
         /// <param name="subscriptionId"> The Microsoft Azure subscription ID. </param>
-        /// <param name="location"> The location in which uniqueness will be verified. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="configStoreName"> The name of the configuration store. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/> or <paramref name="configStoreName"/> is null. </exception>
@@ -866,7 +866,7 @@ namespace Azure.ResourceManager.AppConfiguration
 
         /// <summary> Permanently deletes the specified configuration store. </summary>
         /// <param name="subscriptionId"> The Microsoft Azure subscription ID. </param>
-        /// <param name="location"> The location in which uniqueness will be verified. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="configStoreName"> The name of the configuration store. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/> or <paramref name="configStoreName"/> is null. </exception>
