@@ -68,8 +68,10 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
+        [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
         public async Task<AzureOperationResponse<IPage<Operation>>> ListWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
+            string apiVersion = "2020-01-13-preview";
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -77,6 +79,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "List", tracingParameters);
             }
@@ -84,9 +87,9 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             var _baseUrl = Client.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "providers/Microsoft.WorkloadMonitor/operations").ToString();
             List<string> _queryParameters = new List<string>();
-            if (Client.ApiVersion != null)
+            if (apiVersion != null)
             {
-                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(Client.ApiVersion)));
+                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(apiVersion)));
             }
             if (_queryParameters.Count > 0)
             {
@@ -235,6 +238,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
+        [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
         public async Task<AzureOperationResponse<IPage<Operation>>> ListNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (nextPageLink == null)

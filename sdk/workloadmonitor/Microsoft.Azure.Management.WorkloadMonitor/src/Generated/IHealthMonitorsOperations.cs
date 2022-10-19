@@ -61,12 +61,13 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         /// <exception cref="ErrorResponseException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// <exception cref="SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
+        [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
         Task<AzureOperationResponse<IPage<HealthMonitor>>> ListWithHttpMessagesAsync(string subscriptionId, string resourceGroupName, string providerName, string resourceCollectionName, string resourceName, string filter = default(string), string expand = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Get the current health status of a monitor of a virtual machine.
@@ -105,12 +106,13 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         /// <exception cref="ErrorResponseException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// <exception cref="SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
+        [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
         Task<AzureOperationResponse<HealthMonitor>> GetWithHttpMessagesAsync(string subscriptionId, string resourceGroupName, string providerName, string resourceCollectionName, string resourceName, string monitorId, string expand = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Get the health state changes of a monitor of a virtual machine
@@ -160,12 +162,13 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         /// <exception cref="ErrorResponseException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// <exception cref="SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
+        [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
         Task<AzureOperationResponse<IPage<HealthMonitorStateChange>>> ListStateChangesWithHttpMessagesAsync(string subscriptionId, string resourceGroupName, string providerName, string resourceCollectionName, string resourceName, string monitorId, string filter = default(string), string expand = default(string), System.DateTime? startTimestampUtc = default(System.DateTime?), System.DateTime? endTimestampUtc = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Get the health state change of a monitor of a virtual machine at
@@ -207,12 +210,13 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         /// <exception cref="ErrorResponseException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// <exception cref="SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
+        [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
         Task<AzureOperationResponse<HealthMonitorStateChange>> GetStateChangeWithHttpMessagesAsync(string subscriptionId, string resourceGroupName, string providerName, string resourceCollectionName, string resourceName, string monitorId, string timestampUnix, string expand = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Get the current health status of all monitors of a virtual machine.
@@ -231,12 +235,13 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         /// <exception cref="ErrorResponseException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// <exception cref="SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
+        [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
         Task<AzureOperationResponse<IPage<HealthMonitor>>> ListNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Get the health state changes of a monitor of a virtual machine
@@ -256,12 +261,13 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         /// <exception cref="ErrorResponseException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// <exception cref="SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
+        [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
         Task<AzureOperationResponse<IPage<HealthMonitorStateChange>>> ListStateChangesNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

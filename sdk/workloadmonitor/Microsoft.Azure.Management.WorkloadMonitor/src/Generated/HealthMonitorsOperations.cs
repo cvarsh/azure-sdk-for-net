@@ -99,6 +99,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
+        [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
         public async Task<AzureOperationResponse<IPage<HealthMonitor>>> ListWithHttpMessagesAsync(string subscriptionId, string resourceGroupName, string providerName, string resourceCollectionName, string resourceName, string filter = default(string), string expand = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (subscriptionId == null)
@@ -113,14 +114,60 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "providerName");
             }
+            if (providerName != null)
+            {
+                if (providerName.Length > 63)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "providerName", 63);
+                }
+                if (providerName.Length < 3)
+                {
+                    throw new ValidationException(ValidationRules.MinLength, "providerName", 3);
+                }
+                if (!System.Text.RegularExpressions.Regex.IsMatch(providerName, "^[A-Za-z0-9.]*$"))
+                {
+                    throw new ValidationException(ValidationRules.Pattern, "providerName", "^[A-Za-z0-9.]*$");
+                }
+            }
             if (resourceCollectionName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "resourceCollectionName");
+            }
+            if (resourceCollectionName != null)
+            {
+                if (resourceCollectionName.Length > 63)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "resourceCollectionName", 63);
+                }
+                if (resourceCollectionName.Length < 3)
+                {
+                    throw new ValidationException(ValidationRules.MinLength, "resourceCollectionName", 3);
+                }
+                if (!System.Text.RegularExpressions.Regex.IsMatch(resourceCollectionName, "^[A-Za-z0-9]*$"))
+                {
+                    throw new ValidationException(ValidationRules.Pattern, "resourceCollectionName", "^[A-Za-z0-9]*$");
+                }
             }
             if (resourceName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "resourceName");
             }
+            if (resourceName != null)
+            {
+                if (resourceName.Length > 63)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "resourceName", 63);
+                }
+                if (resourceName.Length < 3)
+                {
+                    throw new ValidationException(ValidationRules.MinLength, "resourceName", 3);
+                }
+                if (!System.Text.RegularExpressions.Regex.IsMatch(resourceName, "^[A-Za-z0-9]*$"))
+                {
+                    throw new ValidationException(ValidationRules.Pattern, "resourceName", "^[A-Za-z0-9]*$");
+                }
+            }
+            string apiVersion = "2020-01-13-preview";
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -128,6 +175,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("subscriptionId", subscriptionId);
                 tracingParameters.Add("resourceGroupName", resourceGroupName);
                 tracingParameters.Add("providerName", providerName);
@@ -147,9 +195,9 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             _url = _url.Replace("{resourceCollectionName}", System.Uri.EscapeDataString(resourceCollectionName));
             _url = _url.Replace("{resourceName}", System.Uri.EscapeDataString(resourceName));
             List<string> _queryParameters = new List<string>();
-            if (Client.ApiVersion != null)
+            if (apiVersion != null)
             {
-                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(Client.ApiVersion)));
+                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(apiVersion)));
             }
             if (filter != null)
             {
@@ -326,6 +374,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
+        [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
         public async Task<AzureOperationResponse<HealthMonitor>> GetWithHttpMessagesAsync(string subscriptionId, string resourceGroupName, string providerName, string resourceCollectionName, string resourceName, string monitorId, string expand = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (subscriptionId == null)
@@ -340,18 +389,64 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "providerName");
             }
+            if (providerName != null)
+            {
+                if (providerName.Length > 63)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "providerName", 63);
+                }
+                if (providerName.Length < 3)
+                {
+                    throw new ValidationException(ValidationRules.MinLength, "providerName", 3);
+                }
+                if (!System.Text.RegularExpressions.Regex.IsMatch(providerName, "^[A-Za-z0-9.]*$"))
+                {
+                    throw new ValidationException(ValidationRules.Pattern, "providerName", "^[A-Za-z0-9.]*$");
+                }
+            }
             if (resourceCollectionName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "resourceCollectionName");
+            }
+            if (resourceCollectionName != null)
+            {
+                if (resourceCollectionName.Length > 63)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "resourceCollectionName", 63);
+                }
+                if (resourceCollectionName.Length < 3)
+                {
+                    throw new ValidationException(ValidationRules.MinLength, "resourceCollectionName", 3);
+                }
+                if (!System.Text.RegularExpressions.Regex.IsMatch(resourceCollectionName, "^[A-Za-z0-9]*$"))
+                {
+                    throw new ValidationException(ValidationRules.Pattern, "resourceCollectionName", "^[A-Za-z0-9]*$");
+                }
             }
             if (resourceName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "resourceName");
             }
+            if (resourceName != null)
+            {
+                if (resourceName.Length > 63)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "resourceName", 63);
+                }
+                if (resourceName.Length < 3)
+                {
+                    throw new ValidationException(ValidationRules.MinLength, "resourceName", 3);
+                }
+                if (!System.Text.RegularExpressions.Regex.IsMatch(resourceName, "^[A-Za-z0-9]*$"))
+                {
+                    throw new ValidationException(ValidationRules.Pattern, "resourceName", "^[A-Za-z0-9]*$");
+                }
+            }
             if (monitorId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "monitorId");
             }
+            string apiVersion = "2020-01-13-preview";
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -359,6 +454,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("subscriptionId", subscriptionId);
                 tracingParameters.Add("resourceGroupName", resourceGroupName);
                 tracingParameters.Add("providerName", providerName);
@@ -379,9 +475,9 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             _url = _url.Replace("{resourceName}", System.Uri.EscapeDataString(resourceName));
             _url = _url.Replace("{monitorId}", System.Uri.EscapeDataString(monitorId));
             List<string> _queryParameters = new List<string>();
-            if (Client.ApiVersion != null)
+            if (apiVersion != null)
             {
-                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(Client.ApiVersion)));
+                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(apiVersion)));
             }
             if (expand != null)
             {
@@ -566,6 +662,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
+        [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
         public async Task<AzureOperationResponse<IPage<HealthMonitorStateChange>>> ListStateChangesWithHttpMessagesAsync(string subscriptionId, string resourceGroupName, string providerName, string resourceCollectionName, string resourceName, string monitorId, string filter = default(string), string expand = default(string), System.DateTime? startTimestampUtc = default(System.DateTime?), System.DateTime? endTimestampUtc = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (subscriptionId == null)
@@ -580,18 +677,64 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "providerName");
             }
+            if (providerName != null)
+            {
+                if (providerName.Length > 63)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "providerName", 63);
+                }
+                if (providerName.Length < 3)
+                {
+                    throw new ValidationException(ValidationRules.MinLength, "providerName", 3);
+                }
+                if (!System.Text.RegularExpressions.Regex.IsMatch(providerName, "^[A-Za-z0-9.]*$"))
+                {
+                    throw new ValidationException(ValidationRules.Pattern, "providerName", "^[A-Za-z0-9.]*$");
+                }
+            }
             if (resourceCollectionName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "resourceCollectionName");
+            }
+            if (resourceCollectionName != null)
+            {
+                if (resourceCollectionName.Length > 63)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "resourceCollectionName", 63);
+                }
+                if (resourceCollectionName.Length < 3)
+                {
+                    throw new ValidationException(ValidationRules.MinLength, "resourceCollectionName", 3);
+                }
+                if (!System.Text.RegularExpressions.Regex.IsMatch(resourceCollectionName, "^[A-Za-z0-9]*$"))
+                {
+                    throw new ValidationException(ValidationRules.Pattern, "resourceCollectionName", "^[A-Za-z0-9]*$");
+                }
             }
             if (resourceName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "resourceName");
             }
+            if (resourceName != null)
+            {
+                if (resourceName.Length > 63)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "resourceName", 63);
+                }
+                if (resourceName.Length < 3)
+                {
+                    throw new ValidationException(ValidationRules.MinLength, "resourceName", 3);
+                }
+                if (!System.Text.RegularExpressions.Regex.IsMatch(resourceName, "^[A-Za-z0-9]*$"))
+                {
+                    throw new ValidationException(ValidationRules.Pattern, "resourceName", "^[A-Za-z0-9]*$");
+                }
+            }
             if (monitorId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "monitorId");
             }
+            string apiVersion = "2020-01-13-preview";
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -599,6 +742,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("subscriptionId", subscriptionId);
                 tracingParameters.Add("resourceGroupName", resourceGroupName);
                 tracingParameters.Add("providerName", providerName);
@@ -622,9 +766,9 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             _url = _url.Replace("{resourceName}", System.Uri.EscapeDataString(resourceName));
             _url = _url.Replace("{monitorId}", System.Uri.EscapeDataString(monitorId));
             List<string> _queryParameters = new List<string>();
-            if (Client.ApiVersion != null)
+            if (apiVersion != null)
             {
-                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(Client.ApiVersion)));
+                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(apiVersion)));
             }
             if (filter != null)
             {
@@ -813,6 +957,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
+        [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
         public async Task<AzureOperationResponse<HealthMonitorStateChange>> GetStateChangeWithHttpMessagesAsync(string subscriptionId, string resourceGroupName, string providerName, string resourceCollectionName, string resourceName, string monitorId, string timestampUnix, string expand = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (subscriptionId == null)
@@ -827,13 +972,58 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "providerName");
             }
+            if (providerName != null)
+            {
+                if (providerName.Length > 63)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "providerName", 63);
+                }
+                if (providerName.Length < 3)
+                {
+                    throw new ValidationException(ValidationRules.MinLength, "providerName", 3);
+                }
+                if (!System.Text.RegularExpressions.Regex.IsMatch(providerName, "^[A-Za-z0-9.]*$"))
+                {
+                    throw new ValidationException(ValidationRules.Pattern, "providerName", "^[A-Za-z0-9.]*$");
+                }
+            }
             if (resourceCollectionName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "resourceCollectionName");
             }
+            if (resourceCollectionName != null)
+            {
+                if (resourceCollectionName.Length > 63)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "resourceCollectionName", 63);
+                }
+                if (resourceCollectionName.Length < 3)
+                {
+                    throw new ValidationException(ValidationRules.MinLength, "resourceCollectionName", 3);
+                }
+                if (!System.Text.RegularExpressions.Regex.IsMatch(resourceCollectionName, "^[A-Za-z0-9]*$"))
+                {
+                    throw new ValidationException(ValidationRules.Pattern, "resourceCollectionName", "^[A-Za-z0-9]*$");
+                }
+            }
             if (resourceName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "resourceName");
+            }
+            if (resourceName != null)
+            {
+                if (resourceName.Length > 63)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "resourceName", 63);
+                }
+                if (resourceName.Length < 3)
+                {
+                    throw new ValidationException(ValidationRules.MinLength, "resourceName", 3);
+                }
+                if (!System.Text.RegularExpressions.Regex.IsMatch(resourceName, "^[A-Za-z0-9]*$"))
+                {
+                    throw new ValidationException(ValidationRules.Pattern, "resourceName", "^[A-Za-z0-9]*$");
+                }
             }
             if (monitorId == null)
             {
@@ -843,6 +1033,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "timestampUnix");
             }
+            string apiVersion = "2020-01-13-preview";
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -850,6 +1041,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("subscriptionId", subscriptionId);
                 tracingParameters.Add("resourceGroupName", resourceGroupName);
                 tracingParameters.Add("providerName", providerName);
@@ -872,9 +1064,9 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             _url = _url.Replace("{monitorId}", System.Uri.EscapeDataString(monitorId));
             _url = _url.Replace("{timestampUnix}", System.Uri.EscapeDataString(timestampUnix));
             List<string> _queryParameters = new List<string>();
-            if (Client.ApiVersion != null)
+            if (apiVersion != null)
             {
-                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(Client.ApiVersion)));
+                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(apiVersion)));
             }
             if (expand != null)
             {
@@ -1029,6 +1221,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
+        [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
         public async Task<AzureOperationResponse<IPage<HealthMonitor>>> ListNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (nextPageLink == null)
@@ -1200,6 +1393,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
+        [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
         public async Task<AzureOperationResponse<IPage<HealthMonitorStateChange>>> ListStateChangesNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (nextPageLink == null)

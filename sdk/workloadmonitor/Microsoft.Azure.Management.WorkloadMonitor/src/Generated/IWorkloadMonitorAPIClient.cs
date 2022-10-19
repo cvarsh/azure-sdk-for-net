@@ -41,11 +41,6 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         ServiceClientCredentials Credentials { get; }
 
         /// <summary>
-        /// The API version to use for the operation.
-        /// </summary>
-        string ApiVersion { get; }
-
-        /// <summary>
         /// The preferred language for the response.
         /// </summary>
         string AcceptLanguage { get; set; }

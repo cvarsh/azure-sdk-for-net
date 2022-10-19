@@ -47,11 +47,6 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         public ServiceClientCredentials Credentials { get; private set; }
 
         /// <summary>
-        /// The API version to use for the operation.
-        /// </summary>
-        public string ApiVersion { get; private set; }
-
-        /// <summary>
         /// The preferred language for the response.
         /// </summary>
         public string AcceptLanguage { get; set; }
@@ -323,7 +318,6 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             Operations = new Operations(this);
             HealthMonitors = new HealthMonitorsOperations(this);
             BaseUri = new System.Uri("https://management.azure.com");
-            ApiVersion = "2020-01-13-preview";
             AcceptLanguage = "en-US";
             LongRunningOperationRetryTimeout = 30;
             GenerateClientRequestId = true;

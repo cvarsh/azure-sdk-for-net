@@ -35,12 +35,13 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         /// <exception cref="ErrorResponseException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// <exception cref="SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
+        [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
         Task<AzureOperationResponse<IPage<Operation>>> ListWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Get a list of all available REST API operations.
@@ -57,12 +58,13 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
         /// <exception cref="ErrorResponseException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// <exception cref="SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
+        [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
         Task<AzureOperationResponse<IPage<Operation>>> ListNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

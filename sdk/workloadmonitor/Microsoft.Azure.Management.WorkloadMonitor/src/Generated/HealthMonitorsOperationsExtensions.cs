@@ -52,6 +52,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             /// Optionally expand the monitor’s evidence and/or configuration. Example:
             /// $expand=evidence,configuration.
             /// </param>
+            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
             public static IPage<HealthMonitor> List(this IHealthMonitorsOperations operations, string subscriptionId, string resourceGroupName, string providerName, string resourceCollectionName, string resourceName, string filter = default(string), string expand = default(string))
             {
                 return operations.ListAsync(subscriptionId, resourceGroupName, providerName, resourceCollectionName, resourceName, filter, expand).GetAwaiter().GetResult();
@@ -91,6 +92,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
+            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
             public static async Task<IPage<HealthMonitor>> ListAsync(this IHealthMonitorsOperations operations, string subscriptionId, string resourceGroupName, string providerName, string resourceCollectionName, string resourceName, string filter = default(string), string expand = default(string), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.ListWithHttpMessagesAsync(subscriptionId, resourceGroupName, providerName, resourceCollectionName, resourceName, filter, expand, null, cancellationToken).ConfigureAwait(false))
@@ -128,6 +130,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             /// Optionally expand the monitor’s evidence and/or configuration. Example:
             /// $expand=evidence,configuration.
             /// </param>
+            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
             public static HealthMonitor Get(this IHealthMonitorsOperations operations, string subscriptionId, string resourceGroupName, string providerName, string resourceCollectionName, string resourceName, string monitorId, string expand = default(string))
             {
                 return operations.GetAsync(subscriptionId, resourceGroupName, providerName, resourceCollectionName, resourceName, monitorId, expand).GetAwaiter().GetResult();
@@ -165,6 +168,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
+            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
             public static async Task<HealthMonitor> GetAsync(this IHealthMonitorsOperations operations, string subscriptionId, string resourceGroupName, string providerName, string resourceCollectionName, string resourceName, string monitorId, string expand = default(string), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.GetWithHttpMessagesAsync(subscriptionId, resourceGroupName, providerName, resourceCollectionName, resourceName, monitorId, expand, null, cancellationToken).ConfigureAwait(false))
@@ -214,6 +218,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             /// <param name='endTimestampUtc'>
             /// The end of the time window.
             /// </param>
+            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
             public static IPage<HealthMonitorStateChange> ListStateChanges(this IHealthMonitorsOperations operations, string subscriptionId, string resourceGroupName, string providerName, string resourceCollectionName, string resourceName, string monitorId, string filter = default(string), string expand = default(string), System.DateTime? startTimestampUtc = default(System.DateTime?), System.DateTime? endTimestampUtc = default(System.DateTime?))
             {
                 return operations.ListStateChangesAsync(subscriptionId, resourceGroupName, providerName, resourceCollectionName, resourceName, monitorId, filter, expand, startTimestampUtc, endTimestampUtc).GetAwaiter().GetResult();
@@ -263,6 +268,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
+            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
             public static async Task<IPage<HealthMonitorStateChange>> ListStateChangesAsync(this IHealthMonitorsOperations operations, string subscriptionId, string resourceGroupName, string providerName, string resourceCollectionName, string resourceName, string monitorId, string filter = default(string), string expand = default(string), System.DateTime? startTimestampUtc = default(System.DateTime?), System.DateTime? endTimestampUtc = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.ListStateChangesWithHttpMessagesAsync(subscriptionId, resourceGroupName, providerName, resourceCollectionName, resourceName, monitorId, filter, expand, startTimestampUtc, endTimestampUtc, null, cancellationToken).ConfigureAwait(false))
@@ -304,6 +310,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             /// Optionally expand the monitor’s evidence and/or configuration. Example:
             /// $expand=evidence,configuration.
             /// </param>
+            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
             public static HealthMonitorStateChange GetStateChange(this IHealthMonitorsOperations operations, string subscriptionId, string resourceGroupName, string providerName, string resourceCollectionName, string resourceName, string monitorId, string timestampUnix, string expand = default(string))
             {
                 return operations.GetStateChangeAsync(subscriptionId, resourceGroupName, providerName, resourceCollectionName, resourceName, monitorId, timestampUnix, expand).GetAwaiter().GetResult();
@@ -345,6 +352,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
+            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
             public static async Task<HealthMonitorStateChange> GetStateChangeAsync(this IHealthMonitorsOperations operations, string subscriptionId, string resourceGroupName, string providerName, string resourceCollectionName, string resourceName, string monitorId, string timestampUnix, string expand = default(string), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.GetStateChangeWithHttpMessagesAsync(subscriptionId, resourceGroupName, providerName, resourceCollectionName, resourceName, monitorId, timestampUnix, expand, null, cancellationToken).ConfigureAwait(false))
@@ -364,6 +372,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             /// <param name='nextPageLink'>
             /// The NextLink from the previous successful call to List operation.
             /// </param>
+            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
             public static IPage<HealthMonitor> ListNext(this IHealthMonitorsOperations operations, string nextPageLink)
             {
                 return operations.ListNextAsync(nextPageLink).GetAwaiter().GetResult();
@@ -383,6 +392,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
+            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
             public static async Task<IPage<HealthMonitor>> ListNextAsync(this IHealthMonitorsOperations operations, string nextPageLink, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.ListNextWithHttpMessagesAsync(nextPageLink, null, cancellationToken).ConfigureAwait(false))
@@ -403,6 +413,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             /// <param name='nextPageLink'>
             /// The NextLink from the previous successful call to List operation.
             /// </param>
+            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
             public static IPage<HealthMonitorStateChange> ListStateChangesNext(this IHealthMonitorsOperations operations, string nextPageLink)
             {
                 return operations.ListStateChangesNextAsync(nextPageLink).GetAwaiter().GetResult();
@@ -423,6 +434,7 @@ namespace Microsoft.Azure.Management.WorkloadMonitor
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
+            [System.Obsolete("This operation is deprecated. Please do not use it any longer.")]
             public static async Task<IPage<HealthMonitorStateChange>> ListStateChangesNextAsync(this IHealthMonitorsOperations operations, string nextPageLink, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.ListStateChangesNextWithHttpMessagesAsync(nextPageLink, null, cancellationToken).ConfigureAwait(false))
