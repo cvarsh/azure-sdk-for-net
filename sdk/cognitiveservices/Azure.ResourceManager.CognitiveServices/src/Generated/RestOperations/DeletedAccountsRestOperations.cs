@@ -61,7 +61,7 @@ namespace Azure.ResourceManager.CognitiveServices
 
         /// <summary> Returns a Cognitive Services account specified by the parameters. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
-        /// <param name="location"> Resource location. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="accountName"> The name of Cognitive Services account. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -93,7 +93,7 @@ namespace Azure.ResourceManager.CognitiveServices
 
         /// <summary> Returns a Cognitive Services account specified by the parameters. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
-        /// <param name="location"> Resource location. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="accountName"> The name of Cognitive Services account. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -147,7 +147,7 @@ namespace Azure.ResourceManager.CognitiveServices
 
         /// <summary> Deletes a Cognitive Services account from the resource group. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
-        /// <param name="location"> Resource location. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="accountName"> The name of Cognitive Services account. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -174,7 +174,7 @@ namespace Azure.ResourceManager.CognitiveServices
 
         /// <summary> Deletes a Cognitive Services account from the resource group. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
-        /// <param name="location"> Resource location. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="accountName"> The name of Cognitive Services account. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
