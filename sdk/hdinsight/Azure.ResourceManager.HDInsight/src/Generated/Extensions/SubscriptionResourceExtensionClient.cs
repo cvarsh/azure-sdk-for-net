@@ -137,7 +137,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/capabilities
         /// Operation Id: Locations_GetCapabilities
         /// </summary>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public virtual async Task<Response<HDInsightCapabilitiesResult>> GetHDInsightCapabilitiesAsync(AzureLocation location, CancellationToken cancellationToken = default)
         {
@@ -160,7 +160,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/capabilities
         /// Operation Id: Locations_GetCapabilities
         /// </summary>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public virtual Response<HDInsightCapabilitiesResult> GetHDInsightCapabilities(AzureLocation location, CancellationToken cancellationToken = default)
         {
@@ -183,7 +183,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/usages
         /// Operation Id: Locations_ListUsages
         /// </summary>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> An async collection of <see cref="HDInsightUsage" /> that may take multiple service requests to iterate over. </returns>
         public virtual AsyncPageable<HDInsightUsage> GetHDInsightUsagesAsync(AzureLocation location, CancellationToken cancellationToken = default)
@@ -211,7 +211,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/usages
         /// Operation Id: Locations_ListUsages
         /// </summary>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> A collection of <see cref="HDInsightUsage" /> that may take multiple service requests to iterate over. </returns>
         public virtual Pageable<HDInsightUsage> GetHDInsightUsages(AzureLocation location, CancellationToken cancellationToken = default)
@@ -239,7 +239,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/billingSpecs
         /// Operation Id: Locations_ListBillingSpecs
         /// </summary>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public virtual async Task<Response<HDInsightBillingSpecsListResult>> GetHDInsightBillingSpecsAsync(AzureLocation location, CancellationToken cancellationToken = default)
         {
@@ -262,7 +262,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/billingSpecs
         /// Operation Id: Locations_ListBillingSpecs
         /// </summary>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public virtual Response<HDInsightBillingSpecsListResult> GetHDInsightBillingSpecs(AzureLocation location, CancellationToken cancellationToken = default)
         {
@@ -285,7 +285,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/checkNameAvailability
         /// Operation Id: Locations_CheckNameAvailability
         /// </summary>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="content"> The HDInsightNameAvailabilityContent to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public virtual async Task<Response<HDInsightNameAvailabilityResult>> CheckHDInsightNameAvailabilityAsync(AzureLocation location, HDInsightNameAvailabilityContent content, CancellationToken cancellationToken = default)
@@ -309,7 +309,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/checkNameAvailability
         /// Operation Id: Locations_CheckNameAvailability
         /// </summary>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="content"> The HDInsightNameAvailabilityContent to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public virtual Response<HDInsightNameAvailabilityResult> CheckHDInsightNameAvailability(AzureLocation location, HDInsightNameAvailabilityContent content, CancellationToken cancellationToken = default)
@@ -333,7 +333,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/validateCreateRequest
         /// Operation Id: Locations_ValidateClusterCreateRequest
         /// </summary>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="content"> The HDInsightClusterCreationValidateContent to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public virtual async Task<Response<HDInsightClusterCreationValidateResult>> ValidateHDInsightClusterCreationAsync(AzureLocation location, HDInsightClusterCreationValidateContent content, CancellationToken cancellationToken = default)
@@ -357,7 +357,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/validateCreateRequest
         /// Operation Id: Locations_ValidateClusterCreateRequest
         /// </summary>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="content"> The HDInsightClusterCreationValidateContent to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public virtual Response<HDInsightClusterCreationValidateResult> ValidateHDInsightClusterCreation(AzureLocation location, HDInsightClusterCreationValidateContent content, CancellationToken cancellationToken = default)

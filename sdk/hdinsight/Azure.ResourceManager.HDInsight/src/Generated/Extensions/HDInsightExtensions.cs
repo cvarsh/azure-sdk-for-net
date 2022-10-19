@@ -60,7 +60,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Operation Id: Locations_GetCapabilities
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public static async Task<Response<HDInsightCapabilitiesResult>> GetHDInsightCapabilitiesAsync(this SubscriptionResource subscriptionResource, AzureLocation location, CancellationToken cancellationToken = default)
         {
@@ -73,7 +73,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Operation Id: Locations_GetCapabilities
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public static Response<HDInsightCapabilitiesResult> GetHDInsightCapabilities(this SubscriptionResource subscriptionResource, AzureLocation location, CancellationToken cancellationToken = default)
         {
@@ -86,7 +86,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Operation Id: Locations_ListUsages
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> An async collection of <see cref="HDInsightUsage" /> that may take multiple service requests to iterate over. </returns>
         public static AsyncPageable<HDInsightUsage> GetHDInsightUsagesAsync(this SubscriptionResource subscriptionResource, AzureLocation location, CancellationToken cancellationToken = default)
@@ -100,7 +100,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Operation Id: Locations_ListUsages
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> A collection of <see cref="HDInsightUsage" /> that may take multiple service requests to iterate over. </returns>
         public static Pageable<HDInsightUsage> GetHDInsightUsages(this SubscriptionResource subscriptionResource, AzureLocation location, CancellationToken cancellationToken = default)
@@ -114,7 +114,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Operation Id: Locations_ListBillingSpecs
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public static async Task<Response<HDInsightBillingSpecsListResult>> GetHDInsightBillingSpecsAsync(this SubscriptionResource subscriptionResource, AzureLocation location, CancellationToken cancellationToken = default)
         {
@@ -127,7 +127,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Operation Id: Locations_ListBillingSpecs
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public static Response<HDInsightBillingSpecsListResult> GetHDInsightBillingSpecs(this SubscriptionResource subscriptionResource, AzureLocation location, CancellationToken cancellationToken = default)
         {
@@ -140,7 +140,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Operation Id: Locations_CheckNameAvailability
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="content"> The HDInsightNameAvailabilityContent to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="content"/> is null. </exception>
@@ -157,7 +157,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Operation Id: Locations_CheckNameAvailability
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="content"> The HDInsightNameAvailabilityContent to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="content"/> is null. </exception>
@@ -174,7 +174,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Operation Id: Locations_ValidateClusterCreateRequest
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="content"> The HDInsightClusterCreationValidateContent to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="content"/> is null. </exception>
@@ -191,7 +191,7 @@ namespace Azure.ResourceManager.HDInsight
         /// Operation Id: Locations_ValidateClusterCreateRequest
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="location"> The Azure location (region) for which to make the request. </param>
+        /// <param name="location"> The name of Azure region. </param>
         /// <param name="content"> The HDInsightClusterCreationValidateContent to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="content"/> is null. </exception>
