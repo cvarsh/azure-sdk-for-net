@@ -13,6 +13,8 @@ namespace Microsoft.Azure.Management.Cdn
     using Microsoft.Rest;
     using Microsoft.Rest.Azure;
     using Models;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -22,7 +24,8 @@ namespace Microsoft.Azure.Management.Cdn
     public static partial class AFDProfilesOperationsExtensions
     {
             /// <summary>
-            /// Checks the quota and actual usage of endpoints under the given CDN profile.
+            /// Checks the quota and actual usage of endpoints under the given Azure Front
+            /// Door profile.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -31,7 +34,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             public static IPage<Usage> ListResourceUsage(this IAFDProfilesOperations operations, string resourceGroupName, string profileName)
             {
@@ -39,7 +43,8 @@ namespace Microsoft.Azure.Management.Cdn
             }
 
             /// <summary>
-            /// Checks the quota and actual usage of endpoints under the given CDN profile.
+            /// Checks the quota and actual usage of endpoints under the given Azure Front
+            /// Door profile.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -48,7 +53,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -62,8 +68,8 @@ namespace Microsoft.Azure.Management.Cdn
             }
 
             /// <summary>
-            /// Validates the custom domain mapping to ensure it maps to the correct CDN
-            /// endpoint in DNS.
+            /// Validates the custom domain mapping to ensure it maps to the correct Azure
+            /// Front Door endpoint in DNS.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -72,19 +78,20 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='hostName'>
-            /// The host name of the custom domain. Must be a domain name.
+            /// The host name to validate.
             /// </param>
-            public static ValidateCustomDomainOutput CheckHostNameAvailability(this IAFDProfilesOperations operations, string resourceGroupName, string profileName, string hostName)
+            public static CheckNameAvailabilityOutput CheckHostNameAvailability(this IAFDProfilesOperations operations, string resourceGroupName, string profileName, string hostName)
             {
                 return operations.CheckHostNameAvailabilityAsync(resourceGroupName, profileName, hostName).GetAwaiter().GetResult();
             }
 
             /// <summary>
-            /// Validates the custom domain mapping to ensure it maps to the correct CDN
-            /// endpoint in DNS.
+            /// Validates the custom domain mapping to ensure it maps to the correct Azure
+            /// Front Door endpoint in DNS.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -93,15 +100,16 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='hostName'>
-            /// The host name of the custom domain. Must be a domain name.
+            /// The host name to validate.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<ValidateCustomDomainOutput> CheckHostNameAvailabilityAsync(this IAFDProfilesOperations operations, string resourceGroupName, string profileName, string hostName, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<CheckNameAvailabilityOutput> CheckHostNameAvailabilityAsync(this IAFDProfilesOperations operations, string resourceGroupName, string profileName, string hostName, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.CheckHostNameAvailabilityWithHttpMessagesAsync(resourceGroupName, profileName, hostName, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -110,7 +118,156 @@ namespace Microsoft.Azure.Management.Cdn
             }
 
             /// <summary>
-            /// Checks the quota and actual usage of endpoints under the given CDN profile.
+            /// Validate a Secret in the profile.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// Name of the Resource group within the Azure subscription.
+            /// </param>
+            /// <param name='profileName'>
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium which is
+            /// unique within the resource group.
+            /// </param>
+            /// <param name='validateSecretInput'>
+            /// The Secret source.
+            /// </param>
+            public static ValidateSecretOutput ValidateSecret(this IAFDProfilesOperations operations, string resourceGroupName, string profileName, ValidateSecretInput validateSecretInput)
+            {
+                return operations.ValidateSecretAsync(resourceGroupName, profileName, validateSecretInput).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Validate a Secret in the profile.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// Name of the Resource group within the Azure subscription.
+            /// </param>
+            /// <param name='profileName'>
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium which is
+            /// unique within the resource group.
+            /// </param>
+            /// <param name='validateSecretInput'>
+            /// The Secret source.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<ValidateSecretOutput> ValidateSecretAsync(this IAFDProfilesOperations operations, string resourceGroupName, string profileName, ValidateSecretInput validateSecretInput, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.ValidateSecretWithHttpMessagesAsync(resourceGroupName, profileName, validateSecretInput, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// Name of the Resource group within the Azure subscription.
+            /// </param>
+            /// <param name='profileName'>
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium which is
+            /// unique within the resource group.
+            /// </param>
+            /// <param name='wafMappingList'>
+            /// Web Application Firewall (WAF) and security policy mapping for the profile
+            /// upgrade
+            /// </param>
+            public static Profile Upgrade(this IAFDProfilesOperations operations, string resourceGroupName, string profileName, IList<ProfileChangeSkuWafMapping> wafMappingList)
+            {
+                return operations.UpgradeAsync(resourceGroupName, profileName, wafMappingList).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// Name of the Resource group within the Azure subscription.
+            /// </param>
+            /// <param name='profileName'>
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium which is
+            /// unique within the resource group.
+            /// </param>
+            /// <param name='wafMappingList'>
+            /// Web Application Firewall (WAF) and security policy mapping for the profile
+            /// upgrade
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<Profile> UpgradeAsync(this IAFDProfilesOperations operations, string resourceGroupName, string profileName, IList<ProfileChangeSkuWafMapping> wafMappingList, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.UpgradeWithHttpMessagesAsync(resourceGroupName, profileName, wafMappingList, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// Name of the Resource group within the Azure subscription.
+            /// </param>
+            /// <param name='profileName'>
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium which is
+            /// unique within the resource group.
+            /// </param>
+            /// <param name='wafMappingList'>
+            /// Web Application Firewall (WAF) and security policy mapping for the profile
+            /// upgrade
+            /// </param>
+            public static Profile BeginUpgrade(this IAFDProfilesOperations operations, string resourceGroupName, string profileName, IList<ProfileChangeSkuWafMapping> wafMappingList)
+            {
+                return operations.BeginUpgradeAsync(resourceGroupName, profileName, wafMappingList).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// Name of the Resource group within the Azure subscription.
+            /// </param>
+            /// <param name='profileName'>
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium which is
+            /// unique within the resource group.
+            /// </param>
+            /// <param name='wafMappingList'>
+            /// Web Application Firewall (WAF) and security policy mapping for the profile
+            /// upgrade
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<Profile> BeginUpgradeAsync(this IAFDProfilesOperations operations, string resourceGroupName, string profileName, IList<ProfileChangeSkuWafMapping> wafMappingList, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BeginUpgradeWithHttpMessagesAsync(resourceGroupName, profileName, wafMappingList, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Checks the quota and actual usage of endpoints under the given Azure Front
+            /// Door profile.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -124,7 +281,8 @@ namespace Microsoft.Azure.Management.Cdn
             }
 
             /// <summary>
-            /// Checks the quota and actual usage of endpoints under the given CDN profile.
+            /// Checks the quota and actual usage of endpoints under the given Azure Front
+            /// Door profile.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.

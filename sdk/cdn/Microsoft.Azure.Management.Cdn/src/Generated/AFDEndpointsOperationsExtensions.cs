@@ -33,7 +33,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             public static IPage<AFDEndpoint> ListByProfile(this IAFDEndpointsOperations operations, string resourceGroupName, string profileName)
             {
@@ -50,7 +51,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -74,7 +76,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -95,7 +98,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -122,7 +126,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -146,7 +151,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -179,17 +185,22 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
             /// </param>
-            /// <param name='endpointUpdateProperties'>
-            /// Endpoint update properties
+            /// <param name='tags'>
+            /// Endpoint tags.
             /// </param>
-            public static AFDEndpoint Update(this IAFDEndpointsOperations operations, string resourceGroupName, string profileName, string endpointName, AFDEndpointUpdateParameters endpointUpdateProperties)
+            /// <param name='enabledState'>
+            /// Whether to enable use of this rule. Permitted values are 'Enabled' or
+            /// 'Disabled'. Possible values include: 'Enabled', 'Disabled'
+            /// </param>
+            public static AFDEndpoint Update(this IAFDEndpointsOperations operations, string resourceGroupName, string profileName, string endpointName, IDictionary<string, string> tags = default(IDictionary<string, string>), string enabledState = default(string))
             {
-                return operations.UpdateAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties).GetAwaiter().GetResult();
+                return operations.UpdateAsync(resourceGroupName, profileName, endpointName, tags, enabledState).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -206,20 +217,25 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
             /// </param>
-            /// <param name='endpointUpdateProperties'>
-            /// Endpoint update properties
+            /// <param name='tags'>
+            /// Endpoint tags.
+            /// </param>
+            /// <param name='enabledState'>
+            /// Whether to enable use of this rule. Permitted values are 'Enabled' or
+            /// 'Disabled'. Possible values include: 'Enabled', 'Disabled'
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<AFDEndpoint> UpdateAsync(this IAFDEndpointsOperations operations, string resourceGroupName, string profileName, string endpointName, AFDEndpointUpdateParameters endpointUpdateProperties, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<AFDEndpoint> UpdateAsync(this IAFDEndpointsOperations operations, string resourceGroupName, string profileName, string endpointName, IDictionary<string, string> tags = default(IDictionary<string, string>), string enabledState = default(string), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.UpdateWithHttpMessagesAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.UpdateWithHttpMessagesAsync(resourceGroupName, profileName, endpointName, tags, enabledState, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -236,7 +252,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -257,7 +274,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -280,7 +298,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -307,7 +326,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -328,7 +348,8 @@ namespace Microsoft.Azure.Management.Cdn
             }
 
             /// <summary>
-            /// Checks the quota and actual usage of endpoints under the given CDN profile.
+            /// Checks the quota and actual usage of endpoints under the given Azure Front
+            /// Door profile.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -337,7 +358,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -348,7 +370,8 @@ namespace Microsoft.Azure.Management.Cdn
             }
 
             /// <summary>
-            /// Checks the quota and actual usage of endpoints under the given CDN profile.
+            /// Checks the quota and actual usage of endpoints under the given Azure Front
+            /// Door profile.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -357,7 +380,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -374,8 +398,8 @@ namespace Microsoft.Azure.Management.Cdn
             }
 
             /// <summary>
-            /// Validates the custom domain mapping to ensure it maps to the correct CDN
-            /// endpoint in DNS.
+            /// Validates the custom domain mapping to ensure it maps to the correct Azure
+            /// Front Door endpoint in DNS.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -384,7 +408,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -398,8 +423,8 @@ namespace Microsoft.Azure.Management.Cdn
             }
 
             /// <summary>
-            /// Validates the custom domain mapping to ensure it maps to the correct CDN
-            /// endpoint in DNS.
+            /// Validates the custom domain mapping to ensure it maps to the correct Azure
+            /// Front Door endpoint in DNS.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -408,7 +433,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -438,7 +464,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -462,7 +489,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -495,17 +523,22 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
             /// </param>
-            /// <param name='endpointUpdateProperties'>
-            /// Endpoint update properties
+            /// <param name='tags'>
+            /// Endpoint tags.
             /// </param>
-            public static AFDEndpoint BeginUpdate(this IAFDEndpointsOperations operations, string resourceGroupName, string profileName, string endpointName, AFDEndpointUpdateParameters endpointUpdateProperties)
+            /// <param name='enabledState'>
+            /// Whether to enable use of this rule. Permitted values are 'Enabled' or
+            /// 'Disabled'. Possible values include: 'Enabled', 'Disabled'
+            /// </param>
+            public static AFDEndpoint BeginUpdate(this IAFDEndpointsOperations operations, string resourceGroupName, string profileName, string endpointName, IDictionary<string, string> tags = default(IDictionary<string, string>), string enabledState = default(string))
             {
-                return operations.BeginUpdateAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties).GetAwaiter().GetResult();
+                return operations.BeginUpdateAsync(resourceGroupName, profileName, endpointName, tags, enabledState).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -522,20 +555,25 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
             /// </param>
-            /// <param name='endpointUpdateProperties'>
-            /// Endpoint update properties
+            /// <param name='tags'>
+            /// Endpoint tags.
+            /// </param>
+            /// <param name='enabledState'>
+            /// Whether to enable use of this rule. Permitted values are 'Enabled' or
+            /// 'Disabled'. Possible values include: 'Enabled', 'Disabled'
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<AFDEndpoint> BeginUpdateAsync(this IAFDEndpointsOperations operations, string resourceGroupName, string profileName, string endpointName, AFDEndpointUpdateParameters endpointUpdateProperties, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<AFDEndpoint> BeginUpdateAsync(this IAFDEndpointsOperations operations, string resourceGroupName, string profileName, string endpointName, IDictionary<string, string> tags = default(IDictionary<string, string>), string enabledState = default(string), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BeginUpdateWithHttpMessagesAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BeginUpdateWithHttpMessagesAsync(resourceGroupName, profileName, endpointName, tags, enabledState, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -552,7 +590,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -573,7 +612,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -596,7 +636,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -623,7 +664,8 @@ namespace Microsoft.Azure.Management.Cdn
             /// Name of the Resource group within the Azure subscription.
             /// </param>
             /// <param name='profileName'>
-            /// Name of the CDN profile which is unique within the resource group.
+            /// Name of the Azure Front Door Standard or Azure Front Door Premium profile
+            /// which is unique within the resource group.
             /// </param>
             /// <param name='endpointName'>
             /// Name of the endpoint under the profile which is unique globally.
@@ -678,7 +720,8 @@ namespace Microsoft.Azure.Management.Cdn
             }
 
             /// <summary>
-            /// Checks the quota and actual usage of endpoints under the given CDN profile.
+            /// Checks the quota and actual usage of endpoints under the given Azure Front
+            /// Door profile.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -692,7 +735,8 @@ namespace Microsoft.Azure.Management.Cdn
             }
 
             /// <summary>
-            /// Checks the quota and actual usage of endpoints under the given CDN profile.
+            /// Checks the quota and actual usage of endpoints under the given Azure Front
+            /// Door profile.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.

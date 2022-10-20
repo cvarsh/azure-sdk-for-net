@@ -12,6 +12,7 @@ namespace Microsoft.Azure.Management.Cdn.Models
 {
     using Microsoft.Rest;
     using Microsoft.Rest.Azure;
+    using Microsoft.Rest.Serialization;
     using Newtonsoft.Json;
     using System.Collections;
     using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace Microsoft.Azure.Management.Cdn.Models
     /// <summary>
     /// Properties required to update a profile.
     /// </summary>
+    [Rest.Serialization.JsonTransformation]
     public partial class ProfileUpdateParameters : IResource
     {
         /// <summary>
@@ -34,9 +36,16 @@ namespace Microsoft.Azure.Management.Cdn.Models
         /// Initializes a new instance of the ProfileUpdateParameters class.
         /// </summary>
         /// <param name="tags">Profile tags</param>
-        public ProfileUpdateParameters(IDictionary<string, string> tags = default(IDictionary<string, string>))
+        /// <param name="identity">Managed service identity (system assigned
+        /// and/or user assigned identities).</param>
+        /// <param name="originResponseTimeoutSeconds">Send and receive timeout
+        /// on forwarding request to the origin. When timeout is reached, the
+        /// request fails and returns.</param>
+        public ProfileUpdateParameters(IDictionary<string, string> tags = default(IDictionary<string, string>), ManagedServiceIdentity identity = default(ManagedServiceIdentity), int? originResponseTimeoutSeconds = default(int?))
         {
             Tags = tags;
+            Identity = identity;
+            OriginResponseTimeoutSeconds = originResponseTimeoutSeconds;
             CustomInit();
         }
 
@@ -51,5 +60,36 @@ namespace Microsoft.Azure.Management.Cdn.Models
         [JsonProperty(PropertyName = "tags")]
         public IDictionary<string, string> Tags { get; set; }
 
+        /// <summary>
+        /// Gets or sets managed service identity (system assigned and/or user
+        /// assigned identities).
+        /// </summary>
+        [JsonProperty(PropertyName = "identity")]
+        public ManagedServiceIdentity Identity { get; set; }
+
+        /// <summary>
+        /// Gets or sets send and receive timeout on forwarding request to the
+        /// origin. When timeout is reached, the request fails and returns.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.originResponseTimeoutSeconds")]
+        public int? OriginResponseTimeoutSeconds { get; set; }
+
+        /// <summary>
+        /// Validate the object.
+        /// </summary>
+        /// <exception cref="ValidationException">
+        /// Thrown if validation fails
+        /// </exception>
+        public virtual void Validate()
+        {
+            if (Identity != null)
+            {
+                Identity.Validate();
+            }
+            if (OriginResponseTimeoutSeconds < 16)
+            {
+                throw new ValidationException(ValidationRules.InclusiveMinimum, "OriginResponseTimeoutSeconds", 16);
+            }
+        }
     }
 }

@@ -10,26 +10,40 @@
 
 namespace Microsoft.Azure.Management.Cdn.Models
 {
+    using Newtonsoft.Json;
     using System.Linq;
 
     /// <summary>
-    /// The json object containing security policy parameters
+    /// Defines headers for Upgrade operation.
     /// </summary>
-    public partial class SecurityPolicyParameters
+    public partial class AFDProfilesUpgradeHeaders
     {
         /// <summary>
-        /// Initializes a new instance of the SecurityPolicyParameters class.
+        /// Initializes a new instance of the AFDProfilesUpgradeHeaders class.
         /// </summary>
-        public SecurityPolicyParameters()
+        public AFDProfilesUpgradeHeaders()
         {
             CustomInit();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the AFDProfilesUpgradeHeaders class.
+        /// </summary>
+        public AFDProfilesUpgradeHeaders(string location = default(string))
+        {
+            Location = location;
+            CustomInit();
+        }
 
         /// <summary>
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "location")]
+        public string Location { get; set; }
 
     }
 }
