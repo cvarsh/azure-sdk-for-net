@@ -707,7 +707,7 @@ namespace Microsoft.Azure.Management.RecoveryServices.SiteRecovery
         /// <param name='protectionContainerName'>
         /// The name of the container containing the protected item.
         /// </param>
-        /// <param name='replicationProtectedItemName'>
+        /// <param name='replicatedProtectedItemName'>
         /// The name of the protected item on which the agent is to be updated.
         /// </param>
         /// <param name='updateMobilityServiceRequest'>
@@ -728,7 +728,7 @@ namespace Microsoft.Azure.Management.RecoveryServices.SiteRecovery
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<ReplicationProtectedItem>> UpdateMobilityServiceWithHttpMessagesAsync(string fabricName, string protectionContainerName, string replicationProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<ReplicationProtectedItem>> UpdateMobilityServiceWithHttpMessagesAsync(string fabricName, string protectionContainerName, string replicatedProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Gets the list of replication protected items.
         /// </summary>
@@ -1381,7 +1381,7 @@ namespace Microsoft.Azure.Management.RecoveryServices.SiteRecovery
         /// <param name='protectionContainerName'>
         /// The name of the container containing the protected item.
         /// </param>
-        /// <param name='replicationProtectedItemName'>
+        /// <param name='replicatedProtectedItemName'>
         /// The name of the protected item on which the agent is to be updated.
         /// </param>
         /// <param name='updateMobilityServiceRequest'>
@@ -1402,7 +1402,7 @@ namespace Microsoft.Azure.Management.RecoveryServices.SiteRecovery
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<ReplicationProtectedItem>> BeginUpdateMobilityServiceWithHttpMessagesAsync(string fabricName, string protectionContainerName, string replicationProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<ReplicationProtectedItem>> BeginUpdateMobilityServiceWithHttpMessagesAsync(string fabricName, string protectionContainerName, string replicatedProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Gets the list of Replication protected items.
         /// </summary>

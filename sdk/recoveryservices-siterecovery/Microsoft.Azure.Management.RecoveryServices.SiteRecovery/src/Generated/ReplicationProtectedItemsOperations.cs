@@ -1047,7 +1047,7 @@ namespace Microsoft.Azure.Management.RecoveryServices.SiteRecovery
         /// <param name='protectionContainerName'>
         /// The name of the container containing the protected item.
         /// </param>
-        /// <param name='replicationProtectedItemName'>
+        /// <param name='replicatedProtectedItemName'>
         /// The name of the protected item on which the agent is to be updated.
         /// </param>
         /// <param name='updateMobilityServiceRequest'>
@@ -1059,10 +1059,10 @@ namespace Microsoft.Azure.Management.RecoveryServices.SiteRecovery
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        public async Task<AzureOperationResponse<ReplicationProtectedItem>> UpdateMobilityServiceWithHttpMessagesAsync(string fabricName, string protectionContainerName, string replicationProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<ReplicationProtectedItem>> UpdateMobilityServiceWithHttpMessagesAsync(string fabricName, string protectionContainerName, string replicatedProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Send request
-            AzureOperationResponse<ReplicationProtectedItem> _response = await BeginUpdateMobilityServiceWithHttpMessagesAsync(fabricName, protectionContainerName, replicationProtectedItemName, updateMobilityServiceRequest, customHeaders, cancellationToken).ConfigureAwait(false);
+            AzureOperationResponse<ReplicationProtectedItem> _response = await BeginUpdateMobilityServiceWithHttpMessagesAsync(fabricName, protectionContainerName, replicatedProtectedItemName, updateMobilityServiceRequest, customHeaders, cancellationToken).ConfigureAwait(false);
             return await Client.GetPostOrDeleteOperationResultAsync(_response, customHeaders, cancellationToken).ConfigureAwait(false);
         }
 
@@ -5406,7 +5406,7 @@ namespace Microsoft.Azure.Management.RecoveryServices.SiteRecovery
         /// <param name='protectionContainerName'>
         /// The name of the container containing the protected item.
         /// </param>
-        /// <param name='replicationProtectedItemName'>
+        /// <param name='replicatedProtectedItemName'>
         /// The name of the protected item on which the agent is to be updated.
         /// </param>
         /// <param name='updateMobilityServiceRequest'>
@@ -5433,7 +5433,7 @@ namespace Microsoft.Azure.Management.RecoveryServices.SiteRecovery
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<ReplicationProtectedItem>> BeginUpdateMobilityServiceWithHttpMessagesAsync(string fabricName, string protectionContainerName, string replicationProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<ReplicationProtectedItem>> BeginUpdateMobilityServiceWithHttpMessagesAsync(string fabricName, string protectionContainerName, string replicatedProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client.ApiVersion == null)
             {
@@ -5459,9 +5459,9 @@ namespace Microsoft.Azure.Management.RecoveryServices.SiteRecovery
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "protectionContainerName");
             }
-            if (replicationProtectedItemName == null)
+            if (replicatedProtectedItemName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "replicationProtectedItemName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "replicatedProtectedItemName");
             }
             if (updateMobilityServiceRequest == null)
             {
@@ -5476,20 +5476,20 @@ namespace Microsoft.Azure.Management.RecoveryServices.SiteRecovery
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
                 tracingParameters.Add("fabricName", fabricName);
                 tracingParameters.Add("protectionContainerName", protectionContainerName);
-                tracingParameters.Add("replicationProtectedItemName", replicationProtectedItemName);
+                tracingParameters.Add("replicatedProtectedItemName", replicatedProtectedItemName);
                 tracingParameters.Add("updateMobilityServiceRequest", updateMobilityServiceRequest);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "BeginUpdateMobilityService", tracingParameters);
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}/updateMobilityService").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/updateMobilityService").ToString();
             _url = _url.Replace("{resourceName}", System.Uri.EscapeDataString(Client.ResourceName));
             _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(Client.ResourceGroupName));
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
             _url = _url.Replace("{fabricName}", System.Uri.EscapeDataString(fabricName));
             _url = _url.Replace("{protectionContainerName}", System.Uri.EscapeDataString(protectionContainerName));
-            _url = _url.Replace("{replicationProtectedItemName}", System.Uri.EscapeDataString(replicationProtectedItemName));
+            _url = _url.Replace("{replicatedProtectedItemName}", System.Uri.EscapeDataString(replicatedProtectedItemName));
             List<string> _queryParameters = new List<string>();
             if (Client.ApiVersion != null)
             {

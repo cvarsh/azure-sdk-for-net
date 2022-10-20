@@ -1170,15 +1170,15 @@ namespace Microsoft.Azure.Management.RecoveryServices.SiteRecovery
             /// <param name='protectionContainerName'>
             /// The name of the container containing the protected item.
             /// </param>
-            /// <param name='replicationProtectedItemName'>
+            /// <param name='replicatedProtectedItemName'>
             /// The name of the protected item on which the agent is to be updated.
             /// </param>
             /// <param name='updateMobilityServiceRequest'>
             /// Request to update the mobility service on the protected item.
             /// </param>
-            public static ReplicationProtectedItem UpdateMobilityService(this IReplicationProtectedItemsOperations operations, string fabricName, string protectionContainerName, string replicationProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest)
+            public static ReplicationProtectedItem UpdateMobilityService(this IReplicationProtectedItemsOperations operations, string fabricName, string protectionContainerName, string replicatedProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest)
             {
-                return operations.UpdateMobilityServiceAsync(fabricName, protectionContainerName, replicationProtectedItemName, updateMobilityServiceRequest).GetAwaiter().GetResult();
+                return operations.UpdateMobilityServiceAsync(fabricName, protectionContainerName, replicatedProtectedItemName, updateMobilityServiceRequest).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -1197,7 +1197,7 @@ namespace Microsoft.Azure.Management.RecoveryServices.SiteRecovery
             /// <param name='protectionContainerName'>
             /// The name of the container containing the protected item.
             /// </param>
-            /// <param name='replicationProtectedItemName'>
+            /// <param name='replicatedProtectedItemName'>
             /// The name of the protected item on which the agent is to be updated.
             /// </param>
             /// <param name='updateMobilityServiceRequest'>
@@ -1206,9 +1206,9 @@ namespace Microsoft.Azure.Management.RecoveryServices.SiteRecovery
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<ReplicationProtectedItem> UpdateMobilityServiceAsync(this IReplicationProtectedItemsOperations operations, string fabricName, string protectionContainerName, string replicationProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<ReplicationProtectedItem> UpdateMobilityServiceAsync(this IReplicationProtectedItemsOperations operations, string fabricName, string protectionContainerName, string replicatedProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.UpdateMobilityServiceWithHttpMessagesAsync(fabricName, protectionContainerName, replicationProtectedItemName, updateMobilityServiceRequest, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.UpdateMobilityServiceWithHttpMessagesAsync(fabricName, protectionContainerName, replicatedProtectedItemName, updateMobilityServiceRequest, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -2310,15 +2310,15 @@ namespace Microsoft.Azure.Management.RecoveryServices.SiteRecovery
             /// <param name='protectionContainerName'>
             /// The name of the container containing the protected item.
             /// </param>
-            /// <param name='replicationProtectedItemName'>
+            /// <param name='replicatedProtectedItemName'>
             /// The name of the protected item on which the agent is to be updated.
             /// </param>
             /// <param name='updateMobilityServiceRequest'>
             /// Request to update the mobility service on the protected item.
             /// </param>
-            public static ReplicationProtectedItem BeginUpdateMobilityService(this IReplicationProtectedItemsOperations operations, string fabricName, string protectionContainerName, string replicationProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest)
+            public static ReplicationProtectedItem BeginUpdateMobilityService(this IReplicationProtectedItemsOperations operations, string fabricName, string protectionContainerName, string replicatedProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest)
             {
-                return operations.BeginUpdateMobilityServiceAsync(fabricName, protectionContainerName, replicationProtectedItemName, updateMobilityServiceRequest).GetAwaiter().GetResult();
+                return operations.BeginUpdateMobilityServiceAsync(fabricName, protectionContainerName, replicatedProtectedItemName, updateMobilityServiceRequest).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -2337,7 +2337,7 @@ namespace Microsoft.Azure.Management.RecoveryServices.SiteRecovery
             /// <param name='protectionContainerName'>
             /// The name of the container containing the protected item.
             /// </param>
-            /// <param name='replicationProtectedItemName'>
+            /// <param name='replicatedProtectedItemName'>
             /// The name of the protected item on which the agent is to be updated.
             /// </param>
             /// <param name='updateMobilityServiceRequest'>
@@ -2346,9 +2346,9 @@ namespace Microsoft.Azure.Management.RecoveryServices.SiteRecovery
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<ReplicationProtectedItem> BeginUpdateMobilityServiceAsync(this IReplicationProtectedItemsOperations operations, string fabricName, string protectionContainerName, string replicationProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<ReplicationProtectedItem> BeginUpdateMobilityServiceAsync(this IReplicationProtectedItemsOperations operations, string fabricName, string protectionContainerName, string replicatedProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.BeginUpdateMobilityServiceWithHttpMessagesAsync(fabricName, protectionContainerName, replicationProtectedItemName, updateMobilityServiceRequest, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.BeginUpdateMobilityServiceWithHttpMessagesAsync(fabricName, protectionContainerName, replicatedProtectedItemName, updateMobilityServiceRequest, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
