@@ -36,6 +36,7 @@ namespace Microsoft.Azure.Management.DataProtection.Models
         /// Initializes a new instance of the BackupVault class.
         /// </summary>
         /// <param name="storageSettings">Storage Settings</param>
+        /// <param name="monitoringSettings">Monitoring Settings</param>
         /// <param name="provisioningState">Provisioning state of the
         /// BackupVault resource. Possible values include: 'Failed',
         /// 'Provisioning', 'Succeeded', 'Unknown', 'Updating'</param>
@@ -46,12 +47,18 @@ namespace Microsoft.Azure.Management.DataProtection.Models
         /// 'MoveSucceeded'</param>
         /// <param name="resourceMoveDetails">Resource move details for backup
         /// vault</param>
-        public BackupVault(IList<StorageSetting> storageSettings, string provisioningState = default(string), string resourceMoveState = default(string), ResourceMoveDetails resourceMoveDetails = default(ResourceMoveDetails))
+        /// <param name="securitySettings">Security Settings</param>
+        /// <param name="isVaultProtectedByResourceGuard">Is vault protected by
+        /// resource guard</param>
+        public BackupVault(IList<StorageSetting> storageSettings, MonitoringSettings monitoringSettings = default(MonitoringSettings), string provisioningState = default(string), string resourceMoveState = default(string), ResourceMoveDetails resourceMoveDetails = default(ResourceMoveDetails), SecuritySettings securitySettings = default(SecuritySettings), bool? isVaultProtectedByResourceGuard = default(bool?))
         {
+            MonitoringSettings = monitoringSettings;
             ProvisioningState = provisioningState;
             ResourceMoveState = resourceMoveState;
             ResourceMoveDetails = resourceMoveDetails;
+            SecuritySettings = securitySettings;
             StorageSettings = storageSettings;
+            IsVaultProtectedByResourceGuard = isVaultProtectedByResourceGuard;
             CustomInit();
         }
 
@@ -59,6 +66,12 @@ namespace Microsoft.Azure.Management.DataProtection.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// Gets or sets monitoring Settings
+        /// </summary>
+        [JsonProperty(PropertyName = "monitoringSettings")]
+        public MonitoringSettings MonitoringSettings { get; set; }
 
         /// <summary>
         /// Gets provisioning state of the BackupVault resource. Possible
@@ -84,10 +97,22 @@ namespace Microsoft.Azure.Management.DataProtection.Models
         public ResourceMoveDetails ResourceMoveDetails { get; private set; }
 
         /// <summary>
+        /// Gets or sets security Settings
+        /// </summary>
+        [JsonProperty(PropertyName = "securitySettings")]
+        public SecuritySettings SecuritySettings { get; set; }
+
+        /// <summary>
         /// Gets or sets storage Settings
         /// </summary>
         [JsonProperty(PropertyName = "storageSettings")]
         public IList<StorageSetting> StorageSettings { get; set; }
+
+        /// <summary>
+        /// Gets or sets is vault protected by resource guard
+        /// </summary>
+        [JsonProperty(PropertyName = "isVaultProtectedByResourceGuard")]
+        public bool? IsVaultProtectedByResourceGuard { get; set; }
 
         /// <summary>
         /// Validate the object.

@@ -18,5 +18,6 @@ namespace Microsoft.Azure.Management.DataProtection.Models
     {
         public const string GeoRedundant = "GeoRedundant";
         public const string LocallyRedundant = "LocallyRedundant";
+        public const string ZoneRedundant = "ZoneRedundant";
     }
 }

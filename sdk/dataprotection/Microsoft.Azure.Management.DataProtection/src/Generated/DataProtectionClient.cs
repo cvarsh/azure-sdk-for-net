@@ -90,6 +90,16 @@ namespace Microsoft.Azure.Management.DataProtection
         public virtual IOperationStatusOperations OperationStatus { get; private set; }
 
         /// <summary>
+        /// Gets the IOperationStatusBackupVaultContextOperations.
+        /// </summary>
+        public virtual IOperationStatusBackupVaultContextOperations OperationStatusBackupVaultContext { get; private set; }
+
+        /// <summary>
+        /// Gets the IOperationStatusResourceGroupContextOperations.
+        /// </summary>
+        public virtual IOperationStatusResourceGroupContextOperations OperationStatusResourceGroupContext { get; private set; }
+
+        /// <summary>
         /// Gets the IBackupVaultOperationResultsOperations.
         /// </summary>
         public virtual IBackupVaultOperationResultsOperations BackupVaultOperationResults { get; private set; }
@@ -113,6 +123,11 @@ namespace Microsoft.Azure.Management.DataProtection
         /// Gets the IBackupInstancesOperations.
         /// </summary>
         public virtual IBackupInstancesOperations BackupInstances { get; private set; }
+
+        /// <summary>
+        /// Gets the IBackupInstancesExtensionRoutingOperations.
+        /// </summary>
+        public virtual IBackupInstancesExtensionRoutingOperations BackupInstancesExtensionRouting { get; private set; }
 
         /// <summary>
         /// Gets the IRecoveryPointsOperations.
@@ -140,9 +155,19 @@ namespace Microsoft.Azure.Management.DataProtection
         public virtual IExportJobsOperationResultOperations ExportJobsOperationResult { get; private set; }
 
         /// <summary>
+        /// Gets the IDeletedBackupInstancesOperations.
+        /// </summary>
+        public virtual IDeletedBackupInstancesOperations DeletedBackupInstances { get; private set; }
+
+        /// <summary>
         /// Gets the IResourceGuardsOperations.
         /// </summary>
         public virtual IResourceGuardsOperations ResourceGuards { get; private set; }
+
+        /// <summary>
+        /// Gets the IDppResourceGuardProxyOperations.
+        /// </summary>
+        public virtual IDppResourceGuardProxyOperations DppResourceGuardProxy { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the DataProtectionClient class.
@@ -388,19 +413,24 @@ namespace Microsoft.Azure.Management.DataProtection
             BackupVaults = new BackupVaultsOperations(this);
             OperationResult = new OperationResultOperations(this);
             OperationStatus = new OperationStatusOperations(this);
+            OperationStatusBackupVaultContext = new OperationStatusBackupVaultContextOperations(this);
+            OperationStatusResourceGroupContext = new OperationStatusResourceGroupContextOperations(this);
             BackupVaultOperationResults = new BackupVaultOperationResultsOperations(this);
             DataProtection = new DataProtectionOperations(this);
             DataProtectionOperations = new DataProtectionOperationsOperations(this);
             BackupPolicies = new BackupPoliciesOperations(this);
             BackupInstances = new BackupInstancesOperations(this);
+            BackupInstancesExtensionRouting = new BackupInstancesExtensionRoutingOperations(this);
             RecoveryPoints = new RecoveryPointsOperations(this);
             Jobs = new JobsOperations(this);
             RestorableTimeRanges = new RestorableTimeRangesOperations(this);
             ExportJobs = new ExportJobsOperations(this);
             ExportJobsOperationResult = new ExportJobsOperationResultOperations(this);
+            DeletedBackupInstances = new DeletedBackupInstancesOperations(this);
             ResourceGuards = new ResourceGuardsOperations(this);
+            DppResourceGuardProxy = new DppResourceGuardProxyOperations(this);
             BaseUri = new System.Uri("https://management.azure.com");
-            ApiVersion = "2021-07-01";
+            ApiVersion = "2022-10-01-preview";
             AcceptLanguage = "en-US";
             LongRunningOperationRetryTimeout = 30;
             GenerateClientRequestId = true;
