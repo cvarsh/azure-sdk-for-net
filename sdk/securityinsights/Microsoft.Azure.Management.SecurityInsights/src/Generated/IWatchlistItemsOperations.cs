@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
     public partial interface IWatchlistItemsOperations
     {
         /// <summary>
-        /// Gets all watchlist Items.
+        /// Get all watchlist Items.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// The name of the workspace.
         /// </param>
         /// <param name='watchlistAlias'>
-        /// Watchlist Alias
+        /// The watchlist alias
         /// </param>
         /// <param name='skipToken'>
         /// Skiptoken is only used if a previous operation returned a partial
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse<IPage<WatchlistItem>>> ListWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string watchlistAlias, string skipToken = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Gets a watchlist, without its watchlist items.
+        /// Get a watchlist item.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -68,10 +68,10 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// The name of the workspace.
         /// </param>
         /// <param name='watchlistAlias'>
-        /// Watchlist Alias
+        /// The watchlist alias
         /// </param>
         /// <param name='watchlistItemId'>
-        /// Watchlist Item Id (GUID)
+        /// The watchlist item id (GUID)
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -99,10 +99,10 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// The name of the workspace.
         /// </param>
         /// <param name='watchlistAlias'>
-        /// Watchlist Alias
+        /// The watchlist alias
         /// </param>
         /// <param name='watchlistItemId'>
-        /// Watchlist Item Id (GUID)
+        /// The watchlist item id (GUID)
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string watchlistAlias, string watchlistItemId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Creates or updates a watchlist item.
+        /// Create or update a watchlist item.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -127,10 +127,10 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// The name of the workspace.
         /// </param>
         /// <param name='watchlistAlias'>
-        /// Watchlist Alias
+        /// The watchlist alias
         /// </param>
         /// <param name='watchlistItemId'>
-        /// Watchlist Item Id (GUID)
+        /// The watchlist item id (GUID)
         /// </param>
         /// <param name='watchlistItem'>
         /// The watchlist item
@@ -152,7 +152,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse<WatchlistItem>> CreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string watchlistAlias, string watchlistItemId, WatchlistItem watchlistItem, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Gets all watchlist Items.
+        /// Get all watchlist Items.
         /// </summary>
         /// <param name='nextPageLink'>
         /// The NextLink from the previous successful call to List operation.

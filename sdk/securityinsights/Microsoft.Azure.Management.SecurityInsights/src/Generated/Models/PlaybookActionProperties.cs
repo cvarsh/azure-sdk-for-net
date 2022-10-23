@@ -10,6 +10,7 @@
 
 namespace Microsoft.Azure.Management.SecurityInsights.Models
 {
+    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Linq;
 
@@ -27,10 +28,10 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// Initializes a new instance of the PlaybookActionProperties class.
         /// </summary>
         /// <param name="logicAppResourceId">The resource id of the playbook
-        /// resource</param>
+        /// resource.</param>
         /// <param name="tenantId">The tenant id of the playbook
-        /// resource</param>
-        public PlaybookActionProperties(string logicAppResourceId = default(string), System.Guid? tenantId = default(System.Guid?))
+        /// resource.</param>
+        public PlaybookActionProperties(string logicAppResourceId, System.Guid? tenantId = default(System.Guid?))
         {
             LogicAppResourceId = logicAppResourceId;
             TenantId = tenantId;
@@ -43,16 +44,29 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the resource id of the playbook resource
+        /// Gets or sets the resource id of the playbook resource.
         /// </summary>
         [JsonProperty(PropertyName = "logicAppResourceId")]
         public string LogicAppResourceId { get; set; }
 
         /// <summary>
-        /// Gets or sets the tenant id of the playbook resource
+        /// Gets or sets the tenant id of the playbook resource.
         /// </summary>
         [JsonProperty(PropertyName = "tenantId")]
         public System.Guid? TenantId { get; set; }
 
+        /// <summary>
+        /// Validate the object.
+        /// </summary>
+        /// <exception cref="ValidationException">
+        /// Thrown if validation fails
+        /// </exception>
+        public virtual void Validate()
+        {
+            if (LogicAppResourceId == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "LogicAppResourceId");
+            }
+        }
     }
 }

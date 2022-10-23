@@ -91,64 +91,19 @@ namespace Microsoft.Azure.Management.SecurityInsights
         IAutomationRulesOperations AutomationRules { get; }
 
         /// <summary>
-        /// Gets the IIncidentsOperations.
-        /// </summary>
-        IIncidentsOperations Incidents { get; }
-
-        /// <summary>
         /// Gets the IBookmarksOperations.
         /// </summary>
         IBookmarksOperations Bookmarks { get; }
 
         /// <summary>
-        /// Gets the IBookmarkRelationsOperations.
+        /// Gets the IDataConnectorsOperations.
         /// </summary>
-        IBookmarkRelationsOperations BookmarkRelations { get; }
+        IDataConnectorsOperations DataConnectors { get; }
 
         /// <summary>
-        /// Gets the IBookmarkOperations.
+        /// Gets the IIncidentsOperations.
         /// </summary>
-        IBookmarkOperations Bookmark { get; }
-
-        /// <summary>
-        /// Gets the IIPGeodataOperations.
-        /// </summary>
-        IIPGeodataOperations IPGeodata { get; }
-
-        /// <summary>
-        /// Gets the IDomainWhoisOperations.
-        /// </summary>
-        IDomainWhoisOperations DomainWhois { get; }
-
-        /// <summary>
-        /// Gets the IEntitiesOperations.
-        /// </summary>
-        IEntitiesOperations Entities { get; }
-
-        /// <summary>
-        /// Gets the IEntitiesGetTimelineOperations.
-        /// </summary>
-        IEntitiesGetTimelineOperations EntitiesGetTimeline { get; }
-
-        /// <summary>
-        /// Gets the IEntitiesRelationsOperations.
-        /// </summary>
-        IEntitiesRelationsOperations EntitiesRelations { get; }
-
-        /// <summary>
-        /// Gets the IEntityRelationsOperations.
-        /// </summary>
-        IEntityRelationsOperations EntityRelations { get; }
-
-        /// <summary>
-        /// Gets the IEntityQueriesOperations.
-        /// </summary>
-        IEntityQueriesOperations EntityQueries { get; }
-
-        /// <summary>
-        /// Gets the IEntityQueryTemplatesOperations.
-        /// </summary>
-        IEntityQueryTemplatesOperations EntityQueryTemplates { get; }
+        IIncidentsOperations Incidents { get; }
 
         /// <summary>
         /// Gets the IIncidentCommentsOperations.
@@ -161,34 +116,14 @@ namespace Microsoft.Azure.Management.SecurityInsights
         IIncidentRelationsOperations IncidentRelations { get; }
 
         /// <summary>
-        /// Gets the IMetadataOperations.
-        /// </summary>
-        IMetadataOperations Metadata { get; }
-
-        /// <summary>
-        /// Gets the IOfficeConsentsOperations.
-        /// </summary>
-        IOfficeConsentsOperations OfficeConsents { get; }
-
-        /// <summary>
         /// Gets the ISentinelOnboardingStatesOperations.
         /// </summary>
         ISentinelOnboardingStatesOperations SentinelOnboardingStates { get; }
 
         /// <summary>
-        /// Gets the IProductSettingsOperations.
+        /// Gets the ISecurityMLAnalyticsSettingsOperations.
         /// </summary>
-        IProductSettingsOperations ProductSettings { get; }
-
-        /// <summary>
-        /// Gets the ISourceControlOperations.
-        /// </summary>
-        ISourceControlOperations SourceControl { get; }
-
-        /// <summary>
-        /// Gets the ISourceControlsOperations.
-        /// </summary>
-        ISourceControlsOperations SourceControls { get; }
+        ISecurityMLAnalyticsSettingsOperations SecurityMLAnalyticsSettings { get; }
 
         /// <summary>
         /// Gets the IThreatIntelligenceIndicatorOperations.
@@ -214,16 +149,6 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// Gets the IWatchlistItemsOperations.
         /// </summary>
         IWatchlistItemsOperations WatchlistItems { get; }
-
-        /// <summary>
-        /// Gets the IDataConnectorsOperations.
-        /// </summary>
-        IDataConnectorsOperations DataConnectors { get; }
-
-        /// <summary>
-        /// Gets the IDataConnectorsCheckRequirementsOperations.
-        /// </summary>
-        IDataConnectorsCheckRequirementsOperations DataConnectorsCheckRequirements { get; }
 
         /// <summary>
         /// Gets the IOperations.

@@ -41,8 +41,7 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// cases will be generated. Possible values include: 'Microsoft Cloud
         /// App Security', 'Azure Security Center', 'Azure Advanced Threat
         /// Protection', 'Azure Active Directory Identity Protection', 'Azure
-        /// Security Center for IoT', 'Office 365 Advanced Threat Protection',
-        /// 'Microsoft Defender Advanced Threat Protection'</param>
+        /// Security Center for IoT'</param>
         /// <param name="displayName">The display name for alerts created by
         /// this alert rule.</param>
         /// <param name="enabled">Determines whether this alert rule is enabled
@@ -107,8 +106,7 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// generated. Possible values include: 'Microsoft Cloud App Security',
         /// 'Azure Security Center', 'Azure Advanced Threat Protection', 'Azure
         /// Active Directory Identity Protection', 'Azure Security Center for
-        /// IoT', 'Office 365 Advanced Threat Protection', 'Microsoft Defender
-        /// Advanced Threat Protection'
+        /// IoT'
         /// </summary>
         [JsonProperty(PropertyName = "properties.productFilter")]
         public string ProductFilter { get; set; }

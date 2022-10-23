@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
     public partial interface IIncidentCommentsOperations
     {
         /// <summary>
-        /// Gets all incident comments.
+        /// Gets all comments for a given incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse<IPage<IncidentComment>>> ListWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string incidentId, ODataQuery<IncidentComment> odataQuery = default(ODataQuery<IncidentComment>), string skipToken = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Gets an incident comment.
+        /// Gets a comment for a given incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse<IncidentComment>> GetWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string incidentId, string incidentCommentId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Creates or updates the incident comment.
+        /// Creates or updates a comment for a given incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -131,7 +131,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse<IncidentComment>> CreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string incidentId, string incidentCommentId, string message, string etag = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Delete the incident comment.
+        /// Deletes a comment for a given incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -159,7 +159,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string incidentId, string incidentCommentId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Gets all incident comments.
+        /// Gets all comments for a given incident.
         /// </summary>
         /// <param name='nextPageLink'>
         /// The NextLink from the previous successful call to List operation.

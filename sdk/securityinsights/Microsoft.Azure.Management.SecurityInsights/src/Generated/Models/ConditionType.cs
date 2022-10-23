@@ -20,5 +20,13 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// Evaluate an object property value
         /// </summary>
         public const string Property = "Property";
+        /// <summary>
+        /// Evaluate an object property changed value
+        /// </summary>
+        public const string PropertyChanged = "PropertyChanged";
+        /// <summary>
+        /// Evaluate an object array property changed value
+        /// </summary>
+        public const string PropertyArrayChanged = "PropertyArrayChanged";
     }
 }

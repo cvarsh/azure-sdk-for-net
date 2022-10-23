@@ -96,64 +96,19 @@ namespace Microsoft.Azure.Management.SecurityInsights
         public virtual IAutomationRulesOperations AutomationRules { get; private set; }
 
         /// <summary>
-        /// Gets the IIncidentsOperations.
-        /// </summary>
-        public virtual IIncidentsOperations Incidents { get; private set; }
-
-        /// <summary>
         /// Gets the IBookmarksOperations.
         /// </summary>
         public virtual IBookmarksOperations Bookmarks { get; private set; }
 
         /// <summary>
-        /// Gets the IBookmarkRelationsOperations.
+        /// Gets the IDataConnectorsOperations.
         /// </summary>
-        public virtual IBookmarkRelationsOperations BookmarkRelations { get; private set; }
+        public virtual IDataConnectorsOperations DataConnectors { get; private set; }
 
         /// <summary>
-        /// Gets the IBookmarkOperations.
+        /// Gets the IIncidentsOperations.
         /// </summary>
-        public virtual IBookmarkOperations Bookmark { get; private set; }
-
-        /// <summary>
-        /// Gets the IIPGeodataOperations.
-        /// </summary>
-        public virtual IIPGeodataOperations IPGeodata { get; private set; }
-
-        /// <summary>
-        /// Gets the IDomainWhoisOperations.
-        /// </summary>
-        public virtual IDomainWhoisOperations DomainWhois { get; private set; }
-
-        /// <summary>
-        /// Gets the IEntitiesOperations.
-        /// </summary>
-        public virtual IEntitiesOperations Entities { get; private set; }
-
-        /// <summary>
-        /// Gets the IEntitiesGetTimelineOperations.
-        /// </summary>
-        public virtual IEntitiesGetTimelineOperations EntitiesGetTimeline { get; private set; }
-
-        /// <summary>
-        /// Gets the IEntitiesRelationsOperations.
-        /// </summary>
-        public virtual IEntitiesRelationsOperations EntitiesRelations { get; private set; }
-
-        /// <summary>
-        /// Gets the IEntityRelationsOperations.
-        /// </summary>
-        public virtual IEntityRelationsOperations EntityRelations { get; private set; }
-
-        /// <summary>
-        /// Gets the IEntityQueriesOperations.
-        /// </summary>
-        public virtual IEntityQueriesOperations EntityQueries { get; private set; }
-
-        /// <summary>
-        /// Gets the IEntityQueryTemplatesOperations.
-        /// </summary>
-        public virtual IEntityQueryTemplatesOperations EntityQueryTemplates { get; private set; }
+        public virtual IIncidentsOperations Incidents { get; private set; }
 
         /// <summary>
         /// Gets the IIncidentCommentsOperations.
@@ -166,34 +121,14 @@ namespace Microsoft.Azure.Management.SecurityInsights
         public virtual IIncidentRelationsOperations IncidentRelations { get; private set; }
 
         /// <summary>
-        /// Gets the IMetadataOperations.
-        /// </summary>
-        public virtual IMetadataOperations Metadata { get; private set; }
-
-        /// <summary>
-        /// Gets the IOfficeConsentsOperations.
-        /// </summary>
-        public virtual IOfficeConsentsOperations OfficeConsents { get; private set; }
-
-        /// <summary>
         /// Gets the ISentinelOnboardingStatesOperations.
         /// </summary>
         public virtual ISentinelOnboardingStatesOperations SentinelOnboardingStates { get; private set; }
 
         /// <summary>
-        /// Gets the IProductSettingsOperations.
+        /// Gets the ISecurityMLAnalyticsSettingsOperations.
         /// </summary>
-        public virtual IProductSettingsOperations ProductSettings { get; private set; }
-
-        /// <summary>
-        /// Gets the ISourceControlOperations.
-        /// </summary>
-        public virtual ISourceControlOperations SourceControl { get; private set; }
-
-        /// <summary>
-        /// Gets the ISourceControlsOperations.
-        /// </summary>
-        public virtual ISourceControlsOperations SourceControls { get; private set; }
+        public virtual ISecurityMLAnalyticsSettingsOperations SecurityMLAnalyticsSettings { get; private set; }
 
         /// <summary>
         /// Gets the IThreatIntelligenceIndicatorOperations.
@@ -219,16 +154,6 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// Gets the IWatchlistItemsOperations.
         /// </summary>
         public virtual IWatchlistItemsOperations WatchlistItems { get; private set; }
-
-        /// <summary>
-        /// Gets the IDataConnectorsOperations.
-        /// </summary>
-        public virtual IDataConnectorsOperations DataConnectors { get; private set; }
-
-        /// <summary>
-        /// Gets the IDataConnectorsCheckRequirementsOperations.
-        /// </summary>
-        public virtual IDataConnectorsCheckRequirementsOperations DataConnectorsCheckRequirements { get; private set; }
 
         /// <summary>
         /// Gets the IOperations.
@@ -480,36 +405,21 @@ namespace Microsoft.Azure.Management.SecurityInsights
             Actions = new ActionsOperations(this);
             AlertRuleTemplates = new AlertRuleTemplatesOperations(this);
             AutomationRules = new AutomationRulesOperations(this);
-            Incidents = new IncidentsOperations(this);
             Bookmarks = new BookmarksOperations(this);
-            BookmarkRelations = new BookmarkRelationsOperations(this);
-            Bookmark = new BookmarkOperations(this);
-            IPGeodata = new IPGeodataOperations(this);
-            DomainWhois = new DomainWhoisOperations(this);
-            Entities = new EntitiesOperations(this);
-            EntitiesGetTimeline = new EntitiesGetTimelineOperations(this);
-            EntitiesRelations = new EntitiesRelationsOperations(this);
-            EntityRelations = new EntityRelationsOperations(this);
-            EntityQueries = new EntityQueriesOperations(this);
-            EntityQueryTemplates = new EntityQueryTemplatesOperations(this);
+            DataConnectors = new DataConnectorsOperations(this);
+            Incidents = new IncidentsOperations(this);
             IncidentComments = new IncidentCommentsOperations(this);
             IncidentRelations = new IncidentRelationsOperations(this);
-            Metadata = new MetadataOperations(this);
-            OfficeConsents = new OfficeConsentsOperations(this);
             SentinelOnboardingStates = new SentinelOnboardingStatesOperations(this);
-            ProductSettings = new ProductSettingsOperations(this);
-            SourceControl = new SourceControlOperations(this);
-            SourceControls = new SourceControlsOperations(this);
+            SecurityMLAnalyticsSettings = new SecurityMLAnalyticsSettingsOperations(this);
             ThreatIntelligenceIndicator = new ThreatIntelligenceIndicatorOperations(this);
             ThreatIntelligenceIndicators = new ThreatIntelligenceIndicatorsOperations(this);
             ThreatIntelligenceIndicatorMetrics = new ThreatIntelligenceIndicatorMetricsOperations(this);
             Watchlists = new WatchlistsOperations(this);
             WatchlistItems = new WatchlistItemsOperations(this);
-            DataConnectors = new DataConnectorsOperations(this);
-            DataConnectorsCheckRequirements = new DataConnectorsCheckRequirementsOperations(this);
             Operations = new Operations(this);
             BaseUri = new System.Uri("https://management.azure.com");
-            ApiVersion = "2022-01-01-preview";
+            ApiVersion = "2022-11-01";
             AcceptLanguage = "en-US";
             LongRunningOperationRetryTimeout = 30;
             GenerateClientRequestId = true;
@@ -547,26 +457,14 @@ namespace Microsoft.Azure.Management.SecurityInsights
             DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<AutomationRuleCondition>("conditionType"));
             SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<AutomationRuleAction>("actionType"));
             DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<AutomationRuleAction>("actionType"));
-            SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<Entity>("kind"));
-            DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<Entity>("kind"));
-            SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<EntityTimelineItem>("kind"));
-            DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<EntityTimelineItem>("kind"));
-            SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<EntityQueryItem>("kind"));
-            DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<EntityQueryItem>("kind"));
-            SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<EntityQuery>("kind"));
-            DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<EntityQuery>("kind"));
-            SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<CustomEntityQuery>("kind"));
-            DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<CustomEntityQuery>("kind"));
-            SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<EntityQueryTemplate>("kind"));
-            DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<EntityQueryTemplate>("kind"));
-            SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<Settings>("kind"));
-            DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<Settings>("kind"));
-            SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<ThreatIntelligenceInformation>("kind"));
-            DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<ThreatIntelligenceInformation>("kind"));
-            SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<DataConnectorsCheckRequirements>("kind"));
-            DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<DataConnectorsCheckRequirements>("kind"));
             SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<DataConnector>("kind"));
             DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<DataConnector>("kind"));
+            SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<Entity>("kind"));
+            DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<Entity>("kind"));
+            SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<SecurityMLAnalyticsSetting>("kind"));
+            DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<SecurityMLAnalyticsSetting>("kind"));
+            SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<ThreatIntelligenceInformation>("kind"));
+            DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<ThreatIntelligenceInformation>("kind"));
             CustomInitialize();
             DeserializationSettings.Converters.Add(new TransformationJsonConverter());
             DeserializationSettings.Converters.Add(new CloudErrorJsonConverter());

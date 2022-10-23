@@ -22,58 +22,6 @@ namespace Microsoft.Azure.Management.SecurityInsights
     public static partial class IncidentsOperationsExtensions
     {
             /// <summary>
-            /// Triggers playbook on a specific incident
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='resourceGroupName'>
-            /// The name of the resource group. The name is case insensitive.
-            /// </param>
-            /// <param name='workspaceName'>
-            /// The name of the workspace.
-            /// </param>
-            /// <param name='incidentIdentifier'>
-            /// </param>
-            /// <param name='tenantId'>
-            /// </param>
-            /// <param name='logicAppsResourceId'>
-            /// </param>
-            public static object RunPlaybook(this IIncidentsOperations operations, string resourceGroupName, string workspaceName, string incidentIdentifier, System.Guid? tenantId = default(System.Guid?), string logicAppsResourceId = default(string))
-            {
-                return operations.RunPlaybookAsync(resourceGroupName, workspaceName, incidentIdentifier, tenantId, logicAppsResourceId).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Triggers playbook on a specific incident
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='resourceGroupName'>
-            /// The name of the resource group. The name is case insensitive.
-            /// </param>
-            /// <param name='workspaceName'>
-            /// The name of the workspace.
-            /// </param>
-            /// <param name='incidentIdentifier'>
-            /// </param>
-            /// <param name='tenantId'>
-            /// </param>
-            /// <param name='logicAppsResourceId'>
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<object> RunPlaybookAsync(this IIncidentsOperations operations, string resourceGroupName, string workspaceName, string incidentIdentifier, System.Guid? tenantId = default(System.Guid?), string logicAppsResourceId = default(string), CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.RunPlaybookWithHttpMessagesAsync(resourceGroupName, workspaceName, incidentIdentifier, tenantId, logicAppsResourceId, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
             /// Gets all incidents.
             /// </summary>
             /// <param name='operations'>
@@ -144,7 +92,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets an incident.
+            /// Gets a given incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -164,7 +112,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets an incident.
+            /// Gets a given incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -190,7 +138,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Creates or updates the incident.
+            /// Creates or updates an incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -213,7 +161,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Creates or updates the incident.
+            /// Creates or updates an incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -242,7 +190,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Delete the incident.
+            /// Deletes a given incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -262,7 +210,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Delete the incident.
+            /// Deletes a given incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -285,61 +233,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Creates a Microsoft team to investigate the incident by sharing information
-            /// and insights between participants.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='resourceGroupName'>
-            /// The name of the resource group. The name is case insensitive.
-            /// </param>
-            /// <param name='workspaceName'>
-            /// The name of the workspace.
-            /// </param>
-            /// <param name='incidentId'>
-            /// Incident ID
-            /// </param>
-            /// <param name='teamProperties'>
-            /// Team properties
-            /// </param>
-            public static TeamInformation CreateTeam(this IIncidentsOperations operations, string resourceGroupName, string workspaceName, string incidentId, TeamProperties teamProperties)
-            {
-                return operations.CreateTeamAsync(resourceGroupName, workspaceName, incidentId, teamProperties).GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Creates a Microsoft team to investigate the incident by sharing information
-            /// and insights between participants.
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='resourceGroupName'>
-            /// The name of the resource group. The name is case insensitive.
-            /// </param>
-            /// <param name='workspaceName'>
-            /// The name of the workspace.
-            /// </param>
-            /// <param name='incidentId'>
-            /// Incident ID
-            /// </param>
-            /// <param name='teamProperties'>
-            /// Team properties
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<TeamInformation> CreateTeamAsync(this IIncidentsOperations operations, string resourceGroupName, string workspaceName, string incidentId, TeamProperties teamProperties, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.CreateTeamWithHttpMessagesAsync(resourceGroupName, workspaceName, incidentId, teamProperties, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Gets all incident alerts.
+            /// Gets all alerts for an incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -359,7 +253,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets all incident alerts.
+            /// Gets all alerts for an incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -385,7 +279,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets all incident bookmarks.
+            /// Gets all bookmarks for an incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -405,7 +299,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets all incident bookmarks.
+            /// Gets all bookmarks for an incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -431,7 +325,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets all incident related entities.
+            /// Gets all entities for an incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -451,7 +345,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets all incident related entities.
+            /// Gets all entities for an incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.

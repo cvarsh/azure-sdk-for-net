@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
     public static partial class WatchlistItemsOperationsExtensions
     {
             /// <summary>
-            /// Gets all watchlist Items.
+            /// Get all watchlist Items.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             /// The name of the workspace.
             /// </param>
             /// <param name='watchlistAlias'>
-            /// Watchlist Alias
+            /// The watchlist alias
             /// </param>
             /// <param name='skipToken'>
             /// Skiptoken is only used if a previous operation returned a partial result.
@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets all watchlist Items.
+            /// Get all watchlist Items.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             /// The name of the workspace.
             /// </param>
             /// <param name='watchlistAlias'>
-            /// Watchlist Alias
+            /// The watchlist alias
             /// </param>
             /// <param name='skipToken'>
             /// Skiptoken is only used if a previous operation returned a partial result.
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets a watchlist, without its watchlist items.
+            /// Get a watchlist item.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -92,10 +92,10 @@ namespace Microsoft.Azure.Management.SecurityInsights
             /// The name of the workspace.
             /// </param>
             /// <param name='watchlistAlias'>
-            /// Watchlist Alias
+            /// The watchlist alias
             /// </param>
             /// <param name='watchlistItemId'>
-            /// Watchlist Item Id (GUID)
+            /// The watchlist item id (GUID)
             /// </param>
             public static WatchlistItem Get(this IWatchlistItemsOperations operations, string resourceGroupName, string workspaceName, string watchlistAlias, string watchlistItemId)
             {
@@ -103,7 +103,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets a watchlist, without its watchlist items.
+            /// Get a watchlist item.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -115,10 +115,10 @@ namespace Microsoft.Azure.Management.SecurityInsights
             /// The name of the workspace.
             /// </param>
             /// <param name='watchlistAlias'>
-            /// Watchlist Alias
+            /// The watchlist alias
             /// </param>
             /// <param name='watchlistItemId'>
-            /// Watchlist Item Id (GUID)
+            /// The watchlist item id (GUID)
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -144,10 +144,10 @@ namespace Microsoft.Azure.Management.SecurityInsights
             /// The name of the workspace.
             /// </param>
             /// <param name='watchlistAlias'>
-            /// Watchlist Alias
+            /// The watchlist alias
             /// </param>
             /// <param name='watchlistItemId'>
-            /// Watchlist Item Id (GUID)
+            /// The watchlist item id (GUID)
             /// </param>
             public static void Delete(this IWatchlistItemsOperations operations, string resourceGroupName, string workspaceName, string watchlistAlias, string watchlistItemId)
             {
@@ -167,10 +167,10 @@ namespace Microsoft.Azure.Management.SecurityInsights
             /// The name of the workspace.
             /// </param>
             /// <param name='watchlistAlias'>
-            /// Watchlist Alias
+            /// The watchlist alias
             /// </param>
             /// <param name='watchlistItemId'>
-            /// Watchlist Item Id (GUID)
+            /// The watchlist item id (GUID)
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -181,7 +181,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Creates or updates a watchlist item.
+            /// Create or update a watchlist item.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -193,10 +193,10 @@ namespace Microsoft.Azure.Management.SecurityInsights
             /// The name of the workspace.
             /// </param>
             /// <param name='watchlistAlias'>
-            /// Watchlist Alias
+            /// The watchlist alias
             /// </param>
             /// <param name='watchlistItemId'>
-            /// Watchlist Item Id (GUID)
+            /// The watchlist item id (GUID)
             /// </param>
             /// <param name='watchlistItem'>
             /// The watchlist item
@@ -207,7 +207,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Creates or updates a watchlist item.
+            /// Create or update a watchlist item.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -219,10 +219,10 @@ namespace Microsoft.Azure.Management.SecurityInsights
             /// The name of the workspace.
             /// </param>
             /// <param name='watchlistAlias'>
-            /// Watchlist Alias
+            /// The watchlist alias
             /// </param>
             /// <param name='watchlistItemId'>
-            /// Watchlist Item Id (GUID)
+            /// The watchlist item id (GUID)
             /// </param>
             /// <param name='watchlistItem'>
             /// The watchlist item
@@ -239,7 +239,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets all watchlist Items.
+            /// Get all watchlist Items.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -253,7 +253,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets all watchlist Items.
+            /// Get all watchlist Items.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.

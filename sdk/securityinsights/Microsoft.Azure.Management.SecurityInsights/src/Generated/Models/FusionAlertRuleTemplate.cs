@@ -62,10 +62,9 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// 'Informational'</param>
         /// <param name="tactics">The tactics of the alert rule
         /// template</param>
-        /// <param name="techniques">The techniques of the alert rule</param>
-        /// <param name="sourceSettings">All supported source signal
-        /// configurations consumed in fusion detection.</param>
-        public FusionAlertRuleTemplate(string id = default(string), string name = default(string), string type = default(string), SystemData systemData = default(SystemData), int? alertRulesCreatedByTemplateCount = default(int?), System.DateTime? createdDateUTC = default(System.DateTime?), System.DateTime? lastUpdatedDateUTC = default(System.DateTime?), string description = default(string), string displayName = default(string), IList<AlertRuleTemplateDataSource> requiredDataConnectors = default(IList<AlertRuleTemplateDataSource>), string status = default(string), string severity = default(string), IList<string> tactics = default(IList<string>), IList<string> techniques = default(IList<string>), IList<FusionTemplateSourceSetting> sourceSettings = default(IList<FusionTemplateSourceSetting>))
+        /// <param name="techniques">The techniques of the alert rule
+        /// template</param>
+        public FusionAlertRuleTemplate(string id = default(string), string name = default(string), string type = default(string), SystemData systemData = default(SystemData), int? alertRulesCreatedByTemplateCount = default(int?), System.DateTime? createdDateUTC = default(System.DateTime?), System.DateTime? lastUpdatedDateUTC = default(System.DateTime?), string description = default(string), string displayName = default(string), IList<AlertRuleTemplateDataSource> requiredDataConnectors = default(IList<AlertRuleTemplateDataSource>), string status = default(string), string severity = default(string), IList<string> tactics = default(IList<string>), IList<string> techniques = default(IList<string>))
             : base(id, name, type, systemData)
         {
             AlertRulesCreatedByTemplateCount = alertRulesCreatedByTemplateCount;
@@ -78,7 +77,6 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
             Severity = severity;
             Tactics = tactics;
             Techniques = techniques;
-            SourceSettings = sourceSettings;
             CustomInit();
         }
 
@@ -145,17 +143,10 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         public IList<string> Tactics { get; set; }
 
         /// <summary>
-        /// Gets or sets the techniques of the alert rule
+        /// Gets or sets the techniques of the alert rule template
         /// </summary>
         [JsonProperty(PropertyName = "properties.techniques")]
         public IList<string> Techniques { get; set; }
-
-        /// <summary>
-        /// Gets or sets all supported source signal configurations consumed in
-        /// fusion detection.
-        /// </summary>
-        [JsonProperty(PropertyName = "properties.sourceSettings")]
-        public IList<FusionTemplateSourceSetting> SourceSettings { get; set; }
 
     }
 }

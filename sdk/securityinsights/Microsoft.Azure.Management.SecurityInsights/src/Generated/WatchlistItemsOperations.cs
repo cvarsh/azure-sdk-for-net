@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         public SecurityInsights Client { get; private set; }
 
         /// <summary>
-        /// Gets all watchlist Items.
+        /// Get all watchlist Items.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// The name of the workspace.
         /// </param>
         /// <param name='watchlistAlias'>
-        /// Watchlist Alias
+        /// The watchlist alias
         /// </param>
         /// <param name='skipToken'>
         /// Skiptoken is only used if a previous operation returned a partial result.
@@ -156,8 +156,8 @@ namespace Microsoft.Azure.Management.SecurityInsights
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
                 tracingParameters.Add("resourceGroupName", resourceGroupName);
                 tracingParameters.Add("workspaceName", workspaceName);
-                tracingParameters.Add("skipToken", skipToken);
                 tracingParameters.Add("watchlistAlias", watchlistAlias);
+                tracingParameters.Add("skipToken", skipToken);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "List", tracingParameters);
             }
@@ -303,7 +303,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         }
 
         /// <summary>
-        /// Gets a watchlist, without its watchlist items.
+        /// Get a watchlist item.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -312,10 +312,10 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// The name of the workspace.
         /// </param>
         /// <param name='watchlistAlias'>
-        /// Watchlist Alias
+        /// The watchlist alias
         /// </param>
         /// <param name='watchlistItemId'>
-        /// Watchlist Item Id (GUID)
+        /// The watchlist item id (GUID)
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -562,10 +562,10 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// The name of the workspace.
         /// </param>
         /// <param name='watchlistAlias'>
-        /// Watchlist Alias
+        /// The watchlist alias
         /// </param>
         /// <param name='watchlistItemId'>
-        /// Watchlist Item Id (GUID)
+        /// The watchlist item id (GUID)
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -782,7 +782,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         }
 
         /// <summary>
-        /// Creates or updates a watchlist item.
+        /// Create or update a watchlist item.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -791,10 +791,10 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// The name of the workspace.
         /// </param>
         /// <param name='watchlistAlias'>
-        /// Watchlist Alias
+        /// The watchlist alias
         /// </param>
         /// <param name='watchlistItemId'>
-        /// Watchlist Item Id (GUID)
+        /// The watchlist item id (GUID)
         /// </param>
         /// <param name='watchlistItem'>
         /// The watchlist item
@@ -1068,7 +1068,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         }
 
         /// <summary>
-        /// Gets all watchlist Items.
+        /// Get all watchlist Items.
         /// </summary>
         /// <param name='nextPageLink'>
         /// The NextLink from the previous successful call to List operation.

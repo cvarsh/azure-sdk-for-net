@@ -72,18 +72,5 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         [JsonProperty(PropertyName = "properties.subscriptionId")]
         public string SubscriptionId { get; set; }
 
-        /// <summary>
-        /// Validate the object.
-        /// </summary>
-        /// <exception cref="ValidationException">
-        /// Thrown if validation fails
-        /// </exception>
-        public virtual void Validate()
-        {
-            if (DataTypes != null)
-            {
-                DataTypes.Validate();
-            }
-        }
     }
 }

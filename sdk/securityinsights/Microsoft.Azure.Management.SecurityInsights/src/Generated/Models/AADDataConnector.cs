@@ -33,8 +33,6 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// <summary>
         /// Initializes a new instance of the AADDataConnector class.
         /// </summary>
-        /// <param name="tenantId">The tenant id to connect to, and get the
-        /// data from.</param>
         /// <param name="id">Fully qualified resource ID for the resource. Ex -
         /// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}</param>
         /// <param name="name">The name of the resource</param>
@@ -44,9 +42,11 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// <param name="systemData">Azure Resource Manager metadata containing
         /// createdBy and modifiedBy information.</param>
         /// <param name="etag">Etag of the azure resource</param>
+        /// <param name="tenantId">The tenant id to connect to, and get the
+        /// data from.</param>
         /// <param name="dataTypes">The available data types for the
         /// connector.</param>
-        public AADDataConnector(string tenantId, string id = default(string), string name = default(string), string type = default(string), SystemData systemData = default(SystemData), string etag = default(string), AlertsDataTypeOfDataConnector dataTypes = default(AlertsDataTypeOfDataConnector))
+        public AADDataConnector(string id = default(string), string name = default(string), string type = default(string), SystemData systemData = default(SystemData), string etag = default(string), string tenantId = default(string), AlertsDataTypeOfDataConnector dataTypes = default(AlertsDataTypeOfDataConnector))
             : base(id, name, type, systemData, etag)
         {
             TenantId = tenantId;
@@ -71,22 +71,5 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         [JsonProperty(PropertyName = "properties.dataTypes")]
         public AlertsDataTypeOfDataConnector DataTypes { get; set; }
 
-        /// <summary>
-        /// Validate the object.
-        /// </summary>
-        /// <exception cref="ValidationException">
-        /// Thrown if validation fails
-        /// </exception>
-        public virtual void Validate()
-        {
-            if (TenantId == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "TenantId");
-            }
-            if (DataTypes != null)
-            {
-                DataTypes.Validate();
-            }
-        }
     }
 }

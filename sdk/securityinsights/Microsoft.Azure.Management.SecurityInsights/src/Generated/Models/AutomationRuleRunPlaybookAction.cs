@@ -58,6 +58,10 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         public override void Validate()
         {
             base.Validate();
+            if (ActionConfiguration != null)
+            {
+                ActionConfiguration.Validate();
+            }
         }
     }
 }

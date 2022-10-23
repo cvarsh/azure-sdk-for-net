@@ -24,37 +24,6 @@ namespace Microsoft.Azure.Management.SecurityInsights
     public partial interface IIncidentsOperations
     {
         /// <summary>
-        /// Triggers playbook on a specific incident
-        /// </summary>
-        /// <param name='resourceGroupName'>
-        /// The name of the resource group. The name is case insensitive.
-        /// </param>
-        /// <param name='workspaceName'>
-        /// The name of the workspace.
-        /// </param>
-        /// <param name='incidentIdentifier'>
-        /// </param>
-        /// <param name='tenantId'>
-        /// </param>
-        /// <param name='logicAppsResourceId'>
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Microsoft.Rest.Azure.CloudException">
-        /// Thrown when the operation returned an invalid status code
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        Task<AzureOperationResponse<object>> RunPlaybookWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string incidentIdentifier, System.Guid? tenantId = default(System.Guid?), string logicAppsResourceId = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-        /// <summary>
         /// Gets all incidents.
         /// </summary>
         /// <param name='resourceGroupName'>
@@ -96,7 +65,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse<IPage<Incident>>> ListWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string filter = default(string), string orderby = default(string), int? top = default(int?), string skipToken = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Gets an incident.
+        /// Gets a given incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -124,7 +93,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse<Incident>> GetWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string incidentId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Creates or updates the incident.
+        /// Creates or updates an incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -155,7 +124,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse<Incident>> CreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string incidentId, Incident incident, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Delete the incident.
+        /// Deletes a given incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -180,39 +149,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string incidentId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Creates a Microsoft team to investigate the incident by sharing
-        /// information and insights between participants.
-        /// </summary>
-        /// <param name='resourceGroupName'>
-        /// The name of the resource group. The name is case insensitive.
-        /// </param>
-        /// <param name='workspaceName'>
-        /// The name of the workspace.
-        /// </param>
-        /// <param name='incidentId'>
-        /// Incident ID
-        /// </param>
-        /// <param name='teamProperties'>
-        /// Team properties
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Microsoft.Rest.Azure.CloudException">
-        /// Thrown when the operation returned an invalid status code
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        Task<AzureOperationResponse<TeamInformation>> CreateTeamWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string incidentId, TeamProperties teamProperties, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-        /// <summary>
-        /// Gets all incident alerts.
+        /// Gets all alerts for an incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -240,7 +177,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse<IncidentAlertList>> ListAlertsWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string incidentId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Gets all incident bookmarks.
+        /// Gets all bookmarks for an incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -268,7 +205,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse<IncidentBookmarkList>> ListBookmarksWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string incidentId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Gets all incident related entities.
+        /// Gets all entities for an incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.

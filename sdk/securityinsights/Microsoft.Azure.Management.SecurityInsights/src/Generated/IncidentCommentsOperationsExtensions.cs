@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
     public static partial class IncidentCommentsOperationsExtensions
     {
             /// <summary>
-            /// Gets all incident comments.
+            /// Gets all comments for a given incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets all incident comments.
+            /// Gets all comments for a given incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets an incident comment.
+            /// Gets a comment for a given incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -110,7 +110,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets an incident comment.
+            /// Gets a comment for a given incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -139,7 +139,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Creates or updates the incident comment.
+            /// Creates or updates a comment for a given incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -168,7 +168,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Creates or updates the incident comment.
+            /// Creates or updates a comment for a given incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -203,7 +203,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Delete the incident comment.
+            /// Deletes a comment for a given incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -226,7 +226,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Delete the incident comment.
+            /// Deletes a comment for a given incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -252,7 +252,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets all incident comments.
+            /// Gets all comments for a given incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -266,7 +266,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets all incident comments.
+            /// Gets all comments for a given incident.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.

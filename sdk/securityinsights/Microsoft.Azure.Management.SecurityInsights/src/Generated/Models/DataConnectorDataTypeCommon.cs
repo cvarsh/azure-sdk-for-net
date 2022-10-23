@@ -10,7 +10,6 @@
 
 namespace Microsoft.Azure.Management.SecurityInsights.Models
 {
-    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Linq;
 
@@ -35,7 +34,7 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// <param name="state">Describe whether this data type connection is
         /// enabled or not. Possible values include: 'Enabled',
         /// 'Disabled'</param>
-        public DataConnectorDataTypeCommon(string state)
+        public DataConnectorDataTypeCommon(string state = default(string))
         {
             State = state;
             CustomInit();
@@ -53,18 +52,5 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         [JsonProperty(PropertyName = "state")]
         public string State { get; set; }
 
-        /// <summary>
-        /// Validate the object.
-        /// </summary>
-        /// <exception cref="ValidationException">
-        /// Thrown if validation fails
-        /// </exception>
-        public virtual void Validate()
-        {
-            if (State == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "State");
-            }
-        }
     }
 }

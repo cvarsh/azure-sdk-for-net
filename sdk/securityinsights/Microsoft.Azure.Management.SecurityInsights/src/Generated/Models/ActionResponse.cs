@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
     /// Action for alert rule.
     /// </summary>
     [Rest.Serialization.JsonTransformation]
-    public partial class ActionResponse : ResourceWithEtag
+    public partial class ActionResponse : Resource
     {
         /// <summary>
         /// Initializes a new instance of the ActionResponse class.
@@ -42,12 +42,13 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// "Microsoft.Storage/storageAccounts"</param>
         /// <param name="systemData">Azure Resource Manager metadata containing
         /// createdBy and modifiedBy information.</param>
-        /// <param name="etag">Etag of the azure resource</param>
+        /// <param name="etag">Etag of the action.</param>
         /// <param name="workflowId">The name of the logic app's
         /// workflow.</param>
         public ActionResponse(string logicAppResourceId, string id = default(string), string name = default(string), string type = default(string), SystemData systemData = default(SystemData), string etag = default(string), string workflowId = default(string))
-            : base(id, name, type, systemData, etag)
+            : base(id, name, type, systemData)
         {
+            Etag = etag;
             LogicAppResourceId = logicAppResourceId;
             WorkflowId = workflowId;
             CustomInit();
@@ -57,6 +58,12 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// Gets or sets etag of the action.
+        /// </summary>
+        [JsonProperty(PropertyName = "etag")]
+        public string Etag { get; set; }
 
         /// <summary>
         /// Gets or sets logic App Resource Id,

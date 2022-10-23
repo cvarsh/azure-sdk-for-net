@@ -13,7 +13,7 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
     using System.Linq;
 
     /// <summary>
-    /// Data connector
+    /// Data connector.
     /// </summary>
     public partial class DataConnector : ResourceWithEtag
     {

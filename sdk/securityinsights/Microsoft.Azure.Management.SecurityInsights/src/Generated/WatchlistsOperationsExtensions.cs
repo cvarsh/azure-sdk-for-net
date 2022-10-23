@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
     public static partial class WatchlistsOperationsExtensions
     {
             /// <summary>
-            /// Gets all watchlists, without watchlist items.
+            /// Get all watchlists, without watchlist items.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets all watchlists, without watchlist items.
+            /// Get all watchlists, without watchlist items.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets a watchlist, without its watchlist items.
+            /// Get a watchlist, without its watchlist items.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             /// The name of the workspace.
             /// </param>
             /// <param name='watchlistAlias'>
-            /// Watchlist Alias
+            /// The watchlist alias
             /// </param>
             public static Watchlist Get(this IWatchlistsOperations operations, string resourceGroupName, string workspaceName, string watchlistAlias)
             {
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets a watchlist, without its watchlist items.
+            /// Get a watchlist, without its watchlist items.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             /// The name of the workspace.
             /// </param>
             /// <param name='watchlistAlias'>
-            /// Watchlist Alias
+            /// The watchlist alias
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -132,11 +132,11 @@ namespace Microsoft.Azure.Management.SecurityInsights
             /// The name of the workspace.
             /// </param>
             /// <param name='watchlistAlias'>
-            /// Watchlist Alias
+            /// The watchlist alias
             /// </param>
-            public static WatchlistsDeleteHeaders Delete(this IWatchlistsOperations operations, string resourceGroupName, string workspaceName, string watchlistAlias)
+            public static void Delete(this IWatchlistsOperations operations, string resourceGroupName, string workspaceName, string watchlistAlias)
             {
-                return operations.DeleteAsync(resourceGroupName, workspaceName, watchlistAlias).GetAwaiter().GetResult();
+                operations.DeleteAsync(resourceGroupName, workspaceName, watchlistAlias).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -152,28 +152,20 @@ namespace Microsoft.Azure.Management.SecurityInsights
             /// The name of the workspace.
             /// </param>
             /// <param name='watchlistAlias'>
-            /// Watchlist Alias
+            /// The watchlist alias
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<WatchlistsDeleteHeaders> DeleteAsync(this IWatchlistsOperations operations, string resourceGroupName, string workspaceName, string watchlistAlias, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task DeleteAsync(this IWatchlistsOperations operations, string resourceGroupName, string workspaceName, string watchlistAlias, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.DeleteWithHttpMessagesAsync(resourceGroupName, workspaceName, watchlistAlias, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Headers;
-                }
+                (await operations.DeleteWithHttpMessagesAsync(resourceGroupName, workspaceName, watchlistAlias, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
             /// Create or update a Watchlist and its Watchlist Items (bulk creation, e.g.
             /// through text/csv content type). To create a Watchlist and its Items, we
-            /// should call this endpoint with either rawContent or a valid SAR URI and
-            /// contentType properties. The rawContent is mainly used for small watchlist
-            /// (content size below 3.8 MB). The SAS URI enables the creation of large
-            /// watchlist, where the content size can go up to 500 MB. The status of
-            /// processing such large file can be polled through the URL returned in
-            /// Azure-AsyncOperation header.
+            /// should call this endpoint with rawContent and contentType properties.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -185,7 +177,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             /// The name of the workspace.
             /// </param>
             /// <param name='watchlistAlias'>
-            /// Watchlist Alias
+            /// The watchlist alias
             /// </param>
             /// <param name='watchlist'>
             /// The watchlist
@@ -198,12 +190,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             /// <summary>
             /// Create or update a Watchlist and its Watchlist Items (bulk creation, e.g.
             /// through text/csv content type). To create a Watchlist and its Items, we
-            /// should call this endpoint with either rawContent or a valid SAR URI and
-            /// contentType properties. The rawContent is mainly used for small watchlist
-            /// (content size below 3.8 MB). The SAS URI enables the creation of large
-            /// watchlist, where the content size can go up to 500 MB. The status of
-            /// processing such large file can be polled through the URL returned in
-            /// Azure-AsyncOperation header.
+            /// should call this endpoint with rawContent and contentType properties.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -215,7 +202,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             /// The name of the workspace.
             /// </param>
             /// <param name='watchlistAlias'>
-            /// Watchlist Alias
+            /// The watchlist alias
             /// </param>
             /// <param name='watchlist'>
             /// The watchlist
@@ -232,7 +219,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets all watchlists, without watchlist items.
+            /// Get all watchlists, without watchlist items.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -246,7 +233,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
             }
 
             /// <summary>
-            /// Gets all watchlists, without watchlist items.
+            /// Get all watchlists, without watchlist items.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.

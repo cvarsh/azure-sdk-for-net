@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
     public partial interface IIncidentRelationsOperations
     {
         /// <summary>
-        /// Gets all incident relations.
+        /// Gets all relations for a given incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse<IPage<Relation>>> ListWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string incidentId, ODataQuery<Relation> odataQuery = default(ODataQuery<Relation>), string skipToken = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Gets an incident relation.
+        /// Gets a relation for a given incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse<Relation>> GetWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string incidentId, string relationName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Creates or updates the incident relation.
+        /// Creates or updates a relation for a given incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -131,7 +131,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse<Relation>> CreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string incidentId, string relationName, string relatedResourceId, string etag = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Delete the incident relation.
+        /// Deletes a relation for a given incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -159,7 +159,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// </exception>
         Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string incidentId, string relationName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Gets all incident relations.
+        /// Gets all relations for a given incident.
         /// </summary>
         /// <param name='nextPageLink'>
         /// The NextLink from the previous successful call to List operation.

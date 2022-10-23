@@ -73,7 +73,8 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// rule.</param>
         /// <param name="tactics">The tactics of the alert rule
         /// template</param>
-        /// <param name="techniques">The techniques of the alert rule</param>
+        /// <param name="techniques">The techniques of the alert rule
+        /// template</param>
         /// <param name="version">The version of this template - in format
         /// &lt;a.b.c&gt;, where all are numbers. For example
         /// &lt;1.0.2&gt;.</param>
@@ -208,7 +209,7 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         public IList<string> Tactics { get; set; }
 
         /// <summary>
-        /// Gets or sets the techniques of the alert rule
+        /// Gets or sets the techniques of the alert rule template
         /// </summary>
         [JsonProperty(PropertyName = "properties.techniques")]
         public IList<string> Techniques { get; set; }

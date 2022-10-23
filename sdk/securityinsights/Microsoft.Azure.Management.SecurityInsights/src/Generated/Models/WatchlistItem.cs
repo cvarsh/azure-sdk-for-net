@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
     using System.Linq;
 
     /// <summary>
-    /// Represents a Watchlist item in Azure Security Insights.
+    /// Represents a Watchlist Item in Azure Security Insights.
     /// </summary>
     [Rest.Serialization.JsonTransformation]
     public partial class WatchlistItem : ResourceWithEtag

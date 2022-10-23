@@ -10,7 +10,6 @@
 
 namespace Microsoft.Azure.Management.SecurityInsights.Models
 {
-    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Linq;
 
@@ -34,7 +33,7 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// AwsCloudTrailDataConnectorDataTypes class.
         /// </summary>
         /// <param name="logs">Logs data type.</param>
-        public AwsCloudTrailDataConnectorDataTypes(AwsCloudTrailDataConnectorDataTypesLogs logs)
+        public AwsCloudTrailDataConnectorDataTypes(AwsCloudTrailDataConnectorDataTypesLogs logs = default(AwsCloudTrailDataConnectorDataTypesLogs))
         {
             Logs = logs;
             CustomInit();
@@ -51,22 +50,5 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         [JsonProperty(PropertyName = "logs")]
         public AwsCloudTrailDataConnectorDataTypesLogs Logs { get; set; }
 
-        /// <summary>
-        /// Validate the object.
-        /// </summary>
-        /// <exception cref="ValidationException">
-        /// Thrown if validation fails
-        /// </exception>
-        public virtual void Validate()
-        {
-            if (Logs == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Logs");
-            }
-            if (Logs != null)
-            {
-                Logs.Validate();
-            }
-        }
     }
 }

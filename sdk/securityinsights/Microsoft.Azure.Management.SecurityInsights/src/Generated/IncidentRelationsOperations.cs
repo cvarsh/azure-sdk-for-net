@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         public SecurityInsights Client { get; private set; }
 
         /// <summary>
-        /// Gets all incident relations.
+        /// Gets all relations for a given incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -316,7 +316,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         }
 
         /// <summary>
-        /// Gets an incident relation.
+        /// Gets a relation for a given incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -566,7 +566,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         }
 
         /// <summary>
-        /// Creates or updates the incident relation.
+        /// Creates or updates a relation for a given incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -857,7 +857,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         }
 
         /// <summary>
-        /// Delete the incident relation.
+        /// Deletes a relation for a given incident.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group. The name is case insensitive.
@@ -1086,7 +1086,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         }
 
         /// <summary>
-        /// Gets all incident relations.
+        /// Gets all relations for a given incident.
         /// </summary>
         /// <param name='nextPageLink'>
         /// The NextLink from the previous successful call to List operation.

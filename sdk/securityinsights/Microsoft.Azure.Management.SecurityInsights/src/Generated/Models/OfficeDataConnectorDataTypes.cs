@@ -10,7 +10,6 @@
 
 namespace Microsoft.Azure.Management.SecurityInsights.Models
 {
-    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Linq;
 
@@ -35,7 +34,7 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// <param name="exchange">Exchange data type connection.</param>
         /// <param name="sharePoint">SharePoint data type connection.</param>
         /// <param name="teams">Teams data type connection.</param>
-        public OfficeDataConnectorDataTypes(OfficeDataConnectorDataTypesExchange exchange, OfficeDataConnectorDataTypesSharePoint sharePoint, OfficeDataConnectorDataTypesTeams teams)
+        public OfficeDataConnectorDataTypes(OfficeDataConnectorDataTypesExchange exchange = default(OfficeDataConnectorDataTypesExchange), OfficeDataConnectorDataTypesSharePoint sharePoint = default(OfficeDataConnectorDataTypesSharePoint), OfficeDataConnectorDataTypesTeams teams = default(OfficeDataConnectorDataTypesTeams))
         {
             Exchange = exchange;
             SharePoint = sharePoint;
@@ -66,38 +65,5 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         [JsonProperty(PropertyName = "teams")]
         public OfficeDataConnectorDataTypesTeams Teams { get; set; }
 
-        /// <summary>
-        /// Validate the object.
-        /// </summary>
-        /// <exception cref="ValidationException">
-        /// Thrown if validation fails
-        /// </exception>
-        public virtual void Validate()
-        {
-            if (Exchange == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Exchange");
-            }
-            if (SharePoint == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "SharePoint");
-            }
-            if (Teams == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Teams");
-            }
-            if (Exchange != null)
-            {
-                Exchange.Validate();
-            }
-            if (SharePoint != null)
-            {
-                SharePoint.Validate();
-            }
-            if (Teams != null)
-            {
-                Teams.Validate();
-            }
-        }
     }
 }

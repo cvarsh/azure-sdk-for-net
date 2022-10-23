@@ -36,6 +36,8 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// </summary>
         /// <param name="displayName">The display name of the watchlist</param>
         /// <param name="provider">The provider of the watchlist</param>
+        /// <param name="source">The source of the watchlist. Possible values
+        /// include: 'Local file', 'Remote storage'</param>
         /// <param name="itemsSearchKey">The search key is used to optimize
         /// query performance when using watchlists for joins with other data.
         /// For example, enable a column with IP addresses to be the designated
@@ -51,10 +53,6 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// createdBy and modifiedBy information.</param>
         /// <param name="etag">Etag of the azure resource</param>
         /// <param name="watchlistId">The id (a Guid) of the watchlist</param>
-        /// <param name="source">The filename of the watchlist, called
-        /// 'source'</param>
-        /// <param name="sourceType">The sourceType of the watchlist. Possible
-        /// values include: 'Local file', 'Remote storage'</param>
         /// <param name="created">The time the watchlist was created</param>
         /// <param name="updated">The last time the watchlist was
         /// updated</param>
@@ -73,25 +71,24 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// (in ISO 8601 duration format)</param>
         /// <param name="tenantId">The tenantId where the watchlist belongs
         /// to</param>
-        /// <param name="numberOfLinesToSkip">The number of lines in a csv/tsv
+        /// <param name="numberOfLinesToSkip">The number of lines in a csv
         /// content to skip before the header</param>
         /// <param name="rawContent">The raw content that represents to
-        /// watchlist items to create. In case of csv/tsv content type, it's
-        /// the content of the file that will parsed by the endpoint</param>
-        /// <param name="contentType">The content type of the raw content.
-        /// Example : text/csv or text/tsv </param>
+        /// watchlist items to create. Example : This line will be skipped
+        /// header1,header2
+        /// value1,value2</param>
+        /// <param name="contentType">The content type of the raw content. For
+        /// now, only text/csv is valid</param>
         /// <param name="uploadStatus">The status of the Watchlist upload :
-        /// New, InProgress or Complete. Pls note : When a Watchlist upload
-        /// status is equal to InProgress, the Watchlist cannot be
-        /// deleted</param>
-        public Watchlist(string displayName, string provider, string itemsSearchKey, string id = default(string), string name = default(string), string type = default(string), SystemData systemData = default(SystemData), string etag = default(string), string watchlistId = default(string), string source = default(string), string sourceType = default(string), System.DateTime? created = default(System.DateTime?), System.DateTime? updated = default(System.DateTime?), UserInfo createdBy = default(UserInfo), UserInfo updatedBy = default(UserInfo), string description = default(string), string watchlistType = default(string), string watchlistAlias = default(string), bool? isDeleted = default(bool?), IList<string> labels = default(IList<string>), System.TimeSpan? defaultDuration = default(System.TimeSpan?), string tenantId = default(string), int? numberOfLinesToSkip = default(int?), string rawContent = default(string), string contentType = default(string), string uploadStatus = default(string))
+        /// New, InProgress or Complete. **Note** : When a Watchlist upload
+        /// status is InProgress, the Watchlist cannot be deleted</param>
+        public Watchlist(string displayName, string provider, string source, string itemsSearchKey, string id = default(string), string name = default(string), string type = default(string), SystemData systemData = default(SystemData), string etag = default(string), string watchlistId = default(string), System.DateTime? created = default(System.DateTime?), System.DateTime? updated = default(System.DateTime?), UserInfo createdBy = default(UserInfo), UserInfo updatedBy = default(UserInfo), string description = default(string), string watchlistType = default(string), string watchlistAlias = default(string), bool? isDeleted = default(bool?), IList<string> labels = default(IList<string>), System.TimeSpan? defaultDuration = default(System.TimeSpan?), string tenantId = default(string), int? numberOfLinesToSkip = default(int?), string rawContent = default(string), string contentType = default(string), string uploadStatus = default(string))
             : base(id, name, type, systemData, etag)
         {
             WatchlistId = watchlistId;
             DisplayName = displayName;
             Provider = provider;
             Source = source;
-            SourceType = sourceType;
             Created = created;
             Updated = updated;
             CreatedBy = createdBy;
@@ -135,17 +132,11 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         public string Provider { get; set; }
 
         /// <summary>
-        /// Gets or sets the filename of the watchlist, called 'source'
+        /// Gets or sets the source of the watchlist. Possible values include:
+        /// 'Local file', 'Remote storage'
         /// </summary>
         [JsonProperty(PropertyName = "properties.source")]
         public string Source { get; set; }
-
-        /// <summary>
-        /// Gets or sets the sourceType of the watchlist. Possible values
-        /// include: 'Local file', 'Remote storage'
-        /// </summary>
-        [JsonProperty(PropertyName = "properties.sourceType")]
-        public string SourceType { get; set; }
 
         /// <summary>
         /// Gets or sets the time the watchlist was created
@@ -216,16 +207,17 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         public string TenantId { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of lines in a csv/tsv content to skip
-        /// before the header
+        /// Gets or sets the number of lines in a csv content to skip before
+        /// the header
         /// </summary>
         [JsonProperty(PropertyName = "properties.numberOfLinesToSkip")]
         public int? NumberOfLinesToSkip { get; set; }
 
         /// <summary>
         /// Gets or sets the raw content that represents to watchlist items to
-        /// create. In case of csv/tsv content type, it's the content of the
-        /// file that will parsed by the endpoint
+        /// create. Example : This line will be skipped
+        /// header1,header2
+        /// value1,value2
         /// </summary>
         [JsonProperty(PropertyName = "properties.rawContent")]
         public string RawContent { get; set; }
@@ -241,15 +233,15 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         public string ItemsSearchKey { get; set; }
 
         /// <summary>
-        /// Gets or sets the content type of the raw content. Example :
-        /// text/csv or text/tsv
+        /// Gets or sets the content type of the raw content. For now, only
+        /// text/csv is valid
         /// </summary>
         [JsonProperty(PropertyName = "properties.contentType")]
         public string ContentType { get; set; }
 
         /// <summary>
         /// Gets or sets the status of the Watchlist upload : New, InProgress
-        /// or Complete. Pls note : When a Watchlist upload status is equal to
+        /// or Complete. **Note** : When a Watchlist upload status is
         /// InProgress, the Watchlist cannot be deleted
         /// </summary>
         [JsonProperty(PropertyName = "properties.uploadStatus")]
@@ -270,6 +262,10 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
             if (Provider == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Provider");
+            }
+            if (Source == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Source");
             }
             if (ItemsSearchKey == null)
             {

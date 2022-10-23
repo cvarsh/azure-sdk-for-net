@@ -49,6 +49,10 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// </summary>
         public const string IncidentProviderName = "IncidentProviderName";
         /// <summary>
+        /// The update source of the incident
+        /// </summary>
+        public const string IncidentUpdatedBySource = "IncidentUpdatedBySource";
+        /// <summary>
         /// The account Azure Active Directory tenant id
         /// </summary>
         public const string AccountAadTenantId = "AccountAadTenantId";
@@ -84,6 +88,10 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// The name of the product of the alert
         /// </summary>
         public const string AlertProductNames = "AlertProductNames";
+        /// <summary>
+        /// The analytic rule ids of the alert
+        /// </summary>
+        public const string AlertAnalyticRuleIds = "AlertAnalyticRuleIds";
         /// <summary>
         /// The Azure resource id
         /// </summary>

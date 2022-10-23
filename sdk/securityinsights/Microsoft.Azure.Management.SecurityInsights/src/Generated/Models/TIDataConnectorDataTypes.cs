@@ -10,7 +10,6 @@
 
 namespace Microsoft.Azure.Management.SecurityInsights.Models
 {
-    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Linq;
 
@@ -32,7 +31,7 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         /// </summary>
         /// <param name="indicators">Data type for indicators
         /// connection.</param>
-        public TIDataConnectorDataTypes(TIDataConnectorDataTypesIndicators indicators)
+        public TIDataConnectorDataTypes(TIDataConnectorDataTypesIndicators indicators = default(TIDataConnectorDataTypesIndicators))
         {
             Indicators = indicators;
             CustomInit();
@@ -49,22 +48,5 @@ namespace Microsoft.Azure.Management.SecurityInsights.Models
         [JsonProperty(PropertyName = "indicators")]
         public TIDataConnectorDataTypesIndicators Indicators { get; set; }
 
-        /// <summary>
-        /// Validate the object.
-        /// </summary>
-        /// <exception cref="ValidationException">
-        /// Thrown if validation fails
-        /// </exception>
-        public virtual void Validate()
-        {
-            if (Indicators == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Indicators");
-            }
-            if (Indicators != null)
-            {
-                Indicators.Validate();
-            }
-        }
     }
 }

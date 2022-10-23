@@ -62,9 +62,6 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// <param name='filter'>
         /// Filters the results, based on a Boolean condition. Optional.
         /// </param>
-        /// <param name='orderby'>
-        /// Sorts the results. Optional.
-        /// </param>
         /// <param name='top'>
         /// Returns only the first n results. Optional.
         /// </param>
@@ -73,6 +70,9 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// If a previous response contains a nextLink element, the value of the
         /// nextLink element will include a skiptoken parameter that specifies a
         /// starting point to use for subsequent calls. Optional.
+        /// </param>
+        /// <param name='orderby'>
+        /// Sorts the results. Optional.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -95,7 +95,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<IPage<ThreatIntelligenceInformation>>> ListWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string filter = default(string), string orderby = default(string), int? top = default(int?), string skipToken = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<IPage<ThreatIntelligenceInformation>>> ListWithHttpMessagesAsync(string resourceGroupName, string workspaceName, string filter = default(string), int? top = default(int?), string skipToken = default(string), string orderby = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client.ApiVersion == null)
             {
@@ -159,9 +159,9 @@ namespace Microsoft.Azure.Management.SecurityInsights
                 tracingParameters.Add("resourceGroupName", resourceGroupName);
                 tracingParameters.Add("workspaceName", workspaceName);
                 tracingParameters.Add("filter", filter);
-                tracingParameters.Add("orderby", orderby);
                 tracingParameters.Add("top", top);
                 tracingParameters.Add("skipToken", skipToken);
+                tracingParameters.Add("orderby", orderby);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "List", tracingParameters);
             }
@@ -180,10 +180,6 @@ namespace Microsoft.Azure.Management.SecurityInsights
             {
                 _queryParameters.Add(string.Format("$filter={0}", System.Uri.EscapeDataString(filter)));
             }
-            if (orderby != null)
-            {
-                _queryParameters.Add(string.Format("$orderby={0}", System.Uri.EscapeDataString(orderby)));
-            }
             if (top != null)
             {
                 _queryParameters.Add(string.Format("$top={0}", System.Uri.EscapeDataString(Rest.Serialization.SafeJsonConvert.SerializeObject(top, Client.SerializationSettings).Trim('"'))));
@@ -191,6 +187,10 @@ namespace Microsoft.Azure.Management.SecurityInsights
             if (skipToken != null)
             {
                 _queryParameters.Add(string.Format("$skipToken={0}", System.Uri.EscapeDataString(skipToken)));
+            }
+            if (orderby != null)
+            {
+                _queryParameters.Add(string.Format("$orderby={0}", System.Uri.EscapeDataString(orderby)));
             }
             if (_queryParameters.Count > 0)
             {
