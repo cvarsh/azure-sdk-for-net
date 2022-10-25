@@ -53,7 +53,9 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
         /// <param name="acrConfiguration">The azure container registry
         /// settings used for convert data operation of the service
         /// instance.</param>
-        public ServicesProperties(string provisioningState = default(string), IList<ServiceAccessPolicyEntry> accessPolicies = default(IList<ServiceAccessPolicyEntry>), ServiceCosmosDbConfigurationInfo cosmosDbConfiguration = default(ServiceCosmosDbConfigurationInfo), ServiceAuthenticationConfigurationInfo authenticationConfiguration = default(ServiceAuthenticationConfigurationInfo), ServiceCorsConfigurationInfo corsConfiguration = default(ServiceCorsConfigurationInfo), ServiceExportConfigurationInfo exportConfiguration = default(ServiceExportConfigurationInfo), IList<PrivateEndpointConnection> privateEndpointConnections = default(IList<PrivateEndpointConnection>), string publicNetworkAccess = default(string), ServiceAcrConfigurationInfo acrConfiguration = default(ServiceAcrConfigurationInfo))
+        /// <param name="importConfiguration">The settings for the import
+        /// operation of the service instance.</param>
+        public ServicesProperties(string provisioningState = default(string), IList<ServiceAccessPolicyEntry> accessPolicies = default(IList<ServiceAccessPolicyEntry>), ServiceCosmosDbConfigurationInfo cosmosDbConfiguration = default(ServiceCosmosDbConfigurationInfo), ServiceAuthenticationConfigurationInfo authenticationConfiguration = default(ServiceAuthenticationConfigurationInfo), ServiceCorsConfigurationInfo corsConfiguration = default(ServiceCorsConfigurationInfo), ServiceExportConfigurationInfo exportConfiguration = default(ServiceExportConfigurationInfo), IList<PrivateEndpointConnection> privateEndpointConnections = default(IList<PrivateEndpointConnection>), string publicNetworkAccess = default(string), ServiceAcrConfigurationInfo acrConfiguration = default(ServiceAcrConfigurationInfo), ServiceImportConfigurationInfo importConfiguration = default(ServiceImportConfigurationInfo))
         {
             ProvisioningState = provisioningState;
             AccessPolicies = accessPolicies;
@@ -64,6 +66,7 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
             PrivateEndpointConnections = privateEndpointConnections;
             PublicNetworkAccess = publicNetworkAccess;
             AcrConfiguration = acrConfiguration;
+            ImportConfiguration = importConfiguration;
             CustomInit();
         }
 
@@ -136,6 +139,13 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
         /// </summary>
         [JsonProperty(PropertyName = "acrConfiguration")]
         public ServiceAcrConfigurationInfo AcrConfiguration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the settings for the import operation of the service
+        /// instance.
+        /// </summary>
+        [JsonProperty(PropertyName = "importConfiguration")]
+        public ServiceImportConfigurationInfo ImportConfiguration { get; set; }
 
         /// <summary>
         /// Validate the object.
