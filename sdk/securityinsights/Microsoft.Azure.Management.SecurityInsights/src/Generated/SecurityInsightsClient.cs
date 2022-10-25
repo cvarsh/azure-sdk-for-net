@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
     /// API spec for Microsoft.SecurityInsights (Azure Security Insights)
     /// resource provider
     /// </summary>
-    public partial class SecurityInsights : ServiceClient<SecurityInsights>, ISecurityInsights, IAzureClient
+    public partial class SecurityInsightsClient : ServiceClient<SecurityInsightsClient>, ISecurityInsightsClient, IAzureClient
     {
         /// <summary>
         /// The base URI of the service.
@@ -156,6 +156,11 @@ namespace Microsoft.Azure.Management.SecurityInsights
         public virtual IEntityQueryTemplatesOperations EntityQueryTemplates { get; private set; }
 
         /// <summary>
+        /// Gets the IFileImportsOperations.
+        /// </summary>
+        public virtual IFileImportsOperations FileImports { get; private set; }
+
+        /// <summary>
         /// Gets the IIncidentCommentsOperations.
         /// </summary>
         public virtual IIncidentCommentsOperations IncidentComments { get; private set; }
@@ -179,6 +184,11 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// Gets the ISentinelOnboardingStatesOperations.
         /// </summary>
         public virtual ISentinelOnboardingStatesOperations SentinelOnboardingStates { get; private set; }
+
+        /// <summary>
+        /// Gets the ISecurityMLAnalyticsSettingsOperations.
+        /// </summary>
+        public virtual ISecurityMLAnalyticsSettingsOperations SecurityMLAnalyticsSettings { get; private set; }
 
         /// <summary>
         /// Gets the IProductSettingsOperations.
@@ -221,6 +231,11 @@ namespace Microsoft.Azure.Management.SecurityInsights
         public virtual IWatchlistItemsOperations WatchlistItems { get; private set; }
 
         /// <summary>
+        /// Gets the IWorkspaceManagerConfigurationsOperations.
+        /// </summary>
+        public virtual IWorkspaceManagerConfigurationsOperations WorkspaceManagerConfigurations { get; private set; }
+
+        /// <summary>
         /// Gets the IDataConnectorsOperations.
         /// </summary>
         public virtual IDataConnectorsOperations DataConnectors { get; private set; }
@@ -236,31 +251,31 @@ namespace Microsoft.Azure.Management.SecurityInsights
         public virtual IOperations Operations { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the SecurityInsights class.
+        /// Initializes a new instance of the SecurityInsightsClient class.
         /// </summary>
         /// <param name='httpClient'>
         /// HttpClient to be used
         /// </param>
         /// <param name='disposeHttpClient'>
-        /// True: will dispose the provided httpClient on calling SecurityInsights.Dispose(). False: will not dispose provided httpClient</param>
-        protected SecurityInsights(HttpClient httpClient, bool disposeHttpClient) : base(httpClient, disposeHttpClient)
+        /// True: will dispose the provided httpClient on calling SecurityInsightsClient.Dispose(). False: will not dispose provided httpClient</param>
+        protected SecurityInsightsClient(HttpClient httpClient, bool disposeHttpClient) : base(httpClient, disposeHttpClient)
         {
             Initialize();
         }
 
         /// <summary>
-        /// Initializes a new instance of the SecurityInsights class.
+        /// Initializes a new instance of the SecurityInsightsClient class.
         /// </summary>
         /// <param name='handlers'>
         /// Optional. The delegating handlers to add to the http client pipeline.
         /// </param>
-        protected SecurityInsights(params DelegatingHandler[] handlers) : base(handlers)
+        protected SecurityInsightsClient(params DelegatingHandler[] handlers) : base(handlers)
         {
             Initialize();
         }
 
         /// <summary>
-        /// Initializes a new instance of the SecurityInsights class.
+        /// Initializes a new instance of the SecurityInsightsClient class.
         /// </summary>
         /// <param name='rootHandler'>
         /// Optional. The http client handler used to handle http transport.
@@ -268,13 +283,13 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// <param name='handlers'>
         /// Optional. The delegating handlers to add to the http client pipeline.
         /// </param>
-        protected SecurityInsights(HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : base(rootHandler, handlers)
+        protected SecurityInsightsClient(HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : base(rootHandler, handlers)
         {
             Initialize();
         }
 
         /// <summary>
-        /// Initializes a new instance of the SecurityInsights class.
+        /// Initializes a new instance of the SecurityInsightsClient class.
         /// </summary>
         /// <param name='baseUri'>
         /// Optional. The base URI of the service.
@@ -285,7 +300,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        protected SecurityInsights(System.Uri baseUri, params DelegatingHandler[] handlers) : this(handlers)
+        protected SecurityInsightsClient(System.Uri baseUri, params DelegatingHandler[] handlers) : this(handlers)
         {
             if (baseUri == null)
             {
@@ -295,7 +310,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         }
 
         /// <summary>
-        /// Initializes a new instance of the SecurityInsights class.
+        /// Initializes a new instance of the SecurityInsightsClient class.
         /// </summary>
         /// <param name='baseUri'>
         /// Optional. The base URI of the service.
@@ -309,7 +324,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        protected SecurityInsights(System.Uri baseUri, HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : this(rootHandler, handlers)
+        protected SecurityInsightsClient(System.Uri baseUri, HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : this(rootHandler, handlers)
         {
             if (baseUri == null)
             {
@@ -319,7 +334,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         }
 
         /// <summary>
-        /// Initializes a new instance of the SecurityInsights class.
+        /// Initializes a new instance of the SecurityInsightsClient class.
         /// </summary>
         /// <param name='credentials'>
         /// Required. Credentials needed for the client to connect to Azure.
@@ -330,7 +345,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        public SecurityInsights(ServiceClientCredentials credentials, params DelegatingHandler[] handlers) : this(handlers)
+        public SecurityInsightsClient(ServiceClientCredentials credentials, params DelegatingHandler[] handlers) : this(handlers)
         {
             if (credentials == null)
             {
@@ -344,7 +359,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         }
 
         /// <summary>
-        /// Initializes a new instance of the SecurityInsights class.
+        /// Initializes a new instance of the SecurityInsightsClient class.
         /// </summary>
         /// <param name='credentials'>
         /// Required. Credentials needed for the client to connect to Azure.
@@ -353,11 +368,11 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// HttpClient to be used
         /// </param>
         /// <param name='disposeHttpClient'>
-        /// True: will dispose the provided httpClient on calling SecurityInsights.Dispose(). False: will not dispose provided httpClient</param>
+        /// True: will dispose the provided httpClient on calling SecurityInsightsClient.Dispose(). False: will not dispose provided httpClient</param>
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        public SecurityInsights(ServiceClientCredentials credentials, HttpClient httpClient, bool disposeHttpClient) : this(httpClient, disposeHttpClient)
+        public SecurityInsightsClient(ServiceClientCredentials credentials, HttpClient httpClient, bool disposeHttpClient) : this(httpClient, disposeHttpClient)
         {
             if (credentials == null)
             {
@@ -371,7 +386,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         }
 
         /// <summary>
-        /// Initializes a new instance of the SecurityInsights class.
+        /// Initializes a new instance of the SecurityInsightsClient class.
         /// </summary>
         /// <param name='credentials'>
         /// Required. Credentials needed for the client to connect to Azure.
@@ -385,7 +400,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        public SecurityInsights(ServiceClientCredentials credentials, HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : this(rootHandler, handlers)
+        public SecurityInsightsClient(ServiceClientCredentials credentials, HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : this(rootHandler, handlers)
         {
             if (credentials == null)
             {
@@ -399,7 +414,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         }
 
         /// <summary>
-        /// Initializes a new instance of the SecurityInsights class.
+        /// Initializes a new instance of the SecurityInsightsClient class.
         /// </summary>
         /// <param name='baseUri'>
         /// Optional. The base URI of the service.
@@ -413,7 +428,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        public SecurityInsights(System.Uri baseUri, ServiceClientCredentials credentials, params DelegatingHandler[] handlers) : this(handlers)
+        public SecurityInsightsClient(System.Uri baseUri, ServiceClientCredentials credentials, params DelegatingHandler[] handlers) : this(handlers)
         {
             if (baseUri == null)
             {
@@ -432,7 +447,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         }
 
         /// <summary>
-        /// Initializes a new instance of the SecurityInsights class.
+        /// Initializes a new instance of the SecurityInsightsClient class.
         /// </summary>
         /// <param name='baseUri'>
         /// Optional. The base URI of the service.
@@ -449,7 +464,7 @@ namespace Microsoft.Azure.Management.SecurityInsights
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        public SecurityInsights(System.Uri baseUri, ServiceClientCredentials credentials, HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : this(rootHandler, handlers)
+        public SecurityInsightsClient(System.Uri baseUri, ServiceClientCredentials credentials, HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : this(rootHandler, handlers)
         {
             if (baseUri == null)
             {
@@ -492,11 +507,13 @@ namespace Microsoft.Azure.Management.SecurityInsights
             EntityRelations = new EntityRelationsOperations(this);
             EntityQueries = new EntityQueriesOperations(this);
             EntityQueryTemplates = new EntityQueryTemplatesOperations(this);
+            FileImports = new FileImportsOperations(this);
             IncidentComments = new IncidentCommentsOperations(this);
             IncidentRelations = new IncidentRelationsOperations(this);
             Metadata = new MetadataOperations(this);
             OfficeConsents = new OfficeConsentsOperations(this);
             SentinelOnboardingStates = new SentinelOnboardingStatesOperations(this);
+            SecurityMLAnalyticsSettings = new SecurityMLAnalyticsSettingsOperations(this);
             ProductSettings = new ProductSettingsOperations(this);
             SourceControl = new SourceControlOperations(this);
             SourceControls = new SourceControlsOperations(this);
@@ -505,11 +522,12 @@ namespace Microsoft.Azure.Management.SecurityInsights
             ThreatIntelligenceIndicatorMetrics = new ThreatIntelligenceIndicatorMetricsOperations(this);
             Watchlists = new WatchlistsOperations(this);
             WatchlistItems = new WatchlistItemsOperations(this);
+            WorkspaceManagerConfigurations = new WorkspaceManagerConfigurationsOperations(this);
             DataConnectors = new DataConnectorsOperations(this);
             DataConnectorsCheckRequirements = new DataConnectorsCheckRequirementsOperations(this);
             Operations = new Operations(this);
             BaseUri = new System.Uri("https://management.azure.com");
-            ApiVersion = "2022-01-01-preview";
+            ApiVersion = "2023-03-01-preview";
             AcceptLanguage = "en-US";
             LongRunningOperationRetryTimeout = 30;
             GenerateClientRequestId = true;
@@ -559,6 +577,8 @@ namespace Microsoft.Azure.Management.SecurityInsights
             DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<CustomEntityQuery>("kind"));
             SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<EntityQueryTemplate>("kind"));
             DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<EntityQueryTemplate>("kind"));
+            SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<SecurityMLAnalyticsSetting>("kind"));
+            DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<SecurityMLAnalyticsSetting>("kind"));
             SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<Settings>("kind"));
             DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<Settings>("kind"));
             SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<ThreatIntelligenceInformation>("kind"));
