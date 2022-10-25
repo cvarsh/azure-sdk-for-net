@@ -15,10 +15,9 @@ namespace Azure.ResourceManager.Batch.Models
         /// <summary> Initializes a new instance of BatchFileShareConfiguration. </summary>
         /// <param name="accountName"> The Azure Storage account name. </param>
         /// <param name="fileUri"> This is of the form &apos;https://{account}.file.core.windows.net/&apos;. </param>
-        /// <param name="accountKey"> The Azure Storage account key. </param>
         /// <param name="relativeMountPath"> All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="accountName"/>, <paramref name="fileUri"/>, <paramref name="accountKey"/> or <paramref name="relativeMountPath"/> is null. </exception>
-        public BatchFileShareConfiguration(string accountName, Uri fileUri, string accountKey, string relativeMountPath)
+        /// <exception cref="ArgumentNullException"> <paramref name="accountName"/>, <paramref name="fileUri"/> or <paramref name="relativeMountPath"/> is null. </exception>
+        public BatchFileShareConfiguration(string accountName, Uri fileUri, string relativeMountPath)
         {
             if (accountName == null)
             {
@@ -28,10 +27,6 @@ namespace Azure.ResourceManager.Batch.Models
             {
                 throw new ArgumentNullException(nameof(fileUri));
             }
-            if (accountKey == null)
-            {
-                throw new ArgumentNullException(nameof(accountKey));
-            }
             if (relativeMountPath == null)
             {
                 throw new ArgumentNullException(nameof(relativeMountPath));
@@ -39,7 +34,6 @@ namespace Azure.ResourceManager.Batch.Models
 
             AccountName = accountName;
             FileUri = fileUri;
-            AccountKey = accountKey;
             RelativeMountPath = relativeMountPath;
         }
 
