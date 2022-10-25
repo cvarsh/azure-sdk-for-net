@@ -35,17 +35,20 @@ namespace Microsoft.Azure.Management.ManagedServiceIdentity.Models
         /// <param name="id">The ID of this resource.</param>
         /// <param name="name">The name of this resource.</param>
         /// <param name="type">The type of this resource.</param>
+        /// <param name="typeDisplayName">The name of the type of this
+        /// resource.</param>
         /// <param name="resourceGroup">The name of the resource group this
         /// resource belongs to.</param>
         /// <param name="subscriptionId">The ID of the subscription this
         /// resource belongs to.</param>
         /// <param name="subscriptionDisplayName">The name of the subscription
         /// this resource belongs to.</param>
-        public AzureResource(string id = default(string), string name = default(string), string type = default(string), string resourceGroup = default(string), string subscriptionId = default(string), string subscriptionDisplayName = default(string))
+        public AzureResource(string id = default(string), string name = default(string), string type = default(string), string typeDisplayName = default(string), string resourceGroup = default(string), string subscriptionId = default(string), string subscriptionDisplayName = default(string))
         {
             Id = id;
             Name = name;
             Type = type;
+            TypeDisplayName = typeDisplayName;
             ResourceGroup = resourceGroup;
             SubscriptionId = subscriptionId;
             SubscriptionDisplayName = subscriptionDisplayName;
@@ -74,6 +77,12 @@ namespace Microsoft.Azure.Management.ManagedServiceIdentity.Models
         /// </summary>
         [JsonProperty(PropertyName = "type")]
         public string Type { get; private set; }
+
+        /// <summary>
+        /// Gets the name of the type of this resource.
+        /// </summary>
+        [JsonProperty(PropertyName = "typeDisplayName")]
+        public string TypeDisplayName { get; private set; }
 
         /// <summary>
         /// Gets the name of the resource group this resource belongs to.
