@@ -30,11 +30,14 @@ namespace Microsoft.Azure.Management.PolicyInsights.Models
         /// Initializes a new instance of the Operation class.
         /// </summary>
         /// <param name="name">Operation name.</param>
+        /// <param name="isDataAction">Indicates whether the operation is a
+        /// data action</param>
         /// <param name="display">Display metadata associated with the
         /// operation.</param>
-        public Operation(string name = default(string), OperationDisplay display = default(OperationDisplay))
+        public Operation(string name = default(string), bool? isDataAction = default(bool?), OperationDisplay display = default(OperationDisplay))
         {
             Name = name;
+            IsDataAction = isDataAction;
             Display = display;
             CustomInit();
         }
@@ -49,6 +52,12 @@ namespace Microsoft.Azure.Management.PolicyInsights.Models
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets indicates whether the operation is a data action
+        /// </summary>
+        [JsonProperty(PropertyName = "isDataAction")]
+        public bool? IsDataAction { get; set; }
 
         /// <summary>
         /// Gets or sets display metadata associated with the operation.

@@ -113,5 +113,47 @@ namespace Microsoft.Azure.Management.PolicyInsights
                 }
             }
 
+            /// <summary>
+            /// Checks what restrictions Azure Policy will place on resources within a
+            /// management group.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='managementGroupId'>
+            /// Management group ID.
+            /// </param>
+            /// <param name='parameters'>
+            /// The check policy restrictions parameters.
+            /// </param>
+            public static CheckRestrictionsResult CheckAtManagementGroupScope(this IPolicyRestrictionsOperations operations, string managementGroupId, CheckManagementGroupRestrictionsRequest parameters)
+            {
+                return operations.CheckAtManagementGroupScopeAsync(managementGroupId, parameters).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Checks what restrictions Azure Policy will place on resources within a
+            /// management group.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='managementGroupId'>
+            /// Management group ID.
+            /// </param>
+            /// <param name='parameters'>
+            /// The check policy restrictions parameters.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<CheckRestrictionsResult> CheckAtManagementGroupScopeAsync(this IPolicyRestrictionsOperations operations, string managementGroupId, CheckManagementGroupRestrictionsRequest parameters, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.CheckAtManagementGroupScopeWithHttpMessagesAsync(managementGroupId, parameters, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
     }
 }

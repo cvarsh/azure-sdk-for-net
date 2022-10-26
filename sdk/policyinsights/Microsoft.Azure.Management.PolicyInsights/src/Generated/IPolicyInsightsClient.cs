@@ -16,6 +16,8 @@ namespace Microsoft.Azure.Management.PolicyInsights
     using Newtonsoft.Json;
 
     /// <summary>
+    /// Query component policy states at varying resource scopes for Resource
+    /// Provider mode policies.
     /// </summary>
     public partial interface IPolicyInsightsClient : System.IDisposable
     {
@@ -38,6 +40,11 @@ namespace Microsoft.Azure.Management.PolicyInsights
         /// Credentials needed for the client to connect to Azure.
         /// </summary>
         ServiceClientCredentials Credentials { get; }
+
+        /// <summary>
+        /// The ID of the target subscription.
+        /// </summary>
+        string SubscriptionId2 { get; set; }
 
         /// <summary>
         /// The preferred language for the response.
@@ -79,11 +86,6 @@ namespace Microsoft.Azure.Management.PolicyInsights
         IPolicyStatesOperations PolicyStates { get; }
 
         /// <summary>
-        /// Gets the IOperations.
-        /// </summary>
-        IOperations Operations { get; }
-
-        /// <summary>
         /// Gets the IPolicyMetadataOperations.
         /// </summary>
         IPolicyMetadataOperations PolicyMetadata { get; }
@@ -92,6 +94,16 @@ namespace Microsoft.Azure.Management.PolicyInsights
         /// Gets the IPolicyRestrictionsOperations.
         /// </summary>
         IPolicyRestrictionsOperations PolicyRestrictions { get; }
+
+        /// <summary>
+        /// Gets the IComponentPolicyStatesOperations.
+        /// </summary>
+        IComponentPolicyStatesOperations ComponentPolicyStates { get; }
+
+        /// <summary>
+        /// Gets the IOperations.
+        /// </summary>
+        IOperations Operations { get; }
 
         /// <summary>
         /// Gets the IAttestationsOperations.

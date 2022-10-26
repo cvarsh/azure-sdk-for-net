@@ -21,6 +21,10 @@ namespace Microsoft.Azure.Management.PolicyInsights
     using System.Net;
     using System.Net.Http;
 
+    /// <summary>
+    /// Query component policy states at varying resource scopes for Resource
+    /// Provider mode policies.
+    /// </summary>
     public partial class PolicyInsightsClient : ServiceClient<PolicyInsightsClient>, IPolicyInsightsClient, IAzureClient
     {
         /// <summary>
@@ -42,6 +46,11 @@ namespace Microsoft.Azure.Management.PolicyInsights
         /// Credentials needed for the client to connect to Azure.
         /// </summary>
         public ServiceClientCredentials Credentials { get; private set; }
+
+        /// <summary>
+        /// The ID of the target subscription.
+        /// </summary>
+        public string SubscriptionId2 { get; set; }
 
         /// <summary>
         /// The preferred language for the response.
@@ -82,11 +91,6 @@ namespace Microsoft.Azure.Management.PolicyInsights
         public virtual IPolicyStatesOperations PolicyStates { get; private set; }
 
         /// <summary>
-        /// Gets the IOperations.
-        /// </summary>
-        public virtual IOperations Operations { get; private set; }
-
-        /// <summary>
         /// Gets the IPolicyMetadataOperations.
         /// </summary>
         public virtual IPolicyMetadataOperations PolicyMetadata { get; private set; }
@@ -95,6 +99,16 @@ namespace Microsoft.Azure.Management.PolicyInsights
         /// Gets the IPolicyRestrictionsOperations.
         /// </summary>
         public virtual IPolicyRestrictionsOperations PolicyRestrictions { get; private set; }
+
+        /// <summary>
+        /// Gets the IComponentPolicyStatesOperations.
+        /// </summary>
+        public virtual IComponentPolicyStatesOperations ComponentPolicyStates { get; private set; }
+
+        /// <summary>
+        /// Gets the IOperations.
+        /// </summary>
+        public virtual IOperations Operations { get; private set; }
 
         /// <summary>
         /// Gets the IAttestationsOperations.
@@ -346,9 +360,10 @@ namespace Microsoft.Azure.Management.PolicyInsights
             Remediations = new RemediationsOperations(this);
             PolicyEvents = new PolicyEventsOperations(this);
             PolicyStates = new PolicyStatesOperations(this);
-            Operations = new Operations(this);
             PolicyMetadata = new PolicyMetadataOperations(this);
             PolicyRestrictions = new PolicyRestrictionsOperations(this);
+            ComponentPolicyStates = new ComponentPolicyStatesOperations(this);
+            Operations = new Operations(this);
             Attestations = new AttestationsOperations(this);
             BaseUri = new System.Uri("https://management.azure.com");
             AcceptLanguage = "en-US";

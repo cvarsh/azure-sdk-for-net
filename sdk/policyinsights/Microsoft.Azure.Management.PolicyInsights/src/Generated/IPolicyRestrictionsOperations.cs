@@ -79,5 +79,31 @@ namespace Microsoft.Azure.Management.PolicyInsights
         /// Thrown when a required parameter is null
         /// </exception>
         Task<AzureOperationResponse<CheckRestrictionsResult>> CheckAtResourceGroupScopeWithHttpMessagesAsync(string subscriptionId, string resourceGroupName, CheckRestrictionsRequest parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// Checks what restrictions Azure Policy will place on resources
+        /// within a management group.
+        /// </summary>
+        /// <param name='managementGroupId'>
+        /// Management group ID.
+        /// </param>
+        /// <param name='parameters'>
+        /// The check policy restrictions parameters.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="ErrorResponseException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        Task<AzureOperationResponse<CheckRestrictionsResult>> CheckAtManagementGroupScopeWithHttpMessagesAsync(string managementGroupId, CheckManagementGroupRestrictionsRequest parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }
