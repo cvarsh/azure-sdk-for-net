@@ -140,6 +140,7 @@ namespace Azure.ResourceManager.Batch
         public System.DateTimeOffset? CreatedOn { get { throw null; } }
         public int? CurrentDedicatedNodes { get { throw null; } }
         public int? CurrentLowPriorityNodes { get { throw null; } }
+        public Azure.ResourceManager.Batch.Models.NodeCommunicationMode? CurrentNodeCommunicationMode { get { throw null; } }
         public Azure.ResourceManager.Batch.Models.BatchDeploymentConfiguration DeploymentConfiguration { get { throw null; } set { } }
         public string DisplayName { get { throw null; } set { } }
         public Azure.ETag? ETag { get { throw null; } }
@@ -154,6 +155,7 @@ namespace Azure.ResourceManager.Batch
         public Azure.ResourceManager.Batch.Models.BatchResizeOperationStatus ResizeOperationStatus { get { throw null; } }
         public Azure.ResourceManager.Batch.Models.BatchAccountPoolScaleSettings ScaleSettings { get { throw null; } set { } }
         public Azure.ResourceManager.Batch.Models.BatchAccountPoolStartTask StartTask { get { throw null; } set { } }
+        public Azure.ResourceManager.Batch.Models.NodeCommunicationMode? TargetNodeCommunicationMode { get { throw null; } set { } }
         public Azure.ResourceManager.Batch.Models.BatchNodeFillType? TaskSchedulingNodeFillType { get { throw null; } set { } }
         public int? TaskSlotsPerNode { get { throw null; } set { } }
         public System.Collections.Generic.IList<Azure.ResourceManager.Batch.Models.BatchUserAccount> UserAccounts { get { throw null; } }
@@ -653,12 +655,12 @@ namespace Azure.ResourceManager.Batch.Models
     }
     public partial class BatchCifsMountConfiguration
     {
-        public BatchCifsMountConfiguration(string username, string source, string relativeMountPath, string password) { }
+        public BatchCifsMountConfiguration(string source, string relativeMountPath, string password) { }
         public string MountOptions { get { throw null; } set { } }
         public string Password { get { throw null; } set { } }
         public string RelativeMountPath { get { throw null; } set { } }
         public string Source { get { throw null; } set { } }
-        public string Username { get { throw null; } set { } }
+        public string UserName { get { throw null; } set { } }
     }
     public partial class BatchCloudServiceConfiguration
     {
@@ -729,7 +731,7 @@ namespace Azure.ResourceManager.Batch.Models
     }
     public partial class BatchFileShareConfiguration
     {
-        public BatchFileShareConfiguration(string accountName, System.Uri fileUri, string accountKey, string relativeMountPath) { }
+        public BatchFileShareConfiguration(string accountName, System.Uri fileUri, string relativeMountPath) { }
         public string AccountKey { get { throw null; } set { } }
         public string AccountName { get { throw null; } set { } }
         public System.Uri FileUri { get { throw null; } set { } }
@@ -836,7 +838,7 @@ namespace Azure.ResourceManager.Batch.Models
     public partial class BatchNetworkConfiguration
     {
         public BatchNetworkConfiguration() { }
-        public Azure.ResourceManager.Batch.Models.DynamicVNetAssignmentScope? DynamicVNetAssignmentScope { get { throw null; } set { } }
+        public Azure.ResourceManager.Batch.Models.DynamicVNetAssignmentScope? DynamicVnetAssignmentScope { get { throw null; } set { } }
         public System.Collections.Generic.IList<Azure.ResourceManager.Batch.Models.BatchInboundNatPool> EndpointInboundNatPools { get { throw null; } set { } }
         public Azure.ResourceManager.Batch.Models.BatchPublicIPAddressConfiguration PublicIPAddressConfiguration { get { throw null; } set { } }
         public Azure.Core.ResourceIdentifier SubnetId { get { throw null; } set { } }
@@ -909,7 +911,7 @@ namespace Azure.ResourceManager.Batch.Models
     public partial class BatchPrivateLinkServiceConnectionState
     {
         public BatchPrivateLinkServiceConnectionState(Azure.ResourceManager.Batch.Models.BatchPrivateLinkServiceConnectionStatus status) { }
-        public string ActionRequired { get { throw null; } }
+        public string ActionsRequired { get { throw null; } }
         public string Description { get { throw null; } set { } }
         public Azure.ResourceManager.Batch.Models.BatchPrivateLinkServiceConnectionStatus Status { get { throw null; } set { } }
     }
@@ -1106,5 +1108,11 @@ namespace Azure.ResourceManager.Batch.Models
     {
         Enabled = 0,
         Disabled = 1,
+    }
+    public enum NodeCommunicationMode
+    {
+        Default = 0,
+        Classic = 1,
+        Simplified = 2,
     }
 }
