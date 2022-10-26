@@ -49,10 +49,17 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
         /// <param name="fillGapWithZero">Optional. If set to true, then zero
         /// will be returned for time duration where no metric is
         /// emitted/published.</param>
+        /// <param name="metricFilterPattern">Pattern for the filter of the
+        /// metric.</param>
         /// <param name="dimensions">Dimensions of the metric</param>
-        /// <param name="sourceMdmNamespace">Name of the MDM namespace.
-        /// Optional.</param>
-        public MetricSpecification(string name = default(string), string displayName = default(string), string displayDescription = default(string), string unit = default(string), string category = default(string), string aggregationType = default(string), IList<string> supportedAggregationTypes = default(IList<string>), IList<string> supportedTimeGrainTypes = default(IList<string>), bool? fillGapWithZero = default(bool?), IList<MetricDimension> dimensions = default(IList<MetricDimension>), string sourceMdmNamespace = default(string))
+        /// <param name="isInternal">Whether the metric is internal.</param>
+        /// <param name="sourceMdmAccount">The source MDM account.</param>
+        /// <param name="sourceMdmNamespace">The source MDM namespace.</param>
+        /// <param name="enableRegionalMdmAccount">Whether regional MDM account
+        /// enabled.</param>
+        /// <param name="resourceIdDimensionNameOverride">The resource Id
+        /// dimension name override.</param>
+        public MetricSpecification(string name = default(string), string displayName = default(string), string displayDescription = default(string), string unit = default(string), string category = default(string), string aggregationType = default(string), IList<string> supportedAggregationTypes = default(IList<string>), IList<string> supportedTimeGrainTypes = default(IList<string>), bool? fillGapWithZero = default(bool?), string metricFilterPattern = default(string), IList<MetricDimension> dimensions = default(IList<MetricDimension>), bool? isInternal = default(bool?), string sourceMdmAccount = default(string), string sourceMdmNamespace = default(string), bool? enableRegionalMdmAccount = default(bool?), string resourceIdDimensionNameOverride = default(string))
         {
             Name = name;
             DisplayName = displayName;
@@ -63,8 +70,13 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
             SupportedAggregationTypes = supportedAggregationTypes;
             SupportedTimeGrainTypes = supportedTimeGrainTypes;
             FillGapWithZero = fillGapWithZero;
+            MetricFilterPattern = metricFilterPattern;
             Dimensions = dimensions;
+            IsInternal = isInternal;
+            SourceMdmAccount = sourceMdmAccount;
             SourceMdmNamespace = sourceMdmNamespace;
+            EnableRegionalMdmAccount = enableRegionalMdmAccount;
+            ResourceIdDimensionNameOverride = resourceIdDimensionNameOverride;
             CustomInit();
         }
 
@@ -131,16 +143,46 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
         public bool? FillGapWithZero { get; set; }
 
         /// <summary>
+        /// Gets or sets pattern for the filter of the metric.
+        /// </summary>
+        [JsonProperty(PropertyName = "metricFilterPattern")]
+        public string MetricFilterPattern { get; set; }
+
+        /// <summary>
         /// Gets or sets dimensions of the metric
         /// </summary>
         [JsonProperty(PropertyName = "dimensions")]
         public IList<MetricDimension> Dimensions { get; set; }
 
         /// <summary>
-        /// Gets or sets name of the MDM namespace. Optional.
+        /// Gets or sets whether the metric is internal.
+        /// </summary>
+        [JsonProperty(PropertyName = "isInternal")]
+        public bool? IsInternal { get; set; }
+
+        /// <summary>
+        /// Gets or sets the source MDM account.
+        /// </summary>
+        [JsonProperty(PropertyName = "sourceMdmAccount")]
+        public string SourceMdmAccount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the source MDM namespace.
         /// </summary>
         [JsonProperty(PropertyName = "sourceMdmNamespace")]
         public string SourceMdmNamespace { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether regional MDM account enabled.
+        /// </summary>
+        [JsonProperty(PropertyName = "enableRegionalMdmAccount")]
+        public bool? EnableRegionalMdmAccount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the resource Id dimension name override.
+        /// </summary>
+        [JsonProperty(PropertyName = "resourceIdDimensionNameOverride")]
+        public string ResourceIdDimensionNameOverride { get; set; }
 
     }
 }

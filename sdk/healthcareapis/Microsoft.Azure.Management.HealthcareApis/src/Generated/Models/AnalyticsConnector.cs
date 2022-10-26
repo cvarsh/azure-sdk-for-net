@@ -18,22 +18,28 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
     using System.Linq;
 
     /// <summary>
-    /// The description of Dicom Service
+    /// Analytics Connector definition.
     /// </summary>
     [Rest.Serialization.JsonTransformation]
-    public partial class DicomService
+    public partial class AnalyticsConnector
     {
         /// <summary>
-        /// Initializes a new instance of the DicomService class.
+        /// Initializes a new instance of the AnalyticsConnector class.
         /// </summary>
-        public DicomService()
+        public AnalyticsConnector()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the DicomService class.
+        /// Initializes a new instance of the AnalyticsConnector class.
         /// </summary>
+        /// <param name="dataSourceConfiguration">Data source for Analytics
+        /// Connector.</param>
+        /// <param name="dataMappingConfiguration">Data mapping configuration
+        /// for Analytics Connector.</param>
+        /// <param name="dataDestinationConfiguration">Data destination
+        /// configuration for Analytics Connector.</param>
         /// <param name="tags">Resource tags.</param>
         /// <param name="location">The resource location.</param>
         /// <param name="identity">Setting indicating whether the service has a
@@ -42,29 +48,17 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
         /// values include: 'Deleting', 'Succeeded', 'Creating', 'Accepted',
         /// 'Verifying', 'Updating', 'Failed', 'Canceled', 'Deprovisioned',
         /// 'Moving', 'Suspended', 'Warned', 'SystemMaintenance'</param>
-        /// <param name="authenticationConfiguration">Dicom Service
-        /// authentication configuration.</param>
-        /// <param name="corsConfiguration">Dicom Service Cors
-        /// configuration.</param>
-        /// <param name="serviceUrl">The url of the Dicom Services.</param>
-        /// <param name="privateEndpointConnections">The list of private
-        /// endpoint connections that are set up for this resource.</param>
-        /// <param name="publicNetworkAccess">Control permission for data plane
-        /// traffic coming from public networks while private endpoint is
-        /// enabled. Possible values include: 'Enabled', 'Disabled'</param>
         /// <param name="systemData">Metadata pertaining to creation and last
         /// modification of the resource.</param>
-        public DicomService(IDictionary<string, string> tags = default(IDictionary<string, string>), string location = default(string), ServiceManagedIdentityIdentity identity = default(ServiceManagedIdentityIdentity), string provisioningState = default(string), DicomServiceAuthenticationConfiguration authenticationConfiguration = default(DicomServiceAuthenticationConfiguration), CorsConfiguration corsConfiguration = default(CorsConfiguration), string serviceUrl = default(string), IList<PrivateEndpointConnection> privateEndpointConnections = default(IList<PrivateEndpointConnection>), string publicNetworkAccess = default(string), SystemData systemData = default(SystemData))
+        public AnalyticsConnector(AnalyticsConnectorDataSource dataSourceConfiguration, AnalyticsConnectorMapping dataMappingConfiguration, AnalyticsConnectorDataDestination dataDestinationConfiguration, IDictionary<string, string> tags = default(IDictionary<string, string>), string location = default(string), ServiceManagedIdentityIdentity identity = default(ServiceManagedIdentityIdentity), string provisioningState = default(string), SystemData systemData = default(SystemData))
         {
             Tags = tags;
             Location = location;
             Identity = identity;
             ProvisioningState = provisioningState;
-            AuthenticationConfiguration = authenticationConfiguration;
-            CorsConfiguration = corsConfiguration;
-            ServiceUrl = serviceUrl;
-            PrivateEndpointConnections = privateEndpointConnections;
-            PublicNetworkAccess = publicNetworkAccess;
+            DataSourceConfiguration = dataSourceConfiguration;
+            DataMappingConfiguration = dataMappingConfiguration;
+            DataDestinationConfiguration = dataDestinationConfiguration;
             SystemData = systemData;
             CustomInit();
         }
@@ -103,37 +97,23 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
         public string ProvisioningState { get; set; }
 
         /// <summary>
-        /// Gets or sets dicom Service authentication configuration.
+        /// Gets or sets data source for Analytics Connector.
         /// </summary>
-        [JsonProperty(PropertyName = "properties.authenticationConfiguration")]
-        public DicomServiceAuthenticationConfiguration AuthenticationConfiguration { get; set; }
+        [JsonProperty(PropertyName = "properties.dataSourceConfiguration")]
+        public AnalyticsConnectorDataSource DataSourceConfiguration { get; set; }
 
         /// <summary>
-        /// Gets or sets dicom Service Cors configuration.
+        /// Gets or sets data mapping configuration for Analytics Connector.
         /// </summary>
-        [JsonProperty(PropertyName = "properties.corsConfiguration")]
-        public CorsConfiguration CorsConfiguration { get; set; }
+        [JsonProperty(PropertyName = "properties.dataMappingConfiguration")]
+        public AnalyticsConnectorMapping DataMappingConfiguration { get; set; }
 
         /// <summary>
-        /// Gets the url of the Dicom Services.
+        /// Gets or sets data destination configuration for Analytics
+        /// Connector.
         /// </summary>
-        [JsonProperty(PropertyName = "properties.serviceUrl")]
-        public string ServiceUrl { get; private set; }
-
-        /// <summary>
-        /// Gets the list of private endpoint connections that are set up for
-        /// this resource.
-        /// </summary>
-        [JsonProperty(PropertyName = "properties.privateEndpointConnections")]
-        public IList<PrivateEndpointConnection> PrivateEndpointConnections { get; private set; }
-
-        /// <summary>
-        /// Gets or sets control permission for data plane traffic coming from
-        /// public networks while private endpoint is enabled. Possible values
-        /// include: 'Enabled', 'Disabled'
-        /// </summary>
-        [JsonProperty(PropertyName = "properties.publicNetworkAccess")]
-        public string PublicNetworkAccess { get; set; }
+        [JsonProperty(PropertyName = "properties.dataDestinationConfiguration")]
+        public AnalyticsConnectorDataDestination DataDestinationConfiguration { get; set; }
 
         /// <summary>
         /// Gets or sets metadata pertaining to creation and last modification
@@ -150,23 +130,21 @@ namespace Microsoft.Azure.Management.HealthcareApis.Models
         /// </exception>
         public virtual void Validate()
         {
+            if (DataSourceConfiguration == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "DataSourceConfiguration");
+            }
+            if (DataMappingConfiguration == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "DataMappingConfiguration");
+            }
+            if (DataDestinationConfiguration == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "DataDestinationConfiguration");
+            }
             if (Identity != null)
             {
                 Identity.Validate();
-            }
-            if (CorsConfiguration != null)
-            {
-                CorsConfiguration.Validate();
-            }
-            if (PrivateEndpointConnections != null)
-            {
-                foreach (var element in PrivateEndpointConnections)
-                {
-                    if (element != null)
-                    {
-                        element.Validate();
-                    }
-                }
             }
         }
     }

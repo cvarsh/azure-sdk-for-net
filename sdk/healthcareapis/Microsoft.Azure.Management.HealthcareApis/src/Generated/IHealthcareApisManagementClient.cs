@@ -130,6 +130,16 @@ namespace Microsoft.Azure.Management.HealthcareApis
         IWorkspacePrivateLinkResourcesOperations WorkspacePrivateLinkResources { get; }
 
         /// <summary>
+        /// Gets the IAnalyticsConnectorsOperations.
+        /// </summary>
+        IAnalyticsConnectorsOperations AnalyticsConnectors { get; }
+
+        /// <summary>
+        /// Gets the IAnalyticsConnectorOperations.
+        /// </summary>
+        IAnalyticsConnectorOperations AnalyticsConnector { get; }
+
+        /// <summary>
         /// Gets the IOperations.
         /// </summary>
         IOperations Operations { get; }

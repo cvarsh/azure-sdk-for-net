@@ -135,6 +135,16 @@ namespace Microsoft.Azure.Management.HealthcareApis
         public virtual IWorkspacePrivateLinkResourcesOperations WorkspacePrivateLinkResources { get; private set; }
 
         /// <summary>
+        /// Gets the IAnalyticsConnectorsOperations.
+        /// </summary>
+        public virtual IAnalyticsConnectorsOperations AnalyticsConnectors { get; private set; }
+
+        /// <summary>
+        /// Gets the IAnalyticsConnectorOperations.
+        /// </summary>
+        public virtual IAnalyticsConnectorOperations AnalyticsConnector { get; private set; }
+
+        /// <summary>
         /// Gets the IOperations.
         /// </summary>
         public virtual IOperations Operations { get; private set; }
@@ -396,10 +406,12 @@ namespace Microsoft.Azure.Management.HealthcareApis
             FhirServices = new FhirServicesOperations(this);
             WorkspacePrivateEndpointConnections = new WorkspacePrivateEndpointConnectionsOperations(this);
             WorkspacePrivateLinkResources = new WorkspacePrivateLinkResourcesOperations(this);
+            AnalyticsConnectors = new AnalyticsConnectorsOperations(this);
+            AnalyticsConnector = new AnalyticsConnectorOperations(this);
             Operations = new Operations(this);
             OperationResults = new OperationResultsOperations(this);
             BaseUri = new System.Uri("https://management.azure.com");
-            ApiVersion = "2021-11-01";
+            ApiVersion = "2022-10-01-preview";
             AcceptLanguage = "en-US";
             LongRunningOperationRetryTimeout = 30;
             GenerateClientRequestId = true;
@@ -429,6 +441,12 @@ namespace Microsoft.Azure.Management.HealthcareApis
                         new Iso8601TimeSpanConverter()
                     }
             };
+            SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<AnalyticsConnectorDataSource>("type"));
+            DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<AnalyticsConnectorDataSource>("type"));
+            SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<AnalyticsConnectorMapping>("type"));
+            DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<AnalyticsConnectorMapping>("type"));
+            SerializationSettings.Converters.Add(new PolymorphicSerializeJsonConverter<AnalyticsConnectorDataDestination>("type"));
+            DeserializationSettings.Converters.Add(new PolymorphicDeserializeJsonConverter<AnalyticsConnectorDataDestination>("type"));
             CustomInitialize();
             DeserializationSettings.Converters.Add(new TransformationJsonConverter());
             DeserializationSettings.Converters.Add(new CloudErrorJsonConverter());
