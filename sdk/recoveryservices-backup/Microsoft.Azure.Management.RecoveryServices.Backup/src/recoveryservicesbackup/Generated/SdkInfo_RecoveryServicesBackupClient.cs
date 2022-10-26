@@ -75,16 +75,5 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup
               }.AsEnumerable();
           }
       }
-      // BEGIN: Code Generation Metadata Section
-      public static readonly String AutoRestVersion = "2.0.4421";
-      public static readonly String AutoRestBootStrapperVersion = "autorest@2.0.4413";
-      public static readonly String AutoRestCmdExecuted = "cmd.exe /c autorest.cmd https://github.com/Azure/azure-rest-api-specs/blob/main/specification/recoveryservicesbackup/resource-manager/readme.md --csharp --version=2.0.4421 --reflect-api-versions --csharp.namespace=Microsoft.Azure.Management.RecoveryServices.Backup --tag=package-preview-2022-09 --csharp.output-folder=D:\\code\\azure-sdk-for-net\\sdk\\recoveryservices-backup\\Microsoft.Azure.Management.RecoveryServices.Backup\\src\\recoveryservicesbackup\\Generated";
-      public static readonly String GithubForkName = "Azure";
-      public static readonly String GithubBranchName = "main";
-      public static readonly String GithubCommidId = "339675bcbc8172eacbe283470405e1e578632afc";
-      public static readonly String CodeGenerationErrors = "";
-      public static readonly String GithubRepoName = "azure-rest-api-specs";
-      // END: Code Generation Metadata Section
   }
 }
-
