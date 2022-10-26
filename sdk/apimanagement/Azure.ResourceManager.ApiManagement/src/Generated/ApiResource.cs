@@ -396,6 +396,13 @@ namespace Azure.ResourceManager.ApiManagement
             return GetApiTagDescriptions().Get(tagDescriptionId, cancellationToken);
         }
 
+        /// <summary> Gets an object representing a ServiceApiWikiResource along with the instance operations that can be performed on it in the Api. </summary>
+        /// <returns> Returns a <see cref="ServiceApiWikiResource" /> object. </returns>
+        public virtual ServiceApiWikiResource GetServiceApiWiki()
+        {
+            return new ServiceApiWikiResource(Client, new ResourceIdentifier(Id.ToString() + "/wikis/default"));
+        }
+
         /// <summary>
         /// Gets the details of the API specified by its identifier.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}
