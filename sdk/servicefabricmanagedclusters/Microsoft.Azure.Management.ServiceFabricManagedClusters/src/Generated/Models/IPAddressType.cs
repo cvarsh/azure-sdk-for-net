@@ -12,19 +12,17 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
 {
 
     /// <summary>
-    /// Defines values for ServiceScalingTriggerKind.
+    /// Defines values for IPAddressType.
     /// </summary>
-    public static class ServiceScalingTriggerKind
+    public static class IPAddressType
     {
         /// <summary>
-        /// Represents a scaling trigger related to an average load of a
-        /// metric/resource of a partition. The value is 0.
+        /// IPv4 address type.
         /// </summary>
-        public const string AveragePartitionLoadTrigger = "AveragePartitionLoadTrigger";
+        public const string IPv4 = "IPv4";
         /// <summary>
-        /// Represents a scaling policy related to an average load of a
-        /// metric/resource of a service. The value is 1.
+        /// IPv6 address type.
         /// </summary>
-        public const string AverageServiceLoadTrigger = "AverageServiceLoadTrigger";
+        public const string IPv6 = "IPv6";
     }
 }

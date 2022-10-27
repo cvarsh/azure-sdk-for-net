@@ -42,8 +42,8 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
 
         /// <summary>
         /// The version of the Service Fabric resource provider API. This is a
-        /// required parameter and it's value must be "2021-05-01" for this
-        /// specification.
+        /// required parameter and it's value must be "2022-10-01-preview" for
+        /// this specification.
         /// </summary>
         string ApiVersion { get; }
 
@@ -97,9 +97,29 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
         IManagedClustersOperations ManagedClusters { get; }
 
         /// <summary>
+        /// Gets the IManagedAzResiliencyStatusOperations.
+        /// </summary>
+        IManagedAzResiliencyStatusOperations ManagedAzResiliencyStatus { get; }
+
+        /// <summary>
         /// Gets the IManagedClusterVersionOperations.
         /// </summary>
         IManagedClusterVersionOperations ManagedClusterVersion { get; }
+
+        /// <summary>
+        /// Gets the IManagedUnsupportedVMSizesOperations.
+        /// </summary>
+        IManagedUnsupportedVMSizesOperations ManagedUnsupportedVMSizes { get; }
+
+        /// <summary>
+        /// Gets the IOperationStatusOperations.
+        /// </summary>
+        IOperationStatusOperations OperationStatus { get; }
+
+        /// <summary>
+        /// Gets the IOperationResultsOperations.
+        /// </summary>
+        IOperationResultsOperations OperationResults { get; }
 
         /// <summary>
         /// Gets the IOperations.
@@ -110,6 +130,11 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
         /// Gets the INodeTypesOperations.
         /// </summary>
         INodeTypesOperations NodeTypes { get; }
+
+        /// <summary>
+        /// Gets the INodeTypeSkusOperations.
+        /// </summary>
+        INodeTypeSkusOperations NodeTypeSkus { get; }
 
     }
 }

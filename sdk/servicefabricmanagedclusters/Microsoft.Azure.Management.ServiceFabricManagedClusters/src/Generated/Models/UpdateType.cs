@@ -12,19 +12,18 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
 {
 
     /// <summary>
-    /// Defines values for ServiceScalingTriggerKind.
+    /// Defines values for UpdateType.
     /// </summary>
-    public static class ServiceScalingTriggerKind
+    public static class UpdateType
     {
         /// <summary>
-        /// Represents a scaling trigger related to an average load of a
-        /// metric/resource of a partition. The value is 0.
+        /// The operation will proceed in all specified nodes at the same time.
         /// </summary>
-        public const string AveragePartitionLoadTrigger = "AveragePartitionLoadTrigger";
+        public const string Default = "Default";
         /// <summary>
-        /// Represents a scaling policy related to an average load of a
-        /// metric/resource of a service. The value is 1.
+        /// The operation will proceed one upgrade domain at a time, checking
+        /// the health in between each to continue.
         /// </summary>
-        public const string AverageServiceLoadTrigger = "AverageServiceLoadTrigger";
+        public const string ByUpgradeDomain = "ByUpgradeDomain";
     }
 }

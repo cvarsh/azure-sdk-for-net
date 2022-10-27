@@ -97,6 +97,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "clusterName");
             }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
+            }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -390,6 +394,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "nodeTypeName");
             }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
+            }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -582,8 +590,8 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
         /// <param name='nodeTypeName'>
         /// The name of the node type.
         /// </param>
-        /// <param name='tags'>
-        /// Node type update parameters
+        /// <param name='parameters'>
+        /// The parameters to update the node type configuration.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -606,7 +614,7 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<NodeType>> UpdateWithHttpMessagesAsync(string resourceGroupName, string clusterName, string nodeTypeName, IDictionary<string, string> tags = default(IDictionary<string, string>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<NodeType>> UpdateWithHttpMessagesAsync(string resourceGroupName, string clusterName, string nodeTypeName, NodeTypeUpdateParameters parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client.SubscriptionId == null)
             {
@@ -624,10 +632,13 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "nodeTypeName");
             }
-            NodeTypeUpdateParameters parameters = new NodeTypeUpdateParameters();
-            if (tags != null)
+            if (Client.ApiVersion == null)
             {
-                parameters.Tags = tags;
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
+            }
+            if (parameters == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "parameters");
             }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
@@ -864,13 +875,13 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "nodeTypeName");
             }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
+            }
             if (parameters == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "parameters");
-            }
-            if (parameters != null)
-            {
-                parameters.Validate();
             }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
@@ -1061,13 +1072,13 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "nodeTypeName");
             }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
+            }
             if (parameters == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "parameters");
-            }
-            if (parameters != null)
-            {
-                parameters.Validate();
             }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
@@ -1258,13 +1269,13 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "nodeTypeName");
             }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
+            }
             if (parameters == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "parameters");
-            }
-            if (parameters != null)
-            {
-                parameters.Validate();
             }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
@@ -1456,6 +1467,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             if (nodeTypeName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "nodeTypeName");
+            }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
             }
             if (parameters == null)
             {
@@ -1685,6 +1700,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             if (nodeTypeName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "nodeTypeName");
+            }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
             }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;

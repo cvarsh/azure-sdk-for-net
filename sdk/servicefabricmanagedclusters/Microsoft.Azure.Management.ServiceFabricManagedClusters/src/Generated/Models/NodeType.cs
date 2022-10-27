@@ -35,19 +35,26 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
         /// <summary>
         /// Initializes a new instance of the NodeType class.
         /// </summary>
-        /// <param name="isPrimary">The node type on which system services will
-        /// run. Only one node type should be marked as primary. Primary node
-        /// type cannot be deleted or changed for existing clusters.</param>
-        /// <param name="vmInstanceCount">The number of nodes in the node
-        /// type.</param>
-        /// <param name="dataDiskSizeGB">Disk size for each vm in the node type
-        /// in GBs.</param>
+        /// <param name="isPrimary">Indicates the Service Fabric system
+        /// services for the cluster will run on this node type. This setting
+        /// cannot be changed once the node type is created.</param>
+        /// <param name="vmInstanceCount">The number of nodes in the node type.
+        /// &lt;br /&gt;&lt;br /&gt;**Values:** &lt;br /&gt;-1 - Use when auto
+        /// scale rules are configured or sku.capacity is defined &lt;br /&gt;
+        /// 0 - Not supported &lt;br /&gt; &gt;0 - Use for manual
+        /// scale.</param>
         /// <param name="id">Azure resource identifier.</param>
         /// <param name="name">Azure resource name.</param>
         /// <param name="type">Azure resource type.</param>
         /// <param name="tags">Azure resource tags.</param>
-        /// <param name="dataDiskType">Possible values include: 'Standard_LRS',
-        /// 'StandardSSD_LRS', 'Premium_LRS'</param>
+        /// <param name="dataDiskSizeGB">Disk size for the managed disk
+        /// attached to the vms on the node type in GBs.</param>
+        /// <param name="dataDiskType">Managed data disk type. Specifies the
+        /// storage account type for the managed disk. Possible values include:
+        /// 'Standard_LRS', 'StandardSSD_LRS', 'Premium_LRS'</param>
+        /// <param name="dataDiskLetter">Managed data disk letter. It can not
+        /// use the reserved letter C or D and it can not change after
+        /// created.</param>
         /// <param name="placementProperties">The placement tags applied to
         /// nodes in the node type, which can be used to indicate where certain
         /// services (workload) should run.</param>
@@ -76,22 +83,84 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
         /// 'latest'.</param>
         /// <param name="vmSecrets">virtual machine secretes.</param>
         /// <param name="vmExtensions">virtual machine extensions.</param>
+        /// <param name="vmManagedIdentity">Identities to assign to the virtual
+        /// machine scale set under the node type.</param>
         /// <param name="isStateless">Indicates if the node type can only host
         /// Stateless workloads.</param>
         /// <param name="multiplePlacementGroups">Indicates if scale set
         /// associated with the node type can be composed of multiple placement
         /// groups.</param>
-        /// <param name="provisioningState">The provisioning state of the
-        /// managed cluster resource. Possible values include: 'None',
-        /// 'Creating', 'Created', 'Updating', 'Succeeded', 'Failed',
-        /// 'Canceled', 'Deleting', 'Deleted', 'Other'</param>
-        public NodeType(bool isPrimary, int vmInstanceCount, int dataDiskSizeGB, string id = default(string), string name = default(string), string type = default(string), IDictionary<string, string> tags = default(IDictionary<string, string>), SystemData systemData = default(SystemData), string dataDiskType = default(string), IDictionary<string, string> placementProperties = default(IDictionary<string, string>), IDictionary<string, string> capacities = default(IDictionary<string, string>), EndpointRangeDescription applicationPorts = default(EndpointRangeDescription), EndpointRangeDescription ephemeralPorts = default(EndpointRangeDescription), string vmSize = default(string), string vmImagePublisher = default(string), string vmImageOffer = default(string), string vmImageSku = default(string), string vmImageVersion = default(string), IList<VaultSecretGroup> vmSecrets = default(IList<VaultSecretGroup>), IList<VMSSExtension> vmExtensions = default(IList<VMSSExtension>), VmManagedIdentity vmManagedIdentity = default(VmManagedIdentity), bool? isStateless = default(bool?), bool? multiplePlacementGroups = default(bool?), string provisioningState = default(string))
+        /// <param name="frontendConfigurations">Indicates the node type uses
+        /// its own frontend configurations instead of the default one for the
+        /// cluster. This setting can only be specified for non-primary node
+        /// types and can not be added or removed after the node type is
+        /// created.</param>
+        /// <param name="networkSecurityRules">The Network Security Rules for
+        /// this node type. This setting can only be specified for node types
+        /// that are configured with frontend configurations.</param>
+        /// <param name="additionalDataDisks">Additional managed data
+        /// disks.</param>
+        /// <param name="enableEncryptionAtHost">Enable or disable the Host
+        /// Encryption for the virtual machines on the node type. This will
+        /// enable the encryption for all the disks including Resource/Temp
+        /// disk at host itself. Default: The Encryption at host will be
+        /// disabled unless this property is set to true for the
+        /// resource.</param>
+        /// <param name="provisioningState">The provisioning state of the node
+        /// type resource. Possible values include: 'None', 'Creating',
+        /// 'Created', 'Updating', 'Succeeded', 'Failed', 'Canceled',
+        /// 'Deleting', 'Deleted', 'Other'</param>
+        /// <param name="enableAcceleratedNetworking">Specifies whether the
+        /// network interface is accelerated networking-enabled.</param>
+        /// <param name="useDefaultPublicLoadBalancer">Specifies whether the
+        /// use public load balancer. If not specified and the node type
+        /// doesn't have its own frontend configuration, it will be attached to
+        /// the default load balancer. If the node type uses its own Load
+        /// balancer and useDefaultPublicLoadBalancer is true, then the
+        /// frontend has to be an Internal Load Balancer. If the node type uses
+        /// its own Load balancer and useDefaultPublicLoadBalancer is false or
+        /// not set, then the custom load balancer must include a public load
+        /// balancer to provide outbound connectivity.</param>
+        /// <param name="useTempDataDisk">Specifies whether to use the
+        /// temporary disk for the service fabric data root, in which case no
+        /// managed data disk will be attached and the temporary disk will be
+        /// used. It is only allowed for stateless node types.</param>
+        /// <param name="enableOverProvisioning">Specifies whether the node
+        /// type should be overprovisioned. It is only allowed for stateless
+        /// node types.</param>
+        /// <param name="zones">Specifies the availability zones where the node
+        /// type would span across. If the cluster is not spanning across
+        /// availability zones, initiates az migration for the cluster.</param>
+        /// <param name="isSpotVM">Indicates whether the node type will be Spot
+        /// Virtual Machines. Azure will allocate the VMs if there is capacity
+        /// available and the VMs can be evicted at any time.</param>
+        /// <param name="hostGroupId">Specifies the full host group resource
+        /// Id. This property is used for deploying on azure dedicated
+        /// hosts.</param>
+        /// <param name="useEphemeralOSDisk">Indicates whether to use ephemeral
+        /// os disk. The sku selected on the vmSize property needs to support
+        /// this feature.</param>
+        /// <param name="spotRestoreTimeout">Indicates the time duration after
+        /// which the platform will not try to restore the VMSS SPOT instances
+        /// specified as ISO 8601.</param>
+        /// <param name="evictionPolicy">Specifies the eviction policy for
+        /// virtual machines in a SPOT node type. Default is Delete. Possible
+        /// values include: 'Delete', 'Deallocate'</param>
+        /// <param name="vmImageResourceId">Indicates the resource id of the vm
+        /// image. This parameter is used for custom vm image.</param>
+        /// <param name="subnetId">Indicates the resource id of the subnet for
+        /// the node type.</param>
+        /// <param name="vmSetupActions">Specifies the actions to be performed
+        /// on the vms before bootstrapping the service fabric runtime.</param>
+        /// <param name="sku">The node type sku.</param>
+        public NodeType(bool isPrimary, int vmInstanceCount, string id = default(string), string name = default(string), string type = default(string), IDictionary<string, string> tags = default(IDictionary<string, string>), SystemData systemData = default(SystemData), int? dataDiskSizeGB = default(int?), string dataDiskType = default(string), string dataDiskLetter = default(string), IDictionary<string, string> placementProperties = default(IDictionary<string, string>), IDictionary<string, string> capacities = default(IDictionary<string, string>), EndpointRangeDescription applicationPorts = default(EndpointRangeDescription), EndpointRangeDescription ephemeralPorts = default(EndpointRangeDescription), string vmSize = default(string), string vmImagePublisher = default(string), string vmImageOffer = default(string), string vmImageSku = default(string), string vmImageVersion = default(string), IList<VaultSecretGroup> vmSecrets = default(IList<VaultSecretGroup>), IList<VMSSExtension> vmExtensions = default(IList<VMSSExtension>), VmManagedIdentity vmManagedIdentity = default(VmManagedIdentity), bool? isStateless = default(bool?), bool? multiplePlacementGroups = default(bool?), IList<FrontendConfiguration> frontendConfigurations = default(IList<FrontendConfiguration>), IList<NetworkSecurityRule> networkSecurityRules = default(IList<NetworkSecurityRule>), IList<VmssDataDisk> additionalDataDisks = default(IList<VmssDataDisk>), bool? enableEncryptionAtHost = default(bool?), string provisioningState = default(string), bool? enableAcceleratedNetworking = default(bool?), bool? useDefaultPublicLoadBalancer = default(bool?), bool? useTempDataDisk = default(bool?), bool? enableOverProvisioning = default(bool?), IList<string> zones = default(IList<string>), bool? isSpotVM = default(bool?), string hostGroupId = default(string), bool? useEphemeralOSDisk = default(bool?), string spotRestoreTimeout = default(string), string evictionPolicy = default(string), string vmImageResourceId = default(string), string subnetId = default(string), IList<string> vmSetupActions = default(IList<string>), NodeTypeSku sku = default(NodeTypeSku))
             : base(id, name, type, tags, systemData)
         {
             IsPrimary = isPrimary;
             VmInstanceCount = vmInstanceCount;
             DataDiskSizeGB = dataDiskSizeGB;
             DataDiskType = dataDiskType;
+            DataDiskLetter = dataDiskLetter;
             PlacementProperties = placementProperties;
             Capacities = capacities;
             ApplicationPorts = applicationPorts;
@@ -106,7 +175,25 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
             VmManagedIdentity = vmManagedIdentity;
             IsStateless = isStateless;
             MultiplePlacementGroups = multiplePlacementGroups;
+            FrontendConfigurations = frontendConfigurations;
+            NetworkSecurityRules = networkSecurityRules;
+            AdditionalDataDisks = additionalDataDisks;
+            EnableEncryptionAtHost = enableEncryptionAtHost;
             ProvisioningState = provisioningState;
+            EnableAcceleratedNetworking = enableAcceleratedNetworking;
+            UseDefaultPublicLoadBalancer = useDefaultPublicLoadBalancer;
+            UseTempDataDisk = useTempDataDisk;
+            EnableOverProvisioning = enableOverProvisioning;
+            Zones = zones;
+            IsSpotVM = isSpotVM;
+            HostGroupId = hostGroupId;
+            UseEphemeralOSDisk = useEphemeralOSDisk;
+            SpotRestoreTimeout = spotRestoreTimeout;
+            EvictionPolicy = evictionPolicy;
+            VmImageResourceId = vmImageResourceId;
+            SubnetId = subnetId;
+            VmSetupActions = vmSetupActions;
+            Sku = sku;
             CustomInit();
         }
 
@@ -116,31 +203,44 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the node type on which system services will run. Only
-        /// one node type should be marked as primary. Primary node type cannot
-        /// be deleted or changed for existing clusters.
+        /// Gets or sets indicates the Service Fabric system services for the
+        /// cluster will run on this node type. This setting cannot be changed
+        /// once the node type is created.
         /// </summary>
         [JsonProperty(PropertyName = "properties.isPrimary")]
         public bool IsPrimary { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of nodes in the node type.
+        /// Gets or sets the number of nodes in the node type. &amp;lt;br
+        /// /&amp;gt;&amp;lt;br /&amp;gt;**Values:** &amp;lt;br /&amp;gt;-1 -
+        /// Use when auto scale rules are configured or sku.capacity is defined
+        /// &amp;lt;br /&amp;gt; 0 - Not supported &amp;lt;br /&amp;gt;
+        /// &amp;gt;0 - Use for manual scale.
         /// </summary>
         [JsonProperty(PropertyName = "properties.vmInstanceCount")]
         public int VmInstanceCount { get; set; }
 
         /// <summary>
-        /// Gets or sets disk size for each vm in the node type in GBs.
+        /// Gets or sets disk size for the managed disk attached to the vms on
+        /// the node type in GBs.
         /// </summary>
         [JsonProperty(PropertyName = "properties.dataDiskSizeGB")]
-        public int DataDiskSizeGB { get; set; }
+        public int? DataDiskSizeGB { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'Standard_LRS',
+        /// Gets or sets managed data disk type. Specifies the storage account
+        /// type for the managed disk. Possible values include: 'Standard_LRS',
         /// 'StandardSSD_LRS', 'Premium_LRS'
         /// </summary>
         [JsonProperty(PropertyName = "properties.dataDiskType")]
         public string DataDiskType { get; set; }
+
+        /// <summary>
+        /// Gets or sets managed data disk letter. It can not use the reserved
+        /// letter C or D and it can not change after created.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.dataDiskLetter")]
+        public string DataDiskLetter { get; set; }
 
         /// <summary>
         /// Gets or sets the placement tags applied to nodes in the node type,
@@ -229,6 +329,8 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
         public IList<VMSSExtension> VmExtensions { get; set; }
 
         /// <summary>
+        /// Gets or sets identities to assign to the virtual machine scale set
+        /// under the node type.
         /// </summary>
         [JsonProperty(PropertyName = "properties.vmManagedIdentity")]
         public VmManagedIdentity VmManagedIdentity { get; set; }
@@ -248,12 +350,155 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
         public bool? MultiplePlacementGroups { get; set; }
 
         /// <summary>
-        /// Gets the provisioning state of the managed cluster resource.
-        /// Possible values include: 'None', 'Creating', 'Created', 'Updating',
+        /// Gets or sets indicates the node type uses its own frontend
+        /// configurations instead of the default one for the cluster. This
+        /// setting can only be specified for non-primary node types and can
+        /// not be added or removed after the node type is created.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.frontendConfigurations")]
+        public IList<FrontendConfiguration> FrontendConfigurations { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Network Security Rules for this node type. This
+        /// setting can only be specified for node types that are configured
+        /// with frontend configurations.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.networkSecurityRules")]
+        public IList<NetworkSecurityRule> NetworkSecurityRules { get; set; }
+
+        /// <summary>
+        /// Gets or sets additional managed data disks.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.additionalDataDisks")]
+        public IList<VmssDataDisk> AdditionalDataDisks { get; set; }
+
+        /// <summary>
+        /// Gets or sets enable or disable the Host Encryption for the virtual
+        /// machines on the node type. This will enable the encryption for all
+        /// the disks including Resource/Temp disk at host itself. Default: The
+        /// Encryption at host will be disabled unless this property is set to
+        /// true for the resource.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.enableEncryptionAtHost")]
+        public bool? EnableEncryptionAtHost { get; set; }
+
+        /// <summary>
+        /// Gets the provisioning state of the node type resource. Possible
+        /// values include: 'None', 'Creating', 'Created', 'Updating',
         /// 'Succeeded', 'Failed', 'Canceled', 'Deleting', 'Deleted', 'Other'
         /// </summary>
         [JsonProperty(PropertyName = "properties.provisioningState")]
         public string ProvisioningState { get; private set; }
+
+        /// <summary>
+        /// Gets or sets specifies whether the network interface is accelerated
+        /// networking-enabled.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.enableAcceleratedNetworking")]
+        public bool? EnableAcceleratedNetworking { get; set; }
+
+        /// <summary>
+        /// Gets or sets specifies whether the use public load balancer. If not
+        /// specified and the node type doesn't have its own frontend
+        /// configuration, it will be attached to the default load balancer. If
+        /// the node type uses its own Load balancer and
+        /// useDefaultPublicLoadBalancer is true, then the frontend has to be
+        /// an Internal Load Balancer. If the node type uses its own Load
+        /// balancer and useDefaultPublicLoadBalancer is false or not set, then
+        /// the custom load balancer must include a public load balancer to
+        /// provide outbound connectivity.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.useDefaultPublicLoadBalancer")]
+        public bool? UseDefaultPublicLoadBalancer { get; set; }
+
+        /// <summary>
+        /// Gets or sets specifies whether to use the temporary disk for the
+        /// service fabric data root, in which case no managed data disk will
+        /// be attached and the temporary disk will be used. It is only allowed
+        /// for stateless node types.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.useTempDataDisk")]
+        public bool? UseTempDataDisk { get; set; }
+
+        /// <summary>
+        /// Gets or sets specifies whether the node type should be
+        /// overprovisioned. It is only allowed for stateless node types.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.enableOverProvisioning")]
+        public bool? EnableOverProvisioning { get; set; }
+
+        /// <summary>
+        /// Gets or sets specifies the availability zones where the node type
+        /// would span across. If the cluster is not spanning across
+        /// availability zones, initiates az migration for the cluster.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.zones")]
+        public IList<string> Zones { get; set; }
+
+        /// <summary>
+        /// Gets or sets indicates whether the node type will be Spot Virtual
+        /// Machines. Azure will allocate the VMs if there is capacity
+        /// available and the VMs can be evicted at any time.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.isSpotVM")]
+        public bool? IsSpotVM { get; set; }
+
+        /// <summary>
+        /// Gets or sets specifies the full host group resource Id. This
+        /// property is used for deploying on azure dedicated hosts.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.hostGroupId")]
+        public string HostGroupId { get; set; }
+
+        /// <summary>
+        /// Gets or sets indicates whether to use ephemeral os disk. The sku
+        /// selected on the vmSize property needs to support this feature.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.useEphemeralOSDisk")]
+        public bool? UseEphemeralOSDisk { get; set; }
+
+        /// <summary>
+        /// Gets or sets indicates the time duration after which the platform
+        /// will not try to restore the VMSS SPOT instances specified as ISO
+        /// 8601.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.spotRestoreTimeout")]
+        public string SpotRestoreTimeout { get; set; }
+
+        /// <summary>
+        /// Gets or sets specifies the eviction policy for virtual machines in
+        /// a SPOT node type. Default is Delete. Possible values include:
+        /// 'Delete', 'Deallocate'
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.evictionPolicy")]
+        public string EvictionPolicy { get; set; }
+
+        /// <summary>
+        /// Gets or sets indicates the resource id of the vm image. This
+        /// parameter is used for custom vm image.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.vmImageResourceId")]
+        public string VmImageResourceId { get; set; }
+
+        /// <summary>
+        /// Gets or sets indicates the resource id of the subnet for the node
+        /// type.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.subnetId")]
+        public string SubnetId { get; set; }
+
+        /// <summary>
+        /// Gets or sets specifies the actions to be performed on the vms
+        /// before bootstrapping the service fabric runtime.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.vmSetupActions")]
+        public IList<string> VmSetupActions { get; set; }
+
+        /// <summary>
+        /// Gets or sets the node type sku.
+        /// </summary>
+        [JsonProperty(PropertyName = "sku")]
+        public NodeTypeSku Sku { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -267,9 +512,16 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
             {
                 throw new ValidationException(ValidationRules.InclusiveMaximum, "VmInstanceCount", 2147483647);
             }
-            if (VmInstanceCount < 1)
+            if (VmInstanceCount < -1)
             {
-                throw new ValidationException(ValidationRules.InclusiveMinimum, "VmInstanceCount", 1);
+                throw new ValidationException(ValidationRules.InclusiveMinimum, "VmInstanceCount", -1);
+            }
+            if (DataDiskLetter != null)
+            {
+                if (!System.Text.RegularExpressions.Regex.IsMatch(DataDiskLetter, "^[a-zA-Z]{1}$"))
+                {
+                    throw new ValidationException(ValidationRules.Pattern, "DataDiskLetter", "^[a-zA-Z]{1}$");
+                }
             }
             if (ApplicationPorts != null)
             {
@@ -298,6 +550,30 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
                         element1.Validate();
                     }
                 }
+            }
+            if (NetworkSecurityRules != null)
+            {
+                foreach (var element2 in NetworkSecurityRules)
+                {
+                    if (element2 != null)
+                    {
+                        element2.Validate();
+                    }
+                }
+            }
+            if (AdditionalDataDisks != null)
+            {
+                foreach (var element3 in AdditionalDataDisks)
+                {
+                    if (element3 != null)
+                    {
+                        element3.Validate();
+                    }
+                }
+            }
+            if (Sku != null)
+            {
+                Sku.Validate();
             }
         }
     }

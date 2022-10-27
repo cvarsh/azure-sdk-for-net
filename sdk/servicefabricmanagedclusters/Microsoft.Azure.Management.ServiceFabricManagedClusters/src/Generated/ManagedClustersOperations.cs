@@ -88,6 +88,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
             }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
+            }
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");
@@ -264,6 +268,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
         /// </return>
         public async Task<AzureOperationResponse<IPage<ManagedCluster>>> ListBySubscriptionWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
+            }
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");
@@ -450,6 +458,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             if (clusterName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "clusterName");
+            }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
             }
             if (Client.SubscriptionId == null)
             {
@@ -673,6 +685,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             if (clusterName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "clusterName");
+            }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
             }
             if (Client.SubscriptionId == null)
             {
@@ -905,6 +921,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "clusterName");
             }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
+            }
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");
@@ -1124,6 +1144,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             if (clusterName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "clusterName");
+            }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
             }
             if (Client.SubscriptionId == null)
             {

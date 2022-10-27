@@ -60,7 +60,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
         /// names after which this extension needs to be provisioned.</param>
         /// <param name="provisioningState">The provisioning state, which only
         /// appears in the response.</param>
-        public VMSSExtension(string name, string publisher, string type, string typeHandlerVersion, bool? autoUpgradeMinorVersion = default(bool?), object settings = default(object), object protectedSettings = default(object), string forceUpdateTag = default(string), IList<string> provisionAfterExtensions = default(IList<string>), string provisioningState = default(string))
+        /// <param name="enableAutomaticUpgrade">Indicates whether the
+        /// extension should be automatically upgraded by the platform if there
+        /// is a newer version of the extension available.</param>
+        public VMSSExtension(string name, string publisher, string type, string typeHandlerVersion, bool? autoUpgradeMinorVersion = default(bool?), object settings = default(object), object protectedSettings = default(object), string forceUpdateTag = default(string), IList<string> provisionAfterExtensions = default(IList<string>), string provisioningState = default(string), bool? enableAutomaticUpgrade = default(bool?))
         {
             Name = name;
             Publisher = publisher;
@@ -72,6 +75,7 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
             ForceUpdateTag = forceUpdateTag;
             ProvisionAfterExtensions = provisionAfterExtensions;
             ProvisioningState = provisioningState;
+            EnableAutomaticUpgrade = enableAutomaticUpgrade;
             CustomInit();
         }
 
@@ -147,6 +151,14 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
         /// </summary>
         [JsonProperty(PropertyName = "properties.provisioningState")]
         public string ProvisioningState { get; private set; }
+
+        /// <summary>
+        /// Gets or sets indicates whether the extension should be
+        /// automatically upgraded by the platform if there is a newer version
+        /// of the extension available.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.enableAutomaticUpgrade")]
+        public bool? EnableAutomaticUpgrade { get; set; }
 
         /// <summary>
         /// Validate the object.

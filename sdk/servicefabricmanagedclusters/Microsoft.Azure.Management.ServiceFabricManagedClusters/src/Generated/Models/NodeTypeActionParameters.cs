@@ -10,14 +10,15 @@
 
 namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
 {
-    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
-    /// Parameters for Node type action.
+    /// Parameters for Node type action. If nodes are not specified on the
+    /// parameters, the operation will be performed in all nodes of the node
+    /// type one upgrade domain at a time.
     /// </summary>
     public partial class NodeTypeActionParameters
     {
@@ -34,10 +35,14 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
         /// </summary>
         /// <param name="nodes">List of node names from the node type.</param>
         /// <param name="force">Force the action to go through.</param>
-        public NodeTypeActionParameters(IList<string> nodes, bool? force = default(bool?))
+        /// <param name="updateType">Specifies the way the operation will be
+        /// performed. Possible values include: 'Default',
+        /// 'ByUpgradeDomain'</param>
+        public NodeTypeActionParameters(IList<string> nodes = default(IList<string>), bool? force = default(bool?), string updateType = default(string))
         {
             Nodes = nodes;
             Force = force;
+            UpdateType = updateType;
             CustomInit();
         }
 
@@ -59,17 +64,11 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
         public bool? Force { get; set; }
 
         /// <summary>
-        /// Validate the object.
+        /// Gets or sets specifies the way the operation will be performed.
+        /// Possible values include: 'Default', 'ByUpgradeDomain'
         /// </summary>
-        /// <exception cref="ValidationException">
-        /// Thrown if validation fails
-        /// </exception>
-        public virtual void Validate()
-        {
-            if (Nodes == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Nodes");
-            }
-        }
+        [JsonProperty(PropertyName = "updateType")]
+        public string UpdateType { get; set; }
+
     }
 }

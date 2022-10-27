@@ -10,33 +10,32 @@
 
 namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
 {
+    using Microsoft.Rest;
     using Newtonsoft.Json;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
-    /// Node type update request
+    /// IPTag associated with the object.
     /// </summary>
-    public partial class NodeTypeUpdateParameters
+    public partial class IPTag
     {
         /// <summary>
-        /// Initializes a new instance of the NodeTypeUpdateParameters class.
+        /// Initializes a new instance of the IPTag class.
         /// </summary>
-        public NodeTypeUpdateParameters()
+        public IPTag()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the NodeTypeUpdateParameters class.
+        /// Initializes a new instance of the IPTag class.
         /// </summary>
-        /// <param name="tags">Node type update parameters</param>
-        /// <param name="sku">The node type sku.</param>
-        public NodeTypeUpdateParameters(IDictionary<string, string> tags = default(IDictionary<string, string>), NodeTypeSku sku = default(NodeTypeSku))
+        /// <param name="ipTagType">The IP tag type.</param>
+        /// <param name="tag">The value of the IP tag.</param>
+        public IPTag(string ipTagType, string tag)
         {
-            Tags = tags;
-            Sku = sku;
+            IpTagType = ipTagType;
+            Tag = tag;
             CustomInit();
         }
 
@@ -46,28 +45,32 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets node type update parameters
+        /// Gets or sets the IP tag type.
         /// </summary>
-        [JsonProperty(PropertyName = "tags")]
-        public IDictionary<string, string> Tags { get; set; }
+        [JsonProperty(PropertyName = "ipTagType")]
+        public string IpTagType { get; set; }
 
         /// <summary>
-        /// Gets or sets the node type sku.
+        /// Gets or sets the value of the IP tag.
         /// </summary>
-        [JsonProperty(PropertyName = "sku")]
-        public NodeTypeSku Sku { get; set; }
+        [JsonProperty(PropertyName = "tag")]
+        public string Tag { get; set; }
 
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public virtual void Validate()
         {
-            if (Sku != null)
+            if (IpTagType == null)
             {
-                Sku.Validate();
+                throw new ValidationException(ValidationRules.CannotBeNull, "IpTagType");
+            }
+            if (Tag == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Tag");
             }
         }
     }

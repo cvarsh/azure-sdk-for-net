@@ -45,7 +45,9 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
         /// rule. Acceptable values are between 1 and 65535.</param>
         /// <param name="probeRequestPath">The probe request path. Only
         /// supported for HTTP/HTTPS probes.</param>
-        public LoadBalancingRule(int frontendPort, int backendPort, string protocol, string probeProtocol, int? probePort = default(int?), string probeRequestPath = default(string))
+        /// <param name="loadDistribution">The load distribution policy for
+        /// this rule.</param>
+        public LoadBalancingRule(int frontendPort, int backendPort, string protocol, string probeProtocol, int? probePort = default(int?), string probeRequestPath = default(string), string loadDistribution = default(string))
         {
             FrontendPort = frontendPort;
             BackendPort = backendPort;
@@ -53,6 +55,7 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
             ProbePort = probePort;
             ProbeProtocol = probeProtocol;
             ProbeRequestPath = probeRequestPath;
+            LoadDistribution = loadDistribution;
             CustomInit();
         }
 
@@ -104,6 +107,12 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
         /// </summary>
         [JsonProperty(PropertyName = "probeRequestPath")]
         public string ProbeRequestPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the load distribution policy for this rule.
+        /// </summary>
+        [JsonProperty(PropertyName = "loadDistribution")]
+        public string LoadDistribution { get; set; }
 
         /// <summary>
         /// Validate the object.

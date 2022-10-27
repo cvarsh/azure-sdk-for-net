@@ -48,7 +48,8 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
 
         /// <summary>
         /// The version of the Service Fabric resource provider API. This is a required
-        /// parameter and it's value must be "2021-05-01" for this specification.
+        /// parameter and it's value must be "2022-10-01-preview" for this
+        /// specification.
         /// </summary>
         public string ApiVersion { get; private set; }
 
@@ -101,9 +102,29 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
         public virtual IManagedClustersOperations ManagedClusters { get; private set; }
 
         /// <summary>
+        /// Gets the IManagedAzResiliencyStatusOperations.
+        /// </summary>
+        public virtual IManagedAzResiliencyStatusOperations ManagedAzResiliencyStatus { get; private set; }
+
+        /// <summary>
         /// Gets the IManagedClusterVersionOperations.
         /// </summary>
         public virtual IManagedClusterVersionOperations ManagedClusterVersion { get; private set; }
+
+        /// <summary>
+        /// Gets the IManagedUnsupportedVMSizesOperations.
+        /// </summary>
+        public virtual IManagedUnsupportedVMSizesOperations ManagedUnsupportedVMSizes { get; private set; }
+
+        /// <summary>
+        /// Gets the IOperationStatusOperations.
+        /// </summary>
+        public virtual IOperationStatusOperations OperationStatus { get; private set; }
+
+        /// <summary>
+        /// Gets the IOperationResultsOperations.
+        /// </summary>
+        public virtual IOperationResultsOperations OperationResults { get; private set; }
 
         /// <summary>
         /// Gets the IOperations.
@@ -114,6 +135,11 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
         /// Gets the INodeTypesOperations.
         /// </summary>
         public virtual INodeTypesOperations NodeTypes { get; private set; }
+
+        /// <summary>
+        /// Gets the INodeTypeSkusOperations.
+        /// </summary>
+        public virtual INodeTypeSkusOperations NodeTypeSkus { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the ServiceFabricManagedClustersManagementClient class.
@@ -361,11 +387,16 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             Applications = new ApplicationsOperations(this);
             Services = new ServicesOperations(this);
             ManagedClusters = new ManagedClustersOperations(this);
+            ManagedAzResiliencyStatus = new ManagedAzResiliencyStatusOperations(this);
             ManagedClusterVersion = new ManagedClusterVersionOperations(this);
+            ManagedUnsupportedVMSizes = new ManagedUnsupportedVMSizesOperations(this);
+            OperationStatus = new OperationStatusOperations(this);
+            OperationResults = new OperationResultsOperations(this);
             Operations = new Operations(this);
             NodeTypes = new NodeTypesOperations(this);
+            NodeTypeSkus = new NodeTypeSkusOperations(this);
             BaseUri = new System.Uri("https://management.azure.com");
-            ApiVersion = "2021-05-01";
+            ApiVersion = "2022-10-01-preview";
             AcceptLanguage = "en-US";
             LongRunningOperationRetryTimeout = 30;
             GenerateClientRequestId = true;

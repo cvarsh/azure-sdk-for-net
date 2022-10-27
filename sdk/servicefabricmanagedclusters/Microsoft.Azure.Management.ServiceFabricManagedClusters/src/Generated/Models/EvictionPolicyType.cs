@@ -12,19 +12,17 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
 {
 
     /// <summary>
-    /// Defines values for ServiceScalingTriggerKind.
+    /// Defines values for EvictionPolicyType.
     /// </summary>
-    public static class ServiceScalingTriggerKind
+    public static class EvictionPolicyType
     {
         /// <summary>
-        /// Represents a scaling trigger related to an average load of a
-        /// metric/resource of a partition. The value is 0.
+        /// Eviction policy will be Delete for SPOT vms.
         /// </summary>
-        public const string AveragePartitionLoadTrigger = "AveragePartitionLoadTrigger";
+        public const string Delete = "Delete";
         /// <summary>
-        /// Represents a scaling policy related to an average load of a
-        /// metric/resource of a service. The value is 1.
+        /// Eviction policy will be Deallocate for SPOT vms.
         /// </summary>
-        public const string AverageServiceLoadTrigger = "AverageServiceLoadTrigger";
+        public const string Deallocate = "Deallocate";
     }
 }

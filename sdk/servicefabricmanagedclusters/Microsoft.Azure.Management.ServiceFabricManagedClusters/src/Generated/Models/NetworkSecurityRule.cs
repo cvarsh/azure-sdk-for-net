@@ -54,7 +54,22 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
         /// <param name="sourcePortRanges">The source port ranges.</param>
         /// <param name="destinationPortRanges">The destination port
         /// ranges.</param>
-        public NetworkSecurityRule(string name, string protocol, string access, int priority, string direction, string description = default(string), IList<string> sourceAddressPrefixes = default(IList<string>), IList<string> destinationAddressPrefixes = default(IList<string>), IList<string> sourcePortRanges = default(IList<string>), IList<string> destinationPortRanges = default(IList<string>))
+        /// <param name="sourceAddressPrefix">The CIDR or source IP range.
+        /// Asterisk '*' can also be used to match all source IPs. Default tags
+        /// such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can
+        /// also be used. If this is an ingress rule, specifies where network
+        /// traffic originates from.</param>
+        /// <param name="destinationAddressPrefix">The destination address
+        /// prefix. CIDR or destination IP range. Asterisk '*' can also be used
+        /// to match all source IPs. Default tags such as 'VirtualNetwork',
+        /// 'AzureLoadBalancer' and 'Internet' can also be used.</param>
+        /// <param name="sourcePortRange">The source port or range. Integer or
+        /// range between 0 and 65535. Asterisk '*' can also be used to match
+        /// all ports.</param>
+        /// <param name="destinationPortRange">he destination port or range.
+        /// Integer or range between 0 and 65535. Asterisk '*' can also be used
+        /// to match all ports.</param>
+        public NetworkSecurityRule(string name, string protocol, string access, int priority, string direction, string description = default(string), IList<string> sourceAddressPrefixes = default(IList<string>), IList<string> destinationAddressPrefixes = default(IList<string>), IList<string> sourcePortRanges = default(IList<string>), IList<string> destinationPortRanges = default(IList<string>), string sourceAddressPrefix = default(string), string destinationAddressPrefix = default(string), string sourcePortRange = default(string), string destinationPortRange = default(string))
         {
             Name = name;
             Description = description;
@@ -63,6 +78,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
             DestinationAddressPrefixes = destinationAddressPrefixes;
             SourcePortRanges = sourcePortRanges;
             DestinationPortRanges = destinationPortRanges;
+            SourceAddressPrefix = sourceAddressPrefix;
+            DestinationAddressPrefix = destinationAddressPrefix;
+            SourcePortRange = sourcePortRange;
+            DestinationPortRange = destinationPortRange;
             Access = access;
             Priority = priority;
             Direction = direction;
@@ -117,6 +136,39 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
         /// </summary>
         [JsonProperty(PropertyName = "destinationPortRanges")]
         public IList<string> DestinationPortRanges { get; set; }
+
+        /// <summary>
+        /// Gets or sets the CIDR or source IP range. Asterisk '*' can also be
+        /// used to match all source IPs. Default tags such as
+        /// 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be
+        /// used. If this is an ingress rule, specifies where network traffic
+        /// originates from.
+        /// </summary>
+        [JsonProperty(PropertyName = "sourceAddressPrefix")]
+        public string SourceAddressPrefix { get; set; }
+
+        /// <summary>
+        /// Gets or sets the destination address prefix. CIDR or destination IP
+        /// range. Asterisk '*' can also be used to match all source IPs.
+        /// Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and
+        /// 'Internet' can also be used.
+        /// </summary>
+        [JsonProperty(PropertyName = "destinationAddressPrefix")]
+        public string DestinationAddressPrefix { get; set; }
+
+        /// <summary>
+        /// Gets or sets the source port or range. Integer or range between 0
+        /// and 65535. Asterisk '*' can also be used to match all ports.
+        /// </summary>
+        [JsonProperty(PropertyName = "sourcePortRange")]
+        public string SourcePortRange { get; set; }
+
+        /// <summary>
+        /// Gets or sets he destination port or range. Integer or range between
+        /// 0 and 65535. Asterisk '*' can also be used to match all ports.
+        /// </summary>
+        [JsonProperty(PropertyName = "destinationPortRange")]
+        public string DestinationPortRange { get; set; }
 
         /// <summary>
         /// Gets or sets the network traffic is allowed or denied. Possible

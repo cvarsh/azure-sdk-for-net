@@ -12,19 +12,21 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
 {
 
     /// <summary>
-    /// Defines values for ServiceScalingTriggerKind.
+    /// Defines values for NodeTypeSkuScaleType.
     /// </summary>
-    public static class ServiceScalingTriggerKind
+    public static class NodeTypeSkuScaleType
     {
         /// <summary>
-        /// Represents a scaling trigger related to an average load of a
-        /// metric/resource of a partition. The value is 0.
+        /// Node count is not adjustable in any way (e.g. it is fixed).
         /// </summary>
-        public const string AveragePartitionLoadTrigger = "AveragePartitionLoadTrigger";
+        public const string None = "None";
         /// <summary>
-        /// Represents a scaling policy related to an average load of a
-        /// metric/resource of a service. The value is 1.
+        /// The user must manually scale out/in.
         /// </summary>
-        public const string AverageServiceLoadTrigger = "AverageServiceLoadTrigger";
+        public const string Manual = "Manual";
+        /// <summary>
+        /// Automatic scale is allowed.
+        /// </summary>
+        public const string Automatic = "Automatic";
     }
 }

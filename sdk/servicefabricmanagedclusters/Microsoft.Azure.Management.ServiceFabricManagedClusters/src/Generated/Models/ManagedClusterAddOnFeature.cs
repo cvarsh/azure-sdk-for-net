@@ -12,19 +12,21 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
 {
 
     /// <summary>
-    /// Defines values for ServiceScalingTriggerKind.
+    /// Defines values for ManagedClusterAddOnFeature.
     /// </summary>
-    public static class ServiceScalingTriggerKind
+    public static class ManagedClusterAddOnFeature
     {
         /// <summary>
-        /// Represents a scaling trigger related to an average load of a
-        /// metric/resource of a partition. The value is 0.
+        /// Dns service
         /// </summary>
-        public const string AveragePartitionLoadTrigger = "AveragePartitionLoadTrigger";
+        public const string DnsService = "DnsService";
         /// <summary>
-        /// Represents a scaling policy related to an average load of a
-        /// metric/resource of a service. The value is 1.
+        /// Backup and restore service
         /// </summary>
-        public const string AverageServiceLoadTrigger = "AverageServiceLoadTrigger";
+        public const string BackupRestoreService = "BackupRestoreService";
+        /// <summary>
+        /// Resource monitor service
+        /// </summary>
+        public const string ResourceMonitorService = "ResourceMonitorService";
     }
 }

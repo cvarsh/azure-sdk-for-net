@@ -10,33 +10,34 @@
 
 namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
 {
+    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
-    /// Node type update request
+    /// The service endpoint properties.
     /// </summary>
-    public partial class NodeTypeUpdateParameters
+    public partial class ServiceEndpoint
     {
         /// <summary>
-        /// Initializes a new instance of the NodeTypeUpdateParameters class.
+        /// Initializes a new instance of the ServiceEndpoint class.
         /// </summary>
-        public NodeTypeUpdateParameters()
+        public ServiceEndpoint()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the NodeTypeUpdateParameters class.
+        /// Initializes a new instance of the ServiceEndpoint class.
         /// </summary>
-        /// <param name="tags">Node type update parameters</param>
-        /// <param name="sku">The node type sku.</param>
-        public NodeTypeUpdateParameters(IDictionary<string, string> tags = default(IDictionary<string, string>), NodeTypeSku sku = default(NodeTypeSku))
+        /// <param name="service">The type of the endpoint service.</param>
+        /// <param name="locations">A list of locations.</param>
+        public ServiceEndpoint(string service, IList<string> locations = default(IList<string>))
         {
-            Tags = tags;
-            Sku = sku;
+            Service = service;
+            Locations = locations;
             CustomInit();
         }
 
@@ -46,28 +47,28 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets node type update parameters
+        /// Gets or sets the type of the endpoint service.
         /// </summary>
-        [JsonProperty(PropertyName = "tags")]
-        public IDictionary<string, string> Tags { get; set; }
+        [JsonProperty(PropertyName = "service")]
+        public string Service { get; set; }
 
         /// <summary>
-        /// Gets or sets the node type sku.
+        /// Gets or sets a list of locations.
         /// </summary>
-        [JsonProperty(PropertyName = "sku")]
-        public NodeTypeSku Sku { get; set; }
+        [JsonProperty(PropertyName = "locations")]
+        public IList<string> Locations { get; set; }
 
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public virtual void Validate()
         {
-            if (Sku != null)
+            if (Service == null)
             {
-                Sku.Validate();
+                throw new ValidationException(ValidationRules.CannotBeNull, "Service");
             }
         }
     }

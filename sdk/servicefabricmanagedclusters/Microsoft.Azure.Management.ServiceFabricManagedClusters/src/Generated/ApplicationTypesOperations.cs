@@ -105,6 +105,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "applicationTypeName");
             }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
+            }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -307,6 +311,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             if (applicationTypeName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "applicationTypeName");
+            }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
             }
             if (parameters == null)
             {
@@ -522,6 +530,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             if (applicationTypeName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "applicationTypeName");
+            }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
             }
             ApplicationTypeUpdateParameters parameters = new ApplicationTypeUpdateParameters();
             if (tags != null)
@@ -758,6 +770,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "clusterName");
             }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
+            }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -952,6 +968,10 @@ namespace Microsoft.Azure.Management.ServiceFabricManagedClusters
             if (applicationTypeName == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "applicationTypeName");
+            }
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
             }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
