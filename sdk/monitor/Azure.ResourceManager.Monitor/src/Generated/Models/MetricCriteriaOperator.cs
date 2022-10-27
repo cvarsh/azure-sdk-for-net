@@ -27,6 +27,7 @@ namespace Azure.ResourceManager.Monitor.Models
         private const string GreaterThanOrEqualValue = "GreaterThanOrEqual";
         private const string LessThanValue = "LessThan";
         private const string LessThanOrEqualValue = "LessThanOrEqual";
+        private const string IncludeValue = "Include";
 
         /// <summary> Equals. </summary>
         public static MetricCriteriaOperator EqualsValue { get; } = new MetricCriteriaOperator(EqualsValueValue);
@@ -38,6 +39,8 @@ namespace Azure.ResourceManager.Monitor.Models
         public static MetricCriteriaOperator LessThan { get; } = new MetricCriteriaOperator(LessThanValue);
         /// <summary> LessThanOrEqual. </summary>
         public static MetricCriteriaOperator LessThanOrEqual { get; } = new MetricCriteriaOperator(LessThanOrEqualValue);
+        /// <summary> Include. </summary>
+        public static MetricCriteriaOperator Include { get; } = new MetricCriteriaOperator(IncludeValue);
         /// <summary> Determines if two <see cref="MetricCriteriaOperator"/> values are the same. </summary>
         public static bool operator ==(MetricCriteriaOperator left, MetricCriteriaOperator right) => left.Equals(right);
         /// <summary> Determines if two <see cref="MetricCriteriaOperator"/> values are not the same. </summary>

@@ -17,6 +17,7 @@ namespace Azure.ResourceManager.Monitor.Models
         internal static MonitorPrivateEndpointConnectionListResult DeserializeMonitorPrivateEndpointConnectionListResult(JsonElement element)
         {
             Optional<IReadOnlyList<MonitorPrivateEndpointConnectionData>> value = default;
+            Optional<string> nextLink = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("value"))
@@ -34,8 +35,13 @@ namespace Azure.ResourceManager.Monitor.Models
                     value = array;
                     continue;
                 }
+                if (property.NameEquals("nextLink"))
+                {
+                    nextLink = property.Value.GetString();
+                    continue;
+                }
             }
-            return new MonitorPrivateEndpointConnectionListResult(Optional.ToList(value));
+            return new MonitorPrivateEndpointConnectionListResult(Optional.ToList(value), nextLink.Value);
         }
     }
 }

@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Azure.Core;
 using Azure.ResourceManager.Models;
-using Azure.ResourceManager.Monitor.Models;
 
 namespace Azure.ResourceManager.Monitor
 {
@@ -33,8 +32,6 @@ namespace Azure.ResourceManager.Monitor
             writer.WriteStringValue(Location);
             writer.WritePropertyName("properties");
             writer.WriteStartObject();
-            writer.WritePropertyName("accessModeSettings");
-            writer.WriteObjectValue(AccessModeSettings);
             writer.WriteEndObject();
             writer.WriteEndObject();
         }
@@ -49,7 +46,6 @@ namespace Azure.ResourceManager.Monitor
             Optional<SystemData> systemData = default;
             Optional<string> provisioningState = default;
             Optional<IReadOnlyList<MonitorPrivateEndpointConnectionData>> privateEndpointConnections = default;
-            MonitorPrivateLinkAccessModeSettings accessModeSettings = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("tags"))
@@ -126,16 +122,11 @@ namespace Azure.ResourceManager.Monitor
                             privateEndpointConnections = array;
                             continue;
                         }
-                        if (property0.NameEquals("accessModeSettings"))
-                        {
-                            accessModeSettings = MonitorPrivateLinkAccessModeSettings.DeserializeMonitorPrivateLinkAccessModeSettings(property0.Value);
-                            continue;
-                        }
                     }
                     continue;
                 }
             }
-            return new MonitorPrivateLinkScopeData(id, name, type, systemData.Value, Optional.ToDictionary(tags), location, provisioningState.Value, Optional.ToList(privateEndpointConnections), accessModeSettings);
+            return new MonitorPrivateLinkScopeData(id, name, type, systemData.Value, Optional.ToDictionary(tags), location, provisioningState.Value, Optional.ToList(privateEndpointConnections));
         }
     }
 }

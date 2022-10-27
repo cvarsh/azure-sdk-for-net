@@ -52,7 +52,9 @@ namespace Azure.ResourceManager.Monitor
         /// <param name="azureFunctionReceivers"> The list of azure function receivers that are part of this action group. </param>
         /// <param name="armRoleReceivers"> The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are supported. </param>
         /// <param name="eventHubReceivers"> The list of event hub receivers that are part of this action group. </param>
-        internal ActionGroupData(ResourceIdentifier id, string name, ResourceType resourceType, SystemData systemData, IDictionary<string, string> tags, AzureLocation location, string groupShortName, bool? isEnabled, IList<MonitorEmailReceiver> emailReceivers, IList<MonitorSmsReceiver> smsReceivers, IList<MonitorWebhookReceiver> webhookReceivers, IList<MonitorItsmReceiver> itsmReceivers, IList<MonitorAzureAppPushReceiver> azureAppPushReceivers, IList<MonitorAutomationRunbookReceiver> automationRunbookReceivers, IList<MonitorVoiceReceiver> voiceReceivers, IList<MonitorLogicAppReceiver> logicAppReceivers, IList<MonitorAzureFunctionReceiver> azureFunctionReceivers, IList<MonitorArmRoleReceiver> armRoleReceivers, IList<MonitorEventHubReceiver> eventHubReceivers) : base(id, name, resourceType, systemData, tags, location)
+        /// <param name="kind"> Azure resource kind. </param>
+        /// <param name="identity"> Azure resource identity. </param>
+        internal ActionGroupData(ResourceIdentifier id, string name, ResourceType resourceType, SystemData systemData, IDictionary<string, string> tags, AzureLocation location, string groupShortName, bool? isEnabled, IList<MonitorEmailReceiver> emailReceivers, IList<MonitorSmsReceiver> smsReceivers, IList<MonitorWebhookReceiver> webhookReceivers, IList<MonitorItsmReceiver> itsmReceivers, IList<MonitorAzureAppPushReceiver> azureAppPushReceivers, IList<MonitorAutomationRunbookReceiver> automationRunbookReceivers, IList<MonitorVoiceReceiver> voiceReceivers, IList<MonitorLogicAppReceiver> logicAppReceivers, IList<MonitorAzureFunctionReceiver> azureFunctionReceivers, IList<MonitorArmRoleReceiver> armRoleReceivers, IList<MonitorEventHubReceiver> eventHubReceivers, string kind, string identity) : base(id, name, resourceType, systemData, tags, location)
         {
             GroupShortName = groupShortName;
             IsEnabled = isEnabled;
@@ -67,6 +69,8 @@ namespace Azure.ResourceManager.Monitor
             AzureFunctionReceivers = azureFunctionReceivers;
             ArmRoleReceivers = armRoleReceivers;
             EventHubReceivers = eventHubReceivers;
+            Kind = kind;
+            Identity = identity;
         }
 
         /// <summary> The short name of the action group. This will be used in SMS messages. </summary>
@@ -95,5 +99,9 @@ namespace Azure.ResourceManager.Monitor
         public IList<MonitorArmRoleReceiver> ArmRoleReceivers { get; }
         /// <summary> The list of event hub receivers that are part of this action group. </summary>
         public IList<MonitorEventHubReceiver> EventHubReceivers { get; }
+        /// <summary> Azure resource kind. </summary>
+        public string Kind { get; }
+        /// <summary> Azure resource identity. </summary>
+        public string Identity { get; }
     }
 }

@@ -65,11 +65,6 @@ namespace Azure.ResourceManager.Monitor
                 writer.WritePropertyName("workspaceId");
                 writer.WriteStringValue(WorkspaceId);
             }
-            if (Optional.IsDefined(MarketplacePartnerId))
-            {
-                writer.WritePropertyName("marketplacePartnerId");
-                writer.WriteStringValue(MarketplacePartnerId);
-            }
             if (Optional.IsDefined(LogAnalyticsDestinationType))
             {
                 writer.WritePropertyName("logAnalyticsDestinationType");
@@ -92,7 +87,6 @@ namespace Azure.ResourceManager.Monitor
             Optional<IList<MetricSettings>> metrics = default;
             Optional<IList<LogSettings>> logs = default;
             Optional<ResourceIdentifier> workspaceId = default;
-            Optional<ResourceIdentifier> marketplacePartnerId = default;
             Optional<string> logAnalyticsDestinationType = default;
             foreach (var property in element.EnumerateObject())
             {
@@ -205,16 +199,6 @@ namespace Azure.ResourceManager.Monitor
                             workspaceId = new ResourceIdentifier(property0.Value.GetString());
                             continue;
                         }
-                        if (property0.NameEquals("marketplacePartnerId"))
-                        {
-                            if (property0.Value.ValueKind == JsonValueKind.Null)
-                            {
-                                property0.ThrowNonNullablePropertyIsNull();
-                                continue;
-                            }
-                            marketplacePartnerId = new ResourceIdentifier(property0.Value.GetString());
-                            continue;
-                        }
                         if (property0.NameEquals("logAnalyticsDestinationType"))
                         {
                             logAnalyticsDestinationType = property0.Value.GetString();
@@ -224,7 +208,7 @@ namespace Azure.ResourceManager.Monitor
                     continue;
                 }
             }
-            return new DiagnosticSettingData(id, name, type, systemData.Value, storageAccountId.Value, serviceBusRuleId.Value, eventHubAuthorizationRuleId.Value, eventHubName.Value, Optional.ToList(metrics), Optional.ToList(logs), workspaceId.Value, marketplacePartnerId.Value, logAnalyticsDestinationType.Value);
+            return new DiagnosticSettingData(id, name, type, systemData.Value, storageAccountId.Value, serviceBusRuleId.Value, eventHubAuthorizationRuleId.Value, eventHubName.Value, Optional.ToList(metrics), Optional.ToList(logs), workspaceId.Value, logAnalyticsDestinationType.Value);
         }
     }
 }

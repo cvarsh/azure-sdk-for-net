@@ -193,7 +193,7 @@ namespace Azure.ResourceManager.Monitor
                 try
                 {
                     var response = await _monitorPrivateEndpointConnectionPrivateEndpointConnectionsRestClient.ListByPrivateLinkScopeAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken: cancellationToken).ConfigureAwait(false);
-                    return Page.FromValues(response.Value.Value.Select(value => new MonitorPrivateEndpointConnectionResource(Client, value)), null, response.GetRawResponse());
+                    return Page.FromValues(response.Value.Value.Select(value => new MonitorPrivateEndpointConnectionResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
                 }
                 catch (Exception e)
                 {
@@ -201,7 +201,22 @@ namespace Azure.ResourceManager.Monitor
                     throw;
                 }
             }
-            return PageableHelpers.CreateAsyncEnumerable(FirstPageFunc, null);
+            async Task<Page<MonitorPrivateEndpointConnectionResource>> NextPageFunc(string nextLink, int? pageSizeHint)
+            {
+                using var scope = _monitorPrivateEndpointConnectionPrivateEndpointConnectionsClientDiagnostics.CreateScope("MonitorPrivateEndpointConnectionCollection.GetAll");
+                scope.Start();
+                try
+                {
+                    var response = await _monitorPrivateEndpointConnectionPrivateEndpointConnectionsRestClient.ListByPrivateLinkScopeNextPageAsync(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken: cancellationToken).ConfigureAwait(false);
+                    return Page.FromValues(response.Value.Value.Select(value => new MonitorPrivateEndpointConnectionResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
+                }
+                catch (Exception e)
+                {
+                    scope.Failed(e);
+                    throw;
+                }
+            }
+            return PageableHelpers.CreateAsyncEnumerable(FirstPageFunc, NextPageFunc);
         }
 
         /// <summary>
@@ -220,7 +235,7 @@ namespace Azure.ResourceManager.Monitor
                 try
                 {
                     var response = _monitorPrivateEndpointConnectionPrivateEndpointConnectionsRestClient.ListByPrivateLinkScope(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken: cancellationToken);
-                    return Page.FromValues(response.Value.Value.Select(value => new MonitorPrivateEndpointConnectionResource(Client, value)), null, response.GetRawResponse());
+                    return Page.FromValues(response.Value.Value.Select(value => new MonitorPrivateEndpointConnectionResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
                 }
                 catch (Exception e)
                 {
@@ -228,7 +243,22 @@ namespace Azure.ResourceManager.Monitor
                     throw;
                 }
             }
-            return PageableHelpers.CreateEnumerable(FirstPageFunc, null);
+            Page<MonitorPrivateEndpointConnectionResource> NextPageFunc(string nextLink, int? pageSizeHint)
+            {
+                using var scope = _monitorPrivateEndpointConnectionPrivateEndpointConnectionsClientDiagnostics.CreateScope("MonitorPrivateEndpointConnectionCollection.GetAll");
+                scope.Start();
+                try
+                {
+                    var response = _monitorPrivateEndpointConnectionPrivateEndpointConnectionsRestClient.ListByPrivateLinkScopeNextPage(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken: cancellationToken);
+                    return Page.FromValues(response.Value.Value.Select(value => new MonitorPrivateEndpointConnectionResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
+                }
+                catch (Exception e)
+                {
+                    scope.Failed(e);
+                    throw;
+                }
+            }
+            return PageableHelpers.CreateEnumerable(FirstPageFunc, NextPageFunc);
         }
 
         /// <summary>

@@ -10,8 +10,16 @@ using Azure.Core;
 
 namespace Azure.ResourceManager.Monitor.Models
 {
-    public partial class DataContainer
+    public partial class DataContainer : IUtf8JsonSerializable
     {
+        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
+        {
+            writer.WriteStartObject();
+            writer.WritePropertyName("workspace");
+            writer.WriteObjectValue(Workspace);
+            writer.WriteEndObject();
+        }
+
         internal static DataContainer DeserializeDataContainer(JsonElement element)
         {
             DataContainerWorkspace workspace = default;

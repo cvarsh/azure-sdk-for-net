@@ -15,7 +15,7 @@ namespace Azure.ResourceManager.Monitor.Models
         /// <summary> Initializes a new instance of DataContainer. </summary>
         /// <param name="workspace"> Log Analytics workspace information. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="workspace"/> is null. </exception>
-        internal DataContainer(DataContainerWorkspace workspace)
+        public DataContainer(DataContainerWorkspace workspace)
         {
             if (workspace == null)
             {
@@ -26,6 +26,6 @@ namespace Azure.ResourceManager.Monitor.Models
         }
 
         /// <summary> Log Analytics workspace information. </summary>
-        public DataContainerWorkspace Workspace { get; }
+        public DataContainerWorkspace Workspace { get; set; }
     }
 }

@@ -20,11 +20,6 @@ namespace Azure.ResourceManager.Monitor.Models
                 writer.WritePropertyName("category");
                 writer.WriteStringValue(Category);
             }
-            if (Optional.IsDefined(CategoryGroup))
-            {
-                writer.WritePropertyName("categoryGroup");
-                writer.WriteStringValue(CategoryGroup);
-            }
             writer.WritePropertyName("enabled");
             writer.WriteBooleanValue(IsEnabled);
             if (Optional.IsDefined(RetentionPolicy))
@@ -38,7 +33,6 @@ namespace Azure.ResourceManager.Monitor.Models
         internal static LogSettings DeserializeLogSettings(JsonElement element)
         {
             Optional<string> category = default;
-            Optional<string> categoryGroup = default;
             bool enabled = default;
             Optional<RetentionPolicy> retentionPolicy = default;
             foreach (var property in element.EnumerateObject())
@@ -46,11 +40,6 @@ namespace Azure.ResourceManager.Monitor.Models
                 if (property.NameEquals("category"))
                 {
                     category = property.Value.GetString();
-                    continue;
-                }
-                if (property.NameEquals("categoryGroup"))
-                {
-                    categoryGroup = property.Value.GetString();
                     continue;
                 }
                 if (property.NameEquals("enabled"))
@@ -69,7 +58,7 @@ namespace Azure.ResourceManager.Monitor.Models
                     continue;
                 }
             }
-            return new LogSettings(category.Value, categoryGroup.Value, enabled, retentionPolicy.Value);
+            return new LogSettings(category.Value, enabled, retentionPolicy.Value);
         }
     }
 }

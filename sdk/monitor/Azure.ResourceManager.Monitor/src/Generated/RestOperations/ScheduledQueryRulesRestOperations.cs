@@ -33,116 +33,59 @@ namespace Azure.ResourceManager.Monitor
         {
             _pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
             _endpoint = endpoint ?? new Uri("https://management.azure.com");
-            _apiVersion = apiVersion ?? "2022-06-15";
+            _apiVersion = apiVersion ?? "2018-04-16";
             _userAgent = new TelemetryDetails(GetType().Assembly, applicationId);
         }
 
-        internal HttpMessage CreateListBySubscriptionRequest(string subscriptionId)
+        internal HttpMessage CreateCreateOrUpdateRequest(string subscriptionId, string resourceGroupName, string ruleName, LogSearchRuleData data)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
-            request.Method = RequestMethod.Get;
+            request.Method = RequestMethod.Put;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
             uri.AppendPath("/subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
-            uri.AppendPath("/providers/Microsoft.Insights/scheduledQueryRules", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
-            request.Uri = uri;
-            request.Headers.Add("Accept", "application/json");
-            _userAgent.Apply(message);
-            return message;
-        }
-
-        /// <summary> Retrieve a scheduled query rule definitions in a subscription. </summary>
-        /// <param name="subscriptionId"> The ID of the target subscription. </param>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response<ScheduledQueryRuleResourceCollection>> ListBySubscriptionAsync(string subscriptionId, CancellationToken cancellationToken = default)
-        {
-            Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
-
-            using var message = CreateListBySubscriptionRequest(subscriptionId);
-            await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
-            switch (message.Response.Status)
-            {
-                case 200:
-                    {
-                        ScheduledQueryRuleResourceCollection value = default;
-                        using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
-                        value = ScheduledQueryRuleResourceCollection.DeserializeScheduledQueryRuleResourceCollection(document.RootElement);
-                        return Response.FromValue(value, message.Response);
-                    }
-                default:
-                    throw new RequestFailedException(message.Response);
-            }
-        }
-
-        /// <summary> Retrieve a scheduled query rule definitions in a subscription. </summary>
-        /// <param name="subscriptionId"> The ID of the target subscription. </param>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response<ScheduledQueryRuleResourceCollection> ListBySubscription(string subscriptionId, CancellationToken cancellationToken = default)
-        {
-            Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
-
-            using var message = CreateListBySubscriptionRequest(subscriptionId);
-            _pipeline.Send(message, cancellationToken);
-            switch (message.Response.Status)
-            {
-                case 200:
-                    {
-                        ScheduledQueryRuleResourceCollection value = default;
-                        using var document = JsonDocument.Parse(message.Response.ContentStream);
-                        value = ScheduledQueryRuleResourceCollection.DeserializeScheduledQueryRuleResourceCollection(document.RootElement);
-                        return Response.FromValue(value, message.Response);
-                    }
-                default:
-                    throw new RequestFailedException(message.Response);
-            }
-        }
-
-        internal HttpMessage CreateListByResourceGroupRequest(string subscriptionId, string resourceGroupName)
-        {
-            var message = _pipeline.CreateMessage();
-            var request = message.Request;
-            request.Method = RequestMethod.Get;
-            var uri = new RawRequestUriBuilder();
-            uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
-            uri.AppendPath(subscriptionId, true);
-            uri.AppendPath("/resourceGroups/", false);
+            uri.AppendPath("/resourcegroups/", false);
             uri.AppendPath(resourceGroupName, true);
-            uri.AppendPath("/providers/Microsoft.Insights/scheduledQueryRules", false);
+            uri.AppendPath("/providers/Microsoft.Insights/scheduledQueryRules/", false);
+            uri.AppendPath(ruleName, true);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("Content-Type", "application/json");
+            var content = new Utf8JsonRequestContent();
+            content.JsonWriter.WriteObjectValue(data);
+            request.Content = content;
             _userAgent.Apply(message);
             return message;
         }
 
-        /// <summary> Retrieve scheduled query rule definitions in a resource group. </summary>
+        /// <summary> Creates or updates an log search rule. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
+        /// <param name="ruleName"> The name of the rule. </param>
+        /// <param name="data"> The parameters of the rule to create or update. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/> or <paramref name="resourceGroupName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/> or <paramref name="resourceGroupName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response<ScheduledQueryRuleResourceCollection>> ListByResourceGroupAsync(string subscriptionId, string resourceGroupName, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="ruleName"/> or <paramref name="data"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="ruleName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response<LogSearchRuleData>> CreateOrUpdateAsync(string subscriptionId, string resourceGroupName, string ruleName, LogSearchRuleData data, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
+            Argument.AssertNotNullOrEmpty(ruleName, nameof(ruleName));
+            Argument.AssertNotNull(data, nameof(data));
 
-            using var message = CreateListByResourceGroupRequest(subscriptionId, resourceGroupName);
+            using var message = CreateCreateOrUpdateRequest(subscriptionId, resourceGroupName, ruleName, data);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
                 case 200:
+                case 201:
                     {
-                        ScheduledQueryRuleResourceCollection value = default;
+                        LogSearchRuleData value = default;
                         using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
-                        value = ScheduledQueryRuleResourceCollection.DeserializeScheduledQueryRuleResourceCollection(document.RootElement);
+                        value = LogSearchRuleData.DeserializeLogSearchRuleData(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -150,26 +93,31 @@ namespace Azure.ResourceManager.Monitor
             }
         }
 
-        /// <summary> Retrieve scheduled query rule definitions in a resource group. </summary>
+        /// <summary> Creates or updates an log search rule. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
+        /// <param name="ruleName"> The name of the rule. </param>
+        /// <param name="data"> The parameters of the rule to create or update. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/> or <paramref name="resourceGroupName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/> or <paramref name="resourceGroupName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response<ScheduledQueryRuleResourceCollection> ListByResourceGroup(string subscriptionId, string resourceGroupName, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="ruleName"/> or <paramref name="data"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="ruleName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response<LogSearchRuleData> CreateOrUpdate(string subscriptionId, string resourceGroupName, string ruleName, LogSearchRuleData data, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
+            Argument.AssertNotNullOrEmpty(ruleName, nameof(ruleName));
+            Argument.AssertNotNull(data, nameof(data));
 
-            using var message = CreateListByResourceGroupRequest(subscriptionId, resourceGroupName);
+            using var message = CreateCreateOrUpdateRequest(subscriptionId, resourceGroupName, ruleName, data);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
                 case 200:
+                case 201:
                     {
-                        ScheduledQueryRuleResourceCollection value = default;
+                        LogSearchRuleData value = default;
                         using var document = JsonDocument.Parse(message.Response.ContentStream);
-                        value = ScheduledQueryRuleResourceCollection.DeserializeScheduledQueryRuleResourceCollection(document.RootElement);
+                        value = LogSearchRuleData.DeserializeLogSearchRuleData(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -186,7 +134,7 @@ namespace Azure.ResourceManager.Monitor
             uri.Reset(_endpoint);
             uri.AppendPath("/subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
-            uri.AppendPath("/resourceGroups/", false);
+            uri.AppendPath("/resourcegroups/", false);
             uri.AppendPath(resourceGroupName, true);
             uri.AppendPath("/providers/Microsoft.Insights/scheduledQueryRules/", false);
             uri.AppendPath(ruleName, true);
@@ -197,14 +145,14 @@ namespace Azure.ResourceManager.Monitor
             return message;
         }
 
-        /// <summary> Retrieve an scheduled query rule definition. </summary>
+        /// <summary> Gets an Log Search rule. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="ruleName"> The name of the rule. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="ruleName"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="ruleName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response<ScheduledQueryRuleData>> GetAsync(string subscriptionId, string resourceGroupName, string ruleName, CancellationToken cancellationToken = default)
+        public async Task<Response<LogSearchRuleData>> GetAsync(string subscriptionId, string resourceGroupName, string ruleName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
@@ -216,26 +164,26 @@ namespace Azure.ResourceManager.Monitor
             {
                 case 200:
                     {
-                        ScheduledQueryRuleData value = default;
+                        LogSearchRuleData value = default;
                         using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
-                        value = ScheduledQueryRuleData.DeserializeScheduledQueryRuleData(document.RootElement);
+                        value = LogSearchRuleData.DeserializeLogSearchRuleData(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 case 404:
-                    return Response.FromValue((ScheduledQueryRuleData)null, message.Response);
+                    return Response.FromValue((LogSearchRuleData)null, message.Response);
                 default:
                     throw new RequestFailedException(message.Response);
             }
         }
 
-        /// <summary> Retrieve an scheduled query rule definition. </summary>
+        /// <summary> Gets an Log Search rule. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="ruleName"> The name of the rule. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="ruleName"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="ruleName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response<ScheduledQueryRuleData> Get(string subscriptionId, string resourceGroupName, string ruleName, CancellationToken cancellationToken = default)
+        public Response<LogSearchRuleData> Get(string subscriptionId, string resourceGroupName, string ruleName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
@@ -247,107 +195,19 @@ namespace Azure.ResourceManager.Monitor
             {
                 case 200:
                     {
-                        ScheduledQueryRuleData value = default;
+                        LogSearchRuleData value = default;
                         using var document = JsonDocument.Parse(message.Response.ContentStream);
-                        value = ScheduledQueryRuleData.DeserializeScheduledQueryRuleData(document.RootElement);
+                        value = LogSearchRuleData.DeserializeLogSearchRuleData(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 case 404:
-                    return Response.FromValue((ScheduledQueryRuleData)null, message.Response);
+                    return Response.FromValue((LogSearchRuleData)null, message.Response);
                 default:
                     throw new RequestFailedException(message.Response);
             }
         }
 
-        internal HttpMessage CreateCreateOrUpdateRequest(string subscriptionId, string resourceGroupName, string ruleName, ScheduledQueryRuleData data)
-        {
-            var message = _pipeline.CreateMessage();
-            var request = message.Request;
-            request.Method = RequestMethod.Put;
-            var uri = new RawRequestUriBuilder();
-            uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
-            uri.AppendPath(subscriptionId, true);
-            uri.AppendPath("/resourceGroups/", false);
-            uri.AppendPath(resourceGroupName, true);
-            uri.AppendPath("/providers/Microsoft.Insights/scheduledQueryRules/", false);
-            uri.AppendPath(ruleName, true);
-            uri.AppendQuery("api-version", _apiVersion, true);
-            request.Uri = uri;
-            request.Headers.Add("Accept", "application/json");
-            request.Headers.Add("Content-Type", "application/json");
-            var content = new Utf8JsonRequestContent();
-            content.JsonWriter.WriteObjectValue(data);
-            request.Content = content;
-            _userAgent.Apply(message);
-            return message;
-        }
-
-        /// <summary> Creates or updates a scheduled query rule. </summary>
-        /// <param name="subscriptionId"> The ID of the target subscription. </param>
-        /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
-        /// <param name="ruleName"> The name of the rule. </param>
-        /// <param name="data"> The parameters of the rule to create or update. </param>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="ruleName"/> or <paramref name="data"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="ruleName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response<ScheduledQueryRuleData>> CreateOrUpdateAsync(string subscriptionId, string resourceGroupName, string ruleName, ScheduledQueryRuleData data, CancellationToken cancellationToken = default)
-        {
-            Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
-            Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
-            Argument.AssertNotNullOrEmpty(ruleName, nameof(ruleName));
-            Argument.AssertNotNull(data, nameof(data));
-
-            using var message = CreateCreateOrUpdateRequest(subscriptionId, resourceGroupName, ruleName, data);
-            await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
-            switch (message.Response.Status)
-            {
-                case 200:
-                case 201:
-                    {
-                        ScheduledQueryRuleData value = default;
-                        using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
-                        value = ScheduledQueryRuleData.DeserializeScheduledQueryRuleData(document.RootElement);
-                        return Response.FromValue(value, message.Response);
-                    }
-                default:
-                    throw new RequestFailedException(message.Response);
-            }
-        }
-
-        /// <summary> Creates or updates a scheduled query rule. </summary>
-        /// <param name="subscriptionId"> The ID of the target subscription. </param>
-        /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
-        /// <param name="ruleName"> The name of the rule. </param>
-        /// <param name="data"> The parameters of the rule to create or update. </param>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="ruleName"/> or <paramref name="data"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="ruleName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response<ScheduledQueryRuleData> CreateOrUpdate(string subscriptionId, string resourceGroupName, string ruleName, ScheduledQueryRuleData data, CancellationToken cancellationToken = default)
-        {
-            Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
-            Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
-            Argument.AssertNotNullOrEmpty(ruleName, nameof(ruleName));
-            Argument.AssertNotNull(data, nameof(data));
-
-            using var message = CreateCreateOrUpdateRequest(subscriptionId, resourceGroupName, ruleName, data);
-            _pipeline.Send(message, cancellationToken);
-            switch (message.Response.Status)
-            {
-                case 200:
-                case 201:
-                    {
-                        ScheduledQueryRuleData value = default;
-                        using var document = JsonDocument.Parse(message.Response.ContentStream);
-                        value = ScheduledQueryRuleData.DeserializeScheduledQueryRuleData(document.RootElement);
-                        return Response.FromValue(value, message.Response);
-                    }
-                default:
-                    throw new RequestFailedException(message.Response);
-            }
-        }
-
-        internal HttpMessage CreateUpdateRequest(string subscriptionId, string resourceGroupName, string ruleName, ScheduledQueryRulePatch patch)
+        internal HttpMessage CreateUpdateRequest(string subscriptionId, string resourceGroupName, string ruleName, LogSearchRulePatch patch)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
@@ -356,7 +216,7 @@ namespace Azure.ResourceManager.Monitor
             uri.Reset(_endpoint);
             uri.AppendPath("/subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
-            uri.AppendPath("/resourceGroups/", false);
+            uri.AppendPath("/resourcegroups/", false);
             uri.AppendPath(resourceGroupName, true);
             uri.AppendPath("/providers/Microsoft.Insights/scheduledQueryRules/", false);
             uri.AppendPath(ruleName, true);
@@ -371,7 +231,7 @@ namespace Azure.ResourceManager.Monitor
             return message;
         }
 
-        /// <summary> Update a scheduled query rule. </summary>
+        /// <summary> Update log search Rule. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="ruleName"> The name of the rule. </param>
@@ -379,7 +239,7 @@ namespace Azure.ResourceManager.Monitor
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="ruleName"/> or <paramref name="patch"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="ruleName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response<ScheduledQueryRuleData>> UpdateAsync(string subscriptionId, string resourceGroupName, string ruleName, ScheduledQueryRulePatch patch, CancellationToken cancellationToken = default)
+        public async Task<Response<LogSearchRuleData>> UpdateAsync(string subscriptionId, string resourceGroupName, string ruleName, LogSearchRulePatch patch, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
@@ -392,9 +252,9 @@ namespace Azure.ResourceManager.Monitor
             {
                 case 200:
                     {
-                        ScheduledQueryRuleData value = default;
+                        LogSearchRuleData value = default;
                         using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
-                        value = ScheduledQueryRuleData.DeserializeScheduledQueryRuleData(document.RootElement);
+                        value = LogSearchRuleData.DeserializeLogSearchRuleData(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -402,7 +262,7 @@ namespace Azure.ResourceManager.Monitor
             }
         }
 
-        /// <summary> Update a scheduled query rule. </summary>
+        /// <summary> Update log search Rule. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="ruleName"> The name of the rule. </param>
@@ -410,7 +270,7 @@ namespace Azure.ResourceManager.Monitor
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="ruleName"/> or <paramref name="patch"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="ruleName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response<ScheduledQueryRuleData> Update(string subscriptionId, string resourceGroupName, string ruleName, ScheduledQueryRulePatch patch, CancellationToken cancellationToken = default)
+        public Response<LogSearchRuleData> Update(string subscriptionId, string resourceGroupName, string ruleName, LogSearchRulePatch patch, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
@@ -423,9 +283,9 @@ namespace Azure.ResourceManager.Monitor
             {
                 case 200:
                     {
-                        ScheduledQueryRuleData value = default;
+                        LogSearchRuleData value = default;
                         using var document = JsonDocument.Parse(message.Response.ContentStream);
-                        value = ScheduledQueryRuleData.DeserializeScheduledQueryRuleData(document.RootElement);
+                        value = LogSearchRuleData.DeserializeLogSearchRuleData(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -442,7 +302,7 @@ namespace Azure.ResourceManager.Monitor
             uri.Reset(_endpoint);
             uri.AppendPath("/subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
-            uri.AppendPath("/resourceGroups/", false);
+            uri.AppendPath("/resourcegroups/", false);
             uri.AppendPath(resourceGroupName, true);
             uri.AppendPath("/providers/Microsoft.Insights/scheduledQueryRules/", false);
             uri.AppendPath(ruleName, true);
@@ -453,7 +313,7 @@ namespace Azure.ResourceManager.Monitor
             return message;
         }
 
-        /// <summary> Deletes a scheduled query rule. </summary>
+        /// <summary> Deletes a Log Search rule. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="ruleName"> The name of the rule. </param>
@@ -478,7 +338,7 @@ namespace Azure.ResourceManager.Monitor
             }
         }
 
-        /// <summary> Deletes a scheduled query rule. </summary>
+        /// <summary> Deletes a Log Search rule. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="ruleName"> The name of the rule. </param>
@@ -503,40 +363,46 @@ namespace Azure.ResourceManager.Monitor
             }
         }
 
-        internal HttpMessage CreateListBySubscriptionNextPageRequest(string nextLink, string subscriptionId)
+        internal HttpMessage CreateListBySubscriptionRequest(string subscriptionId, string filter)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRawNextLink(nextLink, false);
+            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath(subscriptionId, true);
+            uri.AppendPath("/providers/Microsoft.Insights/scheduledQueryRules", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            if (filter != null)
+            {
+                uri.AppendQuery("$filter", filter, true);
+            }
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             _userAgent.Apply(message);
             return message;
         }
 
-        /// <summary> Retrieve a scheduled query rule definitions in a subscription. </summary>
-        /// <param name="nextLink"> The URL to the next page of results. </param>
+        /// <summary> List the Log Search rules within a subscription group. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
+        /// <param name="filter"> The filter to apply on the operation. For more information please see https://msdn.microsoft.com/en-us/library/azure/dn931934.aspx. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="nextLink"/> or <paramref name="subscriptionId"/> is null. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response<ScheduledQueryRuleResourceCollection>> ListBySubscriptionNextPageAsync(string nextLink, string subscriptionId, CancellationToken cancellationToken = default)
+        public async Task<Response<LogSearchRuleResourceCollection>> ListBySubscriptionAsync(string subscriptionId, string filter = null, CancellationToken cancellationToken = default)
         {
-            Argument.AssertNotNull(nextLink, nameof(nextLink));
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
 
-            using var message = CreateListBySubscriptionNextPageRequest(nextLink, subscriptionId);
+            using var message = CreateListBySubscriptionRequest(subscriptionId, filter);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
                 case 200:
                     {
-                        ScheduledQueryRuleResourceCollection value = default;
+                        LogSearchRuleResourceCollection value = default;
                         using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
-                        value = ScheduledQueryRuleResourceCollection.DeserializeScheduledQueryRuleResourceCollection(document.RootElement);
+                        value = LogSearchRuleResourceCollection.DeserializeLogSearchRuleResourceCollection(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -544,26 +410,25 @@ namespace Azure.ResourceManager.Monitor
             }
         }
 
-        /// <summary> Retrieve a scheduled query rule definitions in a subscription. </summary>
-        /// <param name="nextLink"> The URL to the next page of results. </param>
+        /// <summary> List the Log Search rules within a subscription group. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
+        /// <param name="filter"> The filter to apply on the operation. For more information please see https://msdn.microsoft.com/en-us/library/azure/dn931934.aspx. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="nextLink"/> or <paramref name="subscriptionId"/> is null. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response<ScheduledQueryRuleResourceCollection> ListBySubscriptionNextPage(string nextLink, string subscriptionId, CancellationToken cancellationToken = default)
+        public Response<LogSearchRuleResourceCollection> ListBySubscription(string subscriptionId, string filter = null, CancellationToken cancellationToken = default)
         {
-            Argument.AssertNotNull(nextLink, nameof(nextLink));
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
 
-            using var message = CreateListBySubscriptionNextPageRequest(nextLink, subscriptionId);
+            using var message = CreateListBySubscriptionRequest(subscriptionId, filter);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
                 case 200:
                     {
-                        ScheduledQueryRuleResourceCollection value = default;
+                        LogSearchRuleResourceCollection value = default;
                         using var document = JsonDocument.Parse(message.Response.ContentStream);
-                        value = ScheduledQueryRuleResourceCollection.DeserializeScheduledQueryRuleResourceCollection(document.RootElement);
+                        value = LogSearchRuleResourceCollection.DeserializeLogSearchRuleResourceCollection(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -571,42 +436,50 @@ namespace Azure.ResourceManager.Monitor
             }
         }
 
-        internal HttpMessage CreateListByResourceGroupNextPageRequest(string nextLink, string subscriptionId, string resourceGroupName)
+        internal HttpMessage CreateListByResourceGroupRequest(string subscriptionId, string resourceGroupName, string filter)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendRawNextLink(nextLink, false);
+            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath(subscriptionId, true);
+            uri.AppendPath("/resourcegroups/", false);
+            uri.AppendPath(resourceGroupName, true);
+            uri.AppendPath("/providers/Microsoft.Insights/scheduledQueryRules", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            if (filter != null)
+            {
+                uri.AppendQuery("$filter", filter, true);
+            }
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             _userAgent.Apply(message);
             return message;
         }
 
-        /// <summary> Retrieve scheduled query rule definitions in a resource group. </summary>
-        /// <param name="nextLink"> The URL to the next page of results. </param>
+        /// <summary> List the Log Search rules within a resource group. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
+        /// <param name="filter"> The filter to apply on the operation. For more information please see https://msdn.microsoft.com/en-us/library/azure/dn931934.aspx. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="nextLink"/>, <paramref name="subscriptionId"/> or <paramref name="resourceGroupName"/> is null. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/> or <paramref name="resourceGroupName"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/> or <paramref name="resourceGroupName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response<ScheduledQueryRuleResourceCollection>> ListByResourceGroupNextPageAsync(string nextLink, string subscriptionId, string resourceGroupName, CancellationToken cancellationToken = default)
+        public async Task<Response<LogSearchRuleResourceCollection>> ListByResourceGroupAsync(string subscriptionId, string resourceGroupName, string filter = null, CancellationToken cancellationToken = default)
         {
-            Argument.AssertNotNull(nextLink, nameof(nextLink));
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
 
-            using var message = CreateListByResourceGroupNextPageRequest(nextLink, subscriptionId, resourceGroupName);
+            using var message = CreateListByResourceGroupRequest(subscriptionId, resourceGroupName, filter);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
                 case 200:
                     {
-                        ScheduledQueryRuleResourceCollection value = default;
+                        LogSearchRuleResourceCollection value = default;
                         using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
-                        value = ScheduledQueryRuleResourceCollection.DeserializeScheduledQueryRuleResourceCollection(document.RootElement);
+                        value = LogSearchRuleResourceCollection.DeserializeLogSearchRuleResourceCollection(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -614,28 +487,27 @@ namespace Azure.ResourceManager.Monitor
             }
         }
 
-        /// <summary> Retrieve scheduled query rule definitions in a resource group. </summary>
-        /// <param name="nextLink"> The URL to the next page of results. </param>
+        /// <summary> List the Log Search rules within a resource group. </summary>
         /// <param name="subscriptionId"> The ID of the target subscription. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
+        /// <param name="filter"> The filter to apply on the operation. For more information please see https://msdn.microsoft.com/en-us/library/azure/dn931934.aspx. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="nextLink"/>, <paramref name="subscriptionId"/> or <paramref name="resourceGroupName"/> is null. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/> or <paramref name="resourceGroupName"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/> or <paramref name="resourceGroupName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response<ScheduledQueryRuleResourceCollection> ListByResourceGroupNextPage(string nextLink, string subscriptionId, string resourceGroupName, CancellationToken cancellationToken = default)
+        public Response<LogSearchRuleResourceCollection> ListByResourceGroup(string subscriptionId, string resourceGroupName, string filter = null, CancellationToken cancellationToken = default)
         {
-            Argument.AssertNotNull(nextLink, nameof(nextLink));
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
 
-            using var message = CreateListByResourceGroupNextPageRequest(nextLink, subscriptionId, resourceGroupName);
+            using var message = CreateListByResourceGroupRequest(subscriptionId, resourceGroupName, filter);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
                 case 200:
                     {
-                        ScheduledQueryRuleResourceCollection value = default;
+                        LogSearchRuleResourceCollection value = default;
                         using var document = JsonDocument.Parse(message.Response.ContentStream);
-                        value = ScheduledQueryRuleResourceCollection.DeserializeScheduledQueryRuleResourceCollection(document.RootElement);
+                        value = LogSearchRuleResourceCollection.DeserializeLogSearchRuleResourceCollection(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:

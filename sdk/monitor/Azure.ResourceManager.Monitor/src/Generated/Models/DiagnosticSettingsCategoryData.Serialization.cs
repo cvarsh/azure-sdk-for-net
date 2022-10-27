@@ -5,7 +5,6 @@
 
 #nullable disable
 
-using System.Collections.Generic;
 using System.Text.Json;
 using Azure.Core;
 using Azure.ResourceManager.Models;
@@ -23,17 +22,7 @@ namespace Azure.ResourceManager.Monitor
             if (Optional.IsDefined(CategoryType))
             {
                 writer.WritePropertyName("categoryType");
-                writer.WriteStringValue(CategoryType.Value.ToString());
-            }
-            if (Optional.IsCollectionDefined(CategoryGroups))
-            {
-                writer.WritePropertyName("categoryGroups");
-                writer.WriteStartArray();
-                foreach (var item in CategoryGroups)
-                {
-                    writer.WriteStringValue(item);
-                }
-                writer.WriteEndArray();
+                writer.WriteStringValue(CategoryType.Value.ToSerialString());
             }
             writer.WriteEndObject();
             writer.WriteEndObject();
@@ -46,7 +35,6 @@ namespace Azure.ResourceManager.Monitor
             ResourceType type = default;
             Optional<SystemData> systemData = default;
             Optional<MonitorCategoryType> categoryType = default;
-            Optional<IList<string>> categoryGroups = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("id"))
@@ -90,29 +78,14 @@ namespace Azure.ResourceManager.Monitor
                                 property0.ThrowNonNullablePropertyIsNull();
                                 continue;
                             }
-                            categoryType = new MonitorCategoryType(property0.Value.GetString());
-                            continue;
-                        }
-                        if (property0.NameEquals("categoryGroups"))
-                        {
-                            if (property0.Value.ValueKind == JsonValueKind.Null)
-                            {
-                                property0.ThrowNonNullablePropertyIsNull();
-                                continue;
-                            }
-                            List<string> array = new List<string>();
-                            foreach (var item in property0.Value.EnumerateArray())
-                            {
-                                array.Add(item.GetString());
-                            }
-                            categoryGroups = array;
+                            categoryType = property0.Value.GetString().ToMonitorCategoryType();
                             continue;
                         }
                     }
                     continue;
                 }
             }
-            return new DiagnosticSettingsCategoryData(id, name, type, systemData.Value, Optional.ToNullable(categoryType), Optional.ToList(categoryGroups));
+            return new DiagnosticSettingsCategoryData(id, name, type, systemData.Value, Optional.ToNullable(categoryType));
         }
     }
 }
