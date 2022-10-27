@@ -43,6 +43,8 @@ namespace Microsoft.Azure.Management.Network.Models
         /// resource.</param>
         /// <param name="dnsName">FQDN for the endpoint on which bastion host
         /// is accessible.</param>
+        /// <param name="virtualNetwork">Reference to an existing virtual
+        /// network.</param>
         /// <param name="provisioningState">The provisioning state of the
         /// bastion host resource. Possible values include: 'Succeeded',
         /// 'Updating', 'Deleting', 'Failed'</param>
@@ -61,11 +63,12 @@ namespace Microsoft.Azure.Management.Network.Models
         /// <param name="etag">A unique read-only string that changes whenever
         /// the resource is updated.</param>
         /// <param name="sku">The sku of this Bastion Host.</param>
-        public BastionHost(string id = default(string), string name = default(string), string type = default(string), string location = default(string), IDictionary<string, string> tags = default(IDictionary<string, string>), IList<BastionHostIPConfiguration> ipConfigurations = default(IList<BastionHostIPConfiguration>), string dnsName = default(string), string provisioningState = default(string), int? scaleUnits = default(int?), bool? disableCopyPaste = default(bool?), bool? enableFileCopy = default(bool?), bool? enableIpConnect = default(bool?), bool? enableShareableLink = default(bool?), bool? enableTunneling = default(bool?), string etag = default(string), Sku sku = default(Sku))
+        public BastionHost(string id = default(string), string name = default(string), string type = default(string), string location = default(string), IDictionary<string, string> tags = default(IDictionary<string, string>), IList<BastionHostIPConfiguration> ipConfigurations = default(IList<BastionHostIPConfiguration>), string dnsName = default(string), SubResource virtualNetwork = default(SubResource), string provisioningState = default(string), int? scaleUnits = default(int?), bool? disableCopyPaste = default(bool?), bool? enableFileCopy = default(bool?), bool? enableIpConnect = default(bool?), bool? enableShareableLink = default(bool?), bool? enableTunneling = default(bool?), string etag = default(string), Sku sku = default(Sku))
             : base(id, name, type, location, tags)
         {
             IpConfigurations = ipConfigurations;
             DnsName = dnsName;
+            VirtualNetwork = virtualNetwork;
             ProvisioningState = provisioningState;
             ScaleUnits = scaleUnits;
             DisableCopyPaste = disableCopyPaste;
@@ -95,6 +98,12 @@ namespace Microsoft.Azure.Management.Network.Models
         /// </summary>
         [JsonProperty(PropertyName = "properties.dnsName")]
         public string DnsName { get; set; }
+
+        /// <summary>
+        /// Gets or sets reference to an existing virtual network.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.virtualNetwork")]
+        public SubResource VirtualNetwork { get; set; }
 
         /// <summary>
         /// Gets the provisioning state of the bastion host resource. Possible
