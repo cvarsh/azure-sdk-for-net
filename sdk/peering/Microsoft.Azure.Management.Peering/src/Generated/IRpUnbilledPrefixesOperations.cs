@@ -19,28 +19,21 @@ namespace Microsoft.Azure.Management.Peering
     using System.Threading.Tasks;
 
     /// <summary>
-    /// LegacyPeeringsOperations operations.
+    /// RpUnbilledPrefixesOperations operations.
     /// </summary>
-    public partial interface ILegacyPeeringsOperations
+    public partial interface IRpUnbilledPrefixesOperations
     {
         /// <summary>
-        /// Lists all of the legacy peerings under the given subscription
-        /// matching the specified kind and location.
+        /// Lists all of the RP unbilled prefixes for the specified peering
         /// </summary>
-        /// <param name='peeringLocation'>
-        /// The location of the peering.
+        /// <param name='resourceGroupName'>
+        /// The Azure resource group name.
         /// </param>
-        /// <param name='kind'>
-        /// The kind of the peering. Possible values include: 'Direct',
-        /// 'Exchange'
+        /// <param name='peeringName'>
+        /// The peering name.
         /// </param>
-        /// <param name='asn'>
-        /// The ASN number associated with a legacy peering.
-        /// </param>
-        /// <param name='directPeeringType'>
-        /// The direct peering type. Possible values include: 'Edge',
-        /// 'Transit', 'Cdn', 'Internal', 'Ix', 'IxRs', 'Voice',
-        /// 'EdgeZoneForOperators'
+        /// <param name='consolidate'>
+        /// Flag to enable consolidation prefixes
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -57,10 +50,9 @@ namespace Microsoft.Azure.Management.Peering
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<IPage<PeeringModel>>> ListWithHttpMessagesAsync(string peeringLocation, string kind, int? asn = default(int?), string directPeeringType = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<IPage<RpUnbilledPrefix>>> ListWithHttpMessagesAsync(string resourceGroupName, string peeringName, bool? consolidate = default(bool?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Lists all of the legacy peerings under the given subscription
-        /// matching the specified kind and location.
+        /// Lists all of the RP unbilled prefixes for the specified peering
         /// </summary>
         /// <param name='nextPageLink'>
         /// The NextLink from the previous successful call to List operation.
@@ -80,6 +72,6 @@ namespace Microsoft.Azure.Management.Peering
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<IPage<PeeringModel>>> ListNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<IPage<RpUnbilledPrefix>>> ListNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

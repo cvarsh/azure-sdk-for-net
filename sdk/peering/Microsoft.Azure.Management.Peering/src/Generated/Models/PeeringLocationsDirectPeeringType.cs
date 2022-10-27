@@ -12,9 +12,9 @@ namespace Microsoft.Azure.Management.Peering.Models
 {
 
     /// <summary>
-    /// Defines values for DirectPeeringType.
+    /// Defines values for PeeringLocationsDirectPeeringType.
     /// </summary>
-    public static class DirectPeeringType
+    public static class PeeringLocationsDirectPeeringType
     {
         public const string Edge = "Edge";
         public const string Transit = "Transit";

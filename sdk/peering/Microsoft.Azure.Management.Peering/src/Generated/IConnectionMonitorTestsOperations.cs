@@ -19,22 +19,22 @@ namespace Microsoft.Azure.Management.Peering
     using System.Threading.Tasks;
 
     /// <summary>
-    /// RegisteredPrefixesOperations operations.
+    /// ConnectionMonitorTestsOperations operations.
     /// </summary>
-    public partial interface IRegisteredPrefixesOperations
+    public partial interface IConnectionMonitorTestsOperations
     {
         /// <summary>
-        /// Gets an existing registered prefix with the specified name under
-        /// the given subscription, resource group and peering.
+        /// Gets an existing connection monitor test with the specified name
+        /// under the given subscription, resource group and peering service.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
         /// </param>
-        /// <param name='peeringName'>
-        /// The name of the peering.
+        /// <param name='peeringServiceName'>
+        /// The name of the peering service.
         /// </param>
-        /// <param name='registeredPrefixName'>
-        /// The name of the registered prefix.
+        /// <param name='connectionMonitorTestName'>
+        /// The name of the connection monitor test
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -51,22 +51,23 @@ namespace Microsoft.Azure.Management.Peering
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<PeeringRegisteredPrefix>> GetWithHttpMessagesAsync(string resourceGroupName, string peeringName, string registeredPrefixName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<ConnectionMonitorTest>> GetWithHttpMessagesAsync(string resourceGroupName, string peeringServiceName, string connectionMonitorTestName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Creates a new registered prefix with the specified name under the
-        /// given subscription, resource group and peering.
+        /// Creates or updates a connection monitor test with the specified
+        /// name under the given subscription, resource group and peering
+        /// service.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
         /// </param>
-        /// <param name='peeringName'>
-        /// The name of the peering.
+        /// <param name='peeringServiceName'>
+        /// The name of the peering service.
         /// </param>
-        /// <param name='registeredPrefixName'>
-        /// The name of the registered prefix.
+        /// <param name='connectionMonitorTestName'>
+        /// The name of the connection monitor test
         /// </param>
-        /// <param name='prefix'>
-        /// The customer's prefix from which traffic originates.
+        /// <param name='connectionMonitorTest'>
+        /// The properties needed to create a connection monitor test
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -83,19 +84,19 @@ namespace Microsoft.Azure.Management.Peering
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<PeeringRegisteredPrefix>> CreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string peeringName, string registeredPrefixName, string prefix = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<ConnectionMonitorTest>> CreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string peeringServiceName, string connectionMonitorTestName, ConnectionMonitorTest connectionMonitorTest, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Deletes an existing registered prefix with the specified name under
-        /// the given subscription, resource group and peering.
+        /// Deletes an existing connection monitor test with the specified name
+        /// under the given subscription, resource group and peering service.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
         /// </param>
-        /// <param name='peeringName'>
-        /// The name of the peering.
+        /// <param name='peeringServiceName'>
+        /// The name of the peering service.
         /// </param>
-        /// <param name='registeredPrefixName'>
-        /// The name of the registered prefix.
+        /// <param name='connectionMonitorTestName'>
+        /// The name of the connection monitor test
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -109,45 +110,16 @@ namespace Microsoft.Azure.Management.Peering
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string peeringName, string registeredPrefixName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string peeringServiceName, string connectionMonitorTestName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Lists all registered prefixes under the given subscription,
-        /// resource group and peering.
+        /// Lists all connection monitor tests under the given subscription,
+        /// resource group and peering service.
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
         /// </param>
-        /// <param name='peeringName'>
-        /// The name of the peering.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="ErrorResponseException">
-        /// Thrown when the operation returned an invalid status code
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        Task<AzureOperationResponse<IPage<PeeringRegisteredPrefix>>> ListByPeeringWithHttpMessagesAsync(string resourceGroupName, string peeringName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-        /// <summary>
-        /// Validates an existing registered prefix with the specified name
-        /// under the given subscription, resource group and peering.
-        /// </summary>
-        /// <param name='resourceGroupName'>
-        /// The name of the resource group.
-        /// </param>
-        /// <param name='peeringName'>
-        /// The name of the peering.
-        /// </param>
-        /// <param name='registeredPrefixName'>
-        /// The name of the registered prefix.
+        /// <param name='peeringServiceName'>
+        /// The name of the peering service.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -164,10 +136,10 @@ namespace Microsoft.Azure.Management.Peering
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<PeeringRegisteredPrefix>> ValidateWithHttpMessagesAsync(string resourceGroupName, string peeringName, string registeredPrefixName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<IPage<ConnectionMonitorTest>>> ListByPeeringServiceWithHttpMessagesAsync(string resourceGroupName, string peeringServiceName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Lists all registered prefixes under the given subscription,
-        /// resource group and peering.
+        /// Lists all connection monitor tests under the given subscription,
+        /// resource group and peering service.
         /// </summary>
         /// <param name='nextPageLink'>
         /// The NextLink from the previous successful call to List operation.
@@ -187,6 +159,6 @@ namespace Microsoft.Azure.Management.Peering
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<IPage<PeeringRegisteredPrefix>>> ListByPeeringNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<IPage<ConnectionMonitorTest>>> ListByPeeringServiceNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

@@ -24,5 +24,7 @@ namespace Microsoft.Azure.Management.Peering.Models
         public const string ProvisioningCompleted = "ProvisioningCompleted";
         public const string Validating = "Validating";
         public const string Active = "Active";
+        public const string TypeChangeRequested = "TypeChangeRequested";
+        public const string TypeChangeInProgress = "TypeChangeInProgress";
     }
 }

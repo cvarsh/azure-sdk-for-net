@@ -37,9 +37,13 @@ namespace Microsoft.Azure.Management.Peering
             /// <param name='asn'>
             /// The ASN number associated with a legacy peering.
             /// </param>
-            public static IPage<PeeringModel> List(this ILegacyPeeringsOperations operations, string peeringLocation, string kind, int? asn = default(int?))
+            /// <param name='directPeeringType'>
+            /// The direct peering type. Possible values include: 'Edge', 'Transit', 'Cdn',
+            /// 'Internal', 'Ix', 'IxRs', 'Voice', 'EdgeZoneForOperators'
+            /// </param>
+            public static IPage<PeeringModel> List(this ILegacyPeeringsOperations operations, string peeringLocation, string kind, int? asn = default(int?), string directPeeringType = default(string))
             {
-                return operations.ListAsync(peeringLocation, kind, asn).GetAwaiter().GetResult();
+                return operations.ListAsync(peeringLocation, kind, asn, directPeeringType).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -58,12 +62,16 @@ namespace Microsoft.Azure.Management.Peering
             /// <param name='asn'>
             /// The ASN number associated with a legacy peering.
             /// </param>
+            /// <param name='directPeeringType'>
+            /// The direct peering type. Possible values include: 'Edge', 'Transit', 'Cdn',
+            /// 'Internal', 'Ix', 'IxRs', 'Voice', 'EdgeZoneForOperators'
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<IPage<PeeringModel>> ListAsync(this ILegacyPeeringsOperations operations, string peeringLocation, string kind, int? asn = default(int?), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<IPage<PeeringModel>> ListAsync(this ILegacyPeeringsOperations operations, string peeringLocation, string kind, int? asn = default(int?), string directPeeringType = default(string), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.ListWithHttpMessagesAsync(peeringLocation, kind, asn, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.ListWithHttpMessagesAsync(peeringLocation, kind, asn, directPeeringType, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }

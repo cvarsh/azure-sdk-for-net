@@ -84,6 +84,11 @@ namespace Microsoft.Azure.Management.Peering
         ILegacyPeeringsOperations LegacyPeerings { get; }
 
         /// <summary>
+        /// Gets the ILookingGlassOperations.
+        /// </summary>
+        ILookingGlassOperations LookingGlass { get; }
+
+        /// <summary>
         /// Gets the IOperations.
         /// </summary>
         IOperations Operations { get; }
@@ -119,6 +124,11 @@ namespace Microsoft.Azure.Management.Peering
         IReceivedRoutesOperations ReceivedRoutes { get; }
 
         /// <summary>
+        /// Gets the IConnectionMonitorTestsOperations.
+        /// </summary>
+        IConnectionMonitorTestsOperations ConnectionMonitorTests { get; }
+
+        /// <summary>
         /// Gets the IPeeringServiceCountriesOperations.
         /// </summary>
         IPeeringServiceCountriesOperations PeeringServiceCountries { get; }
@@ -142,6 +152,11 @@ namespace Microsoft.Azure.Management.Peering
         /// Gets the IPeeringServicesOperations.
         /// </summary>
         IPeeringServicesOperations PeeringServices { get; }
+
+        /// <summary>
+        /// Gets the IRpUnbilledPrefixesOperations.
+        /// </summary>
+        IRpUnbilledPrefixesOperations RpUnbilledPrefixes { get; }
 
         /// <summary>
         /// Checks if the peering service provider is present within 1000 miles

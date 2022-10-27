@@ -87,6 +87,11 @@ namespace Microsoft.Azure.Management.Peering
         public virtual ILegacyPeeringsOperations LegacyPeerings { get; private set; }
 
         /// <summary>
+        /// Gets the ILookingGlassOperations.
+        /// </summary>
+        public virtual ILookingGlassOperations LookingGlass { get; private set; }
+
+        /// <summary>
         /// Gets the IOperations.
         /// </summary>
         public virtual IOperations Operations { get; private set; }
@@ -122,6 +127,11 @@ namespace Microsoft.Azure.Management.Peering
         public virtual IReceivedRoutesOperations ReceivedRoutes { get; private set; }
 
         /// <summary>
+        /// Gets the IConnectionMonitorTestsOperations.
+        /// </summary>
+        public virtual IConnectionMonitorTestsOperations ConnectionMonitorTests { get; private set; }
+
+        /// <summary>
         /// Gets the IPeeringServiceCountriesOperations.
         /// </summary>
         public virtual IPeeringServiceCountriesOperations PeeringServiceCountries { get; private set; }
@@ -145,6 +155,11 @@ namespace Microsoft.Azure.Management.Peering
         /// Gets the IPeeringServicesOperations.
         /// </summary>
         public virtual IPeeringServicesOperations PeeringServices { get; private set; }
+
+        /// <summary>
+        /// Gets the IRpUnbilledPrefixesOperations.
+        /// </summary>
+        public virtual IRpUnbilledPrefixesOperations RpUnbilledPrefixes { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the PeeringManagementClient class.
@@ -389,6 +404,7 @@ namespace Microsoft.Azure.Management.Peering
         {
             CdnPeeringPrefixes = new CdnPeeringPrefixesOperations(this);
             LegacyPeerings = new LegacyPeeringsOperations(this);
+            LookingGlass = new LookingGlassOperations(this);
             Operations = new Operations(this);
             PeerAsns = new PeerAsnsOperations(this);
             PeeringLocations = new PeeringLocationsOperations(this);
@@ -396,13 +412,15 @@ namespace Microsoft.Azure.Management.Peering
             RegisteredPrefixes = new RegisteredPrefixesOperations(this);
             Peerings = new PeeringsOperations(this);
             ReceivedRoutes = new ReceivedRoutesOperations(this);
+            ConnectionMonitorTests = new ConnectionMonitorTestsOperations(this);
             PeeringServiceCountries = new PeeringServiceCountriesOperations(this);
             PeeringServiceLocations = new PeeringServiceLocationsOperations(this);
             Prefixes = new PrefixesOperations(this);
             PeeringServiceProviders = new PeeringServiceProvidersOperations(this);
             PeeringServices = new PeeringServicesOperations(this);
+            RpUnbilledPrefixes = new RpUnbilledPrefixesOperations(this);
             BaseUri = new System.Uri("https://management.azure.com");
-            ApiVersion = "2020-10-01";
+            ApiVersion = "2022-10-01";
             AcceptLanguage = "en-US";
             LongRunningOperationRetryTimeout = 30;
             GenerateClientRequestId = true;
@@ -496,7 +514,7 @@ namespace Microsoft.Azure.Management.Peering
             }
             // Construct URL
             var _baseUrl = BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/providers/Microsoft.Peering/CheckServiceProviderAvailability").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/providers/Microsoft.Peering/checkServiceProviderAvailability").ToString();
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(SubscriptionId));
             List<string> _queryParameters = new List<string>();
             if (ApiVersion != null)

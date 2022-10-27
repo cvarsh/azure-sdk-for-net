@@ -211,6 +211,54 @@ namespace Microsoft.Azure.Management.Peering
             }
 
             /// <summary>
+            /// Validates an existing registered prefix with the specified name under the
+            /// given subscription, resource group and peering.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group.
+            /// </param>
+            /// <param name='peeringName'>
+            /// The name of the peering.
+            /// </param>
+            /// <param name='registeredPrefixName'>
+            /// The name of the registered prefix.
+            /// </param>
+            public static PeeringRegisteredPrefix Validate(this IRegisteredPrefixesOperations operations, string resourceGroupName, string peeringName, string registeredPrefixName)
+            {
+                return operations.ValidateAsync(resourceGroupName, peeringName, registeredPrefixName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Validates an existing registered prefix with the specified name under the
+            /// given subscription, resource group and peering.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group.
+            /// </param>
+            /// <param name='peeringName'>
+            /// The name of the peering.
+            /// </param>
+            /// <param name='registeredPrefixName'>
+            /// The name of the registered prefix.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<PeeringRegisteredPrefix> ValidateAsync(this IRegisteredPrefixesOperations operations, string resourceGroupName, string peeringName, string registeredPrefixName, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.ValidateWithHttpMessagesAsync(resourceGroupName, peeringName, registeredPrefixName, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
             /// Lists all registered prefixes under the given subscription, resource group
             /// and peering.
             /// </summary>
