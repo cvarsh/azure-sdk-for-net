@@ -85,6 +85,16 @@ namespace Microsoft.Azure.Management.DataProtection
         IOperationStatusOperations OperationStatus { get; }
 
         /// <summary>
+        /// Gets the IOperationStatusBackupVaultContextOperations.
+        /// </summary>
+        IOperationStatusBackupVaultContextOperations OperationStatusBackupVaultContext { get; }
+
+        /// <summary>
+        /// Gets the IOperationStatusResourceGroupContextOperations.
+        /// </summary>
+        IOperationStatusResourceGroupContextOperations OperationStatusResourceGroupContext { get; }
+
+        /// <summary>
         /// Gets the IBackupVaultOperationResultsOperations.
         /// </summary>
         IBackupVaultOperationResultsOperations BackupVaultOperationResults { get; }
@@ -108,6 +118,11 @@ namespace Microsoft.Azure.Management.DataProtection
         /// Gets the IBackupInstancesOperations.
         /// </summary>
         IBackupInstancesOperations BackupInstances { get; }
+
+        /// <summary>
+        /// Gets the IBackupInstancesExtensionRoutingOperations.
+        /// </summary>
+        IBackupInstancesExtensionRoutingOperations BackupInstancesExtensionRouting { get; }
 
         /// <summary>
         /// Gets the IRecoveryPointsOperations.
@@ -135,9 +150,19 @@ namespace Microsoft.Azure.Management.DataProtection
         IExportJobsOperationResultOperations ExportJobsOperationResult { get; }
 
         /// <summary>
+        /// Gets the IDeletedBackupInstancesOperations.
+        /// </summary>
+        IDeletedBackupInstancesOperations DeletedBackupInstances { get; }
+
+        /// <summary>
         /// Gets the IResourceGuardsOperations.
         /// </summary>
         IResourceGuardsOperations ResourceGuards { get; }
+
+        /// <summary>
+        /// Gets the IDppResourceGuardProxyOperations.
+        /// </summary>
+        IDppResourceGuardProxyOperations DppResourceGuardProxy { get; }
 
     }
 }
