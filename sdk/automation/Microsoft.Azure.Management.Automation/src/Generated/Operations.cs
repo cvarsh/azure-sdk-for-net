@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Management.Automation
         /// </return>
         public async Task<AzureOperationResponse<IEnumerable<Operation>>> ListWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            string apiVersion = "2021-06-22";
+            string apiVersion = "2022-08-08";
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;

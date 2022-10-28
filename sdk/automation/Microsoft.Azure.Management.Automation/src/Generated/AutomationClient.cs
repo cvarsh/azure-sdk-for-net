@@ -84,11 +84,6 @@ namespace Microsoft.Azure.Management.Automation
         public virtual IPrivateLinkResourcesOperations PrivateLinkResources { get; private set; }
 
         /// <summary>
-        /// Gets the IPython2PackageOperations.
-        /// </summary>
-        public virtual IPython2PackageOperations Python2Package { get; private set; }
-
-        /// <summary>
         /// Gets the IAgentRegistrationInformationOperations.
         /// </summary>
         public virtual IAgentRegistrationInformationOperations AgentRegistrationInformation { get; private set; }
@@ -102,11 +97,6 @@ namespace Microsoft.Azure.Management.Automation
         /// Gets the INodeReportsOperations.
         /// </summary>
         public virtual INodeReportsOperations NodeReports { get; private set; }
-
-        /// <summary>
-        /// Gets the IDscNodeConfigurationOperations.
-        /// </summary>
-        public virtual IDscNodeConfigurationOperations DscNodeConfiguration { get; private set; }
 
         /// <summary>
         /// Gets the IDscCompilationJobOperations.
@@ -124,19 +114,24 @@ namespace Microsoft.Azure.Management.Automation
         public virtual INodeCountInformationOperations NodeCountInformation { get; private set; }
 
         /// <summary>
-        /// Gets the ISourceControlOperations.
+        /// Gets the IWatcherOperations.
         /// </summary>
-        public virtual ISourceControlOperations SourceControl { get; private set; }
+        public virtual IWatcherOperations Watcher { get; private set; }
 
         /// <summary>
-        /// Gets the ISourceControlSyncJobOperations.
+        /// Gets the ISoftwareUpdateConfigurationsOperations.
         /// </summary>
-        public virtual ISourceControlSyncJobOperations SourceControlSyncJob { get; private set; }
+        public virtual ISoftwareUpdateConfigurationsOperations SoftwareUpdateConfigurations { get; private set; }
 
         /// <summary>
-        /// Gets the ISourceControlSyncJobStreamsOperations.
+        /// Gets the IWebhookOperations.
         /// </summary>
-        public virtual ISourceControlSyncJobStreamsOperations SourceControlSyncJobStreams { get; private set; }
+        public virtual IWebhookOperations Webhook { get; private set; }
+
+        /// <summary>
+        /// Gets the IDeletedAutomationAccountsOperations.
+        /// </summary>
+        public virtual IDeletedAutomationAccountsOperations DeletedAutomationAccounts { get; private set; }
 
         /// <summary>
         /// Gets the IAutomationAccountOperations.
@@ -179,6 +174,36 @@ namespace Microsoft.Azure.Management.Automation
         public virtual ICredentialOperations Credential { get; private set; }
 
         /// <summary>
+        /// Gets the IDscConfigurationOperations.
+        /// </summary>
+        public virtual IDscConfigurationOperations DscConfiguration { get; private set; }
+
+        /// <summary>
+        /// Gets the IDscNodeConfigurationOperations.
+        /// </summary>
+        public virtual IDscNodeConfigurationOperations DscNodeConfiguration { get; private set; }
+
+        /// <summary>
+        /// Gets the IHybridRunbookWorkersOperations.
+        /// </summary>
+        public virtual IHybridRunbookWorkersOperations HybridRunbookWorkers { get; private set; }
+
+        /// <summary>
+        /// Gets the IHybridRunbookWorkerGroupOperations.
+        /// </summary>
+        public virtual IHybridRunbookWorkerGroupOperations HybridRunbookWorkerGroup { get; private set; }
+
+        /// <summary>
+        /// Gets the IJobOperations.
+        /// </summary>
+        public virtual IJobOperations Job { get; private set; }
+
+        /// <summary>
+        /// Gets the IJobStreamOperations.
+        /// </summary>
+        public virtual IJobStreamOperations JobStream { get; private set; }
+
+        /// <summary>
         /// Gets the IJobScheduleOperations.
         /// </summary>
         public virtual IJobScheduleOperations JobSchedule { get; private set; }
@@ -209,54 +234,19 @@ namespace Microsoft.Azure.Management.Automation
         public virtual IFieldsOperations Fields { get; private set; }
 
         /// <summary>
-        /// Gets the IScheduleOperations.
-        /// </summary>
-        public virtual IScheduleOperations Schedule { get; private set; }
-
-        /// <summary>
-        /// Gets the IVariableOperations.
-        /// </summary>
-        public virtual IVariableOperations Variable { get; private set; }
-
-        /// <summary>
-        /// Gets the IWatcherOperations.
-        /// </summary>
-        public virtual IWatcherOperations Watcher { get; private set; }
-
-        /// <summary>
-        /// Gets the IDscConfigurationOperations.
-        /// </summary>
-        public virtual IDscConfigurationOperations DscConfiguration { get; private set; }
-
-        /// <summary>
-        /// Gets the IJobOperations.
-        /// </summary>
-        public virtual IJobOperations Job { get; private set; }
-
-        /// <summary>
-        /// Gets the IJobStreamOperations.
-        /// </summary>
-        public virtual IJobStreamOperations JobStream { get; private set; }
-
-        /// <summary>
         /// Gets the IOperations.
         /// </summary>
         public virtual IOperations Operations { get; private set; }
 
         /// <summary>
-        /// Gets the ISoftwareUpdateConfigurationsOperations.
+        /// Gets the IPython2PackageOperations.
         /// </summary>
-        public virtual ISoftwareUpdateConfigurationsOperations SoftwareUpdateConfigurations { get; private set; }
+        public virtual IPython2PackageOperations Python2Package { get; private set; }
 
         /// <summary>
-        /// Gets the ISoftwareUpdateConfigurationRunsOperations.
+        /// Gets the IPython3PackageOperations.
         /// </summary>
-        public virtual ISoftwareUpdateConfigurationRunsOperations SoftwareUpdateConfigurationRuns { get; private set; }
-
-        /// <summary>
-        /// Gets the ISoftwareUpdateConfigurationMachineRunsOperations.
-        /// </summary>
-        public virtual ISoftwareUpdateConfigurationMachineRunsOperations SoftwareUpdateConfigurationMachineRuns { get; private set; }
+        public virtual IPython3PackageOperations Python3Package { get; private set; }
 
         /// <summary>
         /// Gets the IRunbookDraftOperations.
@@ -279,24 +269,39 @@ namespace Microsoft.Azure.Management.Automation
         public virtual ITestJobOperations TestJob { get; private set; }
 
         /// <summary>
-        /// Gets the IWebhookOperations.
+        /// Gets the IScheduleOperations.
         /// </summary>
-        public virtual IWebhookOperations Webhook { get; private set; }
+        public virtual IScheduleOperations Schedule { get; private set; }
 
         /// <summary>
-        /// Gets the IHybridRunbookWorkersOperations.
+        /// Gets the ISoftwareUpdateConfigurationMachineRunsOperations.
         /// </summary>
-        public virtual IHybridRunbookWorkersOperations HybridRunbookWorkers { get; private set; }
+        public virtual ISoftwareUpdateConfigurationMachineRunsOperations SoftwareUpdateConfigurationMachineRuns { get; private set; }
 
         /// <summary>
-        /// Gets the IDeletedAutomationAccountsOperations.
+        /// Gets the ISoftwareUpdateConfigurationRunsOperations.
         /// </summary>
-        public virtual IDeletedAutomationAccountsOperations DeletedAutomationAccounts { get; private set; }
+        public virtual ISoftwareUpdateConfigurationRunsOperations SoftwareUpdateConfigurationRuns { get; private set; }
 
         /// <summary>
-        /// Gets the IHybridRunbookWorkerGroupOperations.
+        /// Gets the ISourceControlOperations.
         /// </summary>
-        public virtual IHybridRunbookWorkerGroupOperations HybridRunbookWorkerGroup { get; private set; }
+        public virtual ISourceControlOperations SourceControl { get; private set; }
+
+        /// <summary>
+        /// Gets the ISourceControlSyncJobOperations.
+        /// </summary>
+        public virtual ISourceControlSyncJobOperations SourceControlSyncJob { get; private set; }
+
+        /// <summary>
+        /// Gets the ISourceControlSyncJobStreamsOperations.
+        /// </summary>
+        public virtual ISourceControlSyncJobStreamsOperations SourceControlSyncJobStreams { get; private set; }
+
+        /// <summary>
+        /// Gets the IVariableOperations.
+        /// </summary>
+        public virtual IVariableOperations Variable { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the AutomationClient class.
@@ -541,17 +546,16 @@ namespace Microsoft.Azure.Management.Automation
         {
             PrivateEndpointConnections = new PrivateEndpointConnectionsOperations(this);
             PrivateLinkResources = new PrivateLinkResourcesOperations(this);
-            Python2Package = new Python2PackageOperations(this);
             AgentRegistrationInformation = new AgentRegistrationInformationOperations(this);
             DscNode = new DscNodeOperations(this);
             NodeReports = new NodeReportsOperations(this);
-            DscNodeConfiguration = new DscNodeConfigurationOperations(this);
             DscCompilationJob = new DscCompilationJobOperations(this);
             DscCompilationJobStream = new DscCompilationJobStreamOperations(this);
             NodeCountInformation = new NodeCountInformationOperations(this);
-            SourceControl = new SourceControlOperations(this);
-            SourceControlSyncJob = new SourceControlSyncJobOperations(this);
-            SourceControlSyncJobStreams = new SourceControlSyncJobStreamsOperations(this);
+            Watcher = new WatcherOperations(this);
+            SoftwareUpdateConfigurations = new SoftwareUpdateConfigurationsOperations(this);
+            Webhook = new WebhookOperations(this);
+            DeletedAutomationAccounts = new DeletedAutomationAccountsOperations(this);
             AutomationAccount = new AutomationAccountOperations(this);
             Statistics = new StatisticsOperations(this);
             Usages = new UsagesOperations(this);
@@ -560,30 +564,32 @@ namespace Microsoft.Azure.Management.Automation
             Connection = new ConnectionOperations(this);
             ConnectionType = new ConnectionTypeOperations(this);
             Credential = new CredentialOperations(this);
+            DscConfiguration = new DscConfigurationOperations(this);
+            DscNodeConfiguration = new DscNodeConfigurationOperations(this);
+            HybridRunbookWorkers = new HybridRunbookWorkersOperations(this);
+            HybridRunbookWorkerGroup = new HybridRunbookWorkerGroupOperations(this);
+            Job = new JobOperations(this);
+            JobStream = new JobStreamOperations(this);
             JobSchedule = new JobScheduleOperations(this);
             LinkedWorkspace = new LinkedWorkspaceOperations(this);
             Activity = new ActivityOperations(this);
             Module = new ModuleOperations(this);
             ObjectDataTypes = new ObjectDataTypesOperations(this);
             Fields = new FieldsOperations(this);
-            Schedule = new ScheduleOperations(this);
-            Variable = new VariableOperations(this);
-            Watcher = new WatcherOperations(this);
-            DscConfiguration = new DscConfigurationOperations(this);
-            Job = new JobOperations(this);
-            JobStream = new JobStreamOperations(this);
             Operations = new Operations(this);
-            SoftwareUpdateConfigurations = new SoftwareUpdateConfigurationsOperations(this);
-            SoftwareUpdateConfigurationRuns = new SoftwareUpdateConfigurationRunsOperations(this);
-            SoftwareUpdateConfigurationMachineRuns = new SoftwareUpdateConfigurationMachineRunsOperations(this);
+            Python2Package = new Python2PackageOperations(this);
+            Python3Package = new Python3PackageOperations(this);
             RunbookDraft = new RunbookDraftOperations(this);
             Runbook = new RunbookOperations(this);
             TestJobStreams = new TestJobStreamsOperations(this);
             TestJob = new TestJobOperations(this);
-            Webhook = new WebhookOperations(this);
-            HybridRunbookWorkers = new HybridRunbookWorkersOperations(this);
-            DeletedAutomationAccounts = new DeletedAutomationAccountsOperations(this);
-            HybridRunbookWorkerGroup = new HybridRunbookWorkerGroupOperations(this);
+            Schedule = new ScheduleOperations(this);
+            SoftwareUpdateConfigurationMachineRuns = new SoftwareUpdateConfigurationMachineRunsOperations(this);
+            SoftwareUpdateConfigurationRuns = new SoftwareUpdateConfigurationRunsOperations(this);
+            SourceControl = new SourceControlOperations(this);
+            SourceControlSyncJob = new SourceControlSyncJobOperations(this);
+            SourceControlSyncJobStreams = new SourceControlSyncJobStreamsOperations(this);
+            Variable = new VariableOperations(this);
             BaseUri = new System.Uri("https://management.azure.com");
             AcceptLanguage = "en-US";
             LongRunningOperationRetryTimeout = 30;
@@ -684,7 +690,7 @@ namespace Microsoft.Azure.Management.Automation
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "parameters");
             }
-            string apiVersion = "2021-06-22";
+            string apiVersion = "2022-08-08";
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;

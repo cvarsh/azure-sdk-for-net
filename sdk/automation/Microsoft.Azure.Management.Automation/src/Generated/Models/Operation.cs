@@ -10,12 +10,15 @@
 
 namespace Microsoft.Azure.Management.Automation.Models
 {
+    using Microsoft.Rest;
+    using Microsoft.Rest.Serialization;
     using Newtonsoft.Json;
     using System.Linq;
 
     /// <summary>
     /// Automation REST API operation
     /// </summary>
+    [Rest.Serialization.JsonTransformation]
     public partial class Operation
     {
         /// <summary>
@@ -33,10 +36,15 @@ namespace Microsoft.Azure.Management.Automation.Models
         /// {provider}/{resource}/{operation}</param>
         /// <param name="display">Provider, Resource and Operation
         /// values</param>
-        public Operation(string name = default(string), OperationDisplay display = default(OperationDisplay))
+        /// <param name="origin">Origin of the operation.</param>
+        /// <param name="serviceSpecification">Specification of the
+        /// service.</param>
+        public Operation(string name = default(string), OperationDisplay display = default(OperationDisplay), string origin = default(string), OperationPropertiesFormatServiceSpecification serviceSpecification = default(OperationPropertiesFormatServiceSpecification))
         {
             Name = name;
             Display = display;
+            Origin = origin;
+            ServiceSpecification = serviceSpecification;
             CustomInit();
         }
 
@@ -56,6 +64,18 @@ namespace Microsoft.Azure.Management.Automation.Models
         /// </summary>
         [JsonProperty(PropertyName = "display")]
         public OperationDisplay Display { get; set; }
+
+        /// <summary>
+        /// Gets or sets origin of the operation.
+        /// </summary>
+        [JsonProperty(PropertyName = "origin")]
+        public string Origin { get; set; }
+
+        /// <summary>
+        /// Gets or sets specification of the service.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.serviceSpecification")]
+        public OperationPropertiesFormatServiceSpecification ServiceSpecification { get; set; }
 
     }
 }

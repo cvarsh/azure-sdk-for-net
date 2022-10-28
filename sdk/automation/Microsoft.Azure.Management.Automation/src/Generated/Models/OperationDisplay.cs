@@ -35,11 +35,13 @@ namespace Microsoft.Azure.Management.Automation.Models
         /// performed: Runbooks, Jobs etc.</param>
         /// <param name="operation">Operation type: Read, write, delete,
         /// etc.</param>
-        public OperationDisplay(string provider = default(string), string resource = default(string), string operation = default(string))
+        /// <param name="description">Description of the operation.</param>
+        public OperationDisplay(string provider = default(string), string resource = default(string), string operation = default(string), string description = default(string))
         {
             Provider = provider;
             Resource = resource;
             Operation = operation;
+            Description = description;
             CustomInit();
         }
 
@@ -66,6 +68,12 @@ namespace Microsoft.Azure.Management.Automation.Models
         /// </summary>
         [JsonProperty(PropertyName = "operation")]
         public string Operation { get; set; }
+
+        /// <summary>
+        /// Gets or sets description of the operation.
+        /// </summary>
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
 
     }
 }
