@@ -39,17 +39,19 @@ namespace Azure.ResourceManager.DataMigration
         }
 
         /// <summary> Gets a collection of DatabaseMigrationSqlMIResources in the ResourceGroupResource. </summary>
+        /// <param name="managedInstanceName"> The String to use. </param>
         /// <returns> An object representing collection of DatabaseMigrationSqlMIResources and their operations over a DatabaseMigrationSqlMIResource. </returns>
-        public virtual DatabaseMigrationSqlMICollection GetDatabaseMigrationSqlMIs()
+        public virtual DatabaseMigrationSqlMICollection GetDatabaseMigrationSqlMIs(string managedInstanceName)
         {
-            return GetCachedClient(Client => new DatabaseMigrationSqlMICollection(Client, Id));
+            return new DatabaseMigrationSqlMICollection(Client, Id, managedInstanceName);
         }
 
         /// <summary> Gets a collection of DatabaseMigrationSqlVmResources in the ResourceGroupResource. </summary>
+        /// <param name="sqlVirtualMachineName"> The String to use. </param>
         /// <returns> An object representing collection of DatabaseMigrationSqlVmResources and their operations over a DatabaseMigrationSqlVmResource. </returns>
-        public virtual DatabaseMigrationSqlVmCollection GetDatabaseMigrationSqlVms()
+        public virtual DatabaseMigrationSqlVmCollection GetDatabaseMigrationSqlVms(string sqlVirtualMachineName)
         {
-            return GetCachedClient(Client => new DatabaseMigrationSqlVmCollection(Client, Id));
+            return new DatabaseMigrationSqlVmCollection(Client, Id, sqlVirtualMachineName);
         }
 
         /// <summary> Gets a collection of SqlMigrationServiceResources in the ResourceGroupResource. </summary>

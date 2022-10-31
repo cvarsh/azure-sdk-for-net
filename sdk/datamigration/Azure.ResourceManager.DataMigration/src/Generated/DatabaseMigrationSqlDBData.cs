@@ -5,6 +5,8 @@
 
 #nullable disable
 
+using System;
+using System.Collections.Generic;
 using Azure.Core;
 using Azure.ResourceManager.DataMigration.Models;
 using Azure.ResourceManager.Models;
@@ -17,6 +19,7 @@ namespace Azure.ResourceManager.DataMigration
         /// <summary> Initializes a new instance of DatabaseMigrationSqlDBData. </summary>
         public DatabaseMigrationSqlDBData()
         {
+            TableList = new ChangeTrackingList<string>();
         }
 
         /// <summary> Initializes a new instance of DatabaseMigrationSqlDBData. </summary>
@@ -24,13 +27,109 @@ namespace Azure.ResourceManager.DataMigration
         /// <param name="name"> The name. </param>
         /// <param name="resourceType"> The resourceType. </param>
         /// <param name="systemData"> The systemData. </param>
-        /// <param name="properties"> Database Migration Resource properties for SQL database. </param>
-        internal DatabaseMigrationSqlDBData(ResourceIdentifier id, string name, Core.ResourceType resourceType, SystemData systemData, DatabaseMigrationSqlDBProperties properties) : base(id, name, resourceType, systemData)
+        /// <param name="location"> Location of database migration service. </param>
+        /// <param name="migrationStatusDetails"> Detailed migration status. Not included by default. </param>
+        /// <param name="targetSqlConnection"> Target SQL DB connection details. </param>
+        /// <param name="sqlDataCopyThresholds"> Minimum Row count and size of a table with a clustered index required to perform parallel data copy. </param>
+        /// <param name="offlineConfiguration"> Offline configuration. </param>
+        /// <param name="backupConfiguration"> Source Location details of backups. </param>
+        /// <param name="tableList"> List of tables to copy. </param>
+        /// <param name="scope"> Scope of the database. </param>
+        /// <param name="provisioningState"> Provisioning State of migration. ProvisioningState as Succeeded implies that validations have been performed and migration has started. </param>
+        /// <param name="migrationStatus"> Migration status. </param>
+        /// <param name="startedOn"> Database migration start time. </param>
+        /// <param name="endedOn"> Database migration end time. </param>
+        /// <param name="sourceSqlConnection"> Source SQL Server connection details. </param>
+        /// <param name="sourceServerName"> Name of the source sql server. </param>
+        /// <param name="sourceDatabaseName"> Name of the source database. </param>
+        /// <param name="targetDatabaseCollation"> Database collation to be used for the target database. </param>
+        /// <param name="migrationService"> Resource Id of the Migration Service. </param>
+        /// <param name="migrationOperationId"> ID tracking current migration operation. </param>
+        /// <param name="migrationFailureError"> Error details in case of migration failure. </param>
+        /// <param name="provisioningError"> Error message for migration provisioning failure, if any. </param>
+        /// <param name="kind"> Resource Type. </param>
+        /// <param name="keyVault"> Key Vault Properties. </param>
+        internal DatabaseMigrationSqlDBData(ResourceIdentifier id, string name, Core.ResourceType resourceType, SystemData systemData, AzureLocation? location, SqlDBMigrationStatusDetails migrationStatusDetails, SqlConnectionInformation targetSqlConnection, SqlDataCopyThresholds sqlDataCopyThresholds, SqlDBOfflineConfiguration offlineConfiguration, SqlDBBackupConfiguration backupConfiguration, IList<string> tableList, string scope, string provisioningState, string migrationStatus, DateTimeOffset? startedOn, DateTimeOffset? endedOn, SqlConnectionInformation sourceSqlConnection, string sourceServerName, string sourceDatabaseName, string targetDatabaseCollation, string migrationService, string migrationOperationId, ErrorInfo migrationFailureError, string provisioningError, DatabaseMigrationPropertiesSqlDBKind? kind, Models.KeyVaultProperties keyVault) : base(id, name, resourceType, systemData)
         {
-            Properties = properties;
+            Location = location;
+            MigrationStatusDetails = migrationStatusDetails;
+            TargetSqlConnection = targetSqlConnection;
+            SqlDataCopyThresholds = sqlDataCopyThresholds;
+            OfflineConfiguration = offlineConfiguration;
+            BackupConfiguration = backupConfiguration;
+            TableList = tableList;
+            Scope = scope;
+            ProvisioningState = provisioningState;
+            MigrationStatus = migrationStatus;
+            StartedOn = startedOn;
+            EndedOn = endedOn;
+            SourceSqlConnection = sourceSqlConnection;
+            SourceServerName = sourceServerName;
+            SourceDatabaseName = sourceDatabaseName;
+            TargetDatabaseCollation = targetDatabaseCollation;
+            MigrationService = migrationService;
+            MigrationOperationId = migrationOperationId;
+            MigrationFailureError = migrationFailureError;
+            ProvisioningError = provisioningError;
+            Kind = kind;
+            KeyVault = keyVault;
         }
 
-        /// <summary> Database Migration Resource properties for SQL database. </summary>
-        public DatabaseMigrationSqlDBProperties Properties { get; set; }
+        /// <summary> Location of database migration service. </summary>
+        public AzureLocation? Location { get; set; }
+        /// <summary> Detailed migration status. Not included by default. </summary>
+        public SqlDBMigrationStatusDetails MigrationStatusDetails { get; }
+        /// <summary> Target SQL DB connection details. </summary>
+        public SqlConnectionInformation TargetSqlConnection { get; set; }
+        /// <summary> Minimum Row count and size of a table with a clustered index required to perform parallel data copy. </summary>
+        public SqlDataCopyThresholds SqlDataCopyThresholds { get; }
+        /// <summary> Offline configuration. </summary>
+        internal SqlDBOfflineConfiguration OfflineConfiguration { get; }
+        /// <summary> Offline migration. </summary>
+        public bool? Offline
+        {
+            get => OfflineConfiguration?.Offline;
+        }
+
+        /// <summary> Source Location details of backups. </summary>
+        internal SqlDBBackupConfiguration BackupConfiguration { get; }
+        /// <summary> Backup storage Type. </summary>
+        public string SourceLocationFileStorageType
+        {
+            get => BackupConfiguration?.SourceLocationFileStorageType;
+        }
+
+        /// <summary> List of tables to copy. </summary>
+        public IList<string> TableList { get; }
+        /// <summary> Scope of the database. </summary>
+        public string Scope { get; set; }
+        /// <summary> Provisioning State of migration. ProvisioningState as Succeeded implies that validations have been performed and migration has started. </summary>
+        public string ProvisioningState { get; }
+        /// <summary> Migration status. </summary>
+        public string MigrationStatus { get; }
+        /// <summary> Database migration start time. </summary>
+        public DateTimeOffset? StartedOn { get; }
+        /// <summary> Database migration end time. </summary>
+        public DateTimeOffset? EndedOn { get; }
+        /// <summary> Source SQL Server connection details. </summary>
+        public SqlConnectionInformation SourceSqlConnection { get; set; }
+        /// <summary> Name of the source sql server. </summary>
+        public string SourceServerName { get; }
+        /// <summary> Name of the source database. </summary>
+        public string SourceDatabaseName { get; set; }
+        /// <summary> Database collation to be used for the target database. </summary>
+        public string TargetDatabaseCollation { get; set; }
+        /// <summary> Resource Id of the Migration Service. </summary>
+        public string MigrationService { get; set; }
+        /// <summary> ID tracking current migration operation. </summary>
+        public string MigrationOperationId { get; set; }
+        /// <summary> Error details in case of migration failure. </summary>
+        public ErrorInfo MigrationFailureError { get; }
+        /// <summary> Error message for migration provisioning failure, if any. </summary>
+        public string ProvisioningError { get; set; }
+        /// <summary> Resource Type. </summary>
+        public DatabaseMigrationPropertiesSqlDBKind? Kind { get; set; }
+        /// <summary> Key Vault Properties. </summary>
+        public Models.KeyVaultProperties KeyVault { get; set; }
     }
 }

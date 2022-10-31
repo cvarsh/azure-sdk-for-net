@@ -5,6 +5,8 @@
 
 #nullable disable
 
+using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using Azure.Core;
 using Azure.ResourceManager.DataMigration.Models;
@@ -17,31 +19,115 @@ namespace Azure.ResourceManager.DataMigration
         void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
         {
             writer.WriteStartObject();
-            if (Optional.IsDefined(Properties))
+            if (Optional.IsDefined(Location))
             {
-                writer.WritePropertyName("properties");
-                writer.WriteObjectValue(Properties);
+                writer.WritePropertyName("location");
+                writer.WriteStringValue(Location.Value);
             }
+            writer.WritePropertyName("properties");
+            writer.WriteStartObject();
+            if (Optional.IsDefined(TargetSqlConnection))
+            {
+                writer.WritePropertyName("targetSqlConnection");
+                writer.WriteObjectValue(TargetSqlConnection);
+            }
+            if (Optional.IsCollectionDefined(TableList))
+            {
+                writer.WritePropertyName("tableList");
+                writer.WriteStartArray();
+                foreach (var item in TableList)
+                {
+                    writer.WriteStringValue(item);
+                }
+                writer.WriteEndArray();
+            }
+            if (Optional.IsDefined(Scope))
+            {
+                writer.WritePropertyName("scope");
+                writer.WriteStringValue(Scope);
+            }
+            if (Optional.IsDefined(SourceSqlConnection))
+            {
+                writer.WritePropertyName("sourceSqlConnection");
+                writer.WriteObjectValue(SourceSqlConnection);
+            }
+            if (Optional.IsDefined(SourceDatabaseName))
+            {
+                writer.WritePropertyName("sourceDatabaseName");
+                writer.WriteStringValue(SourceDatabaseName);
+            }
+            if (Optional.IsDefined(TargetDatabaseCollation))
+            {
+                writer.WritePropertyName("targetDatabaseCollation");
+                writer.WriteStringValue(TargetDatabaseCollation);
+            }
+            if (Optional.IsDefined(MigrationService))
+            {
+                writer.WritePropertyName("migrationService");
+                writer.WriteStringValue(MigrationService);
+            }
+            if (Optional.IsDefined(MigrationOperationId))
+            {
+                writer.WritePropertyName("migrationOperationId");
+                writer.WriteStringValue(MigrationOperationId);
+            }
+            if (Optional.IsDefined(ProvisioningError))
+            {
+                writer.WritePropertyName("provisioningError");
+                writer.WriteStringValue(ProvisioningError);
+            }
+            if (Optional.IsDefined(Kind))
+            {
+                writer.WritePropertyName("kind");
+                writer.WriteStringValue(Kind.Value.ToString());
+            }
+            if (Optional.IsDefined(KeyVault))
+            {
+                writer.WritePropertyName("keyVault");
+                writer.WriteObjectValue(KeyVault);
+            }
+            writer.WriteEndObject();
             writer.WriteEndObject();
         }
 
         internal static DatabaseMigrationSqlDBData DeserializeDatabaseMigrationSqlDBData(JsonElement element)
         {
-            Optional<DatabaseMigrationSqlDBProperties> properties = default;
+            Optional<AzureLocation> location = default;
             ResourceIdentifier id = default;
             string name = default;
             Core.ResourceType type = default;
             Optional<SystemData> systemData = default;
+            Optional<SqlDBMigrationStatusDetails> migrationStatusDetails = default;
+            Optional<SqlConnectionInformation> targetSqlConnection = default;
+            Optional<SqlDataCopyThresholds> sqlDataCopyThresholds = default;
+            Optional<SqlDBOfflineConfiguration> offlineConfiguration = default;
+            Optional<SqlDBBackupConfiguration> backupConfiguration = default;
+            Optional<IList<string>> tableList = default;
+            Optional<string> scope = default;
+            Optional<string> provisioningState = default;
+            Optional<string> migrationStatus = default;
+            Optional<DateTimeOffset> startedOn = default;
+            Optional<DateTimeOffset> endedOn = default;
+            Optional<SqlConnectionInformation> sourceSqlConnection = default;
+            Optional<string> sourceServerName = default;
+            Optional<string> sourceDatabaseName = default;
+            Optional<string> targetDatabaseCollation = default;
+            Optional<string> migrationService = default;
+            Optional<string> migrationOperationId = default;
+            Optional<ErrorInfo> migrationFailureError = default;
+            Optional<string> provisioningError = default;
+            Optional<DatabaseMigrationPropertiesSqlDBKind> kind = default;
+            Optional<Models.KeyVaultProperties> keyVault = default;
             foreach (var property in element.EnumerateObject())
             {
-                if (property.NameEquals("properties"))
+                if (property.NameEquals("location"))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
                     {
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    properties = DatabaseMigrationSqlDBProperties.DeserializeDatabaseMigrationSqlDBProperties(property.Value);
+                    location = new AzureLocation(property.Value.GetString());
                     continue;
                 }
                 if (property.NameEquals("id"))
@@ -69,8 +155,190 @@ namespace Azure.ResourceManager.DataMigration
                     systemData = JsonSerializer.Deserialize<SystemData>(property.Value.ToString());
                     continue;
                 }
+                if (property.NameEquals("properties"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    foreach (var property0 in property.Value.EnumerateObject())
+                    {
+                        if (property0.NameEquals("migrationStatusDetails"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            migrationStatusDetails = SqlDBMigrationStatusDetails.DeserializeSqlDBMigrationStatusDetails(property0.Value);
+                            continue;
+                        }
+                        if (property0.NameEquals("targetSqlConnection"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            targetSqlConnection = SqlConnectionInformation.DeserializeSqlConnectionInformation(property0.Value);
+                            continue;
+                        }
+                        if (property0.NameEquals("sqlDataCopyThresholds"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            sqlDataCopyThresholds = SqlDataCopyThresholds.DeserializeSqlDataCopyThresholds(property0.Value);
+                            continue;
+                        }
+                        if (property0.NameEquals("offlineConfiguration"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            offlineConfiguration = SqlDBOfflineConfiguration.DeserializeSqlDBOfflineConfiguration(property0.Value);
+                            continue;
+                        }
+                        if (property0.NameEquals("backupConfiguration"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            backupConfiguration = SqlDBBackupConfiguration.DeserializeSqlDBBackupConfiguration(property0.Value);
+                            continue;
+                        }
+                        if (property0.NameEquals("tableList"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            List<string> array = new List<string>();
+                            foreach (var item in property0.Value.EnumerateArray())
+                            {
+                                array.Add(item.GetString());
+                            }
+                            tableList = array;
+                            continue;
+                        }
+                        if (property0.NameEquals("scope"))
+                        {
+                            scope = property0.Value.GetString();
+                            continue;
+                        }
+                        if (property0.NameEquals("provisioningState"))
+                        {
+                            provisioningState = property0.Value.GetString();
+                            continue;
+                        }
+                        if (property0.NameEquals("migrationStatus"))
+                        {
+                            migrationStatus = property0.Value.GetString();
+                            continue;
+                        }
+                        if (property0.NameEquals("startedOn"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            startedOn = property0.Value.GetDateTimeOffset("O");
+                            continue;
+                        }
+                        if (property0.NameEquals("endedOn"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            endedOn = property0.Value.GetDateTimeOffset("O");
+                            continue;
+                        }
+                        if (property0.NameEquals("sourceSqlConnection"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            sourceSqlConnection = SqlConnectionInformation.DeserializeSqlConnectionInformation(property0.Value);
+                            continue;
+                        }
+                        if (property0.NameEquals("sourceServerName"))
+                        {
+                            sourceServerName = property0.Value.GetString();
+                            continue;
+                        }
+                        if (property0.NameEquals("sourceDatabaseName"))
+                        {
+                            sourceDatabaseName = property0.Value.GetString();
+                            continue;
+                        }
+                        if (property0.NameEquals("targetDatabaseCollation"))
+                        {
+                            targetDatabaseCollation = property0.Value.GetString();
+                            continue;
+                        }
+                        if (property0.NameEquals("migrationService"))
+                        {
+                            migrationService = property0.Value.GetString();
+                            continue;
+                        }
+                        if (property0.NameEquals("migrationOperationId"))
+                        {
+                            migrationOperationId = property0.Value.GetString();
+                            continue;
+                        }
+                        if (property0.NameEquals("migrationFailureError"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            migrationFailureError = ErrorInfo.DeserializeErrorInfo(property0.Value);
+                            continue;
+                        }
+                        if (property0.NameEquals("provisioningError"))
+                        {
+                            provisioningError = property0.Value.GetString();
+                            continue;
+                        }
+                        if (property0.NameEquals("kind"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            kind = new DatabaseMigrationPropertiesSqlDBKind(property0.Value.GetString());
+                            continue;
+                        }
+                        if (property0.NameEquals("keyVault"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            keyVault = Models.KeyVaultProperties.DeserializeKeyVaultProperties(property0.Value);
+                            continue;
+                        }
+                    }
+                    continue;
+                }
             }
-            return new DatabaseMigrationSqlDBData(id, name, type, systemData.Value, properties.Value);
+            return new DatabaseMigrationSqlDBData(id, name, type, systemData.Value, Optional.ToNullable(location), migrationStatusDetails.Value, targetSqlConnection.Value, sqlDataCopyThresholds.Value, offlineConfiguration.Value, backupConfiguration.Value, Optional.ToList(tableList), scope.Value, provisioningState.Value, migrationStatus.Value, Optional.ToNullable(startedOn), Optional.ToNullable(endedOn), sourceSqlConnection.Value, sourceServerName.Value, sourceDatabaseName.Value, targetDatabaseCollation.Value, migrationService.Value, migrationOperationId.Value, migrationFailureError.Value, provisioningError.Value, Optional.ToNullable(kind), keyVault.Value);
         }
     }
 }

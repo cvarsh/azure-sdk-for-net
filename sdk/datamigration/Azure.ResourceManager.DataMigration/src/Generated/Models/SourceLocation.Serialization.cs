@@ -32,7 +32,6 @@ namespace Azure.ResourceManager.DataMigration.Models
         {
             Optional<SqlFileShare> fileShare = default;
             Optional<AzureBlob> azureBlob = default;
-            Optional<string> fileStorageType = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("fileShare"))
@@ -55,13 +54,8 @@ namespace Azure.ResourceManager.DataMigration.Models
                     azureBlob = AzureBlob.DeserializeAzureBlob(property.Value);
                     continue;
                 }
-                if (property.NameEquals("fileStorageType"))
-                {
-                    fileStorageType = property.Value.GetString();
-                    continue;
-                }
             }
-            return new SourceLocation(fileShare.Value, azureBlob.Value, fileStorageType.Value);
+            return new SourceLocation(fileShare.Value, azureBlob.Value);
         }
     }
 }

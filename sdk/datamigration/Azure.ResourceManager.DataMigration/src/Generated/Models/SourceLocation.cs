@@ -18,19 +18,15 @@ namespace Azure.ResourceManager.DataMigration.Models
         /// <summary> Initializes a new instance of SourceLocation. </summary>
         /// <param name="fileShare"> Source File share. </param>
         /// <param name="azureBlob"> Source Azure Blob. </param>
-        /// <param name="fileStorageType"> Backup storage Type. </param>
-        internal SourceLocation(SqlFileShare fileShare, AzureBlob azureBlob, string fileStorageType)
+        internal SourceLocation(SqlFileShare fileShare, AzureBlob azureBlob)
         {
             FileShare = fileShare;
             AzureBlob = azureBlob;
-            FileStorageType = fileStorageType;
         }
 
         /// <summary> Source File share. </summary>
         public SqlFileShare FileShare { get; set; }
         /// <summary> Source Azure Blob. </summary>
         public AzureBlob AzureBlob { get; set; }
-        /// <summary> Backup storage Type. </summary>
-        public string FileStorageType { get; }
     }
 }

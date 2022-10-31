@@ -526,6 +526,102 @@ namespace Azure.ResourceManager.DataMigration
         }
 
         /// <summary>
+        /// Retrieve the Monitoring Data.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}/MonitoringData
+        /// Operation Id: SqlMigrationServices_MonitoringData
+        /// </summary>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual async Task<Response<IntegrationRuntimeMonitoringData>> MonitoringDataAsync(CancellationToken cancellationToken = default)
+        {
+            using var scope = _sqlMigrationServiceClientDiagnostics.CreateScope("SqlMigrationServiceResource.MonitoringData");
+            scope.Start();
+            try
+            {
+                var response = await _sqlMigrationServiceRestClient.MonitoringDataAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken).ConfigureAwait(false);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Retrieve the Monitoring Data.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}/MonitoringData
+        /// Operation Id: SqlMigrationServices_MonitoringData
+        /// </summary>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual Response<IntegrationRuntimeMonitoringData> MonitoringData(CancellationToken cancellationToken = default)
+        {
+            using var scope = _sqlMigrationServiceClientDiagnostics.CreateScope("SqlMigrationServiceResource.MonitoringData");
+            scope.Start();
+            try
+            {
+                var response = _sqlMigrationServiceRestClient.MonitoringData(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Validate IR connectivity to Linked Services.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}/validateIR
+        /// Operation Id: SqlMigrationServices_validateIR
+        /// </summary>
+        /// <param name="validateIR"> Details of SqlMigrationService resource. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="validateIR"/> is null. </exception>
+        public virtual async Task<Response<ValidateIR>> ValidateIRAsync(ValidateIR validateIR, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(validateIR, nameof(validateIR));
+
+            using var scope = _sqlMigrationServiceClientDiagnostics.CreateScope("SqlMigrationServiceResource.ValidateIR");
+            scope.Start();
+            try
+            {
+                var response = await _sqlMigrationServiceRestClient.ValidateIRAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, validateIR, cancellationToken).ConfigureAwait(false);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Validate IR connectivity to Linked Services.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}/validateIR
+        /// Operation Id: SqlMigrationServices_validateIR
+        /// </summary>
+        /// <param name="validateIR"> Details of SqlMigrationService resource. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="validateIR"/> is null. </exception>
+        public virtual Response<ValidateIR> ValidateIR(ValidateIR validateIR, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(validateIR, nameof(validateIR));
+
+            using var scope = _sqlMigrationServiceClientDiagnostics.CreateScope("SqlMigrationServiceResource.ValidateIR");
+            scope.Start();
+            try
+            {
+                var response = _sqlMigrationServiceRestClient.ValidateIR(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, validateIR, cancellationToken);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Add a tag to the current resource.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/sqlMigrationServices/{sqlMigrationServiceName}
         /// Operation Id: SqlMigrationServices_Get

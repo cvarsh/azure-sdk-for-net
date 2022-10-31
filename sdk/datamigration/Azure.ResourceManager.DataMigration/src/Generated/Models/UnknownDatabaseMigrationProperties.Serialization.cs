@@ -43,16 +43,6 @@ namespace Azure.ResourceManager.DataMigration.Models
                 writer.WritePropertyName("migrationOperationId");
                 writer.WriteStringValue(MigrationOperationId);
             }
-            if (Optional.IsDefined(TargetDatabaseCollation))
-            {
-                writer.WritePropertyName("targetDatabaseCollation");
-                writer.WriteStringValue(TargetDatabaseCollation);
-            }
-            if (Optional.IsDefined(ProvisioningError))
-            {
-                writer.WritePropertyName("provisioningError");
-                writer.WriteStringValue(ProvisioningError);
-            }
             writer.WriteEndObject();
         }
 
@@ -66,12 +56,9 @@ namespace Azure.ResourceManager.DataMigration.Models
             Optional<DateTimeOffset> endedOn = default;
             Optional<SqlConnectionInformation> sourceSqlConnection = default;
             Optional<string> sourceDatabaseName = default;
-            Optional<string> sourceServerName = default;
             Optional<string> migrationService = default;
             Optional<string> migrationOperationId = default;
             Optional<ErrorInfo> migrationFailureError = default;
-            Optional<string> targetDatabaseCollation = default;
-            Optional<string> provisioningError = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("kind"))
@@ -129,11 +116,6 @@ namespace Azure.ResourceManager.DataMigration.Models
                     sourceDatabaseName = property.Value.GetString();
                     continue;
                 }
-                if (property.NameEquals("sourceServerName"))
-                {
-                    sourceServerName = property.Value.GetString();
-                    continue;
-                }
                 if (property.NameEquals("migrationService"))
                 {
                     migrationService = property.Value.GetString();
@@ -154,18 +136,8 @@ namespace Azure.ResourceManager.DataMigration.Models
                     migrationFailureError = ErrorInfo.DeserializeErrorInfo(property.Value);
                     continue;
                 }
-                if (property.NameEquals("targetDatabaseCollation"))
-                {
-                    targetDatabaseCollation = property.Value.GetString();
-                    continue;
-                }
-                if (property.NameEquals("provisioningError"))
-                {
-                    provisioningError = property.Value.GetString();
-                    continue;
-                }
             }
-            return new UnknownDatabaseMigrationProperties(kind, scope.Value, provisioningState.Value, migrationStatus.Value, Optional.ToNullable(startedOn), Optional.ToNullable(endedOn), sourceSqlConnection.Value, sourceDatabaseName.Value, sourceServerName.Value, migrationService.Value, migrationOperationId.Value, migrationFailureError.Value, targetDatabaseCollation.Value, provisioningError.Value);
+            return new UnknownDatabaseMigrationProperties(kind, scope.Value, provisioningState.Value, migrationStatus.Value, Optional.ToNullable(startedOn), Optional.ToNullable(endedOn), sourceSqlConnection.Value, sourceDatabaseName.Value, migrationService.Value, migrationOperationId.Value, migrationFailureError.Value);
         }
     }
 }

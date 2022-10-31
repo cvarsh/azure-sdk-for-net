@@ -6,6 +6,7 @@
 #nullable disable
 
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using Azure.Core;
 
@@ -26,6 +27,7 @@ namespace Azure.ResourceManager.DataMigration.Models
             Optional<DateTimeOffset> copyStart = default;
             Optional<double> copyThroughput = default;
             Optional<int> copyDuration = default;
+            Optional<IReadOnlyList<string>> errors = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("tableName"))
@@ -123,8 +125,23 @@ namespace Azure.ResourceManager.DataMigration.Models
                     copyDuration = property.Value.GetInt32();
                     continue;
                 }
+                if (property.NameEquals("errors"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    List<string> array = new List<string>();
+                    foreach (var item in property.Value.EnumerateArray())
+                    {
+                        array.Add(item.GetString());
+                    }
+                    errors = array;
+                    continue;
+                }
             }
-            return new CopyProgressDetails(tableName.Value, status.Value, parallelCopyType.Value, Optional.ToNullable(usedParallelCopies), Optional.ToNullable(dataRead), Optional.ToNullable(dataWritten), Optional.ToNullable(rowsRead), Optional.ToNullable(rowsCopied), Optional.ToNullable(copyStart), Optional.ToNullable(copyThroughput), Optional.ToNullable(copyDuration));
+            return new CopyProgressDetails(tableName.Value, status.Value, parallelCopyType.Value, Optional.ToNullable(usedParallelCopies), Optional.ToNullable(dataRead), Optional.ToNullable(dataWritten), Optional.ToNullable(rowsRead), Optional.ToNullable(rowsCopied), Optional.ToNullable(copyStart), Optional.ToNullable(copyThroughput), Optional.ToNullable(copyDuration), Optional.ToList(errors));
         }
     }
 }

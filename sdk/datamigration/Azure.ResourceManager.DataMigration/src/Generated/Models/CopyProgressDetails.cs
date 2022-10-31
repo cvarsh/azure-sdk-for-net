@@ -6,6 +6,8 @@
 #nullable disable
 
 using System;
+using System.Collections.Generic;
+using Azure.Core;
 
 namespace Azure.ResourceManager.DataMigration.Models
 {
@@ -15,6 +17,7 @@ namespace Azure.ResourceManager.DataMigration.Models
         /// <summary> Initializes a new instance of CopyProgressDetails. </summary>
         internal CopyProgressDetails()
         {
+            Errors = new ChangeTrackingList<string>();
         }
 
         /// <summary> Initializes a new instance of CopyProgressDetails. </summary>
@@ -29,7 +32,8 @@ namespace Azure.ResourceManager.DataMigration.Models
         /// <param name="copyStart"> Copy Start. </param>
         /// <param name="copyThroughput"> Copy throughput in KBps. </param>
         /// <param name="copyDuration"> Copy Duration in seconds. </param>
-        internal CopyProgressDetails(string tableName, string status, string parallelCopyType, int? usedParallelCopies, long? dataRead, long? dataWritten, long? rowsRead, long? rowsCopied, DateTimeOffset? copyStart, double? copyThroughput, int? copyDuration)
+        /// <param name="errors"> Table Level Errors. </param>
+        internal CopyProgressDetails(string tableName, string status, string parallelCopyType, int? usedParallelCopies, long? dataRead, long? dataWritten, long? rowsRead, long? rowsCopied, DateTimeOffset? copyStart, double? copyThroughput, int? copyDuration, IReadOnlyList<string> errors)
         {
             TableName = tableName;
             Status = status;
@@ -42,6 +46,7 @@ namespace Azure.ResourceManager.DataMigration.Models
             CopyStart = copyStart;
             CopyThroughput = copyThroughput;
             CopyDuration = copyDuration;
+            Errors = errors;
         }
 
         /// <summary> Table Name. </summary>
@@ -66,5 +71,7 @@ namespace Azure.ResourceManager.DataMigration.Models
         public double? CopyThroughput { get; }
         /// <summary> Copy Duration in seconds. </summary>
         public int? CopyDuration { get; }
+        /// <summary> Table Level Errors. </summary>
+        public IReadOnlyList<string> Errors { get; }
     }
 }

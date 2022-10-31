@@ -33,7 +33,7 @@ namespace Azure.ResourceManager.DataMigration
         {
             _pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
             _endpoint = endpoint ?? new Uri("https://management.azure.com");
-            _apiVersion = apiVersion ?? "2022-03-30-preview";
+            _apiVersion = apiVersion ?? "2022-10-31-preview";
             _userAgent = new TelemetryDetails(GetType().Assembly, applicationId);
         }
 
@@ -383,6 +383,99 @@ namespace Azure.ResourceManager.DataMigration
                 case 200:
                 case 202:
                     return message.Response;
+                default:
+                    throw new RequestFailedException(message.Response);
+            }
+        }
+
+        internal HttpMessage CreateRetryRequest(string subscriptionId, string resourceGroupName, string sqlDBInstanceName, string targetDBName, MigrationOperationInput input)
+        {
+            var message = _pipeline.CreateMessage();
+            var request = message.Request;
+            request.Method = RequestMethod.Post;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath(subscriptionId, true);
+            uri.AppendPath("/resourceGroups/", false);
+            uri.AppendPath(resourceGroupName, true);
+            uri.AppendPath("/providers/Microsoft.Sql/servers/", false);
+            uri.AppendPath(sqlDBInstanceName, true);
+            uri.AppendPath("/providers/Microsoft.DataMigration/databaseMigrations/", false);
+            uri.AppendPath(targetDBName, true);
+            uri.AppendPath("/retry", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("Content-Type", "application/json");
+            var content = new Utf8JsonRequestContent();
+            content.JsonWriter.WriteObjectValue(input);
+            request.Content = content;
+            _userAgent.Apply(message);
+            return message;
+        }
+
+        /// <summary> Retry on going migration for the database. </summary>
+        /// <param name="subscriptionId"> Subscription ID that identifies an Azure subscription. </param>
+        /// <param name="resourceGroupName"> Name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal. </param>
+        /// <param name="sqlDBInstanceName"> The String to use. </param>
+        /// <param name="targetDBName"> The name of the target database. </param>
+        /// <param name="input"> Required migration operation ID for which retry will be initiated. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="sqlDBInstanceName"/>, <paramref name="targetDBName"/> or <paramref name="input"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="sqlDBInstanceName"/> or <paramref name="targetDBName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response<DatabaseMigrationSqlDBData>> RetryAsync(string subscriptionId, string resourceGroupName, string sqlDBInstanceName, string targetDBName, MigrationOperationInput input, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
+            Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
+            Argument.AssertNotNullOrEmpty(sqlDBInstanceName, nameof(sqlDBInstanceName));
+            Argument.AssertNotNullOrEmpty(targetDBName, nameof(targetDBName));
+            Argument.AssertNotNull(input, nameof(input));
+
+            using var message = CreateRetryRequest(subscriptionId, resourceGroupName, sqlDBInstanceName, targetDBName, input);
+            await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
+            switch (message.Response.Status)
+            {
+                case 202:
+                    {
+                        DatabaseMigrationSqlDBData value = default;
+                        using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
+                        value = DatabaseMigrationSqlDBData.DeserializeDatabaseMigrationSqlDBData(document.RootElement);
+                        return Response.FromValue(value, message.Response);
+                    }
+                default:
+                    throw new RequestFailedException(message.Response);
+            }
+        }
+
+        /// <summary> Retry on going migration for the database. </summary>
+        /// <param name="subscriptionId"> Subscription ID that identifies an Azure subscription. </param>
+        /// <param name="resourceGroupName"> Name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal. </param>
+        /// <param name="sqlDBInstanceName"> The String to use. </param>
+        /// <param name="targetDBName"> The name of the target database. </param>
+        /// <param name="input"> Required migration operation ID for which retry will be initiated. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="sqlDBInstanceName"/>, <paramref name="targetDBName"/> or <paramref name="input"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="sqlDBInstanceName"/> or <paramref name="targetDBName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response<DatabaseMigrationSqlDBData> Retry(string subscriptionId, string resourceGroupName, string sqlDBInstanceName, string targetDBName, MigrationOperationInput input, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
+            Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
+            Argument.AssertNotNullOrEmpty(sqlDBInstanceName, nameof(sqlDBInstanceName));
+            Argument.AssertNotNullOrEmpty(targetDBName, nameof(targetDBName));
+            Argument.AssertNotNull(input, nameof(input));
+
+            using var message = CreateRetryRequest(subscriptionId, resourceGroupName, sqlDBInstanceName, targetDBName, input);
+            _pipeline.Send(message, cancellationToken);
+            switch (message.Response.Status)
+            {
+                case 202:
+                    {
+                        DatabaseMigrationSqlDBData value = default;
+                        using var document = JsonDocument.Parse(message.Response.ContentStream);
+                        value = DatabaseMigrationSqlDBData.DeserializeDatabaseMigrationSqlDBData(document.RootElement);
+                        return Response.FromValue(value, message.Response);
+                    }
                 default:
                     throw new RequestFailedException(message.Response);
             }

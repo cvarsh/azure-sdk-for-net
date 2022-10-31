@@ -12,7 +12,7 @@ namespace Azure.ResourceManager.DataMigration.Models
     /// <summary>
     /// Database Migration Resource properties.
     /// Please note <see cref="DatabaseMigrationProperties"/> is the base class. According to the scenario, a derived class of the base class might need to be assigned here, or this property needs to be casted to one of the possible derived classes.
-    /// The available derived classes include <see cref="DatabaseMigrationSqlDBProperties"/>, <see cref="DatabaseMigrationSqlVmProperties"/> and <see cref="DatabaseMigrationSqlMIProperties"/>.
+    /// The available derived classes include <see cref="DatabaseMigrationSqlVmProperties"/> and <see cref="DatabaseMigrationSqlMIProperties"/>.
     /// </summary>
     public abstract partial class DatabaseMigrationProperties
     {
@@ -30,13 +30,10 @@ namespace Azure.ResourceManager.DataMigration.Models
         /// <param name="endedOn"> Database migration end time. </param>
         /// <param name="sourceSqlConnection"> Source SQL Server connection details. </param>
         /// <param name="sourceDatabaseName"> Name of the source database. </param>
-        /// <param name="sourceServerName"> Name of the source sql server. </param>
         /// <param name="migrationService"> Resource Id of the Migration Service. </param>
         /// <param name="migrationOperationId"> ID tracking current migration operation. </param>
         /// <param name="migrationFailureError"> Error details in case of migration failure. </param>
-        /// <param name="targetDatabaseCollation"> Database collation to be used for the target database. </param>
-        /// <param name="provisioningError"> Error message for migration provisioning failure, if any. </param>
-        internal DatabaseMigrationProperties(ResourceType kind, string scope, string provisioningState, string migrationStatus, DateTimeOffset? startedOn, DateTimeOffset? endedOn, SqlConnectionInformation sourceSqlConnection, string sourceDatabaseName, string sourceServerName, string migrationService, string migrationOperationId, ErrorInfo migrationFailureError, string targetDatabaseCollation, string provisioningError)
+        internal DatabaseMigrationProperties(ResourceType kind, string scope, string provisioningState, string migrationStatus, DateTimeOffset? startedOn, DateTimeOffset? endedOn, SqlConnectionInformation sourceSqlConnection, string sourceDatabaseName, string migrationService, string migrationOperationId, ErrorInfo migrationFailureError)
         {
             Kind = kind;
             Scope = scope;
@@ -46,12 +43,9 @@ namespace Azure.ResourceManager.DataMigration.Models
             EndedOn = endedOn;
             SourceSqlConnection = sourceSqlConnection;
             SourceDatabaseName = sourceDatabaseName;
-            SourceServerName = sourceServerName;
             MigrationService = migrationService;
             MigrationOperationId = migrationOperationId;
             MigrationFailureError = migrationFailureError;
-            TargetDatabaseCollation = targetDatabaseCollation;
-            ProvisioningError = provisioningError;
         }
 
         /// <summary> Gets or sets the kind. </summary>
@@ -70,17 +64,11 @@ namespace Azure.ResourceManager.DataMigration.Models
         public SqlConnectionInformation SourceSqlConnection { get; set; }
         /// <summary> Name of the source database. </summary>
         public string SourceDatabaseName { get; set; }
-        /// <summary> Name of the source sql server. </summary>
-        public string SourceServerName { get; }
         /// <summary> Resource Id of the Migration Service. </summary>
         public string MigrationService { get; set; }
         /// <summary> ID tracking current migration operation. </summary>
         public string MigrationOperationId { get; set; }
         /// <summary> Error details in case of migration failure. </summary>
         public ErrorInfo MigrationFailureError { get; }
-        /// <summary> Database collation to be used for the target database. </summary>
-        public string TargetDatabaseCollation { get; set; }
-        /// <summary> Error message for migration provisioning failure, if any. </summary>
-        public string ProvisioningError { get; set; }
     }
 }
