@@ -31,6 +31,11 @@ namespace Azure.ResourceManager.Cdn.Models
                 writer.WritePropertyName("isCompressionEnabled");
                 writer.WriteStringValue(IsCompressionEnabled.Value.ToString());
             }
+            if (Optional.IsDefined(IsNegativeCachingEnabled))
+            {
+                writer.WritePropertyName("isNegativeCachingEnabled");
+                writer.WriteStringValue(IsNegativeCachingEnabled.Value.ToString());
+            }
             if (Optional.IsDefined(CacheBehavior))
             {
                 writer.WritePropertyName("cacheBehavior");
@@ -56,6 +61,7 @@ namespace Azure.ResourceManager.Cdn.Models
             Optional<RuleQueryStringCachingBehavior> queryStringCachingBehavior = default;
             Optional<string> queryParameters = default;
             Optional<RuleIsCompressionEnabled> isCompressionEnabled = default;
+            Optional<RuleIsNegativeCachingEnabled> isNegativeCachingEnabled = default;
             Optional<RuleCacheBehavior> cacheBehavior = default;
             Optional<TimeSpan?> cacheDuration = default;
             foreach (var property in element.EnumerateObject())
@@ -85,6 +91,16 @@ namespace Azure.ResourceManager.Cdn.Models
                     isCompressionEnabled = new RuleIsCompressionEnabled(property.Value.GetString());
                     continue;
                 }
+                if (property.NameEquals("isNegativeCachingEnabled"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    isNegativeCachingEnabled = new RuleIsNegativeCachingEnabled(property.Value.GetString());
+                    continue;
+                }
                 if (property.NameEquals("cacheBehavior"))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
@@ -106,7 +122,7 @@ namespace Azure.ResourceManager.Cdn.Models
                     continue;
                 }
             }
-            return new CacheConfiguration(Optional.ToNullable(queryStringCachingBehavior), queryParameters.Value, Optional.ToNullable(isCompressionEnabled), Optional.ToNullable(cacheBehavior), Optional.ToNullable(cacheDuration));
+            return new CacheConfiguration(Optional.ToNullable(queryStringCachingBehavior), queryParameters.Value, Optional.ToNullable(isCompressionEnabled), Optional.ToNullable(isNegativeCachingEnabled), Optional.ToNullable(cacheBehavior), Optional.ToNullable(cacheDuration));
         }
     }
 }
