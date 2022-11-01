@@ -20,12 +20,12 @@ namespace Azure.ResourceManager.Batch.Models
         /// <summary> Initializes a new instance of BatchPrivateLinkServiceConnectionState. </summary>
         /// <param name="status"> The status of the Batch private endpoint connection. </param>
         /// <param name="description"> Description of the private Connection state. </param>
-        /// <param name="actionRequired"> Action required on the private connection state. </param>
-        internal BatchPrivateLinkServiceConnectionState(BatchPrivateLinkServiceConnectionStatus status, string description, string actionRequired)
+        /// <param name="actionsRequired"> Action required on the private connection state. </param>
+        internal BatchPrivateLinkServiceConnectionState(BatchPrivateLinkServiceConnectionStatus status, string description, string actionsRequired)
         {
             Status = status;
             Description = description;
-            ActionRequired = actionRequired;
+            ActionsRequired = actionsRequired;
         }
 
         /// <summary> The status of the Batch private endpoint connection. </summary>
@@ -33,6 +33,6 @@ namespace Azure.ResourceManager.Batch.Models
         /// <summary> Description of the private Connection state. </summary>
         public string Description { get; set; }
         /// <summary> Action required on the private connection state. </summary>
-        public string ActionRequired { get; }
+        public string ActionsRequired { get; }
     }
 }
