@@ -202,6 +202,7 @@ namespace Azure.ResourceManager.Relay
         public RelayNetworkRuleSetData() { }
         public Azure.ResourceManager.Relay.Models.RelayNetworkRuleSetDefaultAction? DefaultAction { get { throw null; } set { } }
         public System.Collections.Generic.IList<Azure.ResourceManager.Relay.Models.RelayNetworkRuleSetIPRule> IPRules { get { throw null; } }
+        public Azure.ResourceManager.Relay.Models.RelayPublicNetworkAccess? PublicNetworkAccess { get { throw null; } set { } }
     }
     public partial class RelayNetworkRuleSetResource : Azure.ResourceManager.ArmResource
     {
