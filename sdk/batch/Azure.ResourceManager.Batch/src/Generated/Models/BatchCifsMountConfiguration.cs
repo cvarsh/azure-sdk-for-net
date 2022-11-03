@@ -14,33 +14,33 @@ namespace Azure.ResourceManager.Batch.Models
     public partial class BatchCifsMountConfiguration
     {
         /// <summary> Initializes a new instance of BatchCifsMountConfiguration. </summary>
-        /// <param name="username"> The user to use for authentication against the CIFS file system. </param>
+        /// <param name="userName"> The user to use for authentication against the CIFS file system. </param>
         /// <param name="source"> The URI of the file system to mount. </param>
         /// <param name="relativeMountPath"> All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable. </param>
         /// <param name="password"> The password to use for authentication against the CIFS file system. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="username"/>, <paramref name="source"/>, <paramref name="relativeMountPath"/> or <paramref name="password"/> is null. </exception>
-        public BatchCifsMountConfiguration(string username, string source, string relativeMountPath, string password)
+        /// <exception cref="ArgumentNullException"> <paramref name="userName"/>, <paramref name="source"/>, <paramref name="relativeMountPath"/> or <paramref name="password"/> is null. </exception>
+        public BatchCifsMountConfiguration(string userName, string source, string relativeMountPath, string password)
         {
-            Argument.AssertNotNull(username, nameof(username));
+            Argument.AssertNotNull(userName, nameof(userName));
             Argument.AssertNotNull(source, nameof(source));
             Argument.AssertNotNull(relativeMountPath, nameof(relativeMountPath));
             Argument.AssertNotNull(password, nameof(password));
 
-            Username = username;
+            UserName = userName;
             Source = source;
             RelativeMountPath = relativeMountPath;
             Password = password;
         }
 
         /// <summary> Initializes a new instance of BatchCifsMountConfiguration. </summary>
-        /// <param name="username"> The user to use for authentication against the CIFS file system. </param>
+        /// <param name="userName"> The user to use for authentication against the CIFS file system. </param>
         /// <param name="source"> The URI of the file system to mount. </param>
         /// <param name="relativeMountPath"> All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable. </param>
         /// <param name="mountOptions"> These are &apos;net use&apos; options in Windows and &apos;mount&apos; options in Linux. </param>
         /// <param name="password"> The password to use for authentication against the CIFS file system. </param>
-        internal BatchCifsMountConfiguration(string username, string source, string relativeMountPath, string mountOptions, string password)
+        internal BatchCifsMountConfiguration(string userName, string source, string relativeMountPath, string mountOptions, string password)
         {
-            Username = username;
+            UserName = userName;
             Source = source;
             RelativeMountPath = relativeMountPath;
             MountOptions = mountOptions;
@@ -48,7 +48,7 @@ namespace Azure.ResourceManager.Batch.Models
         }
 
         /// <summary> The user to use for authentication against the CIFS file system. </summary>
-        public string Username { get; set; }
+        public string UserName { get; set; }
         /// <summary> The URI of the file system to mount. </summary>
         public string Source { get; set; }
         /// <summary> All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable. </summary>
