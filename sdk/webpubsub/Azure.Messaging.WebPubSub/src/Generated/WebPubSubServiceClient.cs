@@ -34,6 +34,52 @@ namespace Azure.Messaging.WebPubSub
         {
         }
 
+        /// <summary> Close the connections in the hub. </summary>
+        /// <param name="excluded"> Exclude these connectionIds when closing the connections in the hub. </param>
+        /// <param name="reason"> The reason closing the client connection. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='CloseAllConnectionsAsync(IEnumerable,String,RequestContext)']/*" />
+        public virtual async Task<Response> CloseAllConnectionsAsync(IEnumerable<string> excluded = null, string reason = null, RequestContext context = null)
+        {
+            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.CloseAllConnections");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCloseAllConnectionsRequest(excluded, reason, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary> Close the connections in the hub. </summary>
+        /// <param name="excluded"> Exclude these connectionIds when closing the connections in the hub. </param>
+        /// <param name="reason"> The reason closing the client connection. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='CloseAllConnections(IEnumerable,String,RequestContext)']/*" />
+        public virtual Response CloseAllConnections(IEnumerable<string> excluded = null, string reason = null, RequestContext context = null)
+        {
+            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.CloseAllConnections");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCloseAllConnectionsRequest(excluded, reason, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
         /// <summary> Generate token for the client to connect Azure Web PubSub service. </summary>
         /// <param name="userId"> User Id. </param>
         /// <param name="role"> Roles that the connection with the generated token will have. </param>
@@ -73,52 +119,6 @@ namespace Azure.Messaging.WebPubSub
             try
             {
                 using HttpMessage message = CreateGenerateClientTokenImplRequest(userId, role, minutesToExpire, context);
-                return _pipeline.ProcessMessage(message, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
-        /// <summary> Close the connections in the hub. </summary>
-        /// <param name="excluded"> Exclude these connectionIds when closing the connections in the hub. </param>
-        /// <param name="reason"> The reason closing the client connection. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. </returns>
-        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='CloseAllConnectionsAsync(IEnumerable,String,RequestContext)']/*" />
-        public virtual async Task<Response> CloseAllConnectionsAsync(IEnumerable<string> excluded = null, string reason = null, RequestContext context = null)
-        {
-            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.CloseAllConnections");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateCloseAllConnectionsRequest(excluded, reason, context);
-                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
-        /// <summary> Close the connections in the hub. </summary>
-        /// <param name="excluded"> Exclude these connectionIds when closing the connections in the hub. </param>
-        /// <param name="reason"> The reason closing the client connection. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. </returns>
-        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='CloseAllConnections(IEnumerable,String,RequestContext)']/*" />
-        public virtual Response CloseAllConnections(IEnumerable<string> excluded = null, string reason = null, RequestContext context = null)
-        {
-            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.CloseAllConnections");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateCloseAllConnectionsRequest(excluded, reason, context);
                 return _pipeline.ProcessMessage(message, context);
             }
             catch (Exception e)
@@ -182,58 +182,6 @@ namespace Azure.Messaging.WebPubSub
             }
         }
 
-        /// <summary> Check if the connection with the given connectionId exists. </summary>
-        /// <param name="connectionId"> The connection Id. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="connectionId"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. </returns>
-        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='ConnectionExistsImplAsync(String,RequestContext)']/*" />
-        internal virtual async Task<Response> ConnectionExistsImplAsync(string connectionId, RequestContext context = null)
-        {
-            Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
-
-            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.ConnectionExistsImpl");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateConnectionExistsImplRequest(connectionId, context);
-                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
-        /// <summary> Check if the connection with the given connectionId exists. </summary>
-        /// <param name="connectionId"> The connection Id. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="connectionId"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. </returns>
-        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='ConnectionExistsImpl(String,RequestContext)']/*" />
-        internal virtual Response ConnectionExistsImpl(string connectionId, RequestContext context = null)
-        {
-            Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
-
-            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.ConnectionExistsImpl");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateConnectionExistsImplRequest(connectionId, context);
-                return _pipeline.ProcessMessage(message, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
         /// <summary> Close the client connection. </summary>
         /// <param name="connectionId"> Target connection Id. </param>
         /// <param name="reason"> The reason closing the client connection. </param>
@@ -279,6 +227,58 @@ namespace Azure.Messaging.WebPubSub
             try
             {
                 using HttpMessage message = CreateCloseConnectionRequest(connectionId, reason, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary> Check if the connection with the given connectionId exists. </summary>
+        /// <param name="connectionId"> The connection Id. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="connectionId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='ConnectionExistsImplAsync(String,RequestContext)']/*" />
+        internal virtual async Task<Response> ConnectionExistsImplAsync(string connectionId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
+
+            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.ConnectionExistsImpl");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateConnectionExistsImplRequest(connectionId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary> Check if the connection with the given connectionId exists. </summary>
+        /// <param name="connectionId"> The connection Id. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="connectionId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='ConnectionExistsImpl(String,RequestContext)']/*" />
+        internal virtual Response ConnectionExistsImpl(string connectionId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
+
+            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.ConnectionExistsImpl");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateConnectionExistsImplRequest(connectionId, context);
                 return _pipeline.ProcessMessage(message, context);
             }
             catch (Exception e)
@@ -514,6 +514,62 @@ namespace Azure.Messaging.WebPubSub
             }
         }
 
+        /// <summary> Remove a connection from the target group. </summary>
+        /// <param name="group"> Target group name, which length should be greater than 0 and less than 1025. </param>
+        /// <param name="connectionId"> Target connection Id. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="group"/> or <paramref name="connectionId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="group"/> or <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='RemoveConnectionFromGroupAsync(String,String,RequestContext)']/*" />
+        public virtual async Task<Response> RemoveConnectionFromGroupAsync(string group, string connectionId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(group, nameof(group));
+            Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
+
+            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.RemoveConnectionFromGroup");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateRemoveConnectionFromGroupRequest(group, connectionId, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary> Remove a connection from the target group. </summary>
+        /// <param name="group"> Target group name, which length should be greater than 0 and less than 1025. </param>
+        /// <param name="connectionId"> Target connection Id. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="group"/> or <paramref name="connectionId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="group"/> or <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='RemoveConnectionFromGroup(String,String,RequestContext)']/*" />
+        public virtual Response RemoveConnectionFromGroup(string group, string connectionId, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(group, nameof(group));
+            Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
+
+            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.RemoveConnectionFromGroup");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateRemoveConnectionFromGroupRequest(group, connectionId, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
         /// <summary> Add a connection to the target group. </summary>
         /// <param name="group"> Target group name, which length should be greater than 0 and less than 1025. </param>
         /// <param name="connectionId"> Target connection Id. </param>
@@ -570,25 +626,26 @@ namespace Azure.Messaging.WebPubSub
             }
         }
 
-        /// <summary> Remove a connection from the target group. </summary>
-        /// <param name="group"> Target group name, which length should be greater than 0 and less than 1025. </param>
+        /// <summary> Revoke permission for the connection. </summary>
+        /// <param name="permission"> The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values: &quot;sendToGroup&quot; | &quot;joinLeaveGroup&quot;. </param>
         /// <param name="connectionId"> Target connection Id. </param>
+        /// <param name="targetName"> Optional. If not set, revoke the permission for all targets. If set, revoke the permission for the specific target. The meaning of the target depends on the specific permission. </param>
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="group"/> or <paramref name="connectionId"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="group"/> or <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="permission"/> or <paramref name="connectionId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="permission"/> or <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='RemoveConnectionFromGroupAsync(String,String,RequestContext)']/*" />
-        public virtual async Task<Response> RemoveConnectionFromGroupAsync(string group, string connectionId, RequestContext context = null)
+        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='RevokePermissionAsync(String,String,String,RequestContext)']/*" />
+        internal virtual async Task<Response> RevokePermissionAsync(string permission, string connectionId, string targetName = null, RequestContext context = null)
         {
-            Argument.AssertNotNullOrEmpty(group, nameof(group));
+            Argument.AssertNotNullOrEmpty(permission, nameof(permission));
             Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
 
-            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.RemoveConnectionFromGroup");
+            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.RevokePermission");
             scope.Start();
             try
             {
-                using HttpMessage message = CreateRemoveConnectionFromGroupRequest(group, connectionId, context);
+                using HttpMessage message = CreateRevokePermissionRequest(permission, connectionId, targetName, context);
                 return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
             }
             catch (Exception e)
@@ -598,25 +655,142 @@ namespace Azure.Messaging.WebPubSub
             }
         }
 
-        /// <summary> Remove a connection from the target group. </summary>
-        /// <param name="group"> Target group name, which length should be greater than 0 and less than 1025. </param>
+        /// <summary> Revoke permission for the connection. </summary>
+        /// <param name="permission"> The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values: &quot;sendToGroup&quot; | &quot;joinLeaveGroup&quot;. </param>
         /// <param name="connectionId"> Target connection Id. </param>
+        /// <param name="targetName"> Optional. If not set, revoke the permission for all targets. If set, revoke the permission for the specific target. The meaning of the target depends on the specific permission. </param>
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="group"/> or <paramref name="connectionId"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="group"/> or <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="permission"/> or <paramref name="connectionId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="permission"/> or <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='RemoveConnectionFromGroup(String,String,RequestContext)']/*" />
-        public virtual Response RemoveConnectionFromGroup(string group, string connectionId, RequestContext context = null)
+        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='RevokePermission(String,String,String,RequestContext)']/*" />
+        internal virtual Response RevokePermission(string permission, string connectionId, string targetName = null, RequestContext context = null)
         {
-            Argument.AssertNotNullOrEmpty(group, nameof(group));
+            Argument.AssertNotNullOrEmpty(permission, nameof(permission));
             Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
 
-            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.RemoveConnectionFromGroup");
+            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.RevokePermission");
             scope.Start();
             try
             {
-                using HttpMessage message = CreateRemoveConnectionFromGroupRequest(group, connectionId, context);
+                using HttpMessage message = CreateRevokePermissionRequest(permission, connectionId, targetName, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary> Check if a connection has permission to the specified action. </summary>
+        /// <param name="permission"> The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values: &quot;sendToGroup&quot; | &quot;joinLeaveGroup&quot;. </param>
+        /// <param name="connectionId"> Target connection Id. </param>
+        /// <param name="targetName"> Optional. If not set, get the permission for all targets. If set, get the permission for the specific target. The meaning of the target depends on the specific permission. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="permission"/> or <paramref name="connectionId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="permission"/> or <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='CheckPermissionAsync(String,String,String,RequestContext)']/*" />
+        internal virtual async Task<Response> CheckPermissionAsync(string permission, string connectionId, string targetName = null, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(permission, nameof(permission));
+            Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
+
+            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.CheckPermission");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCheckPermissionRequest(permission, connectionId, targetName, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary> Check if a connection has permission to the specified action. </summary>
+        /// <param name="permission"> The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values: &quot;sendToGroup&quot; | &quot;joinLeaveGroup&quot;. </param>
+        /// <param name="connectionId"> Target connection Id. </param>
+        /// <param name="targetName"> Optional. If not set, get the permission for all targets. If set, get the permission for the specific target. The meaning of the target depends on the specific permission. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="permission"/> or <paramref name="connectionId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="permission"/> or <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='CheckPermission(String,String,String,RequestContext)']/*" />
+        internal virtual Response CheckPermission(string permission, string connectionId, string targetName = null, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(permission, nameof(permission));
+            Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
+
+            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.CheckPermission");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateCheckPermissionRequest(permission, connectionId, targetName, context);
+                return _pipeline.ProcessMessage(message, context);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary> Grant permission to the connection. </summary>
+        /// <param name="permission"> The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values: &quot;sendToGroup&quot; | &quot;joinLeaveGroup&quot;. </param>
+        /// <param name="connectionId"> Target connection Id. </param>
+        /// <param name="targetName"> Optional. If not set, grant the permission to all the targets. If set, grant the permission to the specific target. The meaning of the target depends on the specific permission. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="permission"/> or <paramref name="connectionId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="permission"/> or <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='GrantPermissionAsync(String,String,String,RequestContext)']/*" />
+        internal virtual async Task<Response> GrantPermissionAsync(string permission, string connectionId, string targetName = null, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(permission, nameof(permission));
+            Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
+
+            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.GrantPermission");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGrantPermissionRequest(permission, connectionId, targetName, context);
+                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary> Grant permission to the connection. </summary>
+        /// <param name="permission"> The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values: &quot;sendToGroup&quot; | &quot;joinLeaveGroup&quot;. </param>
+        /// <param name="connectionId"> Target connection Id. </param>
+        /// <param name="targetName"> Optional. If not set, grant the permission to all the targets. If set, grant the permission to the specific target. The meaning of the target depends on the specific permission. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="permission"/> or <paramref name="connectionId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="permission"/> or <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The response returned from the service. </returns>
+        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='GrantPermission(String,String,String,RequestContext)']/*" />
+        internal virtual Response GrantPermission(string permission, string connectionId, string targetName = null, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(permission, nameof(permission));
+            Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
+
+            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.GrantPermission");
+            scope.Start();
+            try
+            {
+                using HttpMessage message = CreateGrantPermissionRequest(permission, connectionId, targetName, context);
                 return _pipeline.ProcessMessage(message, context);
             }
             catch (Exception e)
@@ -844,178 +1018,31 @@ namespace Azure.Messaging.WebPubSub
             }
         }
 
-        /// <summary> Grant permission to the connection. </summary>
-        /// <param name="permission"> The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values: &quot;sendToGroup&quot; | &quot;joinLeaveGroup&quot;. </param>
-        /// <param name="connectionId"> Target connection Id. </param>
-        /// <param name="targetName"> Optional. If not set, grant the permission to all the targets. If set, grant the permission to the specific target. The meaning of the target depends on the specific permission. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="permission"/> or <paramref name="connectionId"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="permission"/> or <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. </returns>
-        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='GrantPermissionAsync(String,String,String,RequestContext)']/*" />
-        internal virtual async Task<Response> GrantPermissionAsync(string permission, string connectionId, string targetName = null, RequestContext context = null)
+        internal HttpMessage CreateCloseAllConnectionsRequest(IEnumerable<string> excluded, string reason, RequestContext context)
         {
-            Argument.AssertNotNullOrEmpty(permission, nameof(permission));
-            Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
-
-            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.GrantPermission");
-            scope.Start();
-            try
+            var message = _pipeline.CreateMessage(context, ResponseClassifier204);
+            var request = message.Request;
+            request.Method = RequestMethod.Post;
+            var uri = new RawRequestUriBuilder();
+            uri.AppendRaw(_endpoint, false);
+            uri.AppendPath("/api/hubs/", false);
+            uri.AppendPath(_hub, true);
+            uri.AppendPath("/:closeConnections", false);
+            if (excluded != null)
             {
-                using HttpMessage message = CreateGrantPermissionRequest(permission, connectionId, targetName, context);
-                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+                foreach (var param in excluded)
+                {
+                    uri.AppendQuery("excluded", param, true);
+                }
             }
-            catch (Exception e)
+            if (reason != null)
             {
-                scope.Failed(e);
-                throw;
+                uri.AppendQuery("reason", reason, true);
             }
-        }
-
-        /// <summary> Grant permission to the connection. </summary>
-        /// <param name="permission"> The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values: &quot;sendToGroup&quot; | &quot;joinLeaveGroup&quot;. </param>
-        /// <param name="connectionId"> Target connection Id. </param>
-        /// <param name="targetName"> Optional. If not set, grant the permission to all the targets. If set, grant the permission to the specific target. The meaning of the target depends on the specific permission. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="permission"/> or <paramref name="connectionId"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="permission"/> or <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. </returns>
-        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='GrantPermission(String,String,String,RequestContext)']/*" />
-        internal virtual Response GrantPermission(string permission, string connectionId, string targetName = null, RequestContext context = null)
-        {
-            Argument.AssertNotNullOrEmpty(permission, nameof(permission));
-            Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
-
-            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.GrantPermission");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateGrantPermissionRequest(permission, connectionId, targetName, context);
-                return _pipeline.ProcessMessage(message, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
-        /// <summary> Revoke permission for the connection. </summary>
-        /// <param name="permission"> The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values: &quot;sendToGroup&quot; | &quot;joinLeaveGroup&quot;. </param>
-        /// <param name="connectionId"> Target connection Id. </param>
-        /// <param name="targetName"> Optional. If not set, revoke the permission for all targets. If set, revoke the permission for the specific target. The meaning of the target depends on the specific permission. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="permission"/> or <paramref name="connectionId"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="permission"/> or <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. </returns>
-        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='RevokePermissionAsync(String,String,String,RequestContext)']/*" />
-        internal virtual async Task<Response> RevokePermissionAsync(string permission, string connectionId, string targetName = null, RequestContext context = null)
-        {
-            Argument.AssertNotNullOrEmpty(permission, nameof(permission));
-            Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
-
-            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.RevokePermission");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateRevokePermissionRequest(permission, connectionId, targetName, context);
-                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
-        /// <summary> Revoke permission for the connection. </summary>
-        /// <param name="permission"> The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values: &quot;sendToGroup&quot; | &quot;joinLeaveGroup&quot;. </param>
-        /// <param name="connectionId"> Target connection Id. </param>
-        /// <param name="targetName"> Optional. If not set, revoke the permission for all targets. If set, revoke the permission for the specific target. The meaning of the target depends on the specific permission. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="permission"/> or <paramref name="connectionId"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="permission"/> or <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. </returns>
-        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='RevokePermission(String,String,String,RequestContext)']/*" />
-        internal virtual Response RevokePermission(string permission, string connectionId, string targetName = null, RequestContext context = null)
-        {
-            Argument.AssertNotNullOrEmpty(permission, nameof(permission));
-            Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
-
-            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.RevokePermission");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateRevokePermissionRequest(permission, connectionId, targetName, context);
-                return _pipeline.ProcessMessage(message, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
-        /// <summary> Check if a connection has permission to the specified action. </summary>
-        /// <param name="permission"> The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values: &quot;sendToGroup&quot; | &quot;joinLeaveGroup&quot;. </param>
-        /// <param name="connectionId"> Target connection Id. </param>
-        /// <param name="targetName"> Optional. If not set, get the permission for all targets. If set, get the permission for the specific target. The meaning of the target depends on the specific permission. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="permission"/> or <paramref name="connectionId"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="permission"/> or <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. </returns>
-        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='CheckPermissionAsync(String,String,String,RequestContext)']/*" />
-        internal virtual async Task<Response> CheckPermissionAsync(string permission, string connectionId, string targetName = null, RequestContext context = null)
-        {
-            Argument.AssertNotNullOrEmpty(permission, nameof(permission));
-            Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
-
-            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.CheckPermission");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateCheckPermissionRequest(permission, connectionId, targetName, context);
-                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
-        /// <summary> Check if a connection has permission to the specified action. </summary>
-        /// <param name="permission"> The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values: &quot;sendToGroup&quot; | &quot;joinLeaveGroup&quot;. </param>
-        /// <param name="connectionId"> Target connection Id. </param>
-        /// <param name="targetName"> Optional. If not set, get the permission for all targets. If set, get the permission for the specific target. The meaning of the target depends on the specific permission. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="permission"/> or <paramref name="connectionId"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="permission"/> or <paramref name="connectionId"/> is an empty string, and was expected to be non-empty. </exception>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. </returns>
-        /// <include file="Docs/WebPubSubServiceClient.xml" path="doc/members/member[@name='CheckPermission(String,String,String,RequestContext)']/*" />
-        internal virtual Response CheckPermission(string permission, string connectionId, string targetName = null, RequestContext context = null)
-        {
-            Argument.AssertNotNullOrEmpty(permission, nameof(permission));
-            Argument.AssertNotNullOrEmpty(connectionId, nameof(connectionId));
-
-            using var scope = ClientDiagnostics.CreateScope("WebPubSubServiceClient.CheckPermission");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateCheckPermissionRequest(permission, connectionId, targetName, context);
-                return _pipeline.ProcessMessage(message, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            uri.AppendQuery("api-version", _apiVersion, true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json, text/json");
+            return message;
         }
 
         internal HttpMessage CreateGenerateClientTokenImplRequest(string userId, IEnumerable<string> role, int? minutesToExpire, RequestContext context)
@@ -1049,33 +1076,6 @@ namespace Azure.Messaging.WebPubSub
             return message;
         }
 
-        internal HttpMessage CreateCloseAllConnectionsRequest(IEnumerable<string> excluded, string reason, RequestContext context)
-        {
-            var message = _pipeline.CreateMessage(context, ResponseClassifier204);
-            var request = message.Request;
-            request.Method = RequestMethod.Post;
-            var uri = new RawRequestUriBuilder();
-            uri.AppendRaw(_endpoint, false);
-            uri.AppendPath("/api/hubs/", false);
-            uri.AppendPath(_hub, true);
-            uri.AppendPath("/:closeConnections", false);
-            if (excluded != null)
-            {
-                foreach (var param in excluded)
-                {
-                    uri.AppendQuery("excluded", param, true);
-                }
-            }
-            if (reason != null)
-            {
-                uri.AppendQuery("reason", reason, true);
-            }
-            uri.AppendQuery("api-version", _apiVersion, true);
-            request.Uri = uri;
-            request.Headers.Add("Accept", "application/json, text/json");
-            return message;
-        }
-
         internal HttpMessage CreateSendToAllRequest(RequestContent content, ContentType contentType, IEnumerable<string> excluded, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier202);
@@ -1101,23 +1101,6 @@ namespace Azure.Messaging.WebPubSub
             return message;
         }
 
-        internal HttpMessage CreateConnectionExistsImplRequest(string connectionId, RequestContext context)
-        {
-            var message = _pipeline.CreateMessage(context, ResponseClassifier200404);
-            var request = message.Request;
-            request.Method = RequestMethod.Head;
-            var uri = new RawRequestUriBuilder();
-            uri.AppendRaw(_endpoint, false);
-            uri.AppendPath("/api/hubs/", false);
-            uri.AppendPath(_hub, true);
-            uri.AppendPath("/connections/", false);
-            uri.AppendPath(connectionId, true);
-            uri.AppendQuery("api-version", _apiVersion, true);
-            request.Uri = uri;
-            request.Headers.Add("Accept", "application/json, text/json");
-            return message;
-        }
-
         internal HttpMessage CreateCloseConnectionRequest(string connectionId, string reason, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier204);
@@ -1136,6 +1119,22 @@ namespace Azure.Messaging.WebPubSub
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json, text/json");
+            return message;
+        }
+
+        internal HttpMessage CreateConnectionExistsImplRequest(string connectionId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200404);
+            var request = message.Request;
+            request.Method = RequestMethod.Head;
+            var uri = new RawRequestUriBuilder();
+            uri.AppendRaw(_endpoint, false);
+            uri.AppendPath("/api/hubs/", false);
+            uri.AppendPath(_hub, true);
+            uri.AppendPath("/connections/", false);
+            uri.AppendPath(connectionId, true);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            request.Uri = uri;
             return message;
         }
 
@@ -1172,7 +1171,6 @@ namespace Azure.Messaging.WebPubSub
             uri.AppendPath(group, true);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
-            request.Headers.Add("Accept", "application/json, text/json");
             return message;
         }
 
@@ -1232,25 +1230,6 @@ namespace Azure.Messaging.WebPubSub
             return message;
         }
 
-        internal HttpMessage CreateAddConnectionToGroupRequest(string group, string connectionId, RequestContext context)
-        {
-            var message = _pipeline.CreateMessage(context, ResponseClassifier200404);
-            var request = message.Request;
-            request.Method = RequestMethod.Put;
-            var uri = new RawRequestUriBuilder();
-            uri.AppendRaw(_endpoint, false);
-            uri.AppendPath("/api/hubs/", false);
-            uri.AppendPath(_hub, true);
-            uri.AppendPath("/groups/", false);
-            uri.AppendPath(group, true);
-            uri.AppendPath("/connections/", false);
-            uri.AppendPath(connectionId, true);
-            uri.AppendQuery("api-version", _apiVersion, true);
-            request.Uri = uri;
-            request.Headers.Add("Accept", "application/json, text/json");
-            return message;
-        }
-
         internal HttpMessage CreateRemoveConnectionFromGroupRequest(string group, string connectionId, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier204);
@@ -1270,6 +1249,93 @@ namespace Azure.Messaging.WebPubSub
             return message;
         }
 
+        internal HttpMessage CreateAddConnectionToGroupRequest(string group, string connectionId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Put;
+            var uri = new RawRequestUriBuilder();
+            uri.AppendRaw(_endpoint, false);
+            uri.AppendPath("/api/hubs/", false);
+            uri.AppendPath(_hub, true);
+            uri.AppendPath("/groups/", false);
+            uri.AppendPath(group, true);
+            uri.AppendPath("/connections/", false);
+            uri.AppendPath(connectionId, true);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json, text/json");
+            return message;
+        }
+
+        internal HttpMessage CreateRevokePermissionRequest(string permission, string connectionId, string targetName, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier204);
+            var request = message.Request;
+            request.Method = RequestMethod.Delete;
+            var uri = new RawRequestUriBuilder();
+            uri.AppendRaw(_endpoint, false);
+            uri.AppendPath("/api/hubs/", false);
+            uri.AppendPath(_hub, true);
+            uri.AppendPath("/permissions/", false);
+            uri.AppendPath(permission, true);
+            uri.AppendPath("/connections/", false);
+            uri.AppendPath(connectionId, true);
+            if (targetName != null)
+            {
+                uri.AppendQuery("targetName", targetName, true);
+            }
+            uri.AppendQuery("api-version", _apiVersion, true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json, text/json");
+            return message;
+        }
+
+        internal HttpMessage CreateCheckPermissionRequest(string permission, string connectionId, string targetName, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200404);
+            var request = message.Request;
+            request.Method = RequestMethod.Head;
+            var uri = new RawRequestUriBuilder();
+            uri.AppendRaw(_endpoint, false);
+            uri.AppendPath("/api/hubs/", false);
+            uri.AppendPath(_hub, true);
+            uri.AppendPath("/permissions/", false);
+            uri.AppendPath(permission, true);
+            uri.AppendPath("/connections/", false);
+            uri.AppendPath(connectionId, true);
+            if (targetName != null)
+            {
+                uri.AppendQuery("targetName", targetName, true);
+            }
+            uri.AppendQuery("api-version", _apiVersion, true);
+            request.Uri = uri;
+            return message;
+        }
+
+        internal HttpMessage CreateGrantPermissionRequest(string permission, string connectionId, string targetName, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Put;
+            var uri = new RawRequestUriBuilder();
+            uri.AppendRaw(_endpoint, false);
+            uri.AppendPath("/api/hubs/", false);
+            uri.AppendPath(_hub, true);
+            uri.AppendPath("/permissions/", false);
+            uri.AppendPath(permission, true);
+            uri.AppendPath("/connections/", false);
+            uri.AppendPath(connectionId, true);
+            if (targetName != null)
+            {
+                uri.AppendQuery("targetName", targetName, true);
+            }
+            uri.AppendQuery("api-version", _apiVersion, true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json, text/json");
+            return message;
+        }
+
         internal HttpMessage CreateUserExistsImplRequest(string userId, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier200404);
@@ -1283,7 +1349,6 @@ namespace Azure.Messaging.WebPubSub
             uri.AppendPath(userId, true);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
-            request.Headers.Add("Accept", "application/json, text/json");
             return message;
         }
 
@@ -1336,19 +1401,18 @@ namespace Azure.Messaging.WebPubSub
             return message;
         }
 
-        internal HttpMessage CreateAddUserToGroupRequest(string userId, string group, RequestContext context)
+        internal HttpMessage CreateRemoveUserFromAllGroupsRequest(string userId, RequestContext context)
         {
-            var message = _pipeline.CreateMessage(context, ResponseClassifier200404);
+            var message = _pipeline.CreateMessage(context, ResponseClassifier204);
             var request = message.Request;
-            request.Method = RequestMethod.Put;
+            request.Method = RequestMethod.Delete;
             var uri = new RawRequestUriBuilder();
             uri.AppendRaw(_endpoint, false);
             uri.AppendPath("/api/hubs/", false);
             uri.AppendPath(_hub, true);
             uri.AppendPath("/users/", false);
             uri.AppendPath(userId, true);
-            uri.AppendPath("/groups/", false);
-            uri.AppendPath(group, true);
+            uri.AppendPath("/groups", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json, text/json");
@@ -1374,25 +1438,7 @@ namespace Azure.Messaging.WebPubSub
             return message;
         }
 
-        internal HttpMessage CreateRemoveUserFromAllGroupsRequest(string userId, RequestContext context)
-        {
-            var message = _pipeline.CreateMessage(context, ResponseClassifier204);
-            var request = message.Request;
-            request.Method = RequestMethod.Delete;
-            var uri = new RawRequestUriBuilder();
-            uri.AppendRaw(_endpoint, false);
-            uri.AppendPath("/api/hubs/", false);
-            uri.AppendPath(_hub, true);
-            uri.AppendPath("/users/", false);
-            uri.AppendPath(userId, true);
-            uri.AppendPath("/groups", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
-            request.Uri = uri;
-            request.Headers.Add("Accept", "application/json, text/json");
-            return message;
-        }
-
-        internal HttpMessage CreateGrantPermissionRequest(string permission, string connectionId, string targetName, RequestContext context)
+        internal HttpMessage CreateAddUserToGroupRequest(string userId, string group, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier200);
             var request = message.Request;
@@ -1401,70 +1447,20 @@ namespace Azure.Messaging.WebPubSub
             uri.AppendRaw(_endpoint, false);
             uri.AppendPath("/api/hubs/", false);
             uri.AppendPath(_hub, true);
-            uri.AppendPath("/permissions/", false);
-            uri.AppendPath(permission, true);
-            uri.AppendPath("/connections/", false);
-            uri.AppendPath(connectionId, true);
-            if (targetName != null)
-            {
-                uri.AppendQuery("targetName", targetName, true);
-            }
+            uri.AppendPath("/users/", false);
+            uri.AppendPath(userId, true);
+            uri.AppendPath("/groups/", false);
+            uri.AppendPath(group, true);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json, text/json");
             return message;
         }
 
-        internal HttpMessage CreateRevokePermissionRequest(string permission, string connectionId, string targetName, RequestContext context)
-        {
-            var message = _pipeline.CreateMessage(context, ResponseClassifier204);
-            var request = message.Request;
-            request.Method = RequestMethod.Delete;
-            var uri = new RawRequestUriBuilder();
-            uri.AppendRaw(_endpoint, false);
-            uri.AppendPath("/api/hubs/", false);
-            uri.AppendPath(_hub, true);
-            uri.AppendPath("/permissions/", false);
-            uri.AppendPath(permission, true);
-            uri.AppendPath("/connections/", false);
-            uri.AppendPath(connectionId, true);
-            if (targetName != null)
-            {
-                uri.AppendQuery("targetName", targetName, true);
-            }
-            uri.AppendQuery("api-version", _apiVersion, true);
-            request.Uri = uri;
-            request.Headers.Add("Accept", "application/json, text/json");
-            return message;
-        }
-
-        internal HttpMessage CreateCheckPermissionRequest(string permission, string connectionId, string targetName, RequestContext context)
-        {
-            var message = _pipeline.CreateMessage(context, ResponseClassifier200404);
-            var request = message.Request;
-            request.Method = RequestMethod.Head;
-            var uri = new RawRequestUriBuilder();
-            uri.AppendRaw(_endpoint, false);
-            uri.AppendPath("/api/hubs/", false);
-            uri.AppendPath(_hub, true);
-            uri.AppendPath("/permissions/", false);
-            uri.AppendPath(permission, true);
-            uri.AppendPath("/connections/", false);
-            uri.AppendPath(connectionId, true);
-            if (targetName != null)
-            {
-                uri.AppendQuery("targetName", targetName, true);
-            }
-            uri.AppendQuery("api-version", _apiVersion, true);
-            request.Uri = uri;
-            request.Headers.Add("Accept", "application/json, text/json");
-            return message;
-        }
-
-        private static ResponseClassifier _responseClassifier200;
-        private static ResponseClassifier ResponseClassifier200 => _responseClassifier200 ??= new StatusCodeClassifier(stackalloc ushort[] { 200 });
         private static ResponseClassifier _responseClassifier204;
         private static ResponseClassifier ResponseClassifier204 => _responseClassifier204 ??= new StatusCodeClassifier(stackalloc ushort[] { 204 });
+        private static ResponseClassifier _responseClassifier200;
+        private static ResponseClassifier ResponseClassifier200 => _responseClassifier200 ??= new StatusCodeClassifier(stackalloc ushort[] { 200 });
         private static ResponseClassifier _responseClassifier202;
         private static ResponseClassifier ResponseClassifier202 => _responseClassifier202 ??= new StatusCodeClassifier(stackalloc ushort[] { 202 });
         private static ResponseClassifier _responseClassifier200404;
