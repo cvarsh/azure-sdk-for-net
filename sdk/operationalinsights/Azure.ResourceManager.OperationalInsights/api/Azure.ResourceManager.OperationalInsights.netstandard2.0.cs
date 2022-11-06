@@ -447,11 +447,11 @@ namespace Azure.ResourceManager.OperationalInsights
         public Azure.ResourceManager.OperationalInsights.Models.RestoredLogs RestoredLogs { get { throw null; } set { } }
         public Azure.ResourceManager.OperationalInsights.Models.ResultStatistics ResultStatistics { get { throw null; } }
         public int? RetentionInDays { get { throw null; } set { } }
-        public Azure.ResourceManager.OperationalInsights.Models.RetentionInDaysAsDefault? RetentionInDaysAsDefault { get { throw null; } }
+        public bool? RetentionInDaysAsDefault { get { throw null; } }
         public Azure.ResourceManager.OperationalInsights.Models.Schema Schema { get { throw null; } set { } }
         public Azure.ResourceManager.OperationalInsights.Models.SearchResults SearchResults { get { throw null; } set { } }
         public int? TotalRetentionInDays { get { throw null; } set { } }
-        public Azure.ResourceManager.OperationalInsights.Models.TotalRetentionInDaysAsDefault? TotalRetentionInDaysAsDefault { get { throw null; } }
+        public bool? TotalRetentionInDaysAsDefault { get { throw null; } }
     }
     public partial class TableResource : Azure.ResourceManager.ArmResource
     {
@@ -959,24 +959,6 @@ namespace Azure.ResourceManager.OperationalInsights.Models
         public float? Progress { get { throw null; } }
         public float? ScannedGb { get { throw null; } }
     }
-    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
-    public readonly partial struct RetentionInDaysAsDefault : System.IEquatable<Azure.ResourceManager.OperationalInsights.Models.RetentionInDaysAsDefault>
-    {
-        private readonly object _dummy;
-        private readonly int _dummyPrimitive;
-        public RetentionInDaysAsDefault(string value) { throw null; }
-        public static Azure.ResourceManager.OperationalInsights.Models.RetentionInDaysAsDefault False { get { throw null; } }
-        public static Azure.ResourceManager.OperationalInsights.Models.RetentionInDaysAsDefault True { get { throw null; } }
-        public bool Equals(Azure.ResourceManager.OperationalInsights.Models.RetentionInDaysAsDefault other) { throw null; }
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
-        public override bool Equals(object obj) { throw null; }
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
-        public override int GetHashCode() { throw null; }
-        public static bool operator ==(Azure.ResourceManager.OperationalInsights.Models.RetentionInDaysAsDefault left, Azure.ResourceManager.OperationalInsights.Models.RetentionInDaysAsDefault right) { throw null; }
-        public static implicit operator Azure.ResourceManager.OperationalInsights.Models.RetentionInDaysAsDefault (string value) { throw null; }
-        public static bool operator !=(Azure.ResourceManager.OperationalInsights.Models.RetentionInDaysAsDefault left, Azure.ResourceManager.OperationalInsights.Models.RetentionInDaysAsDefault right) { throw null; }
-        public override string ToString() { throw null; }
-    }
     public partial class Schema
     {
         public Schema() { }
@@ -1153,24 +1135,6 @@ namespace Azure.ResourceManager.OperationalInsights.Models
         public Tag(string name, string value) { }
         public string Name { get { throw null; } set { } }
         public string Value { get { throw null; } set { } }
-    }
-    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
-    public readonly partial struct TotalRetentionInDaysAsDefault : System.IEquatable<Azure.ResourceManager.OperationalInsights.Models.TotalRetentionInDaysAsDefault>
-    {
-        private readonly object _dummy;
-        private readonly int _dummyPrimitive;
-        public TotalRetentionInDaysAsDefault(string value) { throw null; }
-        public static Azure.ResourceManager.OperationalInsights.Models.TotalRetentionInDaysAsDefault False { get { throw null; } }
-        public static Azure.ResourceManager.OperationalInsights.Models.TotalRetentionInDaysAsDefault True { get { throw null; } }
-        public bool Equals(Azure.ResourceManager.OperationalInsights.Models.TotalRetentionInDaysAsDefault other) { throw null; }
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
-        public override bool Equals(object obj) { throw null; }
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
-        public override int GetHashCode() { throw null; }
-        public static bool operator ==(Azure.ResourceManager.OperationalInsights.Models.TotalRetentionInDaysAsDefault left, Azure.ResourceManager.OperationalInsights.Models.TotalRetentionInDaysAsDefault right) { throw null; }
-        public static implicit operator Azure.ResourceManager.OperationalInsights.Models.TotalRetentionInDaysAsDefault (string value) { throw null; }
-        public static bool operator !=(Azure.ResourceManager.OperationalInsights.Models.TotalRetentionInDaysAsDefault left, Azure.ResourceManager.OperationalInsights.Models.TotalRetentionInDaysAsDefault right) { throw null; }
-        public override string ToString() { throw null; }
     }
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly partial struct Type : System.IEquatable<Azure.ResourceManager.OperationalInsights.Models.Type>

@@ -69,8 +69,8 @@ namespace Azure.ResourceManager.OperationalInsights
             Optional<string> lastPlanModifiedDate = default;
             Optional<Schema> schema = default;
             Optional<ProvisioningStateEnum> provisioningState = default;
-            Optional<RetentionInDaysAsDefault> retentionInDaysAsDefault = default;
-            Optional<TotalRetentionInDaysAsDefault> totalRetentionInDaysAsDefault = default;
+            Optional<bool> retentionInDaysAsDefault = default;
+            Optional<bool> totalRetentionInDaysAsDefault = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("id"))
@@ -209,7 +209,7 @@ namespace Azure.ResourceManager.OperationalInsights
                                 property0.ThrowNonNullablePropertyIsNull();
                                 continue;
                             }
-                            retentionInDaysAsDefault = new RetentionInDaysAsDefault(property0.Value.GetString());
+                            retentionInDaysAsDefault = property0.Value.GetBoolean();
                             continue;
                         }
                         if (property0.NameEquals("totalRetentionInDaysAsDefault"))
@@ -219,7 +219,7 @@ namespace Azure.ResourceManager.OperationalInsights
                                 property0.ThrowNonNullablePropertyIsNull();
                                 continue;
                             }
-                            totalRetentionInDaysAsDefault = new TotalRetentionInDaysAsDefault(property0.Value.GetString());
+                            totalRetentionInDaysAsDefault = property0.Value.GetBoolean();
                             continue;
                         }
                     }
