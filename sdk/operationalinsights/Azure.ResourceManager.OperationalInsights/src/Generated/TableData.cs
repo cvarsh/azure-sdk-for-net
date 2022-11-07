@@ -36,7 +36,7 @@ namespace Azure.ResourceManager.OperationalInsights
         /// <param name="provisioningState"> Table&apos;s current provisioning state. If set to &apos;updating&apos;, indicates a resource lock due to ongoing operation, forbidding any update to the table until the ongoing operation is concluded. </param>
         /// <param name="retentionInDaysAsDefault"> True - Value originates from workspace retention in days, False - Customer specific. </param>
         /// <param name="totalRetentionInDaysAsDefault"> True - Value originates from retention in days, False - Customer specific. </param>
-        internal TableData(ResourceIdentifier id, string name, ResourceType resourceType, SystemData systemData, int? retentionInDays, int? totalRetentionInDays, int? archiveRetentionInDays, SearchResults searchResults, RestoredLogs restoredLogs, ResultStatistics resultStatistics, TablePlanEnum? plan, string lastPlanModifiedDate, Schema schema, ProvisioningStateEnum? provisioningState, RetentionInDaysAsDefault? retentionInDaysAsDefault, TotalRetentionInDaysAsDefault? totalRetentionInDaysAsDefault) : base(id, name, resourceType, systemData)
+        internal TableData(ResourceIdentifier id, string name, ResourceType resourceType, SystemData systemData, int? retentionInDays, int? totalRetentionInDays, int? archiveRetentionInDays, SearchResults searchResults, RestoredLogs restoredLogs, ResultStatistics resultStatistics, TablePlanEnum? plan, string lastPlanModifiedDate, Schema schema, ProvisioningStateEnum? provisioningState, bool? retentionInDaysAsDefault, bool? totalRetentionInDaysAsDefault) : base(id, name, resourceType, systemData)
         {
             RetentionInDays = retentionInDays;
             TotalRetentionInDays = totalRetentionInDays;
@@ -73,8 +73,8 @@ namespace Azure.ResourceManager.OperationalInsights
         /// <summary> Table&apos;s current provisioning state. If set to &apos;updating&apos;, indicates a resource lock due to ongoing operation, forbidding any update to the table until the ongoing operation is concluded. </summary>
         public ProvisioningStateEnum? ProvisioningState { get; }
         /// <summary> True - Value originates from workspace retention in days, False - Customer specific. </summary>
-        public RetentionInDaysAsDefault? RetentionInDaysAsDefault { get; }
+        public bool? RetentionInDaysAsDefault { get; }
         /// <summary> True - Value originates from retention in days, False - Customer specific. </summary>
-        public TotalRetentionInDaysAsDefault? TotalRetentionInDaysAsDefault { get; }
+        public bool? TotalRetentionInDaysAsDefault { get; }
     }
 }
