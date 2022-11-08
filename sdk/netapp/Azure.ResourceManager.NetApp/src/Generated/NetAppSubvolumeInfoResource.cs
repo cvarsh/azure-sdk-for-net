@@ -205,7 +205,7 @@ namespace Azure.ResourceManager.NetApp
             try
             {
                 var response = await _netAppSubvolumeInfoSubvolumesRestClient.UpdateAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Parent.Parent.Name, Id.Parent.Parent.Name, Id.Parent.Name, Id.Name, patch, cancellationToken).ConfigureAwait(false);
-                var operation = new NetAppArmOperation<NetAppSubvolumeInfoResource>(new NetAppSubvolumeInfoOperationSource(Client), _netAppSubvolumeInfoSubvolumesClientDiagnostics, Pipeline, _netAppSubvolumeInfoSubvolumesRestClient.CreateUpdateRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Parent.Parent.Name, Id.Parent.Parent.Name, Id.Parent.Name, Id.Name, patch).Request, response, OperationFinalStateVia.AzureAsyncOperation);
+                var operation = new NetAppArmOperation<NetAppSubvolumeInfoResource>(new NetAppSubvolumeInfoOperationSource(Client), _netAppSubvolumeInfoSubvolumesClientDiagnostics, Pipeline, _netAppSubvolumeInfoSubvolumesRestClient.CreateUpdateRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Parent.Parent.Name, Id.Parent.Parent.Name, Id.Parent.Name, Id.Name, patch).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -235,7 +235,7 @@ namespace Azure.ResourceManager.NetApp
             try
             {
                 var response = _netAppSubvolumeInfoSubvolumesRestClient.Update(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Parent.Parent.Name, Id.Parent.Parent.Name, Id.Parent.Name, Id.Name, patch, cancellationToken);
-                var operation = new NetAppArmOperation<NetAppSubvolumeInfoResource>(new NetAppSubvolumeInfoOperationSource(Client), _netAppSubvolumeInfoSubvolumesClientDiagnostics, Pipeline, _netAppSubvolumeInfoSubvolumesRestClient.CreateUpdateRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Parent.Parent.Name, Id.Parent.Parent.Name, Id.Parent.Name, Id.Name, patch).Request, response, OperationFinalStateVia.AzureAsyncOperation);
+                var operation = new NetAppArmOperation<NetAppSubvolumeInfoResource>(new NetAppSubvolumeInfoOperationSource(Client), _netAppSubvolumeInfoSubvolumesClientDiagnostics, Pipeline, _netAppSubvolumeInfoSubvolumesRestClient.CreateUpdateRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Parent.Parent.Name, Id.Parent.Parent.Name, Id.Parent.Name, Id.Name, patch).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletion(cancellationToken);
                 return operation;
