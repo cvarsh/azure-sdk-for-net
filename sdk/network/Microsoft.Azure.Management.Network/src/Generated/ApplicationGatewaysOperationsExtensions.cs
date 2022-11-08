@@ -193,6 +193,175 @@ namespace Microsoft.Azure.Management.Network
             }
 
             /// <summary>
+            /// Deletes the specified application gateway.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group.
+            /// </param>
+            /// <param name='applicationGatewayName'>
+            /// The name of the application gateway.
+            /// </param>
+            public static void Delete1(this IApplicationGatewaysOperations operations, string resourceGroupName, string applicationGatewayName)
+            {
+                operations.Delete1Async(resourceGroupName, applicationGatewayName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Deletes the specified application gateway.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group.
+            /// </param>
+            /// <param name='applicationGatewayName'>
+            /// The name of the application gateway.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task Delete1Async(this IApplicationGatewaysOperations operations, string resourceGroupName, string applicationGatewayName, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                (await operations.Delete1WithHttpMessagesAsync(resourceGroupName, applicationGatewayName, null, cancellationToken).ConfigureAwait(false)).Dispose();
+            }
+
+            /// <summary>
+            /// Gets the specified application gateway.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group.
+            /// </param>
+            /// <param name='applicationGatewayName'>
+            /// The name of the application gateway.
+            /// </param>
+            public static ApplicationGateway Get1(this IApplicationGatewaysOperations operations, string resourceGroupName, string applicationGatewayName)
+            {
+                return operations.Get1Async(resourceGroupName, applicationGatewayName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Gets the specified application gateway.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group.
+            /// </param>
+            /// <param name='applicationGatewayName'>
+            /// The name of the application gateway.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<ApplicationGateway> Get1Async(this IApplicationGatewaysOperations operations, string resourceGroupName, string applicationGatewayName, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.Get1WithHttpMessagesAsync(resourceGroupName, applicationGatewayName, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Creates or updates the specified application gateway.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group.
+            /// </param>
+            /// <param name='applicationGatewayName'>
+            /// The name of the application gateway.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to the create or update application gateway operation.
+            /// </param>
+            public static ApplicationGateway CreateOrUpdate1(this IApplicationGatewaysOperations operations, string resourceGroupName, string applicationGatewayName, ApplicationGateway parameters)
+            {
+                return operations.CreateOrUpdate1Async(resourceGroupName, applicationGatewayName, parameters).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Creates or updates the specified application gateway.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group.
+            /// </param>
+            /// <param name='applicationGatewayName'>
+            /// The name of the application gateway.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to the create or update application gateway operation.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<ApplicationGateway> CreateOrUpdate1Async(this IApplicationGatewaysOperations operations, string resourceGroupName, string applicationGatewayName, ApplicationGateway parameters, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.CreateOrUpdate1WithHttpMessagesAsync(resourceGroupName, applicationGatewayName, parameters, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Updates the specified application gateway tags.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group.
+            /// </param>
+            /// <param name='applicationGatewayName'>
+            /// The name of the application gateway.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to update application gateway tags.
+            /// </param>
+            public static ApplicationGateway UpdateTags1(this IApplicationGatewaysOperations operations, string resourceGroupName, string applicationGatewayName, TagsObject parameters)
+            {
+                return operations.UpdateTags1Async(resourceGroupName, applicationGatewayName, parameters).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Updates the specified application gateway tags.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group.
+            /// </param>
+            /// <param name='applicationGatewayName'>
+            /// The name of the application gateway.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to update application gateway tags.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<ApplicationGateway> UpdateTags1Async(this IApplicationGatewaysOperations operations, string resourceGroupName, string applicationGatewayName, TagsObject parameters, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.UpdateTags1WithHttpMessagesAsync(resourceGroupName, applicationGatewayName, parameters, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
             /// Lists all application gateways in a resource group.
             /// </summary>
             /// <param name='operations'>
@@ -714,6 +883,89 @@ namespace Microsoft.Azure.Management.Network
             public static async Task<ApplicationGateway> BeginCreateOrUpdateAsync(this IApplicationGatewaysOperations operations, string resourceGroupName, string applicationGatewayName, ApplicationGateway parameters, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.BeginCreateOrUpdateWithHttpMessagesAsync(resourceGroupName, applicationGatewayName, parameters, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Deletes the specified application gateway.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group.
+            /// </param>
+            /// <param name='applicationGatewayName'>
+            /// The name of the application gateway.
+            /// </param>
+            public static void BeginDelete1(this IApplicationGatewaysOperations operations, string resourceGroupName, string applicationGatewayName)
+            {
+                operations.BeginDelete1Async(resourceGroupName, applicationGatewayName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Deletes the specified application gateway.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group.
+            /// </param>
+            /// <param name='applicationGatewayName'>
+            /// The name of the application gateway.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task BeginDelete1Async(this IApplicationGatewaysOperations operations, string resourceGroupName, string applicationGatewayName, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                (await operations.BeginDelete1WithHttpMessagesAsync(resourceGroupName, applicationGatewayName, null, cancellationToken).ConfigureAwait(false)).Dispose();
+            }
+
+            /// <summary>
+            /// Creates or updates the specified application gateway.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group.
+            /// </param>
+            /// <param name='applicationGatewayName'>
+            /// The name of the application gateway.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to the create or update application gateway operation.
+            /// </param>
+            public static ApplicationGateway BeginCreateOrUpdate1(this IApplicationGatewaysOperations operations, string resourceGroupName, string applicationGatewayName, ApplicationGateway parameters)
+            {
+                return operations.BeginCreateOrUpdate1Async(resourceGroupName, applicationGatewayName, parameters).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Creates or updates the specified application gateway.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group.
+            /// </param>
+            /// <param name='applicationGatewayName'>
+            /// The name of the application gateway.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to the create or update application gateway operation.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<ApplicationGateway> BeginCreateOrUpdate1Async(this IApplicationGatewaysOperations operations, string resourceGroupName, string applicationGatewayName, ApplicationGateway parameters, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BeginCreateOrUpdate1WithHttpMessagesAsync(resourceGroupName, applicationGatewayName, parameters, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
