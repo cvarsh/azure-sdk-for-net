@@ -229,12 +229,14 @@ namespace Azure.ResourceManager.Workloads
         public SapMonitorData(Azure.Core.AzureLocation location) : base (default(Azure.Core.AzureLocation)) { }
         public Azure.Core.AzureLocation? AppLocation { get { throw null; } set { } }
         public Azure.ResponseError Errors { get { throw null; } }
+        public Azure.ResourceManager.Workloads.Models.UserAssignedServiceIdentity Identity { get { throw null; } set { } }
         public Azure.Core.ResourceIdentifier LogAnalyticsWorkspaceArmId { get { throw null; } set { } }
         public string ManagedResourceGroupName { get { throw null; } set { } }
         public Azure.Core.ResourceIdentifier MonitorSubnetId { get { throw null; } set { } }
         public Azure.Core.ResourceIdentifier MsiArmId { get { throw null; } }
         public Azure.ResourceManager.Workloads.Models.WorkloadMonitorProvisioningState? ProvisioningState { get { throw null; } }
         public Azure.ResourceManager.Workloads.Models.RoutingPreference? RoutingPreference { get { throw null; } set { } }
+        public string ZoneRedundancyPreference { get { throw null; } set { } }
     }
     public partial class SapMonitorResource : Azure.ResourceManager.ArmResource
     {
@@ -278,6 +280,7 @@ namespace Azure.ResourceManager.Workloads
     {
         public SapProviderInstanceData() { }
         public Azure.ResponseError Errors { get { throw null; } }
+        public Azure.ResourceManager.Workloads.Models.UserAssignedServiceIdentity Identity { get { throw null; } set { } }
         public Azure.ResourceManager.Workloads.Models.ProviderSpecificProperties ProviderSettings { get { throw null; } set { } }
         public Azure.ResourceManager.Workloads.Models.WorkloadMonitorProvisioningState? ProvisioningState { get { throw null; } }
     }
@@ -518,6 +521,12 @@ namespace Azure.ResourceManager.Workloads.Models
         public Azure.Core.ResourceIdentifier VirtualMachineId { get { throw null; } }
         public Azure.ResourceManager.Workloads.Models.CentralServerVirtualMachineType? VirtualMachineType { get { throw null; } }
     }
+    public partial class CreateAndMountFileShareConfiguration : Azure.ResourceManager.Workloads.Models.FileShareConfiguration
+    {
+        public CreateAndMountFileShareConfiguration() { }
+        public string ResourceGroup { get { throw null; } set { } }
+        public string StorageAccountName { get { throw null; } set { } }
+    }
     public partial class DatabaseConfiguration
     {
         public DatabaseConfiguration(Azure.Core.ResourceIdentifier subnetId, Azure.ResourceManager.Workloads.Models.VirtualMachineConfiguration virtualMachineConfiguration, long instanceCount) { }
@@ -693,6 +702,15 @@ namespace Azure.ResourceManager.Workloads.Models
         public string Hostname { get { throw null; } }
         public string IPAddress { get { throw null; } }
         public long? Port { get { throw null; } }
+    }
+    public partial class ExternalInstallationSoftwareConfiguration : Azure.ResourceManager.Workloads.Models.SoftwareConfiguration
+    {
+        public ExternalInstallationSoftwareConfiguration() { }
+        public string CentralServerVmId { get { throw null; } set { } }
+    }
+    public abstract partial class FileShareConfiguration
+    {
+        protected FileShareConfiguration() { }
     }
     public partial class FileshareProfile
     {
@@ -870,6 +888,12 @@ namespace Azure.ResourceManager.Workloads.Models
         public long? InternalMsPort { get { throw null; } }
         public string IPAddress { get { throw null; } }
         public long? MsPort { get { throw null; } }
+    }
+    public partial class MountFileShareConfiguration : Azure.ResourceManager.Workloads.Models.FileShareConfiguration
+    {
+        public MountFileShareConfiguration(string id, string privateEndpointId) { }
+        public string Id { get { throw null; } set { } }
+        public string PrivateEndpointId { get { throw null; } set { } }
     }
     public partial class MsSqlServerProviderInstanceProperties : Azure.ResourceManager.Workloads.Models.ProviderSpecificProperties
     {
@@ -1298,6 +1322,7 @@ namespace Azure.ResourceManager.Workloads.Models
     public partial class SapMonitorPatch
     {
         public SapMonitorPatch() { }
+        public Azure.ResourceManager.Workloads.Models.UserAssignedServiceIdentity Identity { get { throw null; } set { } }
         public System.Collections.Generic.IDictionary<string, string> Tags { get { throw null; } }
     }
     public partial class SapNetWeaverProviderInstanceProperties : Azure.ResourceManager.Workloads.Models.ProviderSpecificProperties
@@ -1419,6 +1444,8 @@ namespace Azure.ResourceManager.Workloads.Models
         public static Azure.ResourceManager.Workloads.Models.SapVirtualInstanceState InfrastructureDeploymentInProgress { get { throw null; } }
         public static Azure.ResourceManager.Workloads.Models.SapVirtualInstanceState InfrastructureDeploymentPending { get { throw null; } }
         public static Azure.ResourceManager.Workloads.Models.SapVirtualInstanceState RegistrationComplete { get { throw null; } }
+        public static Azure.ResourceManager.Workloads.Models.SapVirtualInstanceState SoftwareDetectionFailed { get { throw null; } }
+        public static Azure.ResourceManager.Workloads.Models.SapVirtualInstanceState SoftwareDetectionInProgress { get { throw null; } }
         public static Azure.ResourceManager.Workloads.Models.SapVirtualInstanceState SoftwareInstallationFailed { get { throw null; } }
         public static Azure.ResourceManager.Workloads.Models.SapVirtualInstanceState SoftwareInstallationInProgress { get { throw null; } }
         public static Azure.ResourceManager.Workloads.Models.SapVirtualInstanceState SoftwareInstallationPending { get { throw null; } }
@@ -1498,6 +1525,10 @@ namespace Azure.ResourceManager.Workloads.Models
     {
         internal SingleServerRecommendationResult() { }
         public string VmSku { get { throw null; } }
+    }
+    public partial class SkipFileShareConfiguration : Azure.ResourceManager.Workloads.Models.FileShareConfiguration
+    {
+        public SkipFileShareConfiguration() { }
     }
     public partial class SkuCapability
     {
@@ -1617,6 +1648,7 @@ namespace Azure.ResourceManager.Workloads.Models
         public Azure.ResourceManager.Workloads.Models.DatabaseConfiguration DatabaseServer { get { throw null; } set { } }
         public Azure.ResourceManager.Workloads.Models.SapHighAvailabilityType? HighAvailabilityType { get { throw null; } set { } }
         public bool? IsSecondaryIPEnabled { get { throw null; } set { } }
+        public Azure.ResourceManager.Workloads.Models.FileShareConfiguration StorageTransportFileShareConfiguration { get { throw null; } set { } }
     }
     public partial class ThreeTierRecommendationResult : Azure.ResourceManager.Workloads.Models.SapSizingRecommendationResult
     {
