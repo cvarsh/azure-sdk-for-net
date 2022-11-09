@@ -723,5 +723,49 @@ namespace Azure.ResourceManager.AppService
             }
             return PageableHelpers.CreateEnumerable(FirstPageFunc, null);
         }
+
+        /// <summary>
+        /// Return contactadmin namefirst,namelast,phone.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveCertificateOrderContact
+        /// Operation Id: AppServiceCertificateOrders_RetrieveCertificateOrderContact
+        /// </summary>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual async Task<Response<CertificateOrderContact>> RetrieveCertificateOrderContactAsync(CancellationToken cancellationToken = default)
+        {
+            using var scope = _appServiceCertificateOrderClientDiagnostics.CreateScope("AppServiceCertificateOrderResource.RetrieveCertificateOrderContact");
+            scope.Start();
+            try
+            {
+                var response = await _appServiceCertificateOrderRestClient.RetrieveCertificateOrderContactAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken).ConfigureAwait(false);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Return contactadmin namefirst,namelast,phone.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveCertificateOrderContact
+        /// Operation Id: AppServiceCertificateOrders_RetrieveCertificateOrderContact
+        /// </summary>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual Response<CertificateOrderContact> RetrieveCertificateOrderContact(CancellationToken cancellationToken = default)
+        {
+            using var scope = _appServiceCertificateOrderClientDiagnostics.CreateScope("AppServiceCertificateOrderResource.RetrieveCertificateOrderContact");
+            scope.Start();
+            try
+            {
+                var response = _appServiceCertificateOrderRestClient.RetrieveCertificateOrderContact(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
     }
 }
