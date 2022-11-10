@@ -5,9 +5,7 @@
 
 #nullable disable
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Azure.Core;
 
 namespace Azure.ResourceManager.SecurityInsights.Models
@@ -16,13 +14,9 @@ namespace Azure.ResourceManager.SecurityInsights.Models
     internal partial class IncidentAlertList
     {
         /// <summary> Initializes a new instance of IncidentAlertList. </summary>
-        /// <param name="value"> Array of incident alerts. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="value"/> is null. </exception>
-        internal IncidentAlertList(IEnumerable<SecurityAlert> value)
+        internal IncidentAlertList()
         {
-            Argument.AssertNotNull(value, nameof(value));
-
-            Value = value.ToList();
+            Value = new ChangeTrackingList<SecurityAlert>();
         }
 
         /// <summary> Initializes a new instance of IncidentAlertList. </summary>

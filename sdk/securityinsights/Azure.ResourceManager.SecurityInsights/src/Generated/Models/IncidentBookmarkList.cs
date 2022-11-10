@@ -5,9 +5,7 @@
 
 #nullable disable
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Azure.Core;
 
 namespace Azure.ResourceManager.SecurityInsights.Models
@@ -16,13 +14,9 @@ namespace Azure.ResourceManager.SecurityInsights.Models
     internal partial class IncidentBookmarkList
     {
         /// <summary> Initializes a new instance of IncidentBookmarkList. </summary>
-        /// <param name="value"> Array of incident bookmarks. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="value"/> is null. </exception>
-        internal IncidentBookmarkList(IEnumerable<HuntingBookmark> value)
+        internal IncidentBookmarkList()
         {
-            Argument.AssertNotNull(value, nameof(value));
-
-            Value = value.ToList();
+            Value = new ChangeTrackingList<HuntingBookmark>();
         }
 
         /// <summary> Initializes a new instance of IncidentBookmarkList. </summary>

@@ -20,9 +20,9 @@ namespace Azure.ResourceManager.SecurityInsights.Models
             Optional<int> bookmarksCount = default;
             Optional<int> commentsCount = default;
             Optional<IReadOnlyList<string>> alertProductNames = default;
-            Optional<Uri> providerIncidentUrl = default;
             Optional<IReadOnlyList<AttackTactic>> tactics = default;
             Optional<IReadOnlyList<string>> techniques = default;
+            Optional<Uri> providerIncidentUrl = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("alertsCount"))
@@ -70,16 +70,6 @@ namespace Azure.ResourceManager.SecurityInsights.Models
                     alertProductNames = array;
                     continue;
                 }
-                if (property.NameEquals("providerIncidentUrl"))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        providerIncidentUrl = null;
-                        continue;
-                    }
-                    providerIncidentUrl = new Uri(property.Value.GetString());
-                    continue;
-                }
                 if (property.NameEquals("tactics"))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
@@ -110,8 +100,18 @@ namespace Azure.ResourceManager.SecurityInsights.Models
                     techniques = array;
                     continue;
                 }
+                if (property.NameEquals("providerIncidentUrl"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        providerIncidentUrl = null;
+                        continue;
+                    }
+                    providerIncidentUrl = new Uri(property.Value.GetString());
+                    continue;
+                }
             }
-            return new IncidentAdditionalData(Optional.ToNullable(alertsCount), Optional.ToNullable(bookmarksCount), Optional.ToNullable(commentsCount), Optional.ToList(alertProductNames), providerIncidentUrl.Value, Optional.ToList(tactics), Optional.ToList(techniques));
+            return new IncidentAdditionalData(Optional.ToNullable(alertsCount), Optional.ToNullable(bookmarksCount), Optional.ToNullable(commentsCount), Optional.ToList(alertProductNames), Optional.ToList(tactics), Optional.ToList(techniques), providerIncidentUrl.Value);
         }
     }
 }

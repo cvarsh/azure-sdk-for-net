@@ -376,7 +376,7 @@ namespace Azure.ResourceManager.SecurityInsights
         /// <param name="teamProperties"> Team properties. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="teamProperties"/> is null. </exception>
-        public virtual async Task<Response<TeamInformation>> CreateTeamAsync(TeamProperties teamProperties, CancellationToken cancellationToken = default)
+        public virtual async Task<Response<TeamInformation>> CreateTeamAsync(TeamInformation teamProperties, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(teamProperties, nameof(teamProperties));
 
@@ -402,7 +402,7 @@ namespace Azure.ResourceManager.SecurityInsights
         /// <param name="teamProperties"> Team properties. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="teamProperties"/> is null. </exception>
-        public virtual Response<TeamInformation> CreateTeam(TeamProperties teamProperties, CancellationToken cancellationToken = default)
+        public virtual Response<TeamInformation> CreateTeam(TeamInformation teamProperties, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(teamProperties, nameof(teamProperties));
 

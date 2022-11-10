@@ -15,11 +15,16 @@ namespace Azure.ResourceManager.SecurityInsights.Models
     {
         internal static IncidentBookmarkList DeserializeIncidentBookmarkList(JsonElement element)
         {
-            IReadOnlyList<HuntingBookmark> value = default;
+            Optional<IReadOnlyList<HuntingBookmark>> value = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("value"))
                 {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
                     List<HuntingBookmark> array = new List<HuntingBookmark>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
@@ -29,7 +34,7 @@ namespace Azure.ResourceManager.SecurityInsights.Models
                     continue;
                 }
             }
-            return new IncidentBookmarkList(value);
+            return new IncidentBookmarkList(Optional.ToList(value));
         }
     }
 }

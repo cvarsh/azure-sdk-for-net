@@ -15,11 +15,16 @@ namespace Azure.ResourceManager.SecurityInsights.Models
     {
         internal static IncidentAlertList DeserializeIncidentAlertList(JsonElement element)
         {
-            IReadOnlyList<SecurityAlert> value = default;
+            Optional<IReadOnlyList<SecurityAlert>> value = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("value"))
                 {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
                     List<SecurityAlert> array = new List<SecurityAlert>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
@@ -29,7 +34,7 @@ namespace Azure.ResourceManager.SecurityInsights.Models
                     continue;
                 }
             }
-            return new IncidentAlertList(value);
+            return new IncidentAlertList(Optional.ToList(value));
         }
     }
 }
