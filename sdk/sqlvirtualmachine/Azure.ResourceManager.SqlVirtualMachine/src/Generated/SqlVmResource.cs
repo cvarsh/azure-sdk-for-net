@@ -36,6 +36,8 @@ namespace Azure.ResourceManager.SqlVirtualMachine
 
         private readonly ClientDiagnostics _sqlVmSqlVirtualMachinesClientDiagnostics;
         private readonly SqlVirtualMachinesRestOperations _sqlVmSqlVirtualMachinesRestClient;
+        private readonly ClientDiagnostics _sqlVmTroubleshootClientDiagnostics;
+        private readonly SqlVirtualMachineTroubleshootRestOperations _sqlVmTroubleshootRestClient;
         private readonly SqlVmData _data;
 
         /// <summary> Initializes a new instance of the <see cref="SqlVmResource"/> class for mocking. </summary>
@@ -60,6 +62,8 @@ namespace Azure.ResourceManager.SqlVirtualMachine
             _sqlVmSqlVirtualMachinesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.SqlVirtualMachine", ResourceType.Namespace, Diagnostics);
             TryGetApiVersion(ResourceType, out string sqlVmSqlVirtualMachinesApiVersion);
             _sqlVmSqlVirtualMachinesRestClient = new SqlVirtualMachinesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, sqlVmSqlVirtualMachinesApiVersion);
+            _sqlVmTroubleshootClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.SqlVirtualMachine", ProviderConstants.DefaultProviderNamespace, Diagnostics);
+            _sqlVmTroubleshootRestClient = new SqlVirtualMachineTroubleshootRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
 #if DEBUG
 			ValidateResourceId(Id);
 #endif
@@ -252,6 +256,58 @@ namespace Azure.ResourceManager.SqlVirtualMachine
         }
 
         /// <summary>
+        /// Starts Assessment on SQL virtual machine.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/startAssessment
+        /// Operation Id: SqlVirtualMachines_StartAssessment
+        /// </summary>
+        /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual async Task<ArmOperation> StartAssessmentAsync(WaitUntil waitUntil, CancellationToken cancellationToken = default)
+        {
+            using var scope = _sqlVmSqlVirtualMachinesClientDiagnostics.CreateScope("SqlVmResource.StartAssessment");
+            scope.Start();
+            try
+            {
+                var response = await _sqlVmSqlVirtualMachinesRestClient.StartAssessmentAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken).ConfigureAwait(false);
+                var operation = new SqlVirtualMachineArmOperation(_sqlVmSqlVirtualMachinesClientDiagnostics, Pipeline, _sqlVmSqlVirtualMachinesRestClient.CreateStartAssessmentRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name).Request, response, OperationFinalStateVia.Location);
+                if (waitUntil == WaitUntil.Completed)
+                    await operation.WaitForCompletionResponseAsync(cancellationToken).ConfigureAwait(false);
+                return operation;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Starts Assessment on SQL virtual machine.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/startAssessment
+        /// Operation Id: SqlVirtualMachines_StartAssessment
+        /// </summary>
+        /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual ArmOperation StartAssessment(WaitUntil waitUntil, CancellationToken cancellationToken = default)
+        {
+            using var scope = _sqlVmSqlVirtualMachinesClientDiagnostics.CreateScope("SqlVmResource.StartAssessment");
+            scope.Start();
+            try
+            {
+                var response = _sqlVmSqlVirtualMachinesRestClient.StartAssessment(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken);
+                var operation = new SqlVirtualMachineArmOperation(_sqlVmSqlVirtualMachinesClientDiagnostics, Pipeline, _sqlVmSqlVirtualMachinesRestClient.CreateStartAssessmentRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name).Request, response, OperationFinalStateVia.Location);
+                if (waitUntil == WaitUntil.Completed)
+                    operation.WaitForCompletionResponse(cancellationToken);
+                return operation;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Uninstalls and reinstalls the SQL Iaas Extension.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/redeploy
         /// Operation Id: SqlVirtualMachines_Redeploy
@@ -304,20 +360,24 @@ namespace Azure.ResourceManager.SqlVirtualMachine
         }
 
         /// <summary>
-        /// Starts Assessment on SQL virtual machine.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/startAssessment
-        /// Operation Id: SqlVirtualMachines_StartAssessment
+        /// Starts SQL virtual machine troubleshoot.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/troubleshoot
+        /// Operation Id: SqlVirtualMachineTroubleshoot_Troubleshoot
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
+        /// <param name="sqlVmTroubleshoot"> The SQL virtual machine troubleshoot entity. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual async Task<ArmOperation> StartAssessmentAsync(WaitUntil waitUntil, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="sqlVmTroubleshoot"/> is null. </exception>
+        public virtual async Task<ArmOperation> TroubleshootSqlVirtualMachineTroubleshootAsync(WaitUntil waitUntil, SqlVmTroubleshoot sqlVmTroubleshoot, CancellationToken cancellationToken = default)
         {
-            using var scope = _sqlVmSqlVirtualMachinesClientDiagnostics.CreateScope("SqlVmResource.StartAssessment");
+            Argument.AssertNotNull(sqlVmTroubleshoot, nameof(sqlVmTroubleshoot));
+
+            using var scope = _sqlVmTroubleshootClientDiagnostics.CreateScope("SqlVmResource.TroubleshootSqlVirtualMachineTroubleshoot");
             scope.Start();
             try
             {
-                var response = await _sqlVmSqlVirtualMachinesRestClient.StartAssessmentAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken).ConfigureAwait(false);
-                var operation = new SqlVirtualMachineArmOperation(_sqlVmSqlVirtualMachinesClientDiagnostics, Pipeline, _sqlVmSqlVirtualMachinesRestClient.CreateStartAssessmentRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name).Request, response, OperationFinalStateVia.Location);
+                var response = await _sqlVmTroubleshootRestClient.TroubleshootAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, sqlVmTroubleshoot, cancellationToken).ConfigureAwait(false);
+                var operation = new SqlVirtualMachineArmOperation(_sqlVmTroubleshootClientDiagnostics, Pipeline, _sqlVmTroubleshootRestClient.CreateTroubleshootRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, sqlVmTroubleshoot).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionResponseAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -330,20 +390,24 @@ namespace Azure.ResourceManager.SqlVirtualMachine
         }
 
         /// <summary>
-        /// Starts Assessment on SQL virtual machine.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/startAssessment
-        /// Operation Id: SqlVirtualMachines_StartAssessment
+        /// Starts SQL virtual machine troubleshoot.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/troubleshoot
+        /// Operation Id: SqlVirtualMachineTroubleshoot_Troubleshoot
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
+        /// <param name="sqlVmTroubleshoot"> The SQL virtual machine troubleshoot entity. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual ArmOperation StartAssessment(WaitUntil waitUntil, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="sqlVmTroubleshoot"/> is null. </exception>
+        public virtual ArmOperation TroubleshootSqlVirtualMachineTroubleshoot(WaitUntil waitUntil, SqlVmTroubleshoot sqlVmTroubleshoot, CancellationToken cancellationToken = default)
         {
-            using var scope = _sqlVmSqlVirtualMachinesClientDiagnostics.CreateScope("SqlVmResource.StartAssessment");
+            Argument.AssertNotNull(sqlVmTroubleshoot, nameof(sqlVmTroubleshoot));
+
+            using var scope = _sqlVmTroubleshootClientDiagnostics.CreateScope("SqlVmResource.TroubleshootSqlVirtualMachineTroubleshoot");
             scope.Start();
             try
             {
-                var response = _sqlVmSqlVirtualMachinesRestClient.StartAssessment(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, cancellationToken);
-                var operation = new SqlVirtualMachineArmOperation(_sqlVmSqlVirtualMachinesClientDiagnostics, Pipeline, _sqlVmSqlVirtualMachinesRestClient.CreateStartAssessmentRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name).Request, response, OperationFinalStateVia.Location);
+                var response = _sqlVmTroubleshootRestClient.Troubleshoot(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, sqlVmTroubleshoot, cancellationToken);
+                var operation = new SqlVirtualMachineArmOperation(_sqlVmTroubleshootClientDiagnostics, Pipeline, _sqlVmTroubleshootRestClient.CreateTroubleshootRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, sqlVmTroubleshoot).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletionResponse(cancellationToken);
                 return operation;
