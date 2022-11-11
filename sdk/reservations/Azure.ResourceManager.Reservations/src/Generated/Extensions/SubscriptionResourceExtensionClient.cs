@@ -43,24 +43,6 @@ namespace Azure.ResourceManager.Reservations
             return apiVersion;
         }
 
-        /// <summary> Gets a collection of ReservationQuotaResources in the SubscriptionResource. </summary>
-        /// <param name="providerId"> Azure resource provider ID. </param>
-        /// <param name="location"> Azure region. </param>
-        /// <returns> An object representing collection of ReservationQuotaResources and their operations over a ReservationQuotaResource. </returns>
-        public virtual ReservationQuotaCollection GetAllReservationQuota(string providerId, AzureLocation location)
-        {
-            return new ReservationQuotaCollection(Client, Id, providerId, location);
-        }
-
-        /// <summary> Gets a collection of QuotaRequestDetailResources in the SubscriptionResource. </summary>
-        /// <param name="providerId"> Azure resource provider ID. </param>
-        /// <param name="location"> Azure region. </param>
-        /// <returns> An object representing collection of QuotaRequestDetailResources and their operations over a QuotaRequestDetailResource. </returns>
-        public virtual QuotaRequestDetailCollection GetQuotaRequestDetails(string providerId, AzureLocation location)
-        {
-            return new QuotaRequestDetailCollection(Client, Id, providerId, location);
-        }
-
         /// <summary>
         /// Get the regions and skus that are available for RI purchase for the specified Azure subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Capacity/catalogs
