@@ -142,7 +142,7 @@ namespace Azure.ResourceManager.SecurityCenter
         /// <param name="subscriptionId"> Azure subscription ID. </param>
         /// <param name="resourceGroupName"> The name of the resource group within the user&apos;s subscription. The name is case insensitive. </param>
         /// <param name="securityConnectorName"> The security connector name. </param>
-        /// <param name="ruleId"> The security GovernanceRule key - unique key for the standard GovernanceRule. </param>
+        /// <param name="ruleId"> The GovernanceRule key - unique key for the standard GovernanceRule. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="securityConnectorName"/> or <paramref name="ruleId"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="securityConnectorName"/> or <paramref name="ruleId"/> is an empty string, and was expected to be non-empty. </exception>
@@ -175,7 +175,7 @@ namespace Azure.ResourceManager.SecurityCenter
         /// <param name="subscriptionId"> Azure subscription ID. </param>
         /// <param name="resourceGroupName"> The name of the resource group within the user&apos;s subscription. The name is case insensitive. </param>
         /// <param name="securityConnectorName"> The security connector name. </param>
-        /// <param name="ruleId"> The security GovernanceRule key - unique key for the standard GovernanceRule. </param>
+        /// <param name="ruleId"> The GovernanceRule key - unique key for the standard GovernanceRule. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="securityConnectorName"/> or <paramref name="ruleId"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="securityConnectorName"/> or <paramref name="ruleId"/> is an empty string, and was expected to be non-empty. </exception>
@@ -230,12 +230,12 @@ namespace Azure.ResourceManager.SecurityCenter
             return message;
         }
 
-        /// <summary> Creates or update a security GovernanceRule on the given security connector. </summary>
+        /// <summary> Creates or update GovernanceRule on the given security connector. </summary>
         /// <param name="subscriptionId"> Azure subscription ID. </param>
         /// <param name="resourceGroupName"> The name of the resource group within the user&apos;s subscription. The name is case insensitive. </param>
         /// <param name="securityConnectorName"> The security connector name. </param>
-        /// <param name="ruleId"> The security GovernanceRule key - unique key for the standard GovernanceRule. </param>
-        /// <param name="data"> GovernanceRule over a subscription scope. </param>
+        /// <param name="ruleId"> The GovernanceRule key - unique key for the standard GovernanceRule. </param>
+        /// <param name="data"> GovernanceRule over a given scope. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="securityConnectorName"/>, <paramref name="ruleId"/> or <paramref name="data"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="securityConnectorName"/> or <paramref name="ruleId"/> is an empty string, and was expected to be non-empty. </exception>
@@ -264,12 +264,12 @@ namespace Azure.ResourceManager.SecurityCenter
             }
         }
 
-        /// <summary> Creates or update a security GovernanceRule on the given security connector. </summary>
+        /// <summary> Creates or update GovernanceRule on the given security connector. </summary>
         /// <param name="subscriptionId"> Azure subscription ID. </param>
         /// <param name="resourceGroupName"> The name of the resource group within the user&apos;s subscription. The name is case insensitive. </param>
         /// <param name="securityConnectorName"> The security connector name. </param>
-        /// <param name="ruleId"> The security GovernanceRule key - unique key for the standard GovernanceRule. </param>
-        /// <param name="data"> GovernanceRule over a subscription scope. </param>
+        /// <param name="ruleId"> The GovernanceRule key - unique key for the standard GovernanceRule. </param>
+        /// <param name="data"> GovernanceRule over a given scope. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="securityConnectorName"/>, <paramref name="ruleId"/> or <paramref name="data"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="securityConnectorName"/> or <paramref name="ruleId"/> is an empty string, and was expected to be non-empty. </exception>
@@ -323,7 +323,7 @@ namespace Azure.ResourceManager.SecurityCenter
         /// <param name="subscriptionId"> Azure subscription ID. </param>
         /// <param name="resourceGroupName"> The name of the resource group within the user&apos;s subscription. The name is case insensitive. </param>
         /// <param name="securityConnectorName"> The security connector name. </param>
-        /// <param name="ruleId"> The security GovernanceRule key - unique key for the standard GovernanceRule. </param>
+        /// <param name="ruleId"> The GovernanceRule key - unique key for the standard GovernanceRule. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="securityConnectorName"/> or <paramref name="ruleId"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="securityConnectorName"/> or <paramref name="ruleId"/> is an empty string, and was expected to be non-empty. </exception>
@@ -339,6 +339,7 @@ namespace Azure.ResourceManager.SecurityCenter
             switch (message.Response.Status)
             {
                 case 200:
+                case 202:
                 case 204:
                     return message.Response;
                 default:
@@ -350,7 +351,7 @@ namespace Azure.ResourceManager.SecurityCenter
         /// <param name="subscriptionId"> Azure subscription ID. </param>
         /// <param name="resourceGroupName"> The name of the resource group within the user&apos;s subscription. The name is case insensitive. </param>
         /// <param name="securityConnectorName"> The security connector name. </param>
-        /// <param name="ruleId"> The security GovernanceRule key - unique key for the standard GovernanceRule. </param>
+        /// <param name="ruleId"> The GovernanceRule key - unique key for the standard GovernanceRule. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="securityConnectorName"/> or <paramref name="ruleId"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="securityConnectorName"/> or <paramref name="ruleId"/> is an empty string, and was expected to be non-empty. </exception>
@@ -366,6 +367,7 @@ namespace Azure.ResourceManager.SecurityCenter
             switch (message.Response.Status)
             {
                 case 200:
+                case 202:
                 case 204:
                     return message.Response;
                 default:

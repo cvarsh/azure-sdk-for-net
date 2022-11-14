@@ -56,7 +56,7 @@ namespace Azure.ResourceManager.SecurityCenter
             return message;
         }
 
-        /// <summary> Get security governanceAssignments on all your resources inside a scope. </summary>
+        /// <summary> Get governanceAssignments on all your resources inside a scope. </summary>
         /// <param name="scope"> Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group (/providers/Microsoft.Management/managementGroups/mgName). </param>
         /// <param name="assessmentName"> The Assessment Key - Unique key for the assessment type. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -83,7 +83,7 @@ namespace Azure.ResourceManager.SecurityCenter
             }
         }
 
-        /// <summary> Get security governanceAssignments on all your resources inside a scope. </summary>
+        /// <summary> Get governanceAssignments on all your resources inside a scope. </summary>
         /// <param name="scope"> Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group (/providers/Microsoft.Management/managementGroups/mgName). </param>
         /// <param name="assessmentName"> The Assessment Key - Unique key for the assessment type. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -216,7 +216,7 @@ namespace Azure.ResourceManager.SecurityCenter
             return message;
         }
 
-        /// <summary> Creates or update a security GovernanceAssignment on the given subscription. </summary>
+        /// <summary> Creates or update a GovernanceAssignment on the given subscription. </summary>
         /// <param name="scope"> Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group (/providers/Microsoft.Management/managementGroups/mgName). </param>
         /// <param name="assessmentName"> The Assessment Key - Unique key for the assessment type. </param>
         /// <param name="assignmentKey"> The security governance assignment key - the assessment key of the required governance assignment. </param>
@@ -248,7 +248,7 @@ namespace Azure.ResourceManager.SecurityCenter
             }
         }
 
-        /// <summary> Creates or update a security GovernanceAssignment on the given subscription. </summary>
+        /// <summary> Creates or update a GovernanceAssignment on the given subscription. </summary>
         /// <param name="scope"> Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group (/providers/Microsoft.Management/managementGroups/mgName). </param>
         /// <param name="assessmentName"> The Assessment Key - Unique key for the assessment type. </param>
         /// <param name="assignmentKey"> The security governance assignment key - the assessment key of the required governance assignment. </param>
@@ -363,7 +363,7 @@ namespace Azure.ResourceManager.SecurityCenter
             return message;
         }
 
-        /// <summary> Get security governanceAssignments on all your resources inside a scope. </summary>
+        /// <summary> Get governanceAssignments on all your resources inside a scope. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="scope"> Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group (/providers/Microsoft.Management/managementGroups/mgName). </param>
         /// <param name="assessmentName"> The Assessment Key - Unique key for the assessment type. </param>
@@ -392,7 +392,7 @@ namespace Azure.ResourceManager.SecurityCenter
             }
         }
 
-        /// <summary> Get security governanceAssignments on all your resources inside a scope. </summary>
+        /// <summary> Get governanceAssignments on all your resources inside a scope. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="scope"> Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group (/providers/Microsoft.Management/managementGroups/mgName). </param>
         /// <param name="assessmentName"> The Assessment Key - Unique key for the assessment type. </param>

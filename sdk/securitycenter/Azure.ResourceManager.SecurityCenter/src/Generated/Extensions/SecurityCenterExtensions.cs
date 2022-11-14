@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Azure;
 using Azure.Core;
 using Azure.ResourceManager;
+using Azure.ResourceManager.ManagementGroups;
 using Azure.ResourceManager.Resources;
 using Azure.ResourceManager.SecurityCenter.Models;
 
@@ -589,7 +590,7 @@ namespace Azure.ResourceManager.SecurityCenter
         /// Operation Id: GovernanceRules_Get
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="ruleId"> The security GovernanceRule key - unique key for the standard GovernanceRule. </param>
+        /// <param name="ruleId"> The GovernanceRule key - unique key for the standard GovernanceRule. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentException"> <paramref name="ruleId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ArgumentNullException"> <paramref name="ruleId"/> is null. </exception>
@@ -605,7 +606,7 @@ namespace Azure.ResourceManager.SecurityCenter
         /// Operation Id: GovernanceRules_Get
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="ruleId"> The security GovernanceRule key - unique key for the standard GovernanceRule. </param>
+        /// <param name="ruleId"> The GovernanceRule key - unique key for the standard GovernanceRule. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentException"> <paramref name="ruleId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ArgumentNullException"> <paramref name="ruleId"/> is null. </exception>
@@ -1908,6 +1909,55 @@ namespace Azure.ResourceManager.SecurityCenter
             return GetExtensionClient(resourceGroupResource).GetAlertsByResourceGroup(cancellationToken);
         }
 
+        private static ManagementGroupResourceExtensionClient GetExtensionClient(ManagementGroupResource managementGroupResource)
+        {
+            return managementGroupResource.GetCachedClient((client) =>
+            {
+                return new ManagementGroupResourceExtensionClient(client, managementGroupResource.Id);
+            }
+            );
+        }
+
+        /// <summary> Gets a collection of ManagementGroupGovernanceRuleResources in the ManagementGroupResource. </summary>
+        /// <param name="managementGroupResource"> The <see cref="ManagementGroupResource" /> instance the method will execute against. </param>
+        /// <returns> An object representing collection of ManagementGroupGovernanceRuleResources and their operations over a ManagementGroupGovernanceRuleResource. </returns>
+        public static ManagementGroupGovernanceRuleCollection GetManagementGroupGovernanceRules(this ManagementGroupResource managementGroupResource)
+        {
+            return GetExtensionClient(managementGroupResource).GetManagementGroupGovernanceRules();
+        }
+
+        /// <summary>
+        /// Get a specific governanceRule for the requested scope by ruleId
+        /// Request Path: /providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Security/governanceRules/{ruleId}
+        /// Operation Id: managementGroupGovernanceRules_Get
+        /// </summary>
+        /// <param name="managementGroupResource"> The <see cref="ManagementGroupResource" /> instance the method will execute against. </param>
+        /// <param name="ruleId"> The GovernanceRule key - unique key for the standard GovernanceRule. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="ruleId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="ruleId"/> is null. </exception>
+        [ForwardsClientCalls]
+        public static async Task<Response<ManagementGroupGovernanceRuleResource>> GetManagementGroupGovernanceRuleAsync(this ManagementGroupResource managementGroupResource, string ruleId, CancellationToken cancellationToken = default)
+        {
+            return await managementGroupResource.GetManagementGroupGovernanceRules().GetAsync(ruleId, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Get a specific governanceRule for the requested scope by ruleId
+        /// Request Path: /providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Security/governanceRules/{ruleId}
+        /// Operation Id: managementGroupGovernanceRules_Get
+        /// </summary>
+        /// <param name="managementGroupResource"> The <see cref="ManagementGroupResource" /> instance the method will execute against. </param>
+        /// <param name="ruleId"> The GovernanceRule key - unique key for the standard GovernanceRule. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="ruleId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="ruleId"/> is null. </exception>
+        [ForwardsClientCalls]
+        public static Response<ManagementGroupGovernanceRuleResource> GetManagementGroupGovernanceRule(this ManagementGroupResource managementGroupResource, string ruleId, CancellationToken cancellationToken = default)
+        {
+            return managementGroupResource.GetManagementGroupGovernanceRules().Get(ruleId, cancellationToken);
+        }
+
         private static ArmResourceExtensionClient GetExtensionClient(ArmClient client, ResourceIdentifier scope)
         {
             return client.GetResourceClient(() =>
@@ -2992,6 +3042,25 @@ namespace Azure.ResourceManager.SecurityCenter
             {
                 SecurityConnectorGovernanceRuleResource.ValidateResourceId(id);
                 return new SecurityConnectorGovernanceRuleResource(client, id);
+            }
+            );
+        }
+        #endregion
+
+        #region ManagementGroupGovernanceRuleResource
+        /// <summary>
+        /// Gets an object representing a <see cref="ManagementGroupGovernanceRuleResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="ManagementGroupGovernanceRuleResource.CreateResourceIdentifier" /> to create a <see cref="ManagementGroupGovernanceRuleResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="ManagementGroupGovernanceRuleResource" /> object. </returns>
+        public static ManagementGroupGovernanceRuleResource GetManagementGroupGovernanceRuleResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                ManagementGroupGovernanceRuleResource.ValidateResourceId(id);
+                return new ManagementGroupGovernanceRuleResource(client, id);
             }
             );
         }

@@ -54,7 +54,7 @@ namespace Azure.ResourceManager.SecurityCenter
         }
 
         /// <summary>
-        /// Creates or update a security GovernanceAssignment on the given subscription.
+        /// Creates or update a GovernanceAssignment on the given subscription.
         /// Request Path: /{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}
         /// Operation Id: GovernanceAssignments_CreateOrUpdate
         /// </summary>
@@ -87,7 +87,7 @@ namespace Azure.ResourceManager.SecurityCenter
         }
 
         /// <summary>
-        /// Creates or update a security GovernanceAssignment on the given subscription.
+        /// Creates or update a GovernanceAssignment on the given subscription.
         /// Request Path: /{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}
         /// Operation Id: GovernanceAssignments_CreateOrUpdate
         /// </summary>
@@ -178,7 +178,7 @@ namespace Azure.ResourceManager.SecurityCenter
         }
 
         /// <summary>
-        /// Get security governanceAssignments on all your resources inside a scope
+        /// Get governanceAssignments on all your resources inside a scope
         /// Request Path: /{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments
         /// Operation Id: GovernanceAssignments_List
         /// </summary>
@@ -220,7 +220,7 @@ namespace Azure.ResourceManager.SecurityCenter
         }
 
         /// <summary>
-        /// Get security governanceAssignments on all your resources inside a scope
+        /// Get governanceAssignments on all your resources inside a scope
         /// Request Path: /{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments
         /// Operation Id: GovernanceAssignments_List
         /// </summary>

@@ -100,7 +100,7 @@ namespace Azure.ResourceManager.SecurityCenter
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/governanceRules/{ruleId}
         /// Operation Id: SecurityConnectorGovernanceRules_Get
         /// </summary>
-        /// <param name="ruleId"> The security GovernanceRule key - unique key for the standard GovernanceRule. </param>
+        /// <param name="ruleId"> The GovernanceRule key - unique key for the standard GovernanceRule. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentException"> <paramref name="ruleId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ArgumentNullException"> <paramref name="ruleId"/> is null. </exception>
@@ -115,7 +115,7 @@ namespace Azure.ResourceManager.SecurityCenter
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/governanceRules/{ruleId}
         /// Operation Id: SecurityConnectorGovernanceRules_Get
         /// </summary>
-        /// <param name="ruleId"> The security GovernanceRule key - unique key for the standard GovernanceRule. </param>
+        /// <param name="ruleId"> The GovernanceRule key - unique key for the standard GovernanceRule. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentException"> <paramref name="ruleId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ArgumentNullException"> <paramref name="ruleId"/> is null. </exception>

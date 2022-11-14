@@ -13,60 +13,61 @@ using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
 using Azure.ResourceManager;
+using Azure.ResourceManager.ManagementGroups;
 using Azure.ResourceManager.SecurityCenter.Models;
 
 namespace Azure.ResourceManager.SecurityCenter
 {
     /// <summary>
-    /// A Class representing a SecurityConnectorGovernanceRule along with the instance operations that can be performed on it.
-    /// If you have a <see cref="ResourceIdentifier" /> you can construct a <see cref="SecurityConnectorGovernanceRuleResource" />
-    /// from an instance of <see cref="ArmClient" /> using the GetSecurityConnectorGovernanceRuleResource method.
-    /// Otherwise you can get one from its parent resource <see cref="SecurityConnectorResource" /> using the GetSecurityConnectorGovernanceRule method.
+    /// A Class representing a ManagementGroupGovernanceRule along with the instance operations that can be performed on it.
+    /// If you have a <see cref="ResourceIdentifier" /> you can construct a <see cref="ManagementGroupGovernanceRuleResource" />
+    /// from an instance of <see cref="ArmClient" /> using the GetManagementGroupGovernanceRuleResource method.
+    /// Otherwise you can get one from its parent resource <see cref="ManagementGroupResource" /> using the GetManagementGroupGovernanceRule method.
     /// </summary>
-    public partial class SecurityConnectorGovernanceRuleResource : ArmResource
+    public partial class ManagementGroupGovernanceRuleResource : ArmResource
     {
-        /// <summary> Generate the resource identifier of a <see cref="SecurityConnectorGovernanceRuleResource"/> instance. </summary>
-        public static ResourceIdentifier CreateResourceIdentifier(string subscriptionId, string resourceGroupName, string securityConnectorName, string ruleId)
+        /// <summary> Generate the resource identifier of a <see cref="ManagementGroupGovernanceRuleResource"/> instance. </summary>
+        public static ResourceIdentifier CreateResourceIdentifier(string managementGroupId, string ruleId)
         {
-            var resourceId = $"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/governanceRules/{ruleId}";
+            var resourceId = $"/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Security/governanceRules/{ruleId}";
             return new ResourceIdentifier(resourceId);
         }
 
-        private readonly ClientDiagnostics _securityConnectorGovernanceRuleClientDiagnostics;
-        private readonly SecurityConnectorGovernanceRulesRestOperations _securityConnectorGovernanceRuleRestClient;
+        private readonly ClientDiagnostics _managementGroupGovernanceRulemanagementGroupGovernanceRulesClientDiagnostics;
+        private readonly ManagementGroupGovernanceRulesRestOperations _managementGroupGovernanceRulemanagementGroupGovernanceRulesRestClient;
         private readonly ClientDiagnostics _subscriptionGovernanceRuleGovernanceRulesClientDiagnostics;
         private readonly GovernanceRulesRestOperations _subscriptionGovernanceRuleGovernanceRulesRestClient;
-        private readonly ClientDiagnostics _securityConnectorGovernanceRulesExecuteStatusClientDiagnostics;
-        private readonly SecurityConnectorGovernanceRulesExecuteStatusRestOperations _securityConnectorGovernanceRulesExecuteStatusRestClient;
+        private readonly ClientDiagnostics _managementGroupGovernanceRulesExecuteStatusClientDiagnostics;
+        private readonly ManagementGroupGovernanceRulesExecuteStatusRestOperations _managementGroupGovernanceRulesExecuteStatusRestClient;
         private readonly GovernanceRuleData _data;
 
-        /// <summary> Initializes a new instance of the <see cref="SecurityConnectorGovernanceRuleResource"/> class for mocking. </summary>
-        protected SecurityConnectorGovernanceRuleResource()
+        /// <summary> Initializes a new instance of the <see cref="ManagementGroupGovernanceRuleResource"/> class for mocking. </summary>
+        protected ManagementGroupGovernanceRuleResource()
         {
         }
 
-        /// <summary> Initializes a new instance of the <see cref = "SecurityConnectorGovernanceRuleResource"/> class. </summary>
+        /// <summary> Initializes a new instance of the <see cref = "ManagementGroupGovernanceRuleResource"/> class. </summary>
         /// <param name="client"> The client parameters to use in these operations. </param>
         /// <param name="data"> The resource that is the target of operations. </param>
-        internal SecurityConnectorGovernanceRuleResource(ArmClient client, GovernanceRuleData data) : this(client, data.Id)
+        internal ManagementGroupGovernanceRuleResource(ArmClient client, GovernanceRuleData data) : this(client, data.Id)
         {
             HasData = true;
             _data = data;
         }
 
-        /// <summary> Initializes a new instance of the <see cref="SecurityConnectorGovernanceRuleResource"/> class. </summary>
+        /// <summary> Initializes a new instance of the <see cref="ManagementGroupGovernanceRuleResource"/> class. </summary>
         /// <param name="client"> The client parameters to use in these operations. </param>
         /// <param name="id"> The identifier of the resource that is the target of operations. </param>
-        internal SecurityConnectorGovernanceRuleResource(ArmClient client, ResourceIdentifier id) : base(client, id)
+        internal ManagementGroupGovernanceRuleResource(ArmClient client, ResourceIdentifier id) : base(client, id)
         {
-            _securityConnectorGovernanceRuleClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.SecurityCenter", ResourceType.Namespace, Diagnostics);
-            TryGetApiVersion(ResourceType, out string securityConnectorGovernanceRuleApiVersion);
-            _securityConnectorGovernanceRuleRestClient = new SecurityConnectorGovernanceRulesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, securityConnectorGovernanceRuleApiVersion);
+            _managementGroupGovernanceRulemanagementGroupGovernanceRulesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.SecurityCenter", ResourceType.Namespace, Diagnostics);
+            TryGetApiVersion(ResourceType, out string managementGroupGovernanceRulemanagementGroupGovernanceRulesApiVersion);
+            _managementGroupGovernanceRulemanagementGroupGovernanceRulesRestClient = new ManagementGroupGovernanceRulesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, managementGroupGovernanceRulemanagementGroupGovernanceRulesApiVersion);
             _subscriptionGovernanceRuleGovernanceRulesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.SecurityCenter", SubscriptionGovernanceRuleResource.ResourceType.Namespace, Diagnostics);
             TryGetApiVersion(SubscriptionGovernanceRuleResource.ResourceType, out string subscriptionGovernanceRuleGovernanceRulesApiVersion);
             _subscriptionGovernanceRuleGovernanceRulesRestClient = new GovernanceRulesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, subscriptionGovernanceRuleGovernanceRulesApiVersion);
-            _securityConnectorGovernanceRulesExecuteStatusClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.SecurityCenter", ProviderConstants.DefaultProviderNamespace, Diagnostics);
-            _securityConnectorGovernanceRulesExecuteStatusRestClient = new SecurityConnectorGovernanceRulesExecuteStatusRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
+            _managementGroupGovernanceRulesExecuteStatusClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.SecurityCenter", ProviderConstants.DefaultProviderNamespace, Diagnostics);
+            _managementGroupGovernanceRulesExecuteStatusRestClient = new ManagementGroupGovernanceRulesExecuteStatusRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
 #if DEBUG
 			ValidateResourceId(Id);
 #endif
@@ -98,20 +99,20 @@ namespace Azure.ResourceManager.SecurityCenter
 
         /// <summary>
         /// Get a specific governanceRule for the requested scope by ruleId
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/governanceRules/{ruleId}
-        /// Operation Id: SecurityConnectorGovernanceRules_Get
+        /// Request Path: /providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Security/governanceRules/{ruleId}
+        /// Operation Id: managementGroupGovernanceRules_Get
         /// </summary>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual async Task<Response<SecurityConnectorGovernanceRuleResource>> GetAsync(CancellationToken cancellationToken = default)
+        public virtual async Task<Response<ManagementGroupGovernanceRuleResource>> GetAsync(CancellationToken cancellationToken = default)
         {
-            using var scope = _securityConnectorGovernanceRuleClientDiagnostics.CreateScope("SecurityConnectorGovernanceRuleResource.Get");
+            using var scope = _managementGroupGovernanceRulemanagementGroupGovernanceRulesClientDiagnostics.CreateScope("ManagementGroupGovernanceRuleResource.Get");
             scope.Start();
             try
             {
-                var response = await _securityConnectorGovernanceRuleRestClient.GetAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken).ConfigureAwait(false);
+                var response = await _managementGroupGovernanceRulemanagementGroupGovernanceRulesRestClient.GetAsync(Id.Name, cancellationToken).ConfigureAwait(false);
                 if (response.Value == null)
                     throw new RequestFailedException(response.GetRawResponse());
-                return Response.FromValue(new SecurityConnectorGovernanceRuleResource(Client, response.Value), response.GetRawResponse());
+                return Response.FromValue(new ManagementGroupGovernanceRuleResource(Client, response.Value), response.GetRawResponse());
             }
             catch (Exception e)
             {
@@ -122,20 +123,20 @@ namespace Azure.ResourceManager.SecurityCenter
 
         /// <summary>
         /// Get a specific governanceRule for the requested scope by ruleId
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/governanceRules/{ruleId}
-        /// Operation Id: SecurityConnectorGovernanceRules_Get
+        /// Request Path: /providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Security/governanceRules/{ruleId}
+        /// Operation Id: managementGroupGovernanceRules_Get
         /// </summary>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual Response<SecurityConnectorGovernanceRuleResource> Get(CancellationToken cancellationToken = default)
+        public virtual Response<ManagementGroupGovernanceRuleResource> Get(CancellationToken cancellationToken = default)
         {
-            using var scope = _securityConnectorGovernanceRuleClientDiagnostics.CreateScope("SecurityConnectorGovernanceRuleResource.Get");
+            using var scope = _managementGroupGovernanceRulemanagementGroupGovernanceRulesClientDiagnostics.CreateScope("ManagementGroupGovernanceRuleResource.Get");
             scope.Start();
             try
             {
-                var response = _securityConnectorGovernanceRuleRestClient.Get(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken);
+                var response = _managementGroupGovernanceRulemanagementGroupGovernanceRulesRestClient.Get(Id.Name, cancellationToken);
                 if (response.Value == null)
                     throw new RequestFailedException(response.GetRawResponse());
-                return Response.FromValue(new SecurityConnectorGovernanceRuleResource(Client, response.Value), response.GetRawResponse());
+                return Response.FromValue(new ManagementGroupGovernanceRuleResource(Client, response.Value), response.GetRawResponse());
             }
             catch (Exception e)
             {
@@ -146,19 +147,19 @@ namespace Azure.ResourceManager.SecurityCenter
 
         /// <summary>
         /// Delete a GovernanceRule over a given scope
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/governanceRules/{ruleId}
-        /// Operation Id: SecurityConnectorGovernanceRules_Delete
+        /// Request Path: /providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Security/governanceRules/{ruleId}
+        /// Operation Id: ManagementGroupGovernanceRules_Delete
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public virtual async Task<ArmOperation> DeleteAsync(WaitUntil waitUntil, CancellationToken cancellationToken = default)
         {
-            using var scope = _securityConnectorGovernanceRuleClientDiagnostics.CreateScope("SecurityConnectorGovernanceRuleResource.Delete");
+            using var scope = _managementGroupGovernanceRulemanagementGroupGovernanceRulesClientDiagnostics.CreateScope("ManagementGroupGovernanceRuleResource.Delete");
             scope.Start();
             try
             {
-                var response = await _securityConnectorGovernanceRuleRestClient.DeleteAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken).ConfigureAwait(false);
-                var operation = new SecurityCenterArmOperation(_securityConnectorGovernanceRuleClientDiagnostics, Pipeline, _securityConnectorGovernanceRuleRestClient.CreateDeleteRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
+                var response = await _managementGroupGovernanceRulemanagementGroupGovernanceRulesRestClient.DeleteAsync(Id.Name, cancellationToken).ConfigureAwait(false);
+                var operation = new SecurityCenterArmOperation(_managementGroupGovernanceRulemanagementGroupGovernanceRulesClientDiagnostics, Pipeline, _managementGroupGovernanceRulemanagementGroupGovernanceRulesRestClient.CreateDeleteRequest(Id.Name).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionResponseAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -172,19 +173,19 @@ namespace Azure.ResourceManager.SecurityCenter
 
         /// <summary>
         /// Delete a GovernanceRule over a given scope
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/governanceRules/{ruleId}
-        /// Operation Id: SecurityConnectorGovernanceRules_Delete
+        /// Request Path: /providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Security/governanceRules/{ruleId}
+        /// Operation Id: ManagementGroupGovernanceRules_Delete
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public virtual ArmOperation Delete(WaitUntil waitUntil, CancellationToken cancellationToken = default)
         {
-            using var scope = _securityConnectorGovernanceRuleClientDiagnostics.CreateScope("SecurityConnectorGovernanceRuleResource.Delete");
+            using var scope = _managementGroupGovernanceRulemanagementGroupGovernanceRulesClientDiagnostics.CreateScope("ManagementGroupGovernanceRuleResource.Delete");
             scope.Start();
             try
             {
-                var response = _securityConnectorGovernanceRuleRestClient.Delete(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken);
-                var operation = new SecurityCenterArmOperation(_securityConnectorGovernanceRuleClientDiagnostics, Pipeline, _securityConnectorGovernanceRuleRestClient.CreateDeleteRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
+                var response = _managementGroupGovernanceRulemanagementGroupGovernanceRulesRestClient.Delete(Id.Name, cancellationToken);
+                var operation = new SecurityCenterArmOperation(_managementGroupGovernanceRulemanagementGroupGovernanceRulesClientDiagnostics, Pipeline, _managementGroupGovernanceRulemanagementGroupGovernanceRulesRestClient.CreateDeleteRequest(Id.Name).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletionResponse(cancellationToken);
                 return operation;
@@ -197,24 +198,24 @@ namespace Azure.ResourceManager.SecurityCenter
         }
 
         /// <summary>
-        /// Creates or update GovernanceRule on the given security connector
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/governanceRules/{ruleId}
-        /// Operation Id: SecurityConnectorGovernanceRules_CreateOrUpdate
+        /// Creates or update GovernanceRule on the given management group
+        /// Request Path: /providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Security/governanceRules/{ruleId}
+        /// Operation Id: ManagementGroupGovernanceRules_CreateOrUpdate
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="data"> GovernanceRule over a given scope. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="data"/> is null. </exception>
-        public virtual async Task<ArmOperation<SecurityConnectorGovernanceRuleResource>> UpdateAsync(WaitUntil waitUntil, GovernanceRuleData data, CancellationToken cancellationToken = default)
+        public virtual async Task<ArmOperation<ManagementGroupGovernanceRuleResource>> UpdateAsync(WaitUntil waitUntil, GovernanceRuleData data, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(data, nameof(data));
 
-            using var scope = _securityConnectorGovernanceRuleClientDiagnostics.CreateScope("SecurityConnectorGovernanceRuleResource.Update");
+            using var scope = _managementGroupGovernanceRulemanagementGroupGovernanceRulesClientDiagnostics.CreateScope("ManagementGroupGovernanceRuleResource.Update");
             scope.Start();
             try
             {
-                var response = await _securityConnectorGovernanceRuleRestClient.CreateOrUpdateAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, data, cancellationToken).ConfigureAwait(false);
-                var operation = new SecurityCenterArmOperation<SecurityConnectorGovernanceRuleResource>(Response.FromValue(new SecurityConnectorGovernanceRuleResource(Client, response), response.GetRawResponse()));
+                var response = await _managementGroupGovernanceRulemanagementGroupGovernanceRulesRestClient.CreateOrUpdateAsync(Id.Name, data, cancellationToken).ConfigureAwait(false);
+                var operation = new SecurityCenterArmOperation<ManagementGroupGovernanceRuleResource>(Response.FromValue(new ManagementGroupGovernanceRuleResource(Client, response), response.GetRawResponse()));
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -227,24 +228,24 @@ namespace Azure.ResourceManager.SecurityCenter
         }
 
         /// <summary>
-        /// Creates or update GovernanceRule on the given security connector
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/governanceRules/{ruleId}
-        /// Operation Id: SecurityConnectorGovernanceRules_CreateOrUpdate
+        /// Creates or update GovernanceRule on the given management group
+        /// Request Path: /providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Security/governanceRules/{ruleId}
+        /// Operation Id: ManagementGroupGovernanceRules_CreateOrUpdate
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="data"> GovernanceRule over a given scope. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="data"/> is null. </exception>
-        public virtual ArmOperation<SecurityConnectorGovernanceRuleResource> Update(WaitUntil waitUntil, GovernanceRuleData data, CancellationToken cancellationToken = default)
+        public virtual ArmOperation<ManagementGroupGovernanceRuleResource> Update(WaitUntil waitUntil, GovernanceRuleData data, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(data, nameof(data));
 
-            using var scope = _securityConnectorGovernanceRuleClientDiagnostics.CreateScope("SecurityConnectorGovernanceRuleResource.Update");
+            using var scope = _managementGroupGovernanceRulemanagementGroupGovernanceRulesClientDiagnostics.CreateScope("ManagementGroupGovernanceRuleResource.Update");
             scope.Start();
             try
             {
-                var response = _securityConnectorGovernanceRuleRestClient.CreateOrUpdate(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, data, cancellationToken);
-                var operation = new SecurityCenterArmOperation<SecurityConnectorGovernanceRuleResource>(Response.FromValue(new SecurityConnectorGovernanceRuleResource(Client, response), response.GetRawResponse()));
+                var response = _managementGroupGovernanceRulemanagementGroupGovernanceRulesRestClient.CreateOrUpdate(Id.Name, data, cancellationToken);
+                var operation = new SecurityCenterArmOperation<ManagementGroupGovernanceRuleResource>(Response.FromValue(new ManagementGroupGovernanceRuleResource(Client, response), response.GetRawResponse()));
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletion(cancellationToken);
                 return operation;
@@ -257,21 +258,21 @@ namespace Azure.ResourceManager.SecurityCenter
         }
 
         /// <summary>
-        /// Execute a GovernanceRule on the given security connector
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/governanceRules/{ruleId}/execute
-        /// Operation Id: GovernanceRules_RuleIdExecuteSingleSecurityConnector
+        /// Execute GovernanceRule on the given management group
+        /// Request Path: /providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Security/governanceRules/{ruleId}/execute
+        /// Operation Id: GovernanceRules_RuleIdExecuteSingleManagementGroup
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="executeGovernanceRuleParams"> ExecuteGovernanceRule over a given scope. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual async Task<ArmOperation> ExecuteRuleAsync(WaitUntil waitUntil, ExecuteGovernanceRuleParams executeGovernanceRuleParams = null, CancellationToken cancellationToken = default)
+        public virtual async Task<ArmOperation> RuleIdExecuteSingleManagementGroupGovernanceRuleAsync(WaitUntil waitUntil, ExecuteGovernanceRuleParams executeGovernanceRuleParams = null, CancellationToken cancellationToken = default)
         {
-            using var scope = _subscriptionGovernanceRuleGovernanceRulesClientDiagnostics.CreateScope("SecurityConnectorGovernanceRuleResource.ExecuteRule");
+            using var scope = _subscriptionGovernanceRuleGovernanceRulesClientDiagnostics.CreateScope("ManagementGroupGovernanceRuleResource.RuleIdExecuteSingleManagementGroupGovernanceRule");
             scope.Start();
             try
             {
-                var response = await _subscriptionGovernanceRuleGovernanceRulesRestClient.RuleIdExecuteSingleSecurityConnectorAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, executeGovernanceRuleParams, cancellationToken).ConfigureAwait(false);
-                var operation = new SecurityCenterArmOperation(_subscriptionGovernanceRuleGovernanceRulesClientDiagnostics, Pipeline, _subscriptionGovernanceRuleGovernanceRulesRestClient.CreateRuleIdExecuteSingleSecurityConnectorRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, executeGovernanceRuleParams).Request, response, OperationFinalStateVia.Location);
+                var response = await _subscriptionGovernanceRuleGovernanceRulesRestClient.RuleIdExecuteSingleManagementGroupAsync(Id.Name, executeGovernanceRuleParams, cancellationToken).ConfigureAwait(false);
+                var operation = new SecurityCenterArmOperation(_subscriptionGovernanceRuleGovernanceRulesClientDiagnostics, Pipeline, _subscriptionGovernanceRuleGovernanceRulesRestClient.CreateRuleIdExecuteSingleManagementGroupRequest(Id.Name, executeGovernanceRuleParams).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionResponseAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -284,21 +285,21 @@ namespace Azure.ResourceManager.SecurityCenter
         }
 
         /// <summary>
-        /// Execute a GovernanceRule on the given security connector
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/governanceRules/{ruleId}/execute
-        /// Operation Id: GovernanceRules_RuleIdExecuteSingleSecurityConnector
+        /// Execute GovernanceRule on the given management group
+        /// Request Path: /providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Security/governanceRules/{ruleId}/execute
+        /// Operation Id: GovernanceRules_RuleIdExecuteSingleManagementGroup
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="executeGovernanceRuleParams"> ExecuteGovernanceRule over a given scope. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual ArmOperation ExecuteRule(WaitUntil waitUntil, ExecuteGovernanceRuleParams executeGovernanceRuleParams = null, CancellationToken cancellationToken = default)
+        public virtual ArmOperation RuleIdExecuteSingleManagementGroupGovernanceRule(WaitUntil waitUntil, ExecuteGovernanceRuleParams executeGovernanceRuleParams = null, CancellationToken cancellationToken = default)
         {
-            using var scope = _subscriptionGovernanceRuleGovernanceRulesClientDiagnostics.CreateScope("SecurityConnectorGovernanceRuleResource.ExecuteRule");
+            using var scope = _subscriptionGovernanceRuleGovernanceRulesClientDiagnostics.CreateScope("ManagementGroupGovernanceRuleResource.RuleIdExecuteSingleManagementGroupGovernanceRule");
             scope.Start();
             try
             {
-                var response = _subscriptionGovernanceRuleGovernanceRulesRestClient.RuleIdExecuteSingleSecurityConnector(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, executeGovernanceRuleParams, cancellationToken);
-                var operation = new SecurityCenterArmOperation(_subscriptionGovernanceRuleGovernanceRulesClientDiagnostics, Pipeline, _subscriptionGovernanceRuleGovernanceRulesRestClient.CreateRuleIdExecuteSingleSecurityConnectorRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, executeGovernanceRuleParams).Request, response, OperationFinalStateVia.Location);
+                var response = _subscriptionGovernanceRuleGovernanceRulesRestClient.RuleIdExecuteSingleManagementGroup(Id.Name, executeGovernanceRuleParams, cancellationToken);
+                var operation = new SecurityCenterArmOperation(_subscriptionGovernanceRuleGovernanceRulesClientDiagnostics, Pipeline, _subscriptionGovernanceRuleGovernanceRulesRestClient.CreateRuleIdExecuteSingleManagementGroupRequest(Id.Name, executeGovernanceRuleParams).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletionResponse(cancellationToken);
                 return operation;
@@ -312,24 +313,24 @@ namespace Azure.ResourceManager.SecurityCenter
 
         /// <summary>
         /// Get a specific governanceRule execution status for the requested scope by ruleId and operationId
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/governanceRules/{ruleId}/operationResults/{operationId}
-        /// Operation Id: SecurityConnectorGovernanceRulesExecuteStatus_Get
+        /// Request Path: /providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Security/governanceRules/{ruleId}/execute/operationResults/{operationId}
+        /// Operation Id: ManagementGroupGovernanceRulesExecuteStatus_Get
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="operationId"> The GovernanceRule execution key - unique key for the execution of GovernanceRule. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentException"> <paramref name="operationId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ArgumentNullException"> <paramref name="operationId"/> is null. </exception>
-        public virtual async Task<ArmOperation<ExecuteRuleStatus>> GetRuleExecutionStatusAsync(WaitUntil waitUntil, string operationId, CancellationToken cancellationToken = default)
+        public virtual async Task<ArmOperation<ExecuteRuleStatus>> GetManagementGroupGovernanceRulesExecuteStatuAsync(WaitUntil waitUntil, string operationId, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(operationId, nameof(operationId));
 
-            using var scope = _securityConnectorGovernanceRulesExecuteStatusClientDiagnostics.CreateScope("SecurityConnectorGovernanceRuleResource.GetRuleExecutionStatus");
+            using var scope = _managementGroupGovernanceRulesExecuteStatusClientDiagnostics.CreateScope("ManagementGroupGovernanceRuleResource.GetManagementGroupGovernanceRulesExecuteStatu");
             scope.Start();
             try
             {
-                var response = await _securityConnectorGovernanceRulesExecuteStatusRestClient.GetAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, operationId, cancellationToken).ConfigureAwait(false);
-                var operation = new SecurityCenterArmOperation<ExecuteRuleStatus>(new ExecuteRuleStatusOperationSource(), _securityConnectorGovernanceRulesExecuteStatusClientDiagnostics, Pipeline, _securityConnectorGovernanceRulesExecuteStatusRestClient.CreateGetRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, operationId).Request, response, OperationFinalStateVia.Location);
+                var response = await _managementGroupGovernanceRulesExecuteStatusRestClient.GetAsync(Id.Name, operationId, cancellationToken).ConfigureAwait(false);
+                var operation = new SecurityCenterArmOperation<ExecuteRuleStatus>(new ExecuteRuleStatusOperationSource(), _managementGroupGovernanceRulesExecuteStatusClientDiagnostics, Pipeline, _managementGroupGovernanceRulesExecuteStatusRestClient.CreateGetRequest(Id.Name, operationId).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -343,24 +344,24 @@ namespace Azure.ResourceManager.SecurityCenter
 
         /// <summary>
         /// Get a specific governanceRule execution status for the requested scope by ruleId and operationId
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/governanceRules/{ruleId}/operationResults/{operationId}
-        /// Operation Id: SecurityConnectorGovernanceRulesExecuteStatus_Get
+        /// Request Path: /providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Security/governanceRules/{ruleId}/execute/operationResults/{operationId}
+        /// Operation Id: ManagementGroupGovernanceRulesExecuteStatus_Get
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="operationId"> The GovernanceRule execution key - unique key for the execution of GovernanceRule. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentException"> <paramref name="operationId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ArgumentNullException"> <paramref name="operationId"/> is null. </exception>
-        public virtual ArmOperation<ExecuteRuleStatus> GetRuleExecutionStatus(WaitUntil waitUntil, string operationId, CancellationToken cancellationToken = default)
+        public virtual ArmOperation<ExecuteRuleStatus> GetManagementGroupGovernanceRulesExecuteStatu(WaitUntil waitUntil, string operationId, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(operationId, nameof(operationId));
 
-            using var scope = _securityConnectorGovernanceRulesExecuteStatusClientDiagnostics.CreateScope("SecurityConnectorGovernanceRuleResource.GetRuleExecutionStatus");
+            using var scope = _managementGroupGovernanceRulesExecuteStatusClientDiagnostics.CreateScope("ManagementGroupGovernanceRuleResource.GetManagementGroupGovernanceRulesExecuteStatu");
             scope.Start();
             try
             {
-                var response = _securityConnectorGovernanceRulesExecuteStatusRestClient.Get(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, operationId, cancellationToken);
-                var operation = new SecurityCenterArmOperation<ExecuteRuleStatus>(new ExecuteRuleStatusOperationSource(), _securityConnectorGovernanceRulesExecuteStatusClientDiagnostics, Pipeline, _securityConnectorGovernanceRulesExecuteStatusRestClient.CreateGetRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, operationId).Request, response, OperationFinalStateVia.Location);
+                var response = _managementGroupGovernanceRulesExecuteStatusRestClient.Get(Id.Name, operationId, cancellationToken);
+                var operation = new SecurityCenterArmOperation<ExecuteRuleStatus>(new ExecuteRuleStatusOperationSource(), _managementGroupGovernanceRulesExecuteStatusClientDiagnostics, Pipeline, _managementGroupGovernanceRulesExecuteStatusRestClient.CreateGetRequest(Id.Name, operationId).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletion(cancellationToken);
                 return operation;

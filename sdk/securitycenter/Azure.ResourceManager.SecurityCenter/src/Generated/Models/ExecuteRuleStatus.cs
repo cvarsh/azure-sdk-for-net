@@ -7,7 +7,7 @@
 
 namespace Azure.ResourceManager.SecurityCenter.Models
 {
-    /// <summary> Execute status of Security GovernanceRule over a given scope. </summary>
+    /// <summary> Execute status of GovernanceRule over a given scope. </summary>
     public partial class ExecuteRuleStatus
     {
         /// <summary> Initializes a new instance of ExecuteRuleStatus. </summary>

@@ -187,7 +187,7 @@ namespace Azure.ResourceManager.SecurityCenter
         }
 
         /// <summary>
-        /// Creates or update a security GovernanceAssignment on the given subscription.
+        /// Creates or update a GovernanceAssignment on the given subscription.
         /// Request Path: /{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}
         /// Operation Id: GovernanceAssignments_CreateOrUpdate
         /// </summary>
@@ -217,7 +217,7 @@ namespace Azure.ResourceManager.SecurityCenter
         }
 
         /// <summary>
-        /// Creates or update a security GovernanceAssignment on the given subscription.
+        /// Creates or update a GovernanceAssignment on the given subscription.
         /// Request Path: /{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}
         /// Operation Id: GovernanceAssignments_CreateOrUpdate
         /// </summary>
