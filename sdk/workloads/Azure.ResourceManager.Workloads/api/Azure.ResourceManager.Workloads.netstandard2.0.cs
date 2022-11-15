@@ -87,6 +87,7 @@ namespace Azure.ResourceManager.Workloads
         public string KernelVersion { get { throw null; } }
         public Azure.ResourceManager.Workloads.Models.SapVirtualInstanceProvisioningState? ProvisioningState { get { throw null; } }
         public Azure.ResourceManager.Workloads.Models.SapVirtualInstanceStatus? Status { get { throw null; } }
+        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.Resources.Models.SubResource> StorageDetails { get { throw null; } }
         public Azure.Core.ResourceIdentifier SubnetId { get { throw null; } }
         public Azure.Core.ResourceIdentifier VirtualMachineId { get { throw null; } }
     }
@@ -136,6 +137,7 @@ namespace Azure.ResourceManager.Workloads
         public string InstanceNo { get { throw null; } }
         public string KernelPatch { get { throw null; } }
         public string KernelVersion { get { throw null; } }
+        public Azure.Core.ResourceIdentifier LoadBalancerDetailsId { get { throw null; } }
         public Azure.ResourceManager.Workloads.Models.MessageServerProperties MessageServerProperties { get { throw null; } set { } }
         public Azure.ResourceManager.Workloads.Models.SapVirtualInstanceProvisioningState? ProvisioningState { get { throw null; } }
         public Azure.ResourceManager.Workloads.Models.SapVirtualInstanceStatus? Status { get { throw null; } }
@@ -184,6 +186,7 @@ namespace Azure.ResourceManager.Workloads
         public string DatabaseType { get { throw null; } }
         public Azure.ResourceManager.Workloads.Models.SapVirtualInstanceErrorDetail ErrorsProperties { get { throw null; } }
         public string IPAddress { get { throw null; } }
+        public Azure.Core.ResourceIdentifier LoadBalancerDetailsId { get { throw null; } }
         public Azure.ResourceManager.Workloads.Models.SapVirtualInstanceProvisioningState? ProvisioningState { get { throw null; } }
         public Azure.ResourceManager.Workloads.Models.SapVirtualInstanceStatus? Status { get { throw null; } }
         public Azure.Core.ResourceIdentifier SubnetId { get { throw null; } }
@@ -229,12 +232,15 @@ namespace Azure.ResourceManager.Workloads
         public SapMonitorData(Azure.Core.AzureLocation location) : base (default(Azure.Core.AzureLocation)) { }
         public Azure.Core.AzureLocation? AppLocation { get { throw null; } set { } }
         public Azure.ResponseError Errors { get { throw null; } }
+        public Azure.ResourceManager.Workloads.Models.UserAssignedServiceIdentity Identity { get { throw null; } set { } }
         public Azure.Core.ResourceIdentifier LogAnalyticsWorkspaceArmId { get { throw null; } set { } }
         public string ManagedResourceGroupName { get { throw null; } set { } }
         public Azure.Core.ResourceIdentifier MonitorSubnetId { get { throw null; } set { } }
         public Azure.Core.ResourceIdentifier MsiArmId { get { throw null; } }
         public Azure.ResourceManager.Workloads.Models.WorkloadMonitorProvisioningState? ProvisioningState { get { throw null; } }
         public Azure.ResourceManager.Workloads.Models.RoutingPreference? RoutingPreference { get { throw null; } set { } }
+        public string StorageAccountArmId { get { throw null; } }
+        public string ZoneRedundancyPreference { get { throw null; } set { } }
     }
     public partial class SapMonitorResource : Azure.ResourceManager.ArmResource
     {
@@ -278,6 +284,7 @@ namespace Azure.ResourceManager.Workloads
     {
         public SapProviderInstanceData() { }
         public Azure.ResponseError Errors { get { throw null; } }
+        public Azure.ResourceManager.Workloads.Models.UserAssignedServiceIdentity Identity { get { throw null; } set { } }
         public Azure.ResourceManager.Workloads.Models.ProviderSpecificProperties ProviderSettings { get { throw null; } set { } }
         public Azure.ResourceManager.Workloads.Models.WorkloadMonitorProvisioningState? ProvisioningState { get { throw null; } }
     }
@@ -515,6 +522,7 @@ namespace Azure.ResourceManager.Workloads.Models
     public partial class CentralServerVmDetails
     {
         internal CentralServerVmDetails() { }
+        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.Resources.Models.SubResource> StorageDetails { get { throw null; } }
         public Azure.Core.ResourceIdentifier VirtualMachineId { get { throw null; } }
         public Azure.ResourceManager.Workloads.Models.CentralServerVirtualMachineType? VirtualMachineType { get { throw null; } }
     }
@@ -569,6 +577,7 @@ namespace Azure.ResourceManager.Workloads.Models
     {
         internal DatabaseVmDetails() { }
         public Azure.ResourceManager.Workloads.Models.SapVirtualInstanceStatus? Status { get { throw null; } }
+        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.Resources.Models.SubResource> StorageDetails { get { throw null; } }
         public Azure.Core.ResourceIdentifier VirtualMachineId { get { throw null; } }
     }
     public partial class DB2ProviderInstanceProperties : Azure.ResourceManager.Workloads.Models.ProviderSpecificProperties
@@ -581,6 +590,8 @@ namespace Azure.ResourceManager.Workloads.Models
         public string DBUsername { get { throw null; } set { } }
         public string Hostname { get { throw null; } set { } }
         public string SapSid { get { throw null; } set { } }
+        public System.Uri SslCertificateUri { get { throw null; } set { } }
+        public Azure.ResourceManager.Workloads.Models.SslPreference? SslPreference { get { throw null; } set { } }
     }
     public partial class DeployerVmPackages
     {
@@ -694,6 +705,11 @@ namespace Azure.ResourceManager.Workloads.Models
         public string IPAddress { get { throw null; } }
         public long? Port { get { throw null; } }
     }
+    public partial class ExternalInstallationSoftwareConfiguration : Azure.ResourceManager.Workloads.Models.SoftwareConfiguration
+    {
+        public ExternalInstallationSoftwareConfiguration() { }
+        public string CentralServerVmId { get { throw null; } set { } }
+    }
     public partial class FileshareProfile
     {
         public FileshareProfile(Azure.ResourceManager.Workloads.Models.FileShareType shareType, Azure.ResourceManager.Workloads.Models.FileShareStorageType storageType) { }
@@ -776,7 +792,9 @@ namespace Azure.ResourceManager.Workloads.Models
         public string Hostname { get { throw null; } set { } }
         public string InstanceNumber { get { throw null; } set { } }
         public string SqlPort { get { throw null; } set { } }
+        public System.Uri SslCertificateUri { get { throw null; } set { } }
         public string SslHostNameInCertificate { get { throw null; } set { } }
+        public Azure.ResourceManager.Workloads.Models.SslPreference? SslPreference { get { throw null; } set { } }
     }
     public partial class HighAvailabilitySoftwareConfiguration
     {
@@ -880,6 +898,8 @@ namespace Azure.ResourceManager.Workloads.Models
         public string DBUsername { get { throw null; } set { } }
         public string Hostname { get { throw null; } set { } }
         public string SapSid { get { throw null; } set { } }
+        public System.Uri SslCertificateUri { get { throw null; } set { } }
+        public Azure.ResourceManager.Workloads.Models.SslPreference? SslPreference { get { throw null; } set { } }
     }
     public partial class NetworkProfile
     {
@@ -1063,11 +1083,15 @@ namespace Azure.ResourceManager.Workloads.Models
         public string Hostname { get { throw null; } set { } }
         public System.Uri PrometheusUri { get { throw null; } set { } }
         public string Sid { get { throw null; } set { } }
+        public System.Uri SslCertificateUri { get { throw null; } set { } }
+        public Azure.ResourceManager.Workloads.Models.SslPreference? SslPreference { get { throw null; } set { } }
     }
     public partial class PrometheusOSProviderInstanceProperties : Azure.ResourceManager.Workloads.Models.ProviderSpecificProperties
     {
         public PrometheusOSProviderInstanceProperties() { }
         public System.Uri PrometheusUri { get { throw null; } set { } }
+        public System.Uri SslCertificateUri { get { throw null; } set { } }
+        public Azure.ResourceManager.Workloads.Models.SslPreference? SslPreference { get { throw null; } set { } }
     }
     public abstract partial class ProviderSpecificProperties
     {
@@ -1298,6 +1322,7 @@ namespace Azure.ResourceManager.Workloads.Models
     public partial class SapMonitorPatch
     {
         public SapMonitorPatch() { }
+        public Azure.ResourceManager.Workloads.Models.UserAssignedServiceIdentity Identity { get { throw null; } set { } }
         public System.Collections.Generic.IDictionary<string, string> Tags { get { throw null; } }
     }
     public partial class SapNetWeaverProviderInstanceProperties : Azure.ResourceManager.Workloads.Models.ProviderSpecificProperties
@@ -1313,6 +1338,8 @@ namespace Azure.ResourceManager.Workloads.Models
         public string SapSid { get { throw null; } set { } }
         public System.Uri SapSslCertificateUri { get { throw null; } set { } }
         public string SapUsername { get { throw null; } set { } }
+        public System.Uri SslCertificateUri { get { throw null; } set { } }
+        public Azure.ResourceManager.Workloads.Models.SslPreference? SslPreference { get { throw null; } set { } }
     }
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly partial struct SapProductType : System.IEquatable<Azure.ResourceManager.Workloads.Models.SapProductType>
@@ -1419,6 +1446,8 @@ namespace Azure.ResourceManager.Workloads.Models
         public static Azure.ResourceManager.Workloads.Models.SapVirtualInstanceState InfrastructureDeploymentInProgress { get { throw null; } }
         public static Azure.ResourceManager.Workloads.Models.SapVirtualInstanceState InfrastructureDeploymentPending { get { throw null; } }
         public static Azure.ResourceManager.Workloads.Models.SapVirtualInstanceState RegistrationComplete { get { throw null; } }
+        public static Azure.ResourceManager.Workloads.Models.SapVirtualInstanceState SoftwareDetectionFailed { get { throw null; } }
+        public static Azure.ResourceManager.Workloads.Models.SapVirtualInstanceState SoftwareDetectionInProgress { get { throw null; } }
         public static Azure.ResourceManager.Workloads.Models.SapVirtualInstanceState SoftwareInstallationFailed { get { throw null; } }
         public static Azure.ResourceManager.Workloads.Models.SapVirtualInstanceState SoftwareInstallationInProgress { get { throw null; } }
         public static Azure.ResourceManager.Workloads.Models.SapVirtualInstanceState SoftwareInstallationPending { get { throw null; } }
@@ -1603,6 +1632,25 @@ namespace Azure.ResourceManager.Workloads.Models
     {
         public SshPublicKey() { }
         public string KeyData { get { throw null; } set { } }
+    }
+    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    public readonly partial struct SslPreference : System.IEquatable<Azure.ResourceManager.Workloads.Models.SslPreference>
+    {
+        private readonly object _dummy;
+        private readonly int _dummyPrimitive;
+        public SslPreference(string value) { throw null; }
+        public static Azure.ResourceManager.Workloads.Models.SslPreference Disabled { get { throw null; } }
+        public static Azure.ResourceManager.Workloads.Models.SslPreference RootCertificate { get { throw null; } }
+        public static Azure.ResourceManager.Workloads.Models.SslPreference ServerCertificate { get { throw null; } }
+        public bool Equals(Azure.ResourceManager.Workloads.Models.SslPreference other) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override bool Equals(object obj) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override int GetHashCode() { throw null; }
+        public static bool operator ==(Azure.ResourceManager.Workloads.Models.SslPreference left, Azure.ResourceManager.Workloads.Models.SslPreference right) { throw null; }
+        public static implicit operator Azure.ResourceManager.Workloads.Models.SslPreference (string value) { throw null; }
+        public static bool operator !=(Azure.ResourceManager.Workloads.Models.SslPreference left, Azure.ResourceManager.Workloads.Models.SslPreference right) { throw null; }
+        public override string ToString() { throw null; }
     }
     public partial class StopContent
     {

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Azure.Core;
 using Azure.ResourceManager.Models;
+using Azure.ResourceManager.Resources.Models;
 using Azure.ResourceManager.Workloads.Models;
 
 namespace Azure.ResourceManager.Workloads
@@ -56,6 +57,7 @@ namespace Azure.ResourceManager.Workloads
             Optional<long?> icmHttpsPort = default;
             Optional<ResourceIdentifier> virtualMachineId = default;
             Optional<SapVirtualInstanceStatus> status = default;
+            Optional<IReadOnlyList<SubResource>> storageDetails = default;
             Optional<SapHealthState> health = default;
             Optional<SapVirtualInstanceProvisioningState> provisioningState = default;
             Optional<SapVirtualInstanceError> errors = default;
@@ -200,6 +202,21 @@ namespace Azure.ResourceManager.Workloads
                             status = new SapVirtualInstanceStatus(property0.Value.GetString());
                             continue;
                         }
+                        if (property0.NameEquals("storageDetails"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            List<SubResource> array = new List<SubResource>();
+                            foreach (var item in property0.Value.EnumerateArray())
+                            {
+                                array.Add(JsonSerializer.Deserialize<SubResource>(item.ToString()));
+                            }
+                            storageDetails = array;
+                            continue;
+                        }
                         if (property0.NameEquals("health"))
                         {
                             if (property0.Value.ValueKind == JsonValueKind.Null)
@@ -234,7 +251,7 @@ namespace Azure.ResourceManager.Workloads
                     continue;
                 }
             }
-            return new SapApplicationServerInstanceData(id, name, type, systemData.Value, Optional.ToDictionary(tags), location, instanceNo.Value, subnet.Value, hostname.Value, kernelVersion.Value, kernelPatch.Value, ipAddress.Value, Optional.ToNullable(gatewayPort), Optional.ToNullable(icmHttpPort), Optional.ToNullable(icmHttpsPort), virtualMachineId.Value, Optional.ToNullable(status), Optional.ToNullable(health), Optional.ToNullable(provisioningState), errors.Value);
+            return new SapApplicationServerInstanceData(id, name, type, systemData.Value, Optional.ToDictionary(tags), location, instanceNo.Value, subnet.Value, hostname.Value, kernelVersion.Value, kernelPatch.Value, ipAddress.Value, Optional.ToNullable(gatewayPort), Optional.ToNullable(icmHttpPort), Optional.ToNullable(icmHttpsPort), virtualMachineId.Value, Optional.ToNullable(status), Optional.ToList(storageDetails), Optional.ToNullable(health), Optional.ToNullable(provisioningState), errors.Value);
         }
     }
 }
