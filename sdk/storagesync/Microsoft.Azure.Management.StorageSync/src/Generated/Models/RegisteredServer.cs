@@ -75,7 +75,12 @@ namespace Microsoft.Azure.Management.StorageSync.Models
         /// <param name="monitoringConfiguration">Monitoring
         /// Configuration</param>
         /// <param name="serverName">Server name</param>
-        public RegisteredServer(string id = default(string), string name = default(string), string type = default(string), SystemData systemData = default(SystemData), string serverCertificate = default(string), string agentVersion = default(string), string agentVersionStatus = default(string), System.DateTime? agentVersionExpirationDate = default(System.DateTime?), string serverOSVersion = default(string), int? serverManagementErrorCode = default(int?), string lastHeartBeat = default(string), string provisioningState = default(string), string serverRole = default(string), string clusterId = default(string), string clusterName = default(string), string serverId = default(string), string storageSyncServiceUid = default(string), string lastWorkflowId = default(string), string lastOperationName = default(string), string discoveryEndpointUri = default(string), string resourceLocation = default(string), string serviceLocation = default(string), string friendlyName = default(string), string managementEndpointUri = default(string), string monitoringEndpointUri = default(string), string monitoringConfiguration = default(string), string serverName = default(string))
+        /// <param name="identityType">Identity Type. Possible values include:
+        /// 'None', 'SystemAssigned', 'UserAssigned', 'SystemAssigned,
+        /// UserAssigned'</param>
+        /// <param name="identityId">Comma separated list of user assigned
+        /// identities</param>
+        public RegisteredServer(string id = default(string), string name = default(string), string type = default(string), SystemData systemData = default(SystemData), string serverCertificate = default(string), string agentVersion = default(string), string agentVersionStatus = default(string), System.DateTime? agentVersionExpirationDate = default(System.DateTime?), string serverOSVersion = default(string), int? serverManagementErrorCode = default(int?), string lastHeartBeat = default(string), string provisioningState = default(string), string serverRole = default(string), string clusterId = default(string), string clusterName = default(string), string serverId = default(string), string storageSyncServiceUid = default(string), string lastWorkflowId = default(string), string lastOperationName = default(string), string discoveryEndpointUri = default(string), string resourceLocation = default(string), string serviceLocation = default(string), string friendlyName = default(string), string managementEndpointUri = default(string), string monitoringEndpointUri = default(string), string monitoringConfiguration = default(string), string serverName = default(string), string identityType = default(string), string identityId = default(string))
             : base(id, name, type, systemData)
         {
             ServerCertificate = serverCertificate;
@@ -101,6 +106,8 @@ namespace Microsoft.Azure.Management.StorageSync.Models
             MonitoringEndpointUri = monitoringEndpointUri;
             MonitoringConfiguration = monitoringConfiguration;
             ServerName = serverName;
+            IdentityType = identityType;
+            IdentityId = identityId;
             CustomInit();
         }
 
@@ -247,6 +254,19 @@ namespace Microsoft.Azure.Management.StorageSync.Models
         /// </summary>
         [JsonProperty(PropertyName = "properties.serverName")]
         public string ServerName { get; private set; }
+
+        /// <summary>
+        /// Gets identity Type. Possible values include: 'None',
+        /// 'SystemAssigned', 'UserAssigned', 'SystemAssigned, UserAssigned'
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.identityType")]
+        public string IdentityType { get; private set; }
+
+        /// <summary>
+        /// Gets comma separated list of user assigned identities
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.identityId")]
+        public string IdentityId { get; private set; }
 
     }
 }

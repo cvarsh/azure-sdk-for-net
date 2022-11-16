@@ -58,10 +58,15 @@ namespace Microsoft.Azure.Management.StorageSync.Models
         /// lastWorkflowId</param>
         /// <param name="lastOperationName">Resource Last Operation
         /// Name</param>
+        /// <param name="identityType">Identity Type. Possible values include:
+        /// 'None', 'SystemAssigned', 'UserAssigned', 'SystemAssigned,
+        /// UserAssigned'</param>
+        /// <param name="identityId">Comma separated list of user assigned
+        /// identities</param>
         /// <param name="privateEndpointConnections">List of private endpoint
         /// connection associated with the specified storage sync
         /// service</param>
-        public StorageSyncService(string location, string id = default(string), string name = default(string), string type = default(string), SystemData systemData = default(SystemData), IDictionary<string, string> tags = default(IDictionary<string, string>), string incomingTrafficPolicy = default(string), int? storageSyncServiceStatus = default(int?), string storageSyncServiceUid = default(string), string provisioningState = default(string), string lastWorkflowId = default(string), string lastOperationName = default(string), IList<PrivateEndpointConnection> privateEndpointConnections = default(IList<PrivateEndpointConnection>))
+        public StorageSyncService(string location, string id = default(string), string name = default(string), string type = default(string), SystemData systemData = default(SystemData), IDictionary<string, string> tags = default(IDictionary<string, string>), string incomingTrafficPolicy = default(string), int? storageSyncServiceStatus = default(int?), string storageSyncServiceUid = default(string), string provisioningState = default(string), string lastWorkflowId = default(string), string lastOperationName = default(string), string identityType = default(string), string identityId = default(string), ManagedServiceIdentity identity = default(ManagedServiceIdentity), IList<PrivateEndpointConnection> privateEndpointConnections = default(IList<PrivateEndpointConnection>))
             : base(location, id, name, type, systemData, tags)
         {
             IncomingTrafficPolicy = incomingTrafficPolicy;
@@ -70,6 +75,9 @@ namespace Microsoft.Azure.Management.StorageSync.Models
             ProvisioningState = provisioningState;
             LastWorkflowId = lastWorkflowId;
             LastOperationName = lastOperationName;
+            IdentityType = identityType;
+            IdentityId = identityId;
+            Identity = identity;
             PrivateEndpointConnections = privateEndpointConnections;
             CustomInit();
         }
@@ -117,6 +125,24 @@ namespace Microsoft.Azure.Management.StorageSync.Models
         public string LastOperationName { get; private set; }
 
         /// <summary>
+        /// Gets identity Type. Possible values include: 'None',
+        /// 'SystemAssigned', 'UserAssigned', 'SystemAssigned, UserAssigned'
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.identityType")]
+        public string IdentityType { get; private set; }
+
+        /// <summary>
+        /// Gets comma separated list of user assigned identities
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.identityId")]
+        public string IdentityId { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.identity")]
+        public ManagedServiceIdentity Identity { get; set; }
+
+        /// <summary>
         /// Gets list of private endpoint connection associated with the
         /// specified storage sync service
         /// </summary>
@@ -132,6 +158,10 @@ namespace Microsoft.Azure.Management.StorageSync.Models
         public override void Validate()
         {
             base.Validate();
+            if (Identity != null)
+            {
+                Identity.Validate();
+            }
             if (PrivateEndpointConnections != null)
             {
                 foreach (var element in PrivateEndpointConnections)

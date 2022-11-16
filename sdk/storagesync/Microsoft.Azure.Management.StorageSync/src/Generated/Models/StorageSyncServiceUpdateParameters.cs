@@ -41,10 +41,17 @@ namespace Microsoft.Azure.Management.StorageSync.Models
         /// <param name="incomingTrafficPolicy">Incoming Traffic Policy.
         /// Possible values include: 'AllowAllTraffic',
         /// 'AllowVirtualNetworksOnly'</param>
-        public StorageSyncServiceUpdateParameters(IDictionary<string, string> tags = default(IDictionary<string, string>), string incomingTrafficPolicy = default(string))
+        /// <param name="identityType">Identity Type. Possible values include:
+        /// 'None', 'SystemAssigned', 'UserAssigned', 'SystemAssigned,
+        /// UserAssigned'</param>
+        /// <param name="identityId">Comma separated list of user assigned
+        /// identities</param>
+        public StorageSyncServiceUpdateParameters(IDictionary<string, string> tags = default(IDictionary<string, string>), string incomingTrafficPolicy = default(string), string identityType = default(string), string identityId = default(string))
         {
             Tags = tags;
             IncomingTrafficPolicy = incomingTrafficPolicy;
+            IdentityType = identityType;
+            IdentityId = identityId;
             CustomInit();
         }
 
@@ -66,6 +73,19 @@ namespace Microsoft.Azure.Management.StorageSync.Models
         /// </summary>
         [JsonProperty(PropertyName = "properties.incomingTrafficPolicy")]
         public string IncomingTrafficPolicy { get; set; }
+
+        /// <summary>
+        /// Gets or sets identity Type. Possible values include: 'None',
+        /// 'SystemAssigned', 'UserAssigned', 'SystemAssigned, UserAssigned'
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.identityType")]
+        public string IdentityType { get; set; }
+
+        /// <summary>
+        /// Gets or sets comma separated list of user assigned identities
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.identityId")]
+        public string IdentityId { get; set; }
 
     }
 }
