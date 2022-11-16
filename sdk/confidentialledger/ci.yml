@@ -30,5 +30,7 @@ extends:
     ServiceDirectory: confidentialledger
     ArtifactName: packages
     Artifacts:
+    - name: Azure.Security.ConfidentialLedgerDemo
+      safeName: AzureSecurityConfidentialLedgerDemo
     - name: Azure.Security.ConfidentialLedger
       safeName: AzureConfidentialLedger
