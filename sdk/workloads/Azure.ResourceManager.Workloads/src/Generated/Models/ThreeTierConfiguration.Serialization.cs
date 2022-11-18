@@ -31,6 +31,11 @@ namespace Azure.ResourceManager.Workloads.Models
                 writer.WritePropertyName("highAvailabilityConfig");
                 writer.WriteObjectValue(HighAvailabilityConfig);
             }
+            if (Optional.IsDefined(StorageConfiguration))
+            {
+                writer.WritePropertyName("storageConfiguration");
+                writer.WriteObjectValue(StorageConfiguration);
+            }
             writer.WritePropertyName("deploymentType");
             writer.WriteStringValue(DeploymentType.ToString());
             writer.WritePropertyName("appResourceGroup");
@@ -45,6 +50,7 @@ namespace Azure.ResourceManager.Workloads.Models
             ApplicationServerConfiguration applicationServer = default;
             DatabaseConfiguration databaseServer = default;
             Optional<HighAvailabilityConfiguration> highAvailabilityConfig = default;
+            Optional<StorageConfiguration> storageConfiguration = default;
             SapDeploymentType deploymentType = default;
             string appResourceGroup = default;
             foreach (var property in element.EnumerateObject())
@@ -84,6 +90,16 @@ namespace Azure.ResourceManager.Workloads.Models
                     highAvailabilityConfig = HighAvailabilityConfiguration.DeserializeHighAvailabilityConfiguration(property.Value);
                     continue;
                 }
+                if (property.NameEquals("storageConfiguration"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    storageConfiguration = StorageConfiguration.DeserializeStorageConfiguration(property.Value);
+                    continue;
+                }
                 if (property.NameEquals("deploymentType"))
                 {
                     deploymentType = new SapDeploymentType(property.Value.GetString());
@@ -95,7 +111,7 @@ namespace Azure.ResourceManager.Workloads.Models
                     continue;
                 }
             }
-            return new ThreeTierConfiguration(deploymentType, appResourceGroup, networkConfiguration.Value, centralServer, applicationServer, databaseServer, highAvailabilityConfig.Value);
+            return new ThreeTierConfiguration(deploymentType, appResourceGroup, networkConfiguration.Value, centralServer, applicationServer, databaseServer, highAvailabilityConfig.Value, storageConfiguration.Value);
         }
     }
 }
