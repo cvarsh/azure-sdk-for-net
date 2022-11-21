@@ -33,7 +33,7 @@ namespace Azure.ResourceManager.DataMigration
         {
             _pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
             _endpoint = endpoint ?? new Uri("https://management.azure.com");
-            _apiVersion = apiVersion ?? "2022-03-30-preview";
+            _apiVersion = apiVersion ?? "2022-10-31-preview";
             _userAgent = new TelemetryDetails(GetType().Assembly, applicationId);
         }
 
@@ -215,6 +215,89 @@ namespace Azure.ResourceManager.DataMigration
             {
                 case 200:
                 case 201:
+                    return message.Response;
+                default:
+                    throw new RequestFailedException(message.Response);
+            }
+        }
+
+        internal HttpMessage CreateDeleteRequest(string subscriptionId, string resourceGroupName, string sqlVirtualMachineName, string targetDBName, bool? force)
+        {
+            var message = _pipeline.CreateMessage();
+            var request = message.Request;
+            request.Method = RequestMethod.Delete;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath(subscriptionId, true);
+            uri.AppendPath("/resourceGroups/", false);
+            uri.AppendPath(resourceGroupName, true);
+            uri.AppendPath("/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/", false);
+            uri.AppendPath(sqlVirtualMachineName, true);
+            uri.AppendPath("/providers/Microsoft.DataMigration/databaseMigrations/", false);
+            uri.AppendPath(targetDBName, true);
+            if (force != null)
+            {
+                uri.AppendQuery("force", force.Value, true);
+            }
+            uri.AppendQuery("api-version", _apiVersion, true);
+            request.Uri = uri;
+            _userAgent.Apply(message);
+            return message;
+        }
+
+        /// <summary> Delete Database Migration resource. </summary>
+        /// <param name="subscriptionId"> Subscription ID that identifies an Azure subscription. </param>
+        /// <param name="resourceGroupName"> Name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal. </param>
+        /// <param name="sqlVirtualMachineName"> The String to use. </param>
+        /// <param name="targetDBName"> The name of the target database. </param>
+        /// <param name="force"> Optional force delete boolean. If this is provided as true, migration will be deleted even if active. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="sqlVirtualMachineName"/> or <paramref name="targetDBName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="sqlVirtualMachineName"/> or <paramref name="targetDBName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> DeleteAsync(string subscriptionId, string resourceGroupName, string sqlVirtualMachineName, string targetDBName, bool? force = null, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
+            Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
+            Argument.AssertNotNullOrEmpty(sqlVirtualMachineName, nameof(sqlVirtualMachineName));
+            Argument.AssertNotNullOrEmpty(targetDBName, nameof(targetDBName));
+
+            using var message = CreateDeleteRequest(subscriptionId, resourceGroupName, sqlVirtualMachineName, targetDBName, force);
+            await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
+            switch (message.Response.Status)
+            {
+                case 200:
+                case 202:
+                case 204:
+                    return message.Response;
+                default:
+                    throw new RequestFailedException(message.Response);
+            }
+        }
+
+        /// <summary> Delete Database Migration resource. </summary>
+        /// <param name="subscriptionId"> Subscription ID that identifies an Azure subscription. </param>
+        /// <param name="resourceGroupName"> Name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal. </param>
+        /// <param name="sqlVirtualMachineName"> The String to use. </param>
+        /// <param name="targetDBName"> The name of the target database. </param>
+        /// <param name="force"> Optional force delete boolean. If this is provided as true, migration will be deleted even if active. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="sqlVirtualMachineName"/> or <paramref name="targetDBName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="sqlVirtualMachineName"/> or <paramref name="targetDBName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response Delete(string subscriptionId, string resourceGroupName, string sqlVirtualMachineName, string targetDBName, bool? force = null, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
+            Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
+            Argument.AssertNotNullOrEmpty(sqlVirtualMachineName, nameof(sqlVirtualMachineName));
+            Argument.AssertNotNullOrEmpty(targetDBName, nameof(targetDBName));
+
+            using var message = CreateDeleteRequest(subscriptionId, resourceGroupName, sqlVirtualMachineName, targetDBName, force);
+            _pipeline.Send(message, cancellationToken);
+            switch (message.Response.Status)
+            {
+                case 200:
+                case 202:
+                case 204:
                     return message.Response;
                 default:
                     throw new RequestFailedException(message.Response);

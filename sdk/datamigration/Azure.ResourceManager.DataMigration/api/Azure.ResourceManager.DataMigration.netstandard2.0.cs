@@ -28,6 +28,8 @@ namespace Azure.ResourceManager.DataMigration
         public virtual System.Threading.Tasks.Task<Azure.ResourceManager.ArmOperation> DeleteAsync(Azure.WaitUntil waitUntil, bool? force = default(bool?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.Response<Azure.ResourceManager.DataMigration.DatabaseMigrationSqlDBResource> Get(System.Guid? migrationOperationId = default(System.Guid?), string expand = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.DataMigration.DatabaseMigrationSqlDBResource>> GetAsync(System.Guid? migrationOperationId = default(System.Guid?), string expand = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual Azure.Response<Azure.ResourceManager.DataMigration.DatabaseMigrationSqlDBResource> Retry(Azure.ResourceManager.DataMigration.Models.MigrationOperationInput input, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.DataMigration.DatabaseMigrationSqlDBResource>> RetryAsync(Azure.ResourceManager.DataMigration.Models.MigrationOperationInput input, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.ResourceManager.ArmOperation<Azure.ResourceManager.DataMigration.DatabaseMigrationSqlDBResource> Update(Azure.WaitUntil waitUntil, Azure.ResourceManager.DataMigration.DatabaseMigrationSqlDBData data, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.ResourceManager.ArmOperation<Azure.ResourceManager.DataMigration.DatabaseMigrationSqlDBResource>> UpdateAsync(Azure.WaitUntil waitUntil, Azure.ResourceManager.DataMigration.DatabaseMigrationSqlDBData data, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
     }
@@ -57,6 +59,8 @@ namespace Azure.ResourceManager.DataMigration
         public static Azure.Core.ResourceIdentifier CreateResourceIdentifier(string subscriptionId, string resourceGroupName, string managedInstanceName, string targetDBName) { throw null; }
         public virtual Azure.ResourceManager.ArmOperation Cutover(Azure.WaitUntil waitUntil, Azure.ResourceManager.DataMigration.Models.MigrationOperationInput input, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.ResourceManager.ArmOperation> CutoverAsync(Azure.WaitUntil waitUntil, Azure.ResourceManager.DataMigration.Models.MigrationOperationInput input, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual Azure.ResourceManager.ArmOperation Delete(Azure.WaitUntil waitUntil, bool? force = default(bool?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.ResourceManager.ArmOperation> DeleteAsync(Azure.WaitUntil waitUntil, bool? force = default(bool?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.Response<Azure.ResourceManager.DataMigration.DatabaseMigrationSqlMIResource> Get(System.Guid? migrationOperationId = default(System.Guid?), string expand = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.DataMigration.DatabaseMigrationSqlMIResource>> GetAsync(System.Guid? migrationOperationId = default(System.Guid?), string expand = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.ResourceManager.ArmOperation<Azure.ResourceManager.DataMigration.DatabaseMigrationSqlMIResource> Update(Azure.WaitUntil waitUntil, Azure.ResourceManager.DataMigration.DatabaseMigrationSqlMIData data, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
@@ -88,6 +92,8 @@ namespace Azure.ResourceManager.DataMigration
         public static Azure.Core.ResourceIdentifier CreateResourceIdentifier(string subscriptionId, string resourceGroupName, string sqlVirtualMachineName, string targetDBName) { throw null; }
         public virtual Azure.ResourceManager.ArmOperation Cutover(Azure.WaitUntil waitUntil, Azure.ResourceManager.DataMigration.Models.MigrationOperationInput input, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.ResourceManager.ArmOperation> CutoverAsync(Azure.WaitUntil waitUntil, Azure.ResourceManager.DataMigration.Models.MigrationOperationInput input, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual Azure.ResourceManager.ArmOperation Delete(Azure.WaitUntil waitUntil, bool? force = default(bool?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.ResourceManager.ArmOperation> DeleteAsync(Azure.WaitUntil waitUntil, bool? force = default(bool?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.Response<Azure.ResourceManager.DataMigration.DatabaseMigrationSqlVmResource> Get(System.Guid? migrationOperationId = default(System.Guid?), string expand = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.DataMigration.DatabaseMigrationSqlVmResource>> GetAsync(System.Guid? migrationOperationId = default(System.Guid?), string expand = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.ResourceManager.ArmOperation<Azure.ResourceManager.DataMigration.DatabaseMigrationSqlVmResource> Update(Azure.WaitUntil waitUntil, Azure.ResourceManager.DataMigration.DatabaseMigrationSqlVmData data, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
@@ -407,6 +413,8 @@ namespace Azure.ResourceManager.DataMigration
         public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.DataMigration.SqlMigrationServiceResource>> SetTagsAsync(System.Collections.Generic.IDictionary<string, string> tags, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.ResourceManager.ArmOperation<Azure.ResourceManager.DataMigration.SqlMigrationServiceResource> Update(Azure.WaitUntil waitUntil, Azure.ResourceManager.DataMigration.Models.SqlMigrationServicePatch patch, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.ResourceManager.ArmOperation<Azure.ResourceManager.DataMigration.SqlMigrationServiceResource>> UpdateAsync(Azure.WaitUntil waitUntil, Azure.ResourceManager.DataMigration.Models.SqlMigrationServicePatch patch, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual Azure.Response<Azure.ResourceManager.DataMigration.Models.ValidateIR> ValidateIR(Azure.ResourceManager.DataMigration.Models.ValidateIR validateIR, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.DataMigration.Models.ValidateIR>> ValidateIRAsync(Azure.ResourceManager.DataMigration.Models.ValidateIR validateIR, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
     }
 }
 namespace Azure.ResourceManager.DataMigration.Models
@@ -893,6 +901,7 @@ namespace Azure.ResourceManager.DataMigration.Models
         public double? CopyThroughput { get { throw null; } }
         public long? DataRead { get { throw null; } }
         public long? DataWritten { get { throw null; } }
+        public System.Collections.Generic.IReadOnlyList<string> Errors { get { throw null; } }
         public string ParallelCopyType { get { throw null; } }
         public long? RowsCopied { get { throw null; } }
         public long? RowsRead { get { throw null; } }
@@ -997,6 +1006,7 @@ namespace Azure.ResourceManager.DataMigration.Models
     public partial class DatabaseMigrationSqlDBProperties : Azure.ResourceManager.DataMigration.Models.DatabaseMigrationProperties
     {
         public DatabaseMigrationSqlDBProperties() { }
+        public Azure.ResourceManager.DataMigration.Models.KeyVaultProperties KeyVault { get { throw null; } set { } }
         public Azure.ResourceManager.DataMigration.Models.SqlDBMigrationStatusDetails MigrationStatusDetails { get { throw null; } }
         public bool? Offline { get { throw null; } }
         public System.Collections.Generic.IList<string> TableList { get { throw null; } }
@@ -1280,6 +1290,15 @@ namespace Azure.ResourceManager.DataMigration.Models
         internal IntegrationRuntimeMonitoringData() { }
         public string Name { get { throw null; } }
         public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.DataMigration.Models.NodeMonitoringData> Nodes { get { throw null; } }
+    }
+    public partial class KeyVaultProperties
+    {
+        public KeyVaultProperties() { }
+        public string FileSharePasswordSecretName { get { throw null; } set { } }
+        public string FileShareUsernameSecretName { get { throw null; } set { } }
+        public string Name { get { throw null; } set { } }
+        public string SourcePasswordSecretName { get { throw null; } set { } }
+        public string SourceUsernameSecretName { get { throw null; } set { } }
     }
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly partial struct LoginMigrationStage : System.IEquatable<Azure.ResourceManager.DataMigration.Models.LoginMigrationStage>
@@ -3416,6 +3435,12 @@ namespace Azure.ResourceManager.DataMigration.Models
         public static bool operator !=(Azure.ResourceManager.DataMigration.Models.TaskState left, Azure.ResourceManager.DataMigration.Models.TaskState right) { throw null; }
         public override string ToString() { throw null; }
     }
+    public partial class TestConnectivityData
+    {
+        public TestConnectivityData() { }
+        public string Code { get { throw null; } set { } }
+        public string Message { get { throw null; } set { } }
+    }
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly partial struct UpdateActionType : System.IEquatable<Azure.ResourceManager.DataMigration.Models.UpdateActionType>
     {
@@ -3446,6 +3471,37 @@ namespace Azure.ResourceManager.DataMigration.Models
         public UploadOciDriverTaskProperties() { }
         public Azure.ResourceManager.DataMigration.Models.FileShare InputDriverShare { get { throw null; } set { } }
         public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.DataMigration.Models.UploadOciDriverTaskOutput> Output { get { throw null; } }
+    }
+    public partial class ValidateIR
+    {
+        public ValidateIR() { }
+        public Azure.ResourceManager.DataMigration.Models.BackupConfiguration BackupConfiguration { get { throw null; } set { } }
+        public System.Collections.Generic.IList<Azure.ResourceManager.DataMigration.Models.TestConnectivityData> Errors { get { throw null; } }
+        public Azure.ResourceManager.DataMigration.Models.ValidateIRKind? Kind { get { throw null; } set { } }
+        public string SourceDatabaseName { get { throw null; } set { } }
+        public Azure.ResourceManager.DataMigration.Models.SqlConnectionInformation SourceSqlConnection { get { throw null; } set { } }
+        public bool? Succeeded { get { throw null; } set { } }
+        public string TargetDatabaseName { get { throw null; } set { } }
+        public Azure.ResourceManager.DataMigration.Models.SqlConnectionInformation TargetSqlConnection { get { throw null; } set { } }
+    }
+    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    public readonly partial struct ValidateIRKind : System.IEquatable<Azure.ResourceManager.DataMigration.Models.ValidateIRKind>
+    {
+        private readonly object _dummy;
+        private readonly int _dummyPrimitive;
+        public ValidateIRKind(string value) { throw null; }
+        public static Azure.ResourceManager.DataMigration.Models.ValidateIRKind SqlDB { get { throw null; } }
+        public static Azure.ResourceManager.DataMigration.Models.ValidateIRKind SqlMI { get { throw null; } }
+        public static Azure.ResourceManager.DataMigration.Models.ValidateIRKind SqlVm { get { throw null; } }
+        public bool Equals(Azure.ResourceManager.DataMigration.Models.ValidateIRKind other) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override bool Equals(object obj) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override int GetHashCode() { throw null; }
+        public static bool operator ==(Azure.ResourceManager.DataMigration.Models.ValidateIRKind left, Azure.ResourceManager.DataMigration.Models.ValidateIRKind right) { throw null; }
+        public static implicit operator Azure.ResourceManager.DataMigration.Models.ValidateIRKind (string value) { throw null; }
+        public static bool operator !=(Azure.ResourceManager.DataMigration.Models.ValidateIRKind left, Azure.ResourceManager.DataMigration.Models.ValidateIRKind right) { throw null; }
+        public override string ToString() { throw null; }
     }
     public partial class ValidateMigrationInputSqlServerSqlDBSyncTaskProperties : Azure.ResourceManager.DataMigration.Models.ProjectTaskProperties
     {

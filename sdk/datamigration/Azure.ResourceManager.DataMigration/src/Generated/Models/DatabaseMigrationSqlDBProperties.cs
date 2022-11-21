@@ -40,12 +40,14 @@ namespace Azure.ResourceManager.DataMigration.Models
         /// <param name="targetSqlConnection"> Target SQL DB connection details. </param>
         /// <param name="offlineConfiguration"> Offline configuration. </param>
         /// <param name="tableList"> List of tables to copy. </param>
-        internal DatabaseMigrationSqlDBProperties(ResourceType kind, string scope, string provisioningState, string migrationStatus, DateTimeOffset? startedOn, DateTimeOffset? endedOn, SqlConnectionInformation sourceSqlConnection, string sourceDatabaseName, string sourceServerName, string migrationService, string migrationOperationId, ErrorInfo migrationFailureError, string targetDatabaseCollation, string provisioningError, SqlDBMigrationStatusDetails migrationStatusDetails, SqlConnectionInformation targetSqlConnection, SqlDBOfflineConfiguration offlineConfiguration, IList<string> tableList) : base(kind, scope, provisioningState, migrationStatus, startedOn, endedOn, sourceSqlConnection, sourceDatabaseName, sourceServerName, migrationService, migrationOperationId, migrationFailureError, targetDatabaseCollation, provisioningError)
+        /// <param name="keyVault"> Key Vault Properties. </param>
+        internal DatabaseMigrationSqlDBProperties(ResourceType kind, string scope, string provisioningState, string migrationStatus, DateTimeOffset? startedOn, DateTimeOffset? endedOn, SqlConnectionInformation sourceSqlConnection, string sourceDatabaseName, string sourceServerName, string migrationService, string migrationOperationId, ErrorInfo migrationFailureError, string targetDatabaseCollation, string provisioningError, SqlDBMigrationStatusDetails migrationStatusDetails, SqlConnectionInformation targetSqlConnection, SqlDBOfflineConfiguration offlineConfiguration, IList<string> tableList, KeyVaultProperties keyVault) : base(kind, scope, provisioningState, migrationStatus, startedOn, endedOn, sourceSqlConnection, sourceDatabaseName, sourceServerName, migrationService, migrationOperationId, migrationFailureError, targetDatabaseCollation, provisioningError)
         {
             MigrationStatusDetails = migrationStatusDetails;
             TargetSqlConnection = targetSqlConnection;
             OfflineConfiguration = offlineConfiguration;
             TableList = tableList;
+            KeyVault = keyVault;
             Kind = kind;
         }
 
@@ -63,5 +65,7 @@ namespace Azure.ResourceManager.DataMigration.Models
 
         /// <summary> List of tables to copy. </summary>
         public IList<string> TableList { get; }
+        /// <summary> Key Vault Properties. </summary>
+        public KeyVaultProperties KeyVault { get; set; }
     }
 }

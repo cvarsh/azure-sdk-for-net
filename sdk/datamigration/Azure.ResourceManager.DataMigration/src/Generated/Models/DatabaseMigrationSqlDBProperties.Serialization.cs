@@ -32,6 +32,11 @@ namespace Azure.ResourceManager.DataMigration.Models
                 }
                 writer.WriteEndArray();
             }
+            if (Optional.IsDefined(KeyVault))
+            {
+                writer.WritePropertyName("keyVault");
+                writer.WriteObjectValue(KeyVault);
+            }
             writer.WritePropertyName("kind");
             writer.WriteStringValue(Kind.ToString());
             if (Optional.IsDefined(Scope))
@@ -78,6 +83,7 @@ namespace Azure.ResourceManager.DataMigration.Models
             Optional<SqlConnectionInformation> targetSqlConnection = default;
             Optional<SqlDBOfflineConfiguration> offlineConfiguration = default;
             Optional<IList<string>> tableList = default;
+            Optional<KeyVaultProperties> keyVault = default;
             ResourceType kind = default;
             Optional<string> scope = default;
             Optional<string> provisioningState = default;
@@ -137,6 +143,16 @@ namespace Azure.ResourceManager.DataMigration.Models
                         array.Add(item.GetString());
                     }
                     tableList = array;
+                    continue;
+                }
+                if (property.NameEquals("keyVault"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    keyVault = KeyVaultProperties.DeserializeKeyVaultProperties(property.Value);
                     continue;
                 }
                 if (property.NameEquals("kind"))
@@ -230,7 +246,7 @@ namespace Azure.ResourceManager.DataMigration.Models
                     continue;
                 }
             }
-            return new DatabaseMigrationSqlDBProperties(kind, scope.Value, provisioningState.Value, migrationStatus.Value, Optional.ToNullable(startedOn), Optional.ToNullable(endedOn), sourceSqlConnection.Value, sourceDatabaseName.Value, sourceServerName.Value, migrationService.Value, migrationOperationId.Value, migrationFailureError.Value, targetDatabaseCollation.Value, provisioningError.Value, migrationStatusDetails.Value, targetSqlConnection.Value, offlineConfiguration.Value, Optional.ToList(tableList));
+            return new DatabaseMigrationSqlDBProperties(kind, scope.Value, provisioningState.Value, migrationStatus.Value, Optional.ToNullable(startedOn), Optional.ToNullable(endedOn), sourceSqlConnection.Value, sourceDatabaseName.Value, sourceServerName.Value, migrationService.Value, migrationOperationId.Value, migrationFailureError.Value, targetDatabaseCollation.Value, provisioningError.Value, migrationStatusDetails.Value, targetSqlConnection.Value, offlineConfiguration.Value, Optional.ToList(tableList), keyVault.Value);
         }
     }
 }

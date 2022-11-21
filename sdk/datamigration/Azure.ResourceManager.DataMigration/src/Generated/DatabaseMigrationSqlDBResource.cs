@@ -313,5 +313,57 @@ namespace Azure.ResourceManager.DataMigration
                 throw;
             }
         }
+
+        /// <summary>
+        /// Retry on going migration for the database.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{sqlDbInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}/retry
+        /// Operation Id: DatabaseMigrationsSqlDb_retry
+        /// </summary>
+        /// <param name="input"> Required migration operation ID for which retry will be initiated. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="input"/> is null. </exception>
+        public virtual async Task<Response<DatabaseMigrationSqlDBResource>> RetryAsync(MigrationOperationInput input, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(input, nameof(input));
+
+            using var scope = _databaseMigrationSqlDBDatabaseMigrationsSqlDBClientDiagnostics.CreateScope("DatabaseMigrationSqlDBResource.Retry");
+            scope.Start();
+            try
+            {
+                var response = await _databaseMigrationSqlDBDatabaseMigrationsSqlDBRestClient.RetryAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, input, cancellationToken).ConfigureAwait(false);
+                return Response.FromValue(new DatabaseMigrationSqlDBResource(Client, response.Value), response.GetRawResponse());
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Retry on going migration for the database.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{sqlDbInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}/retry
+        /// Operation Id: DatabaseMigrationsSqlDb_retry
+        /// </summary>
+        /// <param name="input"> Required migration operation ID for which retry will be initiated. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="input"/> is null. </exception>
+        public virtual Response<DatabaseMigrationSqlDBResource> Retry(MigrationOperationInput input, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(input, nameof(input));
+
+            using var scope = _databaseMigrationSqlDBDatabaseMigrationsSqlDBClientDiagnostics.CreateScope("DatabaseMigrationSqlDBResource.Retry");
+            scope.Start();
+            try
+            {
+                var response = _databaseMigrationSqlDBDatabaseMigrationsSqlDBRestClient.Retry(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, input, cancellationToken);
+                return Response.FromValue(new DatabaseMigrationSqlDBResource(Client, response.Value), response.GetRawResponse());
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
     }
 }
