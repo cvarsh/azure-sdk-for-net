@@ -40,7 +40,7 @@ namespace Azure.ResourceManager.ContainerRegistry.Models
         public ContainerRegistryPublicNetworkAccess? PublicNetworkAccess { get; set; }
         /// <summary> Whether to allow trusted Azure services to access a network restricted registry. </summary>
         public ContainerRegistryNetworkRuleBypassOption? NetworkRuleBypassOptions { get; set; }
-        /// <summary> Enables registry-wide pull from unauthenticated clients. </summary>
+        /// <summary> Enables registry-wide pull from unauthenticated clients. It&apos;s in preview and available in the Standard and Premium service tiers. </summary>
         public bool? IsAnonymousPullEnabled { get; set; }
     }
 }
