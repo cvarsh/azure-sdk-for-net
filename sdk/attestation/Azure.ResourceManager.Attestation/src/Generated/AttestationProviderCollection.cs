@@ -56,7 +56,7 @@ namespace Azure.ResourceManager.Attestation
         }
 
         /// <summary>
-        /// Creates a new Attestation Provider.
+        /// Creates or updates an Attestation Provider.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Attestation/attestationProviders/{providerName}
         /// Operation Id: AttestationProviders_Create
         /// </summary>
@@ -89,7 +89,7 @@ namespace Azure.ResourceManager.Attestation
         }
 
         /// <summary>
-        /// Creates a new Attestation Provider.
+        /// Creates or updates an Attestation Provider.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Attestation/attestationProviders/{providerName}
         /// Operation Id: AttestationProviders_Create
         /// </summary>
