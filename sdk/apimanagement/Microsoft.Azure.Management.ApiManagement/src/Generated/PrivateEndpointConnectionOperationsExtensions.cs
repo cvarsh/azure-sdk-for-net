@@ -207,7 +207,7 @@ namespace Microsoft.Azure.Management.ApiManagement
             }
 
             /// <summary>
-            /// Description for Gets the private link resources
+            /// Gets the private link resources
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -224,7 +224,7 @@ namespace Microsoft.Azure.Management.ApiManagement
             }
 
             /// <summary>
-            /// Description for Gets the private link resources
+            /// Gets the private link resources
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -247,7 +247,7 @@ namespace Microsoft.Azure.Management.ApiManagement
             }
 
             /// <summary>
-            /// Description for Gets the private link resources
+            /// Gets the private link resources
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -267,7 +267,7 @@ namespace Microsoft.Azure.Management.ApiManagement
             }
 
             /// <summary>
-            /// Description for Gets the private link resources
+            /// Gets the private link resources
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.

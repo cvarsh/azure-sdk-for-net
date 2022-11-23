@@ -526,7 +526,7 @@ namespace Microsoft.Azure.Management.ApiManagement
         }
 
         /// <summary>
-        /// Description for Gets the private link resources
+        /// Gets the private link resources
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
@@ -732,7 +732,7 @@ namespace Microsoft.Azure.Management.ApiManagement
         }
 
         /// <summary>
-        /// Description for Gets the private link resources
+        /// Gets the private link resources
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.

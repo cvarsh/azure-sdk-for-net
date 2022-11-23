@@ -135,7 +135,7 @@ namespace Microsoft.Azure.Management.ApiManagement
         /// </exception>
         Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string serviceName, string privateEndpointConnectionName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Description for Gets the private link resources
+        /// Gets the private link resources
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
@@ -160,7 +160,7 @@ namespace Microsoft.Azure.Management.ApiManagement
         /// </exception>
         Task<AzureOperationResponse<PrivateLinkResourceListResult>> ListPrivateLinkResourcesWithHttpMessagesAsync(string resourceGroupName, string serviceName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Description for Gets the private link resources
+        /// Gets the private link resources
         /// </summary>
         /// <param name='resourceGroupName'>
         /// The name of the resource group.
