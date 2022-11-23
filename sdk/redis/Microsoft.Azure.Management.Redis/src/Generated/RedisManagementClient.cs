@@ -366,7 +366,7 @@ namespace Microsoft.Azure.Management.Redis
             PrivateLinkResources = new PrivateLinkResourcesOperations(this);
             AsyncOperationStatus = new AsyncOperationStatusOperations(this);
             BaseUri = new System.Uri("https://management.azure.com");
-            ApiVersion = "2022-06-01";
+            ApiVersion = "2021-06-01";
             AcceptLanguage = "en-US";
             LongRunningOperationRetryTimeout = 30;
             GenerateClientRequestId = true;

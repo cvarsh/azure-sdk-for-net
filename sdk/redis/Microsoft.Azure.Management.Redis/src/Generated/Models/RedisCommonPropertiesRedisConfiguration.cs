@@ -40,8 +40,7 @@ namespace Microsoft.Azure.Management.Redis.Models
         /// <param name="rdbBackupEnabled">Specifies whether the rdb backup is
         /// enabled</param>
         /// <param name="rdbBackupFrequency">Specifies the frequency for
-        /// creating rdb backup in minutes. Valid values: (15, 30, 60, 360,
-        /// 720, 1440)</param>
+        /// creating rdb backup</param>
         /// <param name="rdbBackupMaxSnapshotCount">Specifies the maximum
         /// number of snapshots for rdb backup</param>
         /// <param name="rdbStorageConnectionString">The storage account
@@ -112,8 +111,7 @@ namespace Microsoft.Azure.Management.Redis.Models
         public string RdbBackupEnabled { get; set; }
 
         /// <summary>
-        /// Gets or sets specifies the frequency for creating rdb backup in
-        /// minutes. Valid values: (15, 30, 60, 360, 720, 1440)
+        /// Gets or sets specifies the frequency for creating rdb backup
         /// </summary>
         [JsonProperty(PropertyName = "rdb-backup-frequency")]
         public string RdbBackupFrequency { get; set; }
@@ -193,12 +191,12 @@ namespace Microsoft.Azure.Management.Redis.Models
         public string PreferredDataArchiveAuthMethod { get; private set; }
 
         /// <summary>
-        /// Gets or sets preferred auth method to communicate to storage
-        /// account used for data persistence, specify SAS or ManagedIdentity,
-        /// default value is SAS
+        /// Gets preferred auth method to communicate to storage account used
+        /// for data persistence, specify SAS or ManagedIdentity, default value
+        /// is SAS
         /// </summary>
         [JsonProperty(PropertyName = "preferred-data-persistence-auth-method")]
-        public string PreferredDataPersistenceAuthMethod { get; set; }
+        public string PreferredDataPersistenceAuthMethod { get; private set; }
 
         /// <summary>
         /// Gets zonal Configuration
