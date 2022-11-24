@@ -8,28 +8,17 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Azure.Core;
-using Azure.ResourceManager.ServiceLinker;
 
 namespace Azure.ResourceManager.ServiceLinker.Models
 {
-    internal partial class LinkerList
+    internal partial class ConfigurationNameResult
     {
-        internal static LinkerList DeserializeLinkerList(JsonElement element)
+        internal static ConfigurationNameResult DeserializeConfigurationNameResult(JsonElement element)
         {
+            Optional<IReadOnlyList<ConfigurationNames>> value = default;
             Optional<string> nextLink = default;
-            Optional<IReadOnlyList<LinkerResourceData>> value = default;
             foreach (var property in element.EnumerateObject())
             {
-                if (property.NameEquals("nextLink"))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        nextLink = null;
-                        continue;
-                    }
-                    nextLink = property.Value.GetString();
-                    continue;
-                }
                 if (property.NameEquals("value"))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
@@ -37,16 +26,21 @@ namespace Azure.ResourceManager.ServiceLinker.Models
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    List<LinkerResourceData> array = new List<LinkerResourceData>();
+                    List<ConfigurationNames> array = new List<ConfigurationNames>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
-                        array.Add(LinkerResourceData.DeserializeLinkerResourceData(item));
+                        array.Add(ConfigurationNames.DeserializeConfigurationNames(item));
                     }
                     value = array;
                     continue;
                 }
+                if (property.NameEquals("nextLink"))
+                {
+                    nextLink = property.Value.GetString();
+                    continue;
+                }
             }
-            return new LinkerList(nextLink.Value, Optional.ToList(value));
+            return new ConfigurationNameResult(Optional.ToList(value), nextLink.Value);
         }
     }
 }
