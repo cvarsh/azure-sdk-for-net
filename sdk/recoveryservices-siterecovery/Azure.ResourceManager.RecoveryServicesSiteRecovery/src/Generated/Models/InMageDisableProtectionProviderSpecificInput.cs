@@ -8,7 +8,7 @@
 namespace Azure.ResourceManager.RecoveryServicesSiteRecovery.Models
 {
     /// <summary> InMage disable protection provider specific input. </summary>
-    public partial class InMageDisableProtectionProviderSpecificInput : DisableProtectionProviderSpecificInput
+    public partial class InMageDisableProtectionProviderSpecificInput : ProviderSpecificInput
     {
         /// <summary> Initializes a new instance of InMageDisableProtectionProviderSpecificInput. </summary>
         public InMageDisableProtectionProviderSpecificInput()

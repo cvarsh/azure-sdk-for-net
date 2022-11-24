@@ -17,11 +17,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery.Models
 
         /// <summary> Disable protection reason. It can have values NotSpecified/MigrationComplete. </summary>
         public DisableProtectionReason? DisableProtectionReason { get; set; }
-        /// <summary>
-        /// Replication provider specific input.
-        /// Please note <see cref="DisableProtectionProviderSpecificInput"/> is the base class. According to the scenario, a derived class of the base class might need to be assigned here, or this property needs to be casted to one of the possible derived classes.
-        /// The available derived classes include <see cref="InMageDisableProtectionProviderSpecificInput"/>.
-        /// </summary>
+        /// <summary> Replication provider specific input. </summary>
         public DisableProtectionProviderSpecificInput ReplicationProviderInput { get; set; }
     }
 }
