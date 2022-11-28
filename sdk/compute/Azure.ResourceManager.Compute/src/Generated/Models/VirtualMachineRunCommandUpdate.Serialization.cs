@@ -83,6 +83,16 @@ namespace Azure.ResourceManager.Compute.Models
                 writer.WritePropertyName("errorBlobUri");
                 writer.WriteStringValue(ErrorBlobUri.AbsoluteUri);
             }
+            if (Optional.IsDefined(OutputBlobManagedIdentity))
+            {
+                writer.WritePropertyName("outputBlobManagedIdentity");
+                writer.WriteObjectValue(OutputBlobManagedIdentity);
+            }
+            if (Optional.IsDefined(ErrorBlobManagedIdentity))
+            {
+                writer.WritePropertyName("errorBlobManagedIdentity");
+                writer.WriteObjectValue(ErrorBlobManagedIdentity);
+            }
             writer.WriteEndObject();
             writer.WriteEndObject();
         }

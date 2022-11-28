@@ -35,10 +35,14 @@ namespace Azure.ResourceManager.Compute.Models
         public string RunAsPassword { get; set; }
         /// <summary> The timeout in seconds to execute the run command. </summary>
         public int? TimeoutInSeconds { get; set; }
-        /// <summary> Specifies the Azure storage blob where script output stream will be uploaded. </summary>
+        /// <summary> Specifies the Azure storage blob where script output stream will be uploaded. Use a SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob. Refer outputBlobManagedIdentity parameter. </summary>
         public Uri OutputBlobUri { get; set; }
-        /// <summary> Specifies the Azure storage blob where script error stream will be uploaded. </summary>
+        /// <summary> Specifies the Azure storage blob where script error stream will be uploaded. Use a SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob. Refer errorBlobManagedIdentity parameter. </summary>
         public Uri ErrorBlobUri { get; set; }
+        /// <summary> User-assigned managed identity that has access to outputBlobUri storage blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given access to blob&apos;s container with &apos;Storage Blob Data Contributor&apos; role assignment. In case of user-assigned identity, make sure you add it under VM&apos;s identity. For more info on managed identity and Run Command, refer https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged. </summary>
+        public RunCommandManagedIdentity OutputBlobManagedIdentity { get; set; }
+        /// <summary> User-assigned managed identity that has access to errorBlobUri storage blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given access to blob&apos;s container with &apos;Storage Blob Data Contributor&apos; role assignment. In case of user-assigned identity, make sure you add it under VM&apos;s identity. For more info on managed identity and Run Command, refer https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged. </summary>
+        public RunCommandManagedIdentity ErrorBlobManagedIdentity { get; set; }
         /// <summary> The provisioning state, which only appears in the response. </summary>
         public string ProvisioningState { get; }
         /// <summary> The virtual machine run command instance view. </summary>
