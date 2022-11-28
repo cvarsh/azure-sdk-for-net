@@ -33,7 +33,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         {
             _pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
             _endpoint = endpoint ?? new Uri("https://management.azure.com");
-            _apiVersion = apiVersion ?? "2022-08-01";
+            _apiVersion = apiVersion ?? "2022-10-01";
             _userAgent = new TelemetryDetails(GetType().Assembly, applicationId);
         }
 
@@ -128,14 +128,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateGetRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName)
+        internal HttpMessage CreateGetRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -146,7 +146,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
@@ -160,20 +160,20 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Fabric unique name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response<ReplicationProtectedItemData>> GetAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response<ReplicationProtectedItemData>> GetAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
 
-            using var message = CreateGetRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName);
+            using var message = CreateGetRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -197,20 +197,20 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Fabric unique name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response<ReplicationProtectedItemData> Get(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response<ReplicationProtectedItemData> Get(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
 
-            using var message = CreateGetRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName);
+            using var message = CreateGetRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -228,14 +228,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateCreateRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, ReplicationProtectedItemCreateOrUpdateContent content)
+        internal HttpMessage CreateCreateRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, ReplicationProtectedItemCreateOrUpdateContent content)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Put;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -246,7 +246,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
@@ -264,22 +264,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Name of the fabric. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> A name for the replication protected item. </param>
+        /// <param name="replicationProtectedItemName"> A name for the replication protected item. </param>
         /// <param name="content"> Enable Protection Input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> CreateAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, ReplicationProtectedItemCreateOrUpdateContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> CreateAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, ReplicationProtectedItemCreateOrUpdateContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateCreateRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateCreateRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -297,22 +297,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Name of the fabric. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> A name for the replication protected item. </param>
+        /// <param name="replicationProtectedItemName"> A name for the replication protected item. </param>
         /// <param name="content"> Enable Protection Input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response Create(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, ReplicationProtectedItemCreateOrUpdateContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response Create(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, ReplicationProtectedItemCreateOrUpdateContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateCreateRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateCreateRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -324,14 +324,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreatePurgeRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName)
+        internal HttpMessage CreatePurgeRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Delete;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -342,7 +342,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
             _userAgent.Apply(message);
@@ -355,20 +355,20 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> PurgeAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> PurgeAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
 
-            using var message = CreatePurgeRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName);
+            using var message = CreatePurgeRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -386,20 +386,20 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response Purge(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response Purge(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
 
-            using var message = CreatePurgeRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName);
+            using var message = CreatePurgeRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -411,14 +411,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateUpdateRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, ReplicationProtectedItemPatch patch)
+        internal HttpMessage CreateUpdateRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, ReplicationProtectedItemPatch patch)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Patch;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -429,7 +429,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
@@ -447,22 +447,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="patch"> Update protection input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="patch"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> UpdateAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, ReplicationProtectedItemPatch patch, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="patch"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> UpdateAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, ReplicationProtectedItemPatch patch, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(patch, nameof(patch));
 
-            using var message = CreateUpdateRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, patch);
+            using var message = CreateUpdateRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, patch);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -480,22 +480,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="patch"> Update protection input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="patch"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response Update(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, ReplicationProtectedItemPatch patch, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="patch"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response Update(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, ReplicationProtectedItemPatch patch, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(patch, nameof(patch));
 
-            using var message = CreateUpdateRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, patch);
+            using var message = CreateUpdateRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, patch);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -507,14 +507,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateAddDisksRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, AddDisksContent content)
+        internal HttpMessage CreateAddDisksRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, AddDisksContent content)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -525,7 +525,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendPath("/addDisks", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -544,22 +544,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Add disks input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> AddDisksAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, AddDisksContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> AddDisksAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, AddDisksContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateAddDisksRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateAddDisksRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -577,22 +577,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Add disks input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response AddDisks(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, AddDisksContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response AddDisks(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, AddDisksContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateAddDisksRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateAddDisksRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -604,14 +604,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateApplyRecoveryPointRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, ApplyRecoveryPointContent content)
+        internal HttpMessage CreateApplyRecoveryPointRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, ApplyRecoveryPointContent content)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -622,7 +622,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendPath("/applyRecoveryPoint", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -641,22 +641,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> The ARM fabric name. </param>
         /// <param name="protectionContainerName"> The protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> The replicated protected item name. </param>
+        /// <param name="replicationProtectedItemName"> The replicated protected item name. </param>
         /// <param name="content"> The ApplyRecoveryPointInput. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> ApplyRecoveryPointAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, ApplyRecoveryPointContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> ApplyRecoveryPointAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, ApplyRecoveryPointContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateApplyRecoveryPointRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateApplyRecoveryPointRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -674,22 +674,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> The ARM fabric name. </param>
         /// <param name="protectionContainerName"> The protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> The replicated protected item name. </param>
+        /// <param name="replicationProtectedItemName"> The replicated protected item name. </param>
         /// <param name="content"> The ApplyRecoveryPointInput. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response ApplyRecoveryPoint(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, ApplyRecoveryPointContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response ApplyRecoveryPoint(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, ApplyRecoveryPointContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateApplyRecoveryPointRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateApplyRecoveryPointRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -701,14 +701,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateFailoverCancelRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName)
+        internal HttpMessage CreateFailoverCancelRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -719,7 +719,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendPath("/failoverCancel", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -734,20 +734,20 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> FailoverCancelAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> FailoverCancelAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
 
-            using var message = CreateFailoverCancelRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName);
+            using var message = CreateFailoverCancelRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -765,20 +765,20 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response FailoverCancel(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response FailoverCancel(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
 
-            using var message = CreateFailoverCancelRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName);
+            using var message = CreateFailoverCancelRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -790,14 +790,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateFailoverCommitRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName)
+        internal HttpMessage CreateFailoverCommitRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -808,7 +808,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendPath("/failoverCommit", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -823,20 +823,20 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> FailoverCommitAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> FailoverCommitAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
 
-            using var message = CreateFailoverCommitRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName);
+            using var message = CreateFailoverCommitRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -854,20 +854,20 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response FailoverCommit(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response FailoverCommit(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
 
-            using var message = CreateFailoverCommitRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName);
+            using var message = CreateFailoverCommitRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -879,14 +879,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreatePlannedFailoverRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, PlannedFailoverContent content)
+        internal HttpMessage CreatePlannedFailoverRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, PlannedFailoverContent content)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -897,7 +897,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendPath("/plannedFailover", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -916,22 +916,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Planned failover input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> PlannedFailoverAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, PlannedFailoverContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> PlannedFailoverAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, PlannedFailoverContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreatePlannedFailoverRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreatePlannedFailoverRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -949,22 +949,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Planned failover input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response PlannedFailover(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, PlannedFailoverContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response PlannedFailover(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, PlannedFailoverContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreatePlannedFailoverRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreatePlannedFailoverRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -976,14 +976,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateDeleteRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, DisableProtectionContent content)
+        internal HttpMessage CreateDeleteRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, DisableProtectionContent content)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -994,7 +994,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendPath("/remove", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -1012,22 +1012,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Disable protection input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> DeleteAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, DisableProtectionContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> DeleteAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, DisableProtectionContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateDeleteRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateDeleteRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -1045,22 +1045,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Disable protection input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response Delete(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, DisableProtectionContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response Delete(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, DisableProtectionContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateDeleteRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateDeleteRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -1072,14 +1072,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateRemoveDisksRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, RemoveDisksContent content)
+        internal HttpMessage CreateRemoveDisksRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, RemoveDisksContent content)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -1090,7 +1090,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendPath("/removeDisks", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -1109,22 +1109,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Remove disks input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> RemoveDisksAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, RemoveDisksContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> RemoveDisksAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, RemoveDisksContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateRemoveDisksRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateRemoveDisksRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -1142,22 +1142,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Remove disks input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response RemoveDisks(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, RemoveDisksContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response RemoveDisks(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, RemoveDisksContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateRemoveDisksRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateRemoveDisksRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -1169,14 +1169,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateRepairReplicationRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName)
+        internal HttpMessage CreateRepairReplicationRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -1187,7 +1187,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendPath("/repairReplication", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -1202,20 +1202,20 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> The name of the fabric. </param>
         /// <param name="protectionContainerName"> The name of the container. </param>
-        /// <param name="replicatedProtectedItemName"> The name of the replication protected item. </param>
+        /// <param name="replicationProtectedItemName"> The name of the replication protected item. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> RepairReplicationAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> RepairReplicationAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
 
-            using var message = CreateRepairReplicationRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName);
+            using var message = CreateRepairReplicationRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -1233,20 +1233,20 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> The name of the fabric. </param>
         /// <param name="protectionContainerName"> The name of the container. </param>
-        /// <param name="replicatedProtectedItemName"> The name of the replication protected item. </param>
+        /// <param name="replicationProtectedItemName"> The name of the replication protected item. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response RepairReplication(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response RepairReplication(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
 
-            using var message = CreateRepairReplicationRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName);
+            using var message = CreateRepairReplicationRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -1258,14 +1258,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateReprotectRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, ReverseReplicationContent content)
+        internal HttpMessage CreateReprotectRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, ReverseReplicationContent content)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -1276,7 +1276,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendPath("/reProtect", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -1295,22 +1295,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Reverse replication input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> ReprotectAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, ReverseReplicationContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> ReprotectAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, ReverseReplicationContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateReprotectRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateReprotectRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -1328,22 +1328,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Reverse replication input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response Reprotect(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, ReverseReplicationContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response Reprotect(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, ReverseReplicationContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateReprotectRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateReprotectRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -1355,14 +1355,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateResolveHealthErrorsRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, ResolveHealthContent content)
+        internal HttpMessage CreateResolveHealthErrorsRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, ResolveHealthContent content)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -1373,7 +1373,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendPath("/resolveHealthErrors", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -1392,22 +1392,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Health issue input object. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> ResolveHealthErrorsAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, ResolveHealthContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> ResolveHealthErrorsAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, ResolveHealthContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateResolveHealthErrorsRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateResolveHealthErrorsRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -1425,22 +1425,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Health issue input object. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response ResolveHealthErrors(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, ResolveHealthContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response ResolveHealthErrors(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, ResolveHealthContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateResolveHealthErrorsRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateResolveHealthErrorsRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -1452,14 +1452,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateSwitchProviderRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, SwitchProviderContent content)
+        internal HttpMessage CreateSwitchProviderRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, SwitchProviderContent content)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -1470,7 +1470,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendPath("/switchProvider", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -1489,22 +1489,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Switch provider input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> SwitchProviderAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, SwitchProviderContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> SwitchProviderAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, SwitchProviderContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateSwitchProviderRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateSwitchProviderRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -1522,22 +1522,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Switch provider input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response SwitchProvider(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, SwitchProviderContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response SwitchProvider(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, SwitchProviderContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateSwitchProviderRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateSwitchProviderRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -1549,14 +1549,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateTestFailoverRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, TestFailoverContent content)
+        internal HttpMessage CreateTestFailoverRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, TestFailoverContent content)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -1567,7 +1567,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendPath("/testFailover", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -1586,22 +1586,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Test failover input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> TestFailoverAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, TestFailoverContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> TestFailoverAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, TestFailoverContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateTestFailoverRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateTestFailoverRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -1619,22 +1619,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Test failover input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response TestFailover(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, TestFailoverContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response TestFailover(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, TestFailoverContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateTestFailoverRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateTestFailoverRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -1646,14 +1646,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateTestFailoverCleanupRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, TestFailoverCleanupContent content)
+        internal HttpMessage CreateTestFailoverCleanupRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, TestFailoverCleanupContent content)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -1664,7 +1664,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendPath("/testFailoverCleanup", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -1683,22 +1683,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Test failover cleanup input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> TestFailoverCleanupAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, TestFailoverCleanupContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> TestFailoverCleanupAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, TestFailoverCleanupContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateTestFailoverCleanupRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateTestFailoverCleanupRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -1716,22 +1716,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Test failover cleanup input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response TestFailoverCleanup(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, TestFailoverCleanupContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response TestFailoverCleanup(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, TestFailoverCleanupContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateTestFailoverCleanupRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateTestFailoverCleanupRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -1743,14 +1743,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateUnplannedFailoverRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, UnplannedFailoverContent content)
+        internal HttpMessage CreateUnplannedFailoverRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, UnplannedFailoverContent content)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -1761,7 +1761,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendPath("/unplannedFailover", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -1780,22 +1780,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Failover input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> UnplannedFailoverAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, UnplannedFailoverContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> UnplannedFailoverAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, UnplannedFailoverContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateUnplannedFailoverRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateUnplannedFailoverRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -1813,22 +1813,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Unique fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Failover input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response UnplannedFailover(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, UnplannedFailoverContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response UnplannedFailover(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, UnplannedFailoverContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateUnplannedFailoverRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateUnplannedFailoverRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -1840,14 +1840,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             }
         }
 
-        internal HttpMessage CreateUpdateApplianceRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, UpdateApplianceForReplicationProtectedItemContent content)
+        internal HttpMessage CreateUpdateApplianceRequest(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, UpdateApplianceForReplicationProtectedItemContent content)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);
@@ -1858,7 +1858,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             uri.AppendPath("/replicationProtectionContainers/", false);
             uri.AppendPath(protectionContainerName, true);
             uri.AppendPath("/replicationProtectedItems/", false);
-            uri.AppendPath(replicatedProtectedItemName, true);
+            uri.AppendPath(replicationProtectedItemName, true);
             uri.AppendPath("/updateAppliance", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
@@ -1877,22 +1877,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Appliance update protection input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> UpdateApplianceAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, UpdateApplianceForReplicationProtectedItemContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> UpdateApplianceAsync(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, UpdateApplianceForReplicationProtectedItemContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateUpdateApplianceRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateUpdateApplianceRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
@@ -1910,22 +1910,22 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         /// <param name="resourceName"> The name of the recovery services vault. </param>
         /// <param name="fabricName"> Fabric name. </param>
         /// <param name="protectionContainerName"> Protection container name. </param>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="content"> Appliance update protection input. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicatedProtectedItemName"/> or <paramref name="content"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response UpdateAppliance(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, UpdateApplianceForReplicationProtectedItemContent content, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/>, <paramref name="replicationProtectedItemName"/> or <paramref name="content"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="resourceName"/>, <paramref name="fabricName"/>, <paramref name="protectionContainerName"/> or <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response UpdateAppliance(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, UpdateApplianceForReplicationProtectedItemContent content, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(resourceName, nameof(resourceName));
             Argument.AssertNotNullOrEmpty(fabricName, nameof(fabricName));
             Argument.AssertNotNullOrEmpty(protectionContainerName, nameof(protectionContainerName));
-            Argument.AssertNotNullOrEmpty(replicatedProtectedItemName, nameof(replicatedProtectedItemName));
+            Argument.AssertNotNullOrEmpty(replicationProtectedItemName, nameof(replicationProtectedItemName));
             Argument.AssertNotNull(content, nameof(content));
 
-            using var message = CreateUpdateApplianceRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, content);
+            using var message = CreateUpdateApplianceRequest(subscriptionId, resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectedItemName, content);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
@@ -1944,7 +1944,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath("/Subscriptions/", false);
             uri.AppendPath(subscriptionId, true);
             uri.AppendPath("/resourceGroups/", false);
             uri.AppendPath(resourceGroupName, true);

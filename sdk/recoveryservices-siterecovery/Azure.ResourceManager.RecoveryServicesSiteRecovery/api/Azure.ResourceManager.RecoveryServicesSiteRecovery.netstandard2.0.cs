@@ -479,8 +479,8 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         public virtual Azure.Response<Azure.ResourceManager.RecoveryServicesSiteRecovery.ProtectionContainerMappingResource> GetProtectionContainerMapping(string mappingName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.RecoveryServicesSiteRecovery.ProtectionContainerMappingResource>> GetProtectionContainerMappingAsync(string mappingName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.ResourceManager.RecoveryServicesSiteRecovery.ProtectionContainerMappingCollection GetProtectionContainerMappings() { throw null; }
-        public virtual Azure.Response<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource> GetReplicationProtectedItem(string replicatedProtectedItemName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
-        public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource>> GetReplicationProtectedItemAsync(string replicatedProtectedItemName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual Azure.Response<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource> GetReplicationProtectedItem(string replicationProtectedItemName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource>> GetReplicationProtectedItemAsync(string replicationProtectedItemName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemCollection GetReplicationProtectedItems() { throw null; }
         public virtual Azure.ResourceManager.ArmOperation<Azure.ResourceManager.RecoveryServicesSiteRecovery.ProtectionContainerResource> SwitchProtection(Azure.WaitUntil waitUntil, Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.SwitchProtectionContent content, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.ResourceManager.ArmOperation<Azure.ResourceManager.RecoveryServicesSiteRecovery.ProtectionContainerResource>> SwitchProtectionAsync(Azure.WaitUntil waitUntil, Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.SwitchProtectionContent content, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
@@ -561,7 +561,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         protected RecoveryPointResource() { }
         public virtual Azure.ResourceManager.RecoveryServicesSiteRecovery.RecoveryPointData Data { get { throw null; } }
         public virtual bool HasData { get { throw null; } }
-        public static Azure.Core.ResourceIdentifier CreateResourceIdentifier(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName, string recoveryPointName) { throw null; }
+        public static Azure.Core.ResourceIdentifier CreateResourceIdentifier(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName, string recoveryPointName) { throw null; }
         public virtual Azure.Response<Azure.ResourceManager.RecoveryServicesSiteRecovery.RecoveryPointResource> Get(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.RecoveryServicesSiteRecovery.RecoveryPointResource>> GetAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
     }
@@ -714,14 +714,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
     public partial class ReplicationProtectedItemCollection : Azure.ResourceManager.ArmCollection, System.Collections.Generic.IAsyncEnumerable<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource>, System.Collections.Generic.IEnumerable<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource>, System.Collections.IEnumerable
     {
         protected ReplicationProtectedItemCollection() { }
-        public virtual Azure.ResourceManager.ArmOperation<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource> CreateOrUpdate(Azure.WaitUntil waitUntil, string replicatedProtectedItemName, Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.ReplicationProtectedItemCreateOrUpdateContent content, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
-        public virtual System.Threading.Tasks.Task<Azure.ResourceManager.ArmOperation<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource>> CreateOrUpdateAsync(Azure.WaitUntil waitUntil, string replicatedProtectedItemName, Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.ReplicationProtectedItemCreateOrUpdateContent content, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
-        public virtual Azure.Response<bool> Exists(string replicatedProtectedItemName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
-        public virtual System.Threading.Tasks.Task<Azure.Response<bool>> ExistsAsync(string replicatedProtectedItemName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
-        public virtual Azure.Response<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource> Get(string replicatedProtectedItemName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual Azure.ResourceManager.ArmOperation<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource> CreateOrUpdate(Azure.WaitUntil waitUntil, string replicationProtectedItemName, Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.ReplicationProtectedItemCreateOrUpdateContent content, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.ResourceManager.ArmOperation<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource>> CreateOrUpdateAsync(Azure.WaitUntil waitUntil, string replicationProtectedItemName, Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.ReplicationProtectedItemCreateOrUpdateContent content, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual Azure.Response<bool> Exists(string replicationProtectedItemName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response<bool>> ExistsAsync(string replicationProtectedItemName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual Azure.Response<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource> Get(string replicationProtectedItemName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.Pageable<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource> GetAll(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.AsyncPageable<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource> GetAllAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
-        public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource>> GetAsync(string replicatedProtectedItemName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource>> GetAsync(string replicationProtectedItemName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         System.Collections.Generic.IAsyncEnumerator<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource> System.Collections.Generic.IAsyncEnumerable<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource>.GetAsyncEnumerator(System.Threading.CancellationToken cancellationToken) { throw null; }
         System.Collections.Generic.IEnumerator<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource> System.Collections.Generic.IEnumerable<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource>.GetEnumerator() { throw null; }
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { throw null; }
@@ -742,7 +742,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
         public virtual System.Threading.Tasks.Task<Azure.ResourceManager.ArmOperation<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource>> AddDisksAsync(Azure.WaitUntil waitUntil, Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.AddDisksContent content, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.ResourceManager.ArmOperation<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource> ApplyRecoveryPoint(Azure.WaitUntil waitUntil, Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.ApplyRecoveryPointContent content, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.ResourceManager.ArmOperation<Azure.ResourceManager.RecoveryServicesSiteRecovery.ReplicationProtectedItemResource>> ApplyRecoveryPointAsync(Azure.WaitUntil waitUntil, Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.ApplyRecoveryPointContent content, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
-        public static Azure.Core.ResourceIdentifier CreateResourceIdentifier(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicatedProtectedItemName) { throw null; }
+        public static Azure.Core.ResourceIdentifier CreateResourceIdentifier(string subscriptionId, string resourceGroupName, string resourceName, string fabricName, string protectionContainerName, string replicationProtectedItemName) { throw null; }
         public virtual Azure.ResourceManager.ArmOperation Delete(Azure.WaitUntil waitUntil, Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.DisableProtectionContent content, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.ResourceManager.ArmOperation Delete(Azure.WaitUntil waitUntil, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.ResourceManager.ArmOperation> DeleteAsync(Azure.WaitUntil waitUntil, Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.DisableProtectionContent content, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
@@ -1060,6 +1060,12 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery.Models
         public string ProtectedItemName { get { throw null; } }
         public string RemoteFabricLocation { get { throw null; } }
         public string RemoteFabricName { get { throw null; } }
+    }
+    public partial class A2AExtendedLocationDetails
+    {
+        internal A2AExtendedLocationDetails() { }
+        public Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.ExtendedLocation PrimaryExtendedLocation { get { throw null; } }
+        public Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.ExtendedLocation RecoveryExtendedLocation { get { throw null; } }
     }
     public partial class A2APolicyCreationInput : Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.PolicyProviderSpecificInput
     {
@@ -1639,6 +1645,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery.Models
     {
         internal AzureFabricSpecificDetails() { }
         public System.Collections.Generic.IReadOnlyList<string> ContainerIds { get { throw null; } }
+        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.A2AExtendedLocationDetails> ExtendedLocations { get { throw null; } }
         public Azure.Core.AzureLocation? Location { get { throw null; } }
         public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.A2AZoneDetails> Zones { get { throw null; } }
     }
@@ -4324,7 +4331,9 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery.Models
     public partial class RecoveryPlanA2ADetails : Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.RecoveryPlanProviderSpecificDetails
     {
         internal RecoveryPlanA2ADetails() { }
+        public Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.ExtendedLocation PrimaryExtendedLocation { get { throw null; } }
         public string PrimaryZone { get { throw null; } }
+        public Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.ExtendedLocation RecoveryExtendedLocation { get { throw null; } }
         public string RecoveryZone { get { throw null; } }
     }
     public partial class RecoveryPlanA2AFailoverInput : Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.RecoveryPlanProviderSpecificFailoverInput
@@ -5532,6 +5541,7 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery.Models
         public System.Collections.Generic.IList<Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.VMwareCbtDiskInput> DisksToInclude { get { throw null; } }
         public Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.LicenseType? LicenseType { get { throw null; } set { } }
         public string PerformAutoResync { get { throw null; } set { } }
+        public string PerformSqlBulkRegistration { get { throw null; } set { } }
         public System.Collections.Generic.IDictionary<string, string> SeedDiskTags { get { throw null; } }
         public string SnapshotRunAsAccountId { get { throw null; } }
         public Azure.ResourceManager.RecoveryServicesSiteRecovery.Models.SqlServerLicenseType? SqlServerLicenseType { get { throw null; } set { } }

@@ -170,32 +170,32 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery
 
         /// <summary>
         /// Gets the details of an ASR replication protected item.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}
+        /// Request Path: /Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}
         /// Operation Id: ReplicationProtectedItems_Get
         /// </summary>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentException"> <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        /// <exception cref="ArgumentNullException"> <paramref name="replicatedProtectedItemName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="replicationProtectedItemName"/> is null. </exception>
         [ForwardsClientCalls]
-        public virtual async Task<Response<ReplicationProtectedItemResource>> GetReplicationProtectedItemAsync(string replicatedProtectedItemName, CancellationToken cancellationToken = default)
+        public virtual async Task<Response<ReplicationProtectedItemResource>> GetReplicationProtectedItemAsync(string replicationProtectedItemName, CancellationToken cancellationToken = default)
         {
-            return await GetReplicationProtectedItems().GetAsync(replicatedProtectedItemName, cancellationToken).ConfigureAwait(false);
+            return await GetReplicationProtectedItems().GetAsync(replicationProtectedItemName, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Gets the details of an ASR replication protected item.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}
+        /// Request Path: /Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicationProtectedItemName}
         /// Operation Id: ReplicationProtectedItems_Get
         /// </summary>
-        /// <param name="replicatedProtectedItemName"> Replication protected item name. </param>
+        /// <param name="replicationProtectedItemName"> Replication protected item name. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentException"> <paramref name="replicatedProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
-        /// <exception cref="ArgumentNullException"> <paramref name="replicatedProtectedItemName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="replicationProtectedItemName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="replicationProtectedItemName"/> is null. </exception>
         [ForwardsClientCalls]
-        public virtual Response<ReplicationProtectedItemResource> GetReplicationProtectedItem(string replicatedProtectedItemName, CancellationToken cancellationToken = default)
+        public virtual Response<ReplicationProtectedItemResource> GetReplicationProtectedItem(string replicationProtectedItemName, CancellationToken cancellationToken = default)
         {
-            return GetReplicationProtectedItems().Get(replicatedProtectedItemName, cancellationToken);
+            return GetReplicationProtectedItems().Get(replicationProtectedItemName, cancellationToken);
         }
 
         /// <summary> Gets a collection of ProtectionContainerMappingResources in the ProtectionContainer. </summary>
