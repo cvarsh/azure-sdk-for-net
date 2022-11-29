@@ -135,6 +135,25 @@ namespace Azure.ResourceManager.ContainerRegistry
             return resourceGroupResource.GetContainerRegistries().Get(registryName, cancellationToken);
         }
 
+        #region CacheRuleResource
+        /// <summary>
+        /// Gets an object representing a <see cref="CacheRuleResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="CacheRuleResource.CreateResourceIdentifier" /> to create a <see cref="CacheRuleResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="CacheRuleResource" /> object. </returns>
+        public static CacheRuleResource GetCacheRuleResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                CacheRuleResource.ValidateResourceId(id);
+                return new CacheRuleResource(client, id);
+            }
+            );
+        }
+        #endregion
+
         #region ConnectedRegistryResource
         /// <summary>
         /// Gets an object representing a <see cref="ConnectedRegistryResource" /> along with the instance operations that can be performed on it but with no data.
@@ -149,6 +168,25 @@ namespace Azure.ResourceManager.ContainerRegistry
             {
                 ConnectedRegistryResource.ValidateResourceId(id);
                 return new ConnectedRegistryResource(client, id);
+            }
+            );
+        }
+        #endregion
+
+        #region CredentialSetResource
+        /// <summary>
+        /// Gets an object representing a <see cref="CredentialSetResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="CredentialSetResource.CreateResourceIdentifier" /> to create a <see cref="CredentialSetResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="CredentialSetResource" /> object. </returns>
+        public static CredentialSetResource GetCredentialSetResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                CredentialSetResource.ValidateResourceId(id);
+                return new CredentialSetResource(client, id);
             }
             );
         }
