@@ -16,20 +16,20 @@ using Azure.ResourceManager.EventHubs.Models;
 
 namespace Azure.ResourceManager.EventHubs
 {
-    internal partial class PrivateEndpointConnectionsRestOperations
+    internal partial class ApplicationGroupRestOperations
     {
         private readonly TelemetryDetails _userAgent;
         private readonly HttpPipeline _pipeline;
         private readonly Uri _endpoint;
         private readonly string _apiVersion;
 
-        /// <summary> Initializes a new instance of PrivateEndpointConnectionsRestOperations. </summary>
+        /// <summary> Initializes a new instance of ApplicationGroupRestOperations. </summary>
         /// <param name="pipeline"> The HTTP pipeline for sending and receiving REST requests and responses. </param>
         /// <param name="applicationId"> The application id to use for user agent. </param>
         /// <param name="endpoint"> server parameter. </param>
         /// <param name="apiVersion"> Api Version. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="pipeline"/> or <paramref name="apiVersion"/> is null. </exception>
-        public PrivateEndpointConnectionsRestOperations(HttpPipeline pipeline, string applicationId, Uri endpoint = null, string apiVersion = default)
+        public ApplicationGroupRestOperations(HttpPipeline pipeline, string applicationId, Uri endpoint = null, string apiVersion = default)
         {
             _pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
             _endpoint = endpoint ?? new Uri("https://management.azure.com");
@@ -37,7 +37,7 @@ namespace Azure.ResourceManager.EventHubs
             _userAgent = new TelemetryDetails(GetType().Assembly, applicationId);
         }
 
-        internal HttpMessage CreateListRequest(string subscriptionId, string resourceGroupName, string namespaceName)
+        internal HttpMessage CreateListByNamespaceRequest(string subscriptionId, string resourceGroupName, string namespaceName)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
@@ -50,7 +50,7 @@ namespace Azure.ResourceManager.EventHubs
             uri.AppendPath(resourceGroupName, true);
             uri.AppendPath("/providers/Microsoft.EventHub/namespaces/", false);
             uri.AppendPath(namespaceName, true);
-            uri.AppendPath("/privateEndpointConnections", false);
+            uri.AppendPath("/applicationGroups", false);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
@@ -58,28 +58,28 @@ namespace Azure.ResourceManager.EventHubs
             return message;
         }
 
-        /// <summary> Gets the available PrivateEndpointConnections within a namespace. </summary>
+        /// <summary> Gets a list of application groups for a Namespace. </summary>
         /// <param name="subscriptionId"> Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. </param>
         /// <param name="resourceGroupName"> Name of the resource group within the azure subscription. </param>
         /// <param name="namespaceName"> The Namespace name. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="namespaceName"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="namespaceName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response<EventHubsPrivateEndpointConnectionListResult>> ListAsync(string subscriptionId, string resourceGroupName, string namespaceName, CancellationToken cancellationToken = default)
+        public async Task<Response<ApplicationGroupListResult>> ListByNamespaceAsync(string subscriptionId, string resourceGroupName, string namespaceName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(namespaceName, nameof(namespaceName));
 
-            using var message = CreateListRequest(subscriptionId, resourceGroupName, namespaceName);
+            using var message = CreateListByNamespaceRequest(subscriptionId, resourceGroupName, namespaceName);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
                 case 200:
                     {
-                        EventHubsPrivateEndpointConnectionListResult value = default;
+                        ApplicationGroupListResult value = default;
                         using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
-                        value = EventHubsPrivateEndpointConnectionListResult.DeserializeEventHubsPrivateEndpointConnectionListResult(document.RootElement);
+                        value = ApplicationGroupListResult.DeserializeApplicationGroupListResult(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -87,28 +87,28 @@ namespace Azure.ResourceManager.EventHubs
             }
         }
 
-        /// <summary> Gets the available PrivateEndpointConnections within a namespace. </summary>
+        /// <summary> Gets a list of application groups for a Namespace. </summary>
         /// <param name="subscriptionId"> Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. </param>
         /// <param name="resourceGroupName"> Name of the resource group within the azure subscription. </param>
         /// <param name="namespaceName"> The Namespace name. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="namespaceName"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="namespaceName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response<EventHubsPrivateEndpointConnectionListResult> List(string subscriptionId, string resourceGroupName, string namespaceName, CancellationToken cancellationToken = default)
+        public Response<ApplicationGroupListResult> ListByNamespace(string subscriptionId, string resourceGroupName, string namespaceName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(namespaceName, nameof(namespaceName));
 
-            using var message = CreateListRequest(subscriptionId, resourceGroupName, namespaceName);
+            using var message = CreateListByNamespaceRequest(subscriptionId, resourceGroupName, namespaceName);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
                 case 200:
                     {
-                        EventHubsPrivateEndpointConnectionListResult value = default;
+                        ApplicationGroupListResult value = default;
                         using var document = JsonDocument.Parse(message.Response.ContentStream);
-                        value = EventHubsPrivateEndpointConnectionListResult.DeserializeEventHubsPrivateEndpointConnectionListResult(document.RootElement);
+                        value = ApplicationGroupListResult.DeserializeApplicationGroupListResult(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -116,7 +116,7 @@ namespace Azure.ResourceManager.EventHubs
             }
         }
 
-        internal HttpMessage CreateCreateOrUpdateRequest(string subscriptionId, string resourceGroupName, string namespaceName, string privateEndpointConnectionName, EventHubsPrivateEndpointConnectionData data)
+        internal HttpMessage CreateCreateOrUpdateApplicationGroupRequest(string subscriptionId, string resourceGroupName, string namespaceName, string applicationGroupName, ApplicationGroupData data)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
@@ -129,8 +129,8 @@ namespace Azure.ResourceManager.EventHubs
             uri.AppendPath(resourceGroupName, true);
             uri.AppendPath("/providers/Microsoft.EventHub/namespaces/", false);
             uri.AppendPath(namespaceName, true);
-            uri.AppendPath("/privateEndpointConnections/", false);
-            uri.AppendPath(privateEndpointConnectionName, true);
+            uri.AppendPath("/applicationGroups/", false);
+            uri.AppendPath(applicationGroupName, true);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
@@ -142,34 +142,32 @@ namespace Azure.ResourceManager.EventHubs
             return message;
         }
 
-        /// <summary> Creates or updates PrivateEndpointConnections of service namespace. </summary>
+        /// <summary> Creates or updates an ApplicationGroup for a Namespace. </summary>
         /// <param name="subscriptionId"> Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. </param>
         /// <param name="resourceGroupName"> Name of the resource group within the azure subscription. </param>
         /// <param name="namespaceName"> The Namespace name. </param>
-        /// <param name="privateEndpointConnectionName"> The PrivateEndpointConnection name. </param>
-        /// <param name="data"> Parameters supplied to update Status of PrivateEndPoint Connection to namespace resource. </param>
+        /// <param name="applicationGroupName"> The Application Group name. </param>
+        /// <param name="data"> The ApplicationGroup. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/>, <paramref name="privateEndpointConnectionName"/> or <paramref name="data"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="privateEndpointConnectionName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response<EventHubsPrivateEndpointConnectionData>> CreateOrUpdateAsync(string subscriptionId, string resourceGroupName, string namespaceName, string privateEndpointConnectionName, EventHubsPrivateEndpointConnectionData data, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/>, <paramref name="applicationGroupName"/> or <paramref name="data"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="applicationGroupName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response<ApplicationGroupData>> CreateOrUpdateApplicationGroupAsync(string subscriptionId, string resourceGroupName, string namespaceName, string applicationGroupName, ApplicationGroupData data, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(namespaceName, nameof(namespaceName));
-            Argument.AssertNotNullOrEmpty(privateEndpointConnectionName, nameof(privateEndpointConnectionName));
+            Argument.AssertNotNullOrEmpty(applicationGroupName, nameof(applicationGroupName));
             Argument.AssertNotNull(data, nameof(data));
 
-            using var message = CreateCreateOrUpdateRequest(subscriptionId, resourceGroupName, namespaceName, privateEndpointConnectionName, data);
+            using var message = CreateCreateOrUpdateApplicationGroupRequest(subscriptionId, resourceGroupName, namespaceName, applicationGroupName, data);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
                 case 200:
-                case 201:
-                case 202:
                     {
-                        EventHubsPrivateEndpointConnectionData value = default;
+                        ApplicationGroupData value = default;
                         using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
-                        value = EventHubsPrivateEndpointConnectionData.DeserializeEventHubsPrivateEndpointConnectionData(document.RootElement);
+                        value = ApplicationGroupData.DeserializeApplicationGroupData(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -177,34 +175,32 @@ namespace Azure.ResourceManager.EventHubs
             }
         }
 
-        /// <summary> Creates or updates PrivateEndpointConnections of service namespace. </summary>
+        /// <summary> Creates or updates an ApplicationGroup for a Namespace. </summary>
         /// <param name="subscriptionId"> Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. </param>
         /// <param name="resourceGroupName"> Name of the resource group within the azure subscription. </param>
         /// <param name="namespaceName"> The Namespace name. </param>
-        /// <param name="privateEndpointConnectionName"> The PrivateEndpointConnection name. </param>
-        /// <param name="data"> Parameters supplied to update Status of PrivateEndPoint Connection to namespace resource. </param>
+        /// <param name="applicationGroupName"> The Application Group name. </param>
+        /// <param name="data"> The ApplicationGroup. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/>, <paramref name="privateEndpointConnectionName"/> or <paramref name="data"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="privateEndpointConnectionName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response<EventHubsPrivateEndpointConnectionData> CreateOrUpdate(string subscriptionId, string resourceGroupName, string namespaceName, string privateEndpointConnectionName, EventHubsPrivateEndpointConnectionData data, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/>, <paramref name="applicationGroupName"/> or <paramref name="data"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="applicationGroupName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response<ApplicationGroupData> CreateOrUpdateApplicationGroup(string subscriptionId, string resourceGroupName, string namespaceName, string applicationGroupName, ApplicationGroupData data, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(namespaceName, nameof(namespaceName));
-            Argument.AssertNotNullOrEmpty(privateEndpointConnectionName, nameof(privateEndpointConnectionName));
+            Argument.AssertNotNullOrEmpty(applicationGroupName, nameof(applicationGroupName));
             Argument.AssertNotNull(data, nameof(data));
 
-            using var message = CreateCreateOrUpdateRequest(subscriptionId, resourceGroupName, namespaceName, privateEndpointConnectionName, data);
+            using var message = CreateCreateOrUpdateApplicationGroupRequest(subscriptionId, resourceGroupName, namespaceName, applicationGroupName, data);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
                 case 200:
-                case 201:
-                case 202:
                     {
-                        EventHubsPrivateEndpointConnectionData value = default;
+                        ApplicationGroupData value = default;
                         using var document = JsonDocument.Parse(message.Response.ContentStream);
-                        value = EventHubsPrivateEndpointConnectionData.DeserializeEventHubsPrivateEndpointConnectionData(document.RootElement);
+                        value = ApplicationGroupData.DeserializeApplicationGroupData(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -212,7 +208,7 @@ namespace Azure.ResourceManager.EventHubs
             }
         }
 
-        internal HttpMessage CreateDeleteRequest(string subscriptionId, string resourceGroupName, string namespaceName, string privateEndpointConnectionName)
+        internal HttpMessage CreateDeleteRequest(string subscriptionId, string resourceGroupName, string namespaceName, string applicationGroupName)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
@@ -225,8 +221,8 @@ namespace Azure.ResourceManager.EventHubs
             uri.AppendPath(resourceGroupName, true);
             uri.AppendPath("/providers/Microsoft.EventHub/namespaces/", false);
             uri.AppendPath(namespaceName, true);
-            uri.AppendPath("/privateEndpointConnections/", false);
-            uri.AppendPath(privateEndpointConnectionName, true);
+            uri.AppendPath("/applicationGroups/", false);
+            uri.AppendPath(applicationGroupName, true);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
@@ -234,27 +230,26 @@ namespace Azure.ResourceManager.EventHubs
             return message;
         }
 
-        /// <summary> Deletes a Private Endpoint Connection. </summary>
+        /// <summary> Deletes an ApplicationGroup for a Namespace. </summary>
         /// <param name="subscriptionId"> Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. </param>
         /// <param name="resourceGroupName"> Name of the resource group within the azure subscription. </param>
         /// <param name="namespaceName"> The Namespace name. </param>
-        /// <param name="privateEndpointConnectionName"> The PrivateEndpointConnection name. </param>
+        /// <param name="applicationGroupName"> The Application Group name. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="privateEndpointConnectionName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="privateEndpointConnectionName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> DeleteAsync(string subscriptionId, string resourceGroupName, string namespaceName, string privateEndpointConnectionName, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="applicationGroupName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="applicationGroupName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response> DeleteAsync(string subscriptionId, string resourceGroupName, string namespaceName, string applicationGroupName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(namespaceName, nameof(namespaceName));
-            Argument.AssertNotNullOrEmpty(privateEndpointConnectionName, nameof(privateEndpointConnectionName));
+            Argument.AssertNotNullOrEmpty(applicationGroupName, nameof(applicationGroupName));
 
-            using var message = CreateDeleteRequest(subscriptionId, resourceGroupName, namespaceName, privateEndpointConnectionName);
+            using var message = CreateDeleteRequest(subscriptionId, resourceGroupName, namespaceName, applicationGroupName);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
                 case 200:
-                case 202:
                 case 204:
                     return message.Response;
                 default:
@@ -262,27 +257,26 @@ namespace Azure.ResourceManager.EventHubs
             }
         }
 
-        /// <summary> Deletes a Private Endpoint Connection. </summary>
+        /// <summary> Deletes an ApplicationGroup for a Namespace. </summary>
         /// <param name="subscriptionId"> Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. </param>
         /// <param name="resourceGroupName"> Name of the resource group within the azure subscription. </param>
         /// <param name="namespaceName"> The Namespace name. </param>
-        /// <param name="privateEndpointConnectionName"> The PrivateEndpointConnection name. </param>
+        /// <param name="applicationGroupName"> The Application Group name. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="privateEndpointConnectionName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="privateEndpointConnectionName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response Delete(string subscriptionId, string resourceGroupName, string namespaceName, string privateEndpointConnectionName, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="applicationGroupName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="applicationGroupName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response Delete(string subscriptionId, string resourceGroupName, string namespaceName, string applicationGroupName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(namespaceName, nameof(namespaceName));
-            Argument.AssertNotNullOrEmpty(privateEndpointConnectionName, nameof(privateEndpointConnectionName));
+            Argument.AssertNotNullOrEmpty(applicationGroupName, nameof(applicationGroupName));
 
-            using var message = CreateDeleteRequest(subscriptionId, resourceGroupName, namespaceName, privateEndpointConnectionName);
+            using var message = CreateDeleteRequest(subscriptionId, resourceGroupName, namespaceName, applicationGroupName);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
                 case 200:
-                case 202:
                 case 204:
                     return message.Response;
                 default:
@@ -290,7 +284,7 @@ namespace Azure.ResourceManager.EventHubs
             }
         }
 
-        internal HttpMessage CreateGetRequest(string subscriptionId, string resourceGroupName, string namespaceName, string privateEndpointConnectionName)
+        internal HttpMessage CreateGetRequest(string subscriptionId, string resourceGroupName, string namespaceName, string applicationGroupName)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
@@ -303,8 +297,8 @@ namespace Azure.ResourceManager.EventHubs
             uri.AppendPath(resourceGroupName, true);
             uri.AppendPath("/providers/Microsoft.EventHub/namespaces/", false);
             uri.AppendPath(namespaceName, true);
-            uri.AppendPath("/privateEndpointConnections/", false);
-            uri.AppendPath(privateEndpointConnectionName, true);
+            uri.AppendPath("/applicationGroups/", false);
+            uri.AppendPath(applicationGroupName, true);
             uri.AppendQuery("api-version", _apiVersion, true);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
@@ -312,73 +306,73 @@ namespace Azure.ResourceManager.EventHubs
             return message;
         }
 
-        /// <summary> Gets a description for the specified Private Endpoint Connection name. </summary>
+        /// <summary> Gets an ApplicationGroup for a Namespace. </summary>
         /// <param name="subscriptionId"> Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. </param>
         /// <param name="resourceGroupName"> Name of the resource group within the azure subscription. </param>
         /// <param name="namespaceName"> The Namespace name. </param>
-        /// <param name="privateEndpointConnectionName"> The PrivateEndpointConnection name. </param>
+        /// <param name="applicationGroupName"> The Application Group name. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="privateEndpointConnectionName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="privateEndpointConnectionName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response<EventHubsPrivateEndpointConnectionData>> GetAsync(string subscriptionId, string resourceGroupName, string namespaceName, string privateEndpointConnectionName, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="applicationGroupName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="applicationGroupName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response<ApplicationGroupData>> GetAsync(string subscriptionId, string resourceGroupName, string namespaceName, string applicationGroupName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(namespaceName, nameof(namespaceName));
-            Argument.AssertNotNullOrEmpty(privateEndpointConnectionName, nameof(privateEndpointConnectionName));
+            Argument.AssertNotNullOrEmpty(applicationGroupName, nameof(applicationGroupName));
 
-            using var message = CreateGetRequest(subscriptionId, resourceGroupName, namespaceName, privateEndpointConnectionName);
+            using var message = CreateGetRequest(subscriptionId, resourceGroupName, namespaceName, applicationGroupName);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
                 case 200:
                     {
-                        EventHubsPrivateEndpointConnectionData value = default;
+                        ApplicationGroupData value = default;
                         using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
-                        value = EventHubsPrivateEndpointConnectionData.DeserializeEventHubsPrivateEndpointConnectionData(document.RootElement);
+                        value = ApplicationGroupData.DeserializeApplicationGroupData(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 case 404:
-                    return Response.FromValue((EventHubsPrivateEndpointConnectionData)null, message.Response);
+                    return Response.FromValue((ApplicationGroupData)null, message.Response);
                 default:
                     throw new RequestFailedException(message.Response);
             }
         }
 
-        /// <summary> Gets a description for the specified Private Endpoint Connection name. </summary>
+        /// <summary> Gets an ApplicationGroup for a Namespace. </summary>
         /// <param name="subscriptionId"> Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. </param>
         /// <param name="resourceGroupName"> Name of the resource group within the azure subscription. </param>
         /// <param name="namespaceName"> The Namespace name. </param>
-        /// <param name="privateEndpointConnectionName"> The PrivateEndpointConnection name. </param>
+        /// <param name="applicationGroupName"> The Application Group name. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="privateEndpointConnectionName"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="privateEndpointConnectionName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response<EventHubsPrivateEndpointConnectionData> Get(string subscriptionId, string resourceGroupName, string namespaceName, string privateEndpointConnectionName, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="applicationGroupName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/>, <paramref name="namespaceName"/> or <paramref name="applicationGroupName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response<ApplicationGroupData> Get(string subscriptionId, string resourceGroupName, string namespaceName, string applicationGroupName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(namespaceName, nameof(namespaceName));
-            Argument.AssertNotNullOrEmpty(privateEndpointConnectionName, nameof(privateEndpointConnectionName));
+            Argument.AssertNotNullOrEmpty(applicationGroupName, nameof(applicationGroupName));
 
-            using var message = CreateGetRequest(subscriptionId, resourceGroupName, namespaceName, privateEndpointConnectionName);
+            using var message = CreateGetRequest(subscriptionId, resourceGroupName, namespaceName, applicationGroupName);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
                 case 200:
                     {
-                        EventHubsPrivateEndpointConnectionData value = default;
+                        ApplicationGroupData value = default;
                         using var document = JsonDocument.Parse(message.Response.ContentStream);
-                        value = EventHubsPrivateEndpointConnectionData.DeserializeEventHubsPrivateEndpointConnectionData(document.RootElement);
+                        value = ApplicationGroupData.DeserializeApplicationGroupData(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 case 404:
-                    return Response.FromValue((EventHubsPrivateEndpointConnectionData)null, message.Response);
+                    return Response.FromValue((ApplicationGroupData)null, message.Response);
                 default:
                     throw new RequestFailedException(message.Response);
             }
         }
 
-        internal HttpMessage CreateListNextPageRequest(string nextLink, string subscriptionId, string resourceGroupName, string namespaceName)
+        internal HttpMessage CreateListByNamespaceNextPageRequest(string nextLink, string subscriptionId, string resourceGroupName, string namespaceName)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
@@ -392,7 +386,7 @@ namespace Azure.ResourceManager.EventHubs
             return message;
         }
 
-        /// <summary> Gets the available PrivateEndpointConnections within a namespace. </summary>
+        /// <summary> Gets a list of application groups for a Namespace. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="subscriptionId"> Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. </param>
         /// <param name="resourceGroupName"> Name of the resource group within the azure subscription. </param>
@@ -400,22 +394,22 @@ namespace Azure.ResourceManager.EventHubs
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="nextLink"/>, <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="namespaceName"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="namespaceName"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response<EventHubsPrivateEndpointConnectionListResult>> ListNextPageAsync(string nextLink, string subscriptionId, string resourceGroupName, string namespaceName, CancellationToken cancellationToken = default)
+        public async Task<Response<ApplicationGroupListResult>> ListByNamespaceNextPageAsync(string nextLink, string subscriptionId, string resourceGroupName, string namespaceName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(nextLink, nameof(nextLink));
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(namespaceName, nameof(namespaceName));
 
-            using var message = CreateListNextPageRequest(nextLink, subscriptionId, resourceGroupName, namespaceName);
+            using var message = CreateListByNamespaceNextPageRequest(nextLink, subscriptionId, resourceGroupName, namespaceName);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
                 case 200:
                     {
-                        EventHubsPrivateEndpointConnectionListResult value = default;
+                        ApplicationGroupListResult value = default;
                         using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
-                        value = EventHubsPrivateEndpointConnectionListResult.DeserializeEventHubsPrivateEndpointConnectionListResult(document.RootElement);
+                        value = ApplicationGroupListResult.DeserializeApplicationGroupListResult(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -423,7 +417,7 @@ namespace Azure.ResourceManager.EventHubs
             }
         }
 
-        /// <summary> Gets the available PrivateEndpointConnections within a namespace. </summary>
+        /// <summary> Gets a list of application groups for a Namespace. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
         /// <param name="subscriptionId"> Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. </param>
         /// <param name="resourceGroupName"> Name of the resource group within the azure subscription. </param>
@@ -431,22 +425,22 @@ namespace Azure.ResourceManager.EventHubs
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="nextLink"/>, <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="namespaceName"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="resourceGroupName"/> or <paramref name="namespaceName"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response<EventHubsPrivateEndpointConnectionListResult> ListNextPage(string nextLink, string subscriptionId, string resourceGroupName, string namespaceName, CancellationToken cancellationToken = default)
+        public Response<ApplicationGroupListResult> ListByNamespaceNextPage(string nextLink, string subscriptionId, string resourceGroupName, string namespaceName, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(nextLink, nameof(nextLink));
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(resourceGroupName, nameof(resourceGroupName));
             Argument.AssertNotNullOrEmpty(namespaceName, nameof(namespaceName));
 
-            using var message = CreateListNextPageRequest(nextLink, subscriptionId, resourceGroupName, namespaceName);
+            using var message = CreateListByNamespaceNextPageRequest(nextLink, subscriptionId, resourceGroupName, namespaceName);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
                 case 200:
                     {
-                        EventHubsPrivateEndpointConnectionListResult value = default;
+                        ApplicationGroupListResult value = default;
                         using var document = JsonDocument.Parse(message.Response.ContentStream);
-                        value = EventHubsPrivateEndpointConnectionListResult.DeserializeEventHubsPrivateEndpointConnectionListResult(document.RootElement);
+                        value = ApplicationGroupListResult.DeserializeApplicationGroupListResult(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:

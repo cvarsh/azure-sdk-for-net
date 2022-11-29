@@ -54,6 +54,7 @@ namespace Azure.ResourceManager.EventHubs
         }
 
         /// <summary>
+        /// Creates or Updates an EventHub schema group.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/schemagroups/{schemaGroupName}
         /// Operation Id: SchemaRegistry_CreateOrUpdate
         /// </summary>
@@ -86,6 +87,7 @@ namespace Azure.ResourceManager.EventHubs
         }
 
         /// <summary>
+        /// Creates or Updates an EventHub schema group.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/schemagroups/{schemaGroupName}
         /// Operation Id: SchemaRegistry_CreateOrUpdate
         /// </summary>
@@ -118,6 +120,7 @@ namespace Azure.ResourceManager.EventHubs
         }
 
         /// <summary>
+        /// Gets the details of an EventHub schema group.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/schemagroups/{schemaGroupName}
         /// Operation Id: SchemaRegistry_Get
         /// </summary>
@@ -146,6 +149,7 @@ namespace Azure.ResourceManager.EventHubs
         }
 
         /// <summary>
+        /// Gets the details of an EventHub schema group.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/schemagroups/{schemaGroupName}
         /// Operation Id: SchemaRegistry_Get
         /// </summary>

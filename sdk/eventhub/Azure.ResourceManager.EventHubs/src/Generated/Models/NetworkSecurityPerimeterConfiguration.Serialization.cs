@@ -5,25 +5,18 @@
 
 #nullable disable
 
-using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Azure.Core;
-using Azure.ResourceManager.EventHubs.Models;
 using Azure.ResourceManager.Models;
 
-namespace Azure.ResourceManager.EventHubs
+namespace Azure.ResourceManager.EventHubs.Models
 {
-    public partial class EventHubsClusterData : IUtf8JsonSerializable
+    public partial class NetworkSecurityPerimeterConfiguration : IUtf8JsonSerializable
     {
         void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
         {
             writer.WriteStartObject();
-            if (Optional.IsDefined(Sku))
-            {
-                writer.WritePropertyName("sku");
-                writer.WriteObjectValue(Sku);
-            }
             if (Optional.IsCollectionDefined(Tags))
             {
                 writer.WritePropertyName("tags");
@@ -39,41 +32,40 @@ namespace Azure.ResourceManager.EventHubs
             writer.WriteStringValue(Location);
             writer.WritePropertyName("properties");
             writer.WriteStartObject();
-            if (Optional.IsDefined(SupportsScaling))
+            if (Optional.IsDefined(ProvisioningState))
             {
-                writer.WritePropertyName("supportsScaling");
-                writer.WriteBooleanValue(SupportsScaling.Value);
+                writer.WritePropertyName("provisioningState");
+                writer.WriteStringValue(ProvisioningState.Value.ToString());
+            }
+            if (Optional.IsCollectionDefined(ProvisioningIssues))
+            {
+                writer.WritePropertyName("provisioningIssues");
+                writer.WriteStartArray();
+                foreach (var item in ProvisioningIssues)
+                {
+                    writer.WriteObjectValue(item);
+                }
+                writer.WriteEndArray();
             }
             writer.WriteEndObject();
             writer.WriteEndObject();
         }
 
-        internal static EventHubsClusterData DeserializeEventHubsClusterData(JsonElement element)
+        internal static NetworkSecurityPerimeterConfiguration DeserializeNetworkSecurityPerimeterConfiguration(JsonElement element)
         {
-            Optional<EventHubsClusterSku> sku = default;
             Optional<IDictionary<string, string>> tags = default;
             AzureLocation location = default;
             ResourceIdentifier id = default;
             string name = default;
             ResourceType type = default;
             Optional<SystemData> systemData = default;
-            Optional<DateTimeOffset> createdAt = default;
-            Optional<DateTimeOffset> updatedAt = default;
-            Optional<string> metricId = default;
-            Optional<string> status = default;
-            Optional<bool> supportsScaling = default;
+            Optional<NetworkSecurityPerimeterConfigurationProvisioningState> provisioningState = default;
+            Optional<IList<ProvisioningIssue>> provisioningIssues = default;
+            Optional<NetworkSecurityPerimeter> networkSecurityPerimeter = default;
+            Optional<NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation> resourceAssociation = default;
+            Optional<NetworkSecurityPerimeterConfigurationPropertiesProfile> profile = default;
             foreach (var property in element.EnumerateObject())
             {
-                if (property.NameEquals("sku"))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        property.ThrowNonNullablePropertyIsNull();
-                        continue;
-                    }
-                    sku = EventHubsClusterSku.DeserializeEventHubsClusterSku(property.Value);
-                    continue;
-                }
                 if (property.NameEquals("tags"))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
@@ -128,51 +120,66 @@ namespace Azure.ResourceManager.EventHubs
                     }
                     foreach (var property0 in property.Value.EnumerateObject())
                     {
-                        if (property0.NameEquals("createdAt"))
+                        if (property0.NameEquals("provisioningState"))
                         {
                             if (property0.Value.ValueKind == JsonValueKind.Null)
                             {
                                 property0.ThrowNonNullablePropertyIsNull();
                                 continue;
                             }
-                            createdAt = property0.Value.GetDateTimeOffset("O");
+                            provisioningState = new NetworkSecurityPerimeterConfigurationProvisioningState(property0.Value.GetString());
                             continue;
                         }
-                        if (property0.NameEquals("updatedAt"))
+                        if (property0.NameEquals("provisioningIssues"))
                         {
                             if (property0.Value.ValueKind == JsonValueKind.Null)
                             {
                                 property0.ThrowNonNullablePropertyIsNull();
                                 continue;
                             }
-                            updatedAt = property0.Value.GetDateTimeOffset("O");
+                            List<ProvisioningIssue> array = new List<ProvisioningIssue>();
+                            foreach (var item in property0.Value.EnumerateArray())
+                            {
+                                array.Add(ProvisioningIssue.DeserializeProvisioningIssue(item));
+                            }
+                            provisioningIssues = array;
                             continue;
                         }
-                        if (property0.NameEquals("metricId"))
-                        {
-                            metricId = property0.Value.GetString();
-                            continue;
-                        }
-                        if (property0.NameEquals("status"))
-                        {
-                            status = property0.Value.GetString();
-                            continue;
-                        }
-                        if (property0.NameEquals("supportsScaling"))
+                        if (property0.NameEquals("networkSecurityPerimeter"))
                         {
                             if (property0.Value.ValueKind == JsonValueKind.Null)
                             {
                                 property0.ThrowNonNullablePropertyIsNull();
                                 continue;
                             }
-                            supportsScaling = property0.Value.GetBoolean();
+                            networkSecurityPerimeter = NetworkSecurityPerimeter.DeserializeNetworkSecurityPerimeter(property0.Value);
+                            continue;
+                        }
+                        if (property0.NameEquals("resourceAssociation"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            resourceAssociation = NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation.DeserializeNetworkSecurityPerimeterConfigurationPropertiesResourceAssociation(property0.Value);
+                            continue;
+                        }
+                        if (property0.NameEquals("profile"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            profile = NetworkSecurityPerimeterConfigurationPropertiesProfile.DeserializeNetworkSecurityPerimeterConfigurationPropertiesProfile(property0.Value);
                             continue;
                         }
                     }
                     continue;
                 }
             }
-            return new EventHubsClusterData(id, name, type, systemData.Value, Optional.ToDictionary(tags), location, sku.Value, Optional.ToNullable(createdAt), Optional.ToNullable(updatedAt), metricId.Value, status.Value, Optional.ToNullable(supportsScaling));
+            return new NetworkSecurityPerimeterConfiguration(id, name, type, systemData.Value, Optional.ToDictionary(tags), location, Optional.ToNullable(provisioningState), Optional.ToList(provisioningIssues), networkSecurityPerimeter.Value, resourceAssociation.Value, profile.Value);
         }
     }
 }

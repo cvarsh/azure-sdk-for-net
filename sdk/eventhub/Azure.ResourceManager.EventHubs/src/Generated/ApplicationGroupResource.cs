@@ -17,60 +17,60 @@ using Azure.ResourceManager;
 namespace Azure.ResourceManager.EventHubs
 {
     /// <summary>
-    /// A Class representing an EventHubsSchemaGroup along with the instance operations that can be performed on it.
-    /// If you have a <see cref="ResourceIdentifier" /> you can construct an <see cref="EventHubsSchemaGroupResource" />
-    /// from an instance of <see cref="ArmClient" /> using the GetEventHubsSchemaGroupResource method.
-    /// Otherwise you can get one from its parent resource <see cref="EventHubsNamespaceResource" /> using the GetEventHubsSchemaGroup method.
+    /// A Class representing an ApplicationGroup along with the instance operations that can be performed on it.
+    /// If you have a <see cref="ResourceIdentifier" /> you can construct an <see cref="ApplicationGroupResource" />
+    /// from an instance of <see cref="ArmClient" /> using the GetApplicationGroupResource method.
+    /// Otherwise you can get one from its parent resource <see cref="EventHubsNamespaceResource" /> using the GetApplicationGroup method.
     /// </summary>
-    public partial class EventHubsSchemaGroupResource : ArmResource
+    public partial class ApplicationGroupResource : ArmResource
     {
-        /// <summary> Generate the resource identifier of a <see cref="EventHubsSchemaGroupResource"/> instance. </summary>
-        public static ResourceIdentifier CreateResourceIdentifier(string subscriptionId, string resourceGroupName, string namespaceName, string schemaGroupName)
+        /// <summary> Generate the resource identifier of a <see cref="ApplicationGroupResource"/> instance. </summary>
+        public static ResourceIdentifier CreateResourceIdentifier(string subscriptionId, string resourceGroupName, string namespaceName, string applicationGroupName)
         {
-            var resourceId = $"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/schemagroups/{schemaGroupName}";
+            var resourceId = $"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/applicationGroups/{applicationGroupName}";
             return new ResourceIdentifier(resourceId);
         }
 
-        private readonly ClientDiagnostics _eventHubsSchemaGroupSchemaRegistryClientDiagnostics;
-        private readonly SchemaRegistryRestOperations _eventHubsSchemaGroupSchemaRegistryRestClient;
-        private readonly EventHubsSchemaGroupData _data;
+        private readonly ClientDiagnostics _applicationGroupClientDiagnostics;
+        private readonly ApplicationGroupRestOperations _applicationGroupRestClient;
+        private readonly ApplicationGroupData _data;
 
-        /// <summary> Initializes a new instance of the <see cref="EventHubsSchemaGroupResource"/> class for mocking. </summary>
-        protected EventHubsSchemaGroupResource()
+        /// <summary> Initializes a new instance of the <see cref="ApplicationGroupResource"/> class for mocking. </summary>
+        protected ApplicationGroupResource()
         {
         }
 
-        /// <summary> Initializes a new instance of the <see cref = "EventHubsSchemaGroupResource"/> class. </summary>
+        /// <summary> Initializes a new instance of the <see cref = "ApplicationGroupResource"/> class. </summary>
         /// <param name="client"> The client parameters to use in these operations. </param>
         /// <param name="data"> The resource that is the target of operations. </param>
-        internal EventHubsSchemaGroupResource(ArmClient client, EventHubsSchemaGroupData data) : this(client, data.Id)
+        internal ApplicationGroupResource(ArmClient client, ApplicationGroupData data) : this(client, data.Id)
         {
             HasData = true;
             _data = data;
         }
 
-        /// <summary> Initializes a new instance of the <see cref="EventHubsSchemaGroupResource"/> class. </summary>
+        /// <summary> Initializes a new instance of the <see cref="ApplicationGroupResource"/> class. </summary>
         /// <param name="client"> The client parameters to use in these operations. </param>
         /// <param name="id"> The identifier of the resource that is the target of operations. </param>
-        internal EventHubsSchemaGroupResource(ArmClient client, ResourceIdentifier id) : base(client, id)
+        internal ApplicationGroupResource(ArmClient client, ResourceIdentifier id) : base(client, id)
         {
-            _eventHubsSchemaGroupSchemaRegistryClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.EventHubs", ResourceType.Namespace, Diagnostics);
-            TryGetApiVersion(ResourceType, out string eventHubsSchemaGroupSchemaRegistryApiVersion);
-            _eventHubsSchemaGroupSchemaRegistryRestClient = new SchemaRegistryRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, eventHubsSchemaGroupSchemaRegistryApiVersion);
+            _applicationGroupClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.EventHubs", ResourceType.Namespace, Diagnostics);
+            TryGetApiVersion(ResourceType, out string applicationGroupApiVersion);
+            _applicationGroupRestClient = new ApplicationGroupRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, applicationGroupApiVersion);
 #if DEBUG
 			ValidateResourceId(Id);
 #endif
         }
 
         /// <summary> Gets the resource type for the operations. </summary>
-        public static readonly ResourceType ResourceType = "Microsoft.EventHub/namespaces/schemagroups";
+        public static readonly ResourceType ResourceType = "Microsoft.EventHub/namespaces/applicationGroups";
 
         /// <summary> Gets whether or not the current instance has data. </summary>
         public virtual bool HasData { get; }
 
         /// <summary> Gets the data representing this Feature. </summary>
         /// <exception cref="InvalidOperationException"> Throws if there is no data loaded in the current instance. </exception>
-        public virtual EventHubsSchemaGroupData Data
+        public virtual ApplicationGroupData Data
         {
             get
             {
@@ -87,21 +87,21 @@ namespace Azure.ResourceManager.EventHubs
         }
 
         /// <summary>
-        /// Gets the details of an EventHub schema group.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/schemagroups/{schemaGroupName}
-        /// Operation Id: SchemaRegistry_Get
+        /// Gets an ApplicationGroup for a Namespace.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/applicationGroups/{applicationGroupName}
+        /// Operation Id: ApplicationGroup_Get
         /// </summary>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual async Task<Response<EventHubsSchemaGroupResource>> GetAsync(CancellationToken cancellationToken = default)
+        public virtual async Task<Response<ApplicationGroupResource>> GetAsync(CancellationToken cancellationToken = default)
         {
-            using var scope = _eventHubsSchemaGroupSchemaRegistryClientDiagnostics.CreateScope("EventHubsSchemaGroupResource.Get");
+            using var scope = _applicationGroupClientDiagnostics.CreateScope("ApplicationGroupResource.Get");
             scope.Start();
             try
             {
-                var response = await _eventHubsSchemaGroupSchemaRegistryRestClient.GetAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken).ConfigureAwait(false);
+                var response = await _applicationGroupRestClient.GetAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken).ConfigureAwait(false);
                 if (response.Value == null)
                     throw new RequestFailedException(response.GetRawResponse());
-                return Response.FromValue(new EventHubsSchemaGroupResource(Client, response.Value), response.GetRawResponse());
+                return Response.FromValue(new ApplicationGroupResource(Client, response.Value), response.GetRawResponse());
             }
             catch (Exception e)
             {
@@ -111,21 +111,21 @@ namespace Azure.ResourceManager.EventHubs
         }
 
         /// <summary>
-        /// Gets the details of an EventHub schema group.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/schemagroups/{schemaGroupName}
-        /// Operation Id: SchemaRegistry_Get
+        /// Gets an ApplicationGroup for a Namespace.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/applicationGroups/{applicationGroupName}
+        /// Operation Id: ApplicationGroup_Get
         /// </summary>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual Response<EventHubsSchemaGroupResource> Get(CancellationToken cancellationToken = default)
+        public virtual Response<ApplicationGroupResource> Get(CancellationToken cancellationToken = default)
         {
-            using var scope = _eventHubsSchemaGroupSchemaRegistryClientDiagnostics.CreateScope("EventHubsSchemaGroupResource.Get");
+            using var scope = _applicationGroupClientDiagnostics.CreateScope("ApplicationGroupResource.Get");
             scope.Start();
             try
             {
-                var response = _eventHubsSchemaGroupSchemaRegistryRestClient.Get(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken);
+                var response = _applicationGroupRestClient.Get(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken);
                 if (response.Value == null)
                     throw new RequestFailedException(response.GetRawResponse());
-                return Response.FromValue(new EventHubsSchemaGroupResource(Client, response.Value), response.GetRawResponse());
+                return Response.FromValue(new ApplicationGroupResource(Client, response.Value), response.GetRawResponse());
             }
             catch (Exception e)
             {
@@ -135,19 +135,19 @@ namespace Azure.ResourceManager.EventHubs
         }
 
         /// <summary>
-        /// Deletes an EventHub schema group.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/schemagroups/{schemaGroupName}
-        /// Operation Id: SchemaRegistry_Delete
+        /// Deletes an ApplicationGroup for a Namespace.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/applicationGroups/{applicationGroupName}
+        /// Operation Id: ApplicationGroup_Delete
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public virtual async Task<ArmOperation> DeleteAsync(WaitUntil waitUntil, CancellationToken cancellationToken = default)
         {
-            using var scope = _eventHubsSchemaGroupSchemaRegistryClientDiagnostics.CreateScope("EventHubsSchemaGroupResource.Delete");
+            using var scope = _applicationGroupClientDiagnostics.CreateScope("ApplicationGroupResource.Delete");
             scope.Start();
             try
             {
-                var response = await _eventHubsSchemaGroupSchemaRegistryRestClient.DeleteAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken).ConfigureAwait(false);
+                var response = await _applicationGroupRestClient.DeleteAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken).ConfigureAwait(false);
                 var operation = new EventHubsArmOperation(response);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionResponseAsync(cancellationToken).ConfigureAwait(false);
@@ -161,19 +161,19 @@ namespace Azure.ResourceManager.EventHubs
         }
 
         /// <summary>
-        /// Deletes an EventHub schema group.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/schemagroups/{schemaGroupName}
-        /// Operation Id: SchemaRegistry_Delete
+        /// Deletes an ApplicationGroup for a Namespace.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/applicationGroups/{applicationGroupName}
+        /// Operation Id: ApplicationGroup_Delete
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public virtual ArmOperation Delete(WaitUntil waitUntil, CancellationToken cancellationToken = default)
         {
-            using var scope = _eventHubsSchemaGroupSchemaRegistryClientDiagnostics.CreateScope("EventHubsSchemaGroupResource.Delete");
+            using var scope = _applicationGroupClientDiagnostics.CreateScope("ApplicationGroupResource.Delete");
             scope.Start();
             try
             {
-                var response = _eventHubsSchemaGroupSchemaRegistryRestClient.Delete(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken);
+                var response = _applicationGroupRestClient.Delete(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken);
                 var operation = new EventHubsArmOperation(response);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletionResponse(cancellationToken);
@@ -187,24 +187,24 @@ namespace Azure.ResourceManager.EventHubs
         }
 
         /// <summary>
-        /// Creates or Updates an EventHub schema group.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/schemagroups/{schemaGroupName}
-        /// Operation Id: SchemaRegistry_CreateOrUpdate
+        /// Creates or updates an ApplicationGroup for a Namespace.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/applicationGroups/{applicationGroupName}
+        /// Operation Id: ApplicationGroup_CreateOrUpdateApplicationGroup
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
-        /// <param name="data"> Parameters supplied to create an Event Hub resource. </param>
+        /// <param name="data"> The ApplicationGroup. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="data"/> is null. </exception>
-        public virtual async Task<ArmOperation<EventHubsSchemaGroupResource>> UpdateAsync(WaitUntil waitUntil, EventHubsSchemaGroupData data, CancellationToken cancellationToken = default)
+        public virtual async Task<ArmOperation<ApplicationGroupResource>> UpdateAsync(WaitUntil waitUntil, ApplicationGroupData data, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(data, nameof(data));
 
-            using var scope = _eventHubsSchemaGroupSchemaRegistryClientDiagnostics.CreateScope("EventHubsSchemaGroupResource.Update");
+            using var scope = _applicationGroupClientDiagnostics.CreateScope("ApplicationGroupResource.Update");
             scope.Start();
             try
             {
-                var response = await _eventHubsSchemaGroupSchemaRegistryRestClient.CreateOrUpdateAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, data, cancellationToken).ConfigureAwait(false);
-                var operation = new EventHubsArmOperation<EventHubsSchemaGroupResource>(Response.FromValue(new EventHubsSchemaGroupResource(Client, response), response.GetRawResponse()));
+                var response = await _applicationGroupRestClient.CreateOrUpdateApplicationGroupAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, data, cancellationToken).ConfigureAwait(false);
+                var operation = new EventHubsArmOperation<ApplicationGroupResource>(Response.FromValue(new ApplicationGroupResource(Client, response), response.GetRawResponse()));
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -217,24 +217,24 @@ namespace Azure.ResourceManager.EventHubs
         }
 
         /// <summary>
-        /// Creates or Updates an EventHub schema group.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/schemagroups/{schemaGroupName}
-        /// Operation Id: SchemaRegistry_CreateOrUpdate
+        /// Creates or updates an ApplicationGroup for a Namespace.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/applicationGroups/{applicationGroupName}
+        /// Operation Id: ApplicationGroup_CreateOrUpdateApplicationGroup
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
-        /// <param name="data"> Parameters supplied to create an Event Hub resource. </param>
+        /// <param name="data"> The ApplicationGroup. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="data"/> is null. </exception>
-        public virtual ArmOperation<EventHubsSchemaGroupResource> Update(WaitUntil waitUntil, EventHubsSchemaGroupData data, CancellationToken cancellationToken = default)
+        public virtual ArmOperation<ApplicationGroupResource> Update(WaitUntil waitUntil, ApplicationGroupData data, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(data, nameof(data));
 
-            using var scope = _eventHubsSchemaGroupSchemaRegistryClientDiagnostics.CreateScope("EventHubsSchemaGroupResource.Update");
+            using var scope = _applicationGroupClientDiagnostics.CreateScope("ApplicationGroupResource.Update");
             scope.Start();
             try
             {
-                var response = _eventHubsSchemaGroupSchemaRegistryRestClient.CreateOrUpdate(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, data, cancellationToken);
-                var operation = new EventHubsArmOperation<EventHubsSchemaGroupResource>(Response.FromValue(new EventHubsSchemaGroupResource(Client, response), response.GetRawResponse()));
+                var response = _applicationGroupRestClient.CreateOrUpdateApplicationGroup(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, data, cancellationToken);
+                var operation = new EventHubsArmOperation<ApplicationGroupResource>(Response.FromValue(new ApplicationGroupResource(Client, response), response.GetRawResponse()));
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletion(cancellationToken);
                 return operation;

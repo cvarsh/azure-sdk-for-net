@@ -135,7 +135,7 @@ namespace Azure.ResourceManager.EventHubs
         }
 
         /// <summary>
-        /// Deletes an existing namespace. This operation also removes all associated resources under the namespace.
+        /// Deletes a Private Endpoint Connection.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/privateEndpointConnections/{privateEndpointConnectionName}
         /// Operation Id: PrivateEndpointConnections_Delete
         /// </summary>
@@ -161,7 +161,7 @@ namespace Azure.ResourceManager.EventHubs
         }
 
         /// <summary>
-        /// Deletes an existing namespace. This operation also removes all associated resources under the namespace.
+        /// Deletes a Private Endpoint Connection.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/privateEndpointConnections/{privateEndpointConnectionName}
         /// Operation Id: PrivateEndpointConnections_Delete
         /// </summary>
