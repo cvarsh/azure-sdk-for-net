@@ -162,6 +162,43 @@ namespace Azure.ResourceManager.SecurityInsights
             return GetIncidentComments().Get(incidentCommentId, cancellationToken);
         }
 
+        /// <summary> Gets a collection of IncidentTaskResources in the Incident. </summary>
+        /// <returns> An object representing collection of IncidentTaskResources and their operations over a IncidentTaskResource. </returns>
+        public virtual IncidentTaskCollection GetIncidentTasks()
+        {
+            return GetCachedClient(Client => new IncidentTaskCollection(Client, Id));
+        }
+
+        /// <summary>
+        /// Gets an incident task.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/tasks/{incidentTaskId}
+        /// Operation Id: IncidentTasks_Get
+        /// </summary>
+        /// <param name="incidentTaskId"> Incident task ID. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="incidentTaskId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="incidentTaskId"/> is null. </exception>
+        [ForwardsClientCalls]
+        public virtual async Task<Response<IncidentTaskResource>> GetIncidentTaskAsync(string incidentTaskId, CancellationToken cancellationToken = default)
+        {
+            return await GetIncidentTasks().GetAsync(incidentTaskId, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets an incident task.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/tasks/{incidentTaskId}
+        /// Operation Id: IncidentTasks_Get
+        /// </summary>
+        /// <param name="incidentTaskId"> Incident task ID. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="incidentTaskId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="incidentTaskId"/> is null. </exception>
+        [ForwardsClientCalls]
+        public virtual Response<IncidentTaskResource> GetIncidentTask(string incidentTaskId, CancellationToken cancellationToken = default)
+        {
+            return GetIncidentTasks().Get(incidentTaskId, cancellationToken);
+        }
+
         /// <summary>
         /// Gets an incident.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}
@@ -376,7 +413,7 @@ namespace Azure.ResourceManager.SecurityInsights
         /// <param name="teamProperties"> Team properties. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="teamProperties"/> is null. </exception>
-        public virtual async Task<Response<TeamInformation>> CreateTeamAsync(TeamProperties teamProperties, CancellationToken cancellationToken = default)
+        public virtual async Task<Response<TeamInformation>> CreateTeamAsync(TeamInformation teamProperties, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(teamProperties, nameof(teamProperties));
 
@@ -402,7 +439,7 @@ namespace Azure.ResourceManager.SecurityInsights
         /// <param name="teamProperties"> Team properties. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="teamProperties"/> is null. </exception>
-        public virtual Response<TeamInformation> CreateTeam(TeamProperties teamProperties, CancellationToken cancellationToken = default)
+        public virtual Response<TeamInformation> CreateTeam(TeamInformation teamProperties, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(teamProperties, nameof(teamProperties));
 
