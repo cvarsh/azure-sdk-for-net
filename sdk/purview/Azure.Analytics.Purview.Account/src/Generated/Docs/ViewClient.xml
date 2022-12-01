@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <members>
+    <member name="CreateAsync(String,String,RequestContent,RequestContext)">
+<example>
+This sample shows how to call CreateAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewClient(endpoint, credential);
+
+var data = new {};
+
+Response response = await client.CreateAsync("<accountId>", "<viewSourceName>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call CreateAsync with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewClient(endpoint, credential);
+
+var data = new {
+    attributes = new {
+        name = "<name>",
+        description = "<description>",
+    },
+    scriptType = "DSL",
+    script = "<script>",
+    assets = new[] {
+        new {
+            guid = "<guid>",
+            name = "<name>",
+            schema = new[] {
+                new {
+                    name = "<name>",
+                    type = "<type>",
+                }
+            },
+        }
+    },
+    schema = new[] {
+        new {
+            name = "<name>",
+            type = "<type>",
+        }
+    },
+    guid = "<guid>",
+};
+
+Response response = await client.CreateAsync("<accountId>", "<viewSourceName>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request payload.
+
+Request Body:
+
+Schema for <c>DataQualityView</c>:
+<code>{
+  attributes: {
+    name: string, # Optional. The Attributes Name
+    description: string, # Optional. The Attributes Description
+    qualifiedName: string, # Optional. The Attributes QualifiedName
+  }, # Optional. The Attributes Model
+  scriptType: &quot;DSL&quot; | &quot;SQL&quot;, # Optional. The DataQualityView ScriptType
+  script: string, # Optional. The DataQualityView Script
+  assets: [
+    {
+      guid: string, # Optional. The Asset GuId
+      name: string, # Optional. The Asset Name
+      schema: [
+        {
+          name: string, # Optional. The Schema Name
+          type: string, # Optional. The Schema Type
+        }
+      ], # Optional. The Asset Schema
+    }
+  ], # Optional. The DataQualityView Assets
+  schema: [Schema], # Optional. The DataQualityView Schema
+  guid: string, # Optional.
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="Create(String,String,RequestContent,RequestContext)">
+<example>
+This sample shows how to call Create with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewClient(endpoint, credential);
+
+var data = new {};
+
+Response response = client.Create("<accountId>", "<viewSourceName>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call Create with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewClient(endpoint, credential);
+
+var data = new {
+    attributes = new {
+        name = "<name>",
+        description = "<description>",
+    },
+    scriptType = "DSL",
+    script = "<script>",
+    assets = new[] {
+        new {
+            guid = "<guid>",
+            name = "<name>",
+            schema = new[] {
+                new {
+                    name = "<name>",
+                    type = "<type>",
+                }
+            },
+        }
+    },
+    schema = new[] {
+        new {
+            name = "<name>",
+            type = "<type>",
+        }
+    },
+    guid = "<guid>",
+};
+
+Response response = client.Create("<accountId>", "<viewSourceName>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request payload.
+
+Request Body:
+
+Schema for <c>DataQualityView</c>:
+<code>{
+  attributes: {
+    name: string, # Optional. The Attributes Name
+    description: string, # Optional. The Attributes Description
+    qualifiedName: string, # Optional. The Attributes QualifiedName
+  }, # Optional. The Attributes Model
+  scriptType: &quot;DSL&quot; | &quot;SQL&quot;, # Optional. The DataQualityView ScriptType
+  script: string, # Optional. The DataQualityView Script
+  assets: [
+    {
+      guid: string, # Optional. The Asset GuId
+      name: string, # Optional. The Asset Name
+      schema: [
+        {
+          name: string, # Optional. The Schema Name
+          type: string, # Optional. The Schema Type
+        }
+      ], # Optional. The Asset Schema
+    }
+  ], # Optional. The DataQualityView Assets
+  schema: [Schema], # Optional. The DataQualityView Schema
+  guid: string, # Optional.
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="GetViewAsync(String,String,RequestContext)">
+<example>
+This sample shows how to call GetViewAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewClient(endpoint, credential);
+
+Response response = await client.GetViewAsync("<accountId>", "<viewId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("attributes").GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("attributes").GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("attributes").GetProperty("qualifiedName").ToString());
+Console.WriteLine(result.GetProperty("scriptType").ToString());
+Console.WriteLine(result.GetProperty("script").ToString());
+Console.WriteLine(result.GetProperty("assets")[0].GetProperty("guid").ToString());
+Console.WriteLine(result.GetProperty("assets")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("assets")[0].GetProperty("schema")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("assets")[0].GetProperty("schema")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("schema")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("schema")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("guid").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>DataQualityView</c>:
+<code>{
+  attributes: {
+    name: string, # Optional. The Attributes Name
+    description: string, # Optional. The Attributes Description
+    qualifiedName: string, # Optional. The Attributes QualifiedName
+  }, # Optional. The Attributes Model
+  scriptType: &quot;DSL&quot; | &quot;SQL&quot;, # Optional. The DataQualityView ScriptType
+  script: string, # Optional. The DataQualityView Script
+  assets: [
+    {
+      guid: string, # Optional. The Asset GuId
+      name: string, # Optional. The Asset Name
+      schema: [
+        {
+          name: string, # Optional. The Schema Name
+          type: string, # Optional. The Schema Type
+        }
+      ], # Optional. The Asset Schema
+    }
+  ], # Optional. The DataQualityView Assets
+  schema: [Schema], # Optional. The DataQualityView Schema
+  guid: string, # Optional.
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="GetView(String,String,RequestContext)">
+<example>
+This sample shows how to call GetView with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewClient(endpoint, credential);
+
+Response response = client.GetView("<accountId>", "<viewId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("attributes").GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("attributes").GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("attributes").GetProperty("qualifiedName").ToString());
+Console.WriteLine(result.GetProperty("scriptType").ToString());
+Console.WriteLine(result.GetProperty("script").ToString());
+Console.WriteLine(result.GetProperty("assets")[0].GetProperty("guid").ToString());
+Console.WriteLine(result.GetProperty("assets")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("assets")[0].GetProperty("schema")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("assets")[0].GetProperty("schema")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("schema")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("schema")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("guid").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>DataQualityView</c>:
+<code>{
+  attributes: {
+    name: string, # Optional. The Attributes Name
+    description: string, # Optional. The Attributes Description
+    qualifiedName: string, # Optional. The Attributes QualifiedName
+  }, # Optional. The Attributes Model
+  scriptType: &quot;DSL&quot; | &quot;SQL&quot;, # Optional. The DataQualityView ScriptType
+  script: string, # Optional. The DataQualityView Script
+  assets: [
+    {
+      guid: string, # Optional. The Asset GuId
+      name: string, # Optional. The Asset Name
+      schema: [
+        {
+          name: string, # Optional. The Schema Name
+          type: string, # Optional. The Schema Type
+        }
+      ], # Optional. The Asset Schema
+    }
+  ], # Optional. The DataQualityView Assets
+  schema: [Schema], # Optional. The DataQualityView Schema
+  guid: string, # Optional.
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="DeleteAsync(String,String,RequestContext)">
+<example>
+This sample shows how to call DeleteAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewClient(endpoint, credential);
+
+Response response = await client.DeleteAsync("<accountId>", "<viewId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+    </member>
+    <member name="Delete(String,String,RequestContext)">
+<example>
+This sample shows how to call Delete with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewClient(endpoint, credential);
+
+Response response = client.Delete("<accountId>", "<viewId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+    </member>
+    <member name="UpdateAsync(String,String,RequestContent,RequestContext)">
+<example>
+This sample shows how to call UpdateAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewClient(endpoint, credential);
+
+var data = new {};
+
+Response response = await client.UpdateAsync("<accountId>", "<viewId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call UpdateAsync with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewClient(endpoint, credential);
+
+var data = new {
+    attributes = new {
+        name = "<name>",
+        description = "<description>",
+    },
+    scriptType = "DSL",
+    script = "<script>",
+    assets = new[] {
+        new {
+            guid = "<guid>",
+            name = "<name>",
+            schema = new[] {
+                new {
+                    name = "<name>",
+                    type = "<type>",
+                }
+            },
+        }
+    },
+    schema = new[] {
+        new {
+            name = "<name>",
+            type = "<type>",
+        }
+    },
+    guid = "<guid>",
+};
+
+Response response = await client.UpdateAsync("<accountId>", "<viewId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request payload.
+
+Request Body:
+
+Schema for <c>DataQualityView</c>:
+<code>{
+  attributes: {
+    name: string, # Optional. The Attributes Name
+    description: string, # Optional. The Attributes Description
+    qualifiedName: string, # Optional. The Attributes QualifiedName
+  }, # Optional. The Attributes Model
+  scriptType: &quot;DSL&quot; | &quot;SQL&quot;, # Optional. The DataQualityView ScriptType
+  script: string, # Optional. The DataQualityView Script
+  assets: [
+    {
+      guid: string, # Optional. The Asset GuId
+      name: string, # Optional. The Asset Name
+      schema: [
+        {
+          name: string, # Optional. The Schema Name
+          type: string, # Optional. The Schema Type
+        }
+      ], # Optional. The Asset Schema
+    }
+  ], # Optional. The DataQualityView Assets
+  schema: [Schema], # Optional. The DataQualityView Schema
+  guid: string, # Optional.
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="Update(String,String,RequestContent,RequestContext)">
+<example>
+This sample shows how to call Update with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewClient(endpoint, credential);
+
+var data = new {};
+
+Response response = client.Update("<accountId>", "<viewId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call Update with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewClient(endpoint, credential);
+
+var data = new {
+    attributes = new {
+        name = "<name>",
+        description = "<description>",
+    },
+    scriptType = "DSL",
+    script = "<script>",
+    assets = new[] {
+        new {
+            guid = "<guid>",
+            name = "<name>",
+            schema = new[] {
+                new {
+                    name = "<name>",
+                    type = "<type>",
+                }
+            },
+        }
+    },
+    schema = new[] {
+        new {
+            name = "<name>",
+            type = "<type>",
+        }
+    },
+    guid = "<guid>",
+};
+
+Response response = client.Update("<accountId>", "<viewId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request payload.
+
+Request Body:
+
+Schema for <c>DataQualityView</c>:
+<code>{
+  attributes: {
+    name: string, # Optional. The Attributes Name
+    description: string, # Optional. The Attributes Description
+    qualifiedName: string, # Optional. The Attributes QualifiedName
+  }, # Optional. The Attributes Model
+  scriptType: &quot;DSL&quot; | &quot;SQL&quot;, # Optional. The DataQualityView ScriptType
+  script: string, # Optional. The DataQualityView Script
+  assets: [
+    {
+      guid: string, # Optional. The Asset GuId
+      name: string, # Optional. The Asset Name
+      schema: [
+        {
+          name: string, # Optional. The Schema Name
+          type: string, # Optional. The Schema Type
+        }
+      ], # Optional. The Asset Schema
+    }
+  ], # Optional. The DataQualityView Assets
+  schema: [Schema], # Optional. The DataQualityView Schema
+  guid: string, # Optional.
+}
+</code>
+
+</remarks>
+    </member>
+  </members>
+</doc>

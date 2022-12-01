@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <members>
+    <member name="GetScheduleRunAsync(String,RequestContent,RequestContext)">
+<example>
+This sample shows how to call GetScheduleRunAsync with required parameters and request content and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleRunsClient(endpoint, credential);
+
+var data = new[] {
+    new {
+        scheduleId = "<scheduleId>",
+        triggerRunIds = new[] {
+            "<String>"
+        },
+    }
+};
+
+Response response = await client.GetScheduleRunAsync("<accountId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("scheduleId").ToString());
+Console.WriteLine(result[0].GetProperty("scheduleName").ToString());
+Console.WriteLine(result[0].GetProperty("triggerRunId").ToString());
+Console.WriteLine(result[0].GetProperty("triggerStatus").ToString());
+Console.WriteLine(result[0].GetProperty("triggerStartTime").ToString());
+Console.WriteLine(result[0].GetProperty("triggerLastUpdateTime").ToString());
+Console.WriteLine(result[0].GetProperty("assessmentType").ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("succeeded").GetProperty("count").ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("succeeded").GetProperty("assets")[0].ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("inProgress").GetProperty("count").ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("inProgress").GetProperty("assets")[0].ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("queued").GetProperty("count").ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("queued").GetProperty("assets")[0].ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("failed").GetProperty("count").ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("failed").GetProperty("assets")[0].ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("cancelled").GetProperty("count").ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("cancelled").GetProperty("assets")[0].ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("skipped").GetProperty("count").ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("skipped").GetProperty("assets")[0].ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request and response payloads.
+
+Request Body:
+
+Schema for <c>ScheduleBulkRunsStatus</c>:
+<code>{
+  scheduleId: string, # Optional. The ScheduleBulkRunsStatus ScheduleId
+  triggerRunIds: [string], # Optional. The ScheduleBulkRunsStatus TriggerRunIds
+}
+</code>
+
+Response Body:
+
+Schema for <c>ScheduleTriggerRunEntityAssetInfo</c>:
+<code>{
+  scheduleId: string, # Optional. The ScheduleTriggerRunEntityAssetInfo ScheduleId
+  scheduleName: string, # Optional. The ScheduleTriggerRunEntityAssetInfo ScheduleName
+  triggerRunId: string, # Optional. The ScheduleTriggerRunEntityAssetInfo TriggerRunId
+  triggerStatus: string, # Optional. The ScheduleTriggerRunEntityAssetInfo TriggerStatus
+  triggerStartTime: string (ISO 8601 Format), # Optional. The ScheduleTriggerRunEntityAssetInfo TriggerStartTime
+  triggerLastUpdateTime: string (ISO 8601 Format), # Optional. The ScheduleTriggerRunEntityAssetInfo TriggerLastUpdateTime
+  assessmentType: string, # Optional. The ScheduleTriggerRunEntityAssetInfo AssessmentType
+  jobStatus: {
+    succeeded: {
+      count: number, # Optional. The DQAssetList Count
+      assets: [string], # Optional. The DQAssetList Assets
+    }, # Optional. The DQAssetList Model
+    inProgress: DQAssetList, # Optional. The DQAssetList Model
+    queued: DQAssetList, # Optional. The DQAssetList Model
+    failed: DQAssetList, # Optional. The DQAssetList Model
+    cancelled: DQAssetList, # Optional. The DQAssetList Model
+    skipped: DQAssetList, # Optional. The DQAssetList Model
+  }, # Optional. The TriggerDQJobsStatus Model
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="GetScheduleRun(String,RequestContent,RequestContext)">
+<example>
+This sample shows how to call GetScheduleRun with required parameters and request content and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleRunsClient(endpoint, credential);
+
+var data = new[] {
+    new {
+        scheduleId = "<scheduleId>",
+        triggerRunIds = new[] {
+            "<String>"
+        },
+    }
+};
+
+Response response = client.GetScheduleRun("<accountId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("scheduleId").ToString());
+Console.WriteLine(result[0].GetProperty("scheduleName").ToString());
+Console.WriteLine(result[0].GetProperty("triggerRunId").ToString());
+Console.WriteLine(result[0].GetProperty("triggerStatus").ToString());
+Console.WriteLine(result[0].GetProperty("triggerStartTime").ToString());
+Console.WriteLine(result[0].GetProperty("triggerLastUpdateTime").ToString());
+Console.WriteLine(result[0].GetProperty("assessmentType").ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("succeeded").GetProperty("count").ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("succeeded").GetProperty("assets")[0].ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("inProgress").GetProperty("count").ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("inProgress").GetProperty("assets")[0].ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("queued").GetProperty("count").ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("queued").GetProperty("assets")[0].ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("failed").GetProperty("count").ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("failed").GetProperty("assets")[0].ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("cancelled").GetProperty("count").ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("cancelled").GetProperty("assets")[0].ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("skipped").GetProperty("count").ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").GetProperty("skipped").GetProperty("assets")[0].ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request and response payloads.
+
+Request Body:
+
+Schema for <c>ScheduleBulkRunsStatus</c>:
+<code>{
+  scheduleId: string, # Optional. The ScheduleBulkRunsStatus ScheduleId
+  triggerRunIds: [string], # Optional. The ScheduleBulkRunsStatus TriggerRunIds
+}
+</code>
+
+Response Body:
+
+Schema for <c>ScheduleTriggerRunEntityAssetInfo</c>:
+<code>{
+  scheduleId: string, # Optional. The ScheduleTriggerRunEntityAssetInfo ScheduleId
+  scheduleName: string, # Optional. The ScheduleTriggerRunEntityAssetInfo ScheduleName
+  triggerRunId: string, # Optional. The ScheduleTriggerRunEntityAssetInfo TriggerRunId
+  triggerStatus: string, # Optional. The ScheduleTriggerRunEntityAssetInfo TriggerStatus
+  triggerStartTime: string (ISO 8601 Format), # Optional. The ScheduleTriggerRunEntityAssetInfo TriggerStartTime
+  triggerLastUpdateTime: string (ISO 8601 Format), # Optional. The ScheduleTriggerRunEntityAssetInfo TriggerLastUpdateTime
+  assessmentType: string, # Optional. The ScheduleTriggerRunEntityAssetInfo AssessmentType
+  jobStatus: {
+    succeeded: {
+      count: number, # Optional. The DQAssetList Count
+      assets: [string], # Optional. The DQAssetList Assets
+    }, # Optional. The DQAssetList Model
+    inProgress: DQAssetList, # Optional. The DQAssetList Model
+    queued: DQAssetList, # Optional. The DQAssetList Model
+    failed: DQAssetList, # Optional. The DQAssetList Model
+    cancelled: DQAssetList, # Optional. The DQAssetList Model
+    skipped: DQAssetList, # Optional. The DQAssetList Model
+  }, # Optional. The TriggerDQJobsStatus Model
+}
+</code>
+
+</remarks>
+    </member>
+  </members>
+</doc>

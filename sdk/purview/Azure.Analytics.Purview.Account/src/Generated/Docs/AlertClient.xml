@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <members>
+    <member name="CreateAsync(String,RequestContent,RequestContext)">
+<example>
+This sample shows how to call CreateAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertClient(endpoint, credential);
+
+var data = new {};
+
+Response response = await client.CreateAsync("<accountId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call CreateAsync with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertClient(endpoint, credential);
+
+var data = new {
+    id = "<id>",
+    name = "<name>",
+    description = "<description>",
+    status = "ENABLED",
+    notificationFrequency = "IMMEDIATE",
+    notificationType = "EMAIL",
+    condition = "<condition>",
+    alertingScopes = new[] {
+        new {
+            level = "CATALOG_PATH",
+            type = "<type>",
+            id = "<id>",
+        }
+    },
+    createdOn = "2022-05-10T18:57:31.2311892Z",
+    createdBy = "<createdBy>",
+    lastUpdatedOn = "2022-05-10T18:57:31.2311892Z",
+    lastUpdatedBy = "<lastUpdatedBy>",
+    lastActivatedOn = "2022-05-10T18:57:31.2311892Z",
+    activatedCount = 1234,
+};
+
+Response response = await client.CreateAsync("<accountId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("status").ToString());
+Console.WriteLine(result.GetProperty("notificationFrequency").ToString());
+Console.WriteLine(result.GetProperty("notificationType").ToString());
+Console.WriteLine(result.GetProperty("condition").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("level").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("createdOn").ToString());
+Console.WriteLine(result.GetProperty("createdBy").ToString());
+Console.WriteLine(result.GetProperty("lastUpdatedOn").ToString());
+Console.WriteLine(result.GetProperty("lastUpdatedBy").ToString());
+Console.WriteLine(result.GetProperty("lastActivatedOn").ToString());
+Console.WriteLine(result.GetProperty("activatedCount").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request and response payloads.
+
+Request Body:
+
+Schema for <c>DQAlert</c>:
+<code>{
+  id: string, # Optional. The Alert Id
+  name: string, # Optional. The Alert Name
+  description: string, # Optional. The Alert Status
+  status: &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. The Alert Status
+  notificationFrequency: &quot;IMMEDIATE&quot;, # Optional. The Alert Notification Frequency
+  notificationType: &quot;EMAIL&quot;, # Optional. The Alert Notification Type
+  condition: string, # Optional. The Alert Condition
+  alertingScopes: [
+    {
+      level: &quot;CATALOG_PATH&quot;, # Optional.
+      type: string, # Optional.
+      id: string, # Optional.
+    }
+  ], # Optional. The Alert Scope
+  createdOn: string (ISO 8601 Format), # Optional. The Alert Create Time
+  createdBy: string, # Optional. The Alert Created By
+  lastUpdatedOn: string (ISO 8601 Format), # Optional. The Alert Last Updated Time
+  lastUpdatedBy: string, # Optional. The Alert Last Updated By
+  lastActivatedOn: string (ISO 8601 Format), # Optional. The Alert Last Activated on
+  activatedCount: number, # Optional. The Alert Activated Count
+}
+</code>
+
+Response Body:
+
+Schema for <c>DQAlert</c>:
+<code>{
+  id: string, # Optional. The Alert Id
+  name: string, # Optional. The Alert Name
+  description: string, # Optional. The Alert Status
+  status: &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. The Alert Status
+  notificationFrequency: &quot;IMMEDIATE&quot;, # Optional. The Alert Notification Frequency
+  notificationType: &quot;EMAIL&quot;, # Optional. The Alert Notification Type
+  condition: string, # Optional. The Alert Condition
+  alertingScopes: [
+    {
+      level: &quot;CATALOG_PATH&quot;, # Optional.
+      type: string, # Optional.
+      id: string, # Optional.
+    }
+  ], # Optional. The Alert Scope
+  createdOn: string (ISO 8601 Format), # Optional. The Alert Create Time
+  createdBy: string, # Optional. The Alert Created By
+  lastUpdatedOn: string (ISO 8601 Format), # Optional. The Alert Last Updated Time
+  lastUpdatedBy: string, # Optional. The Alert Last Updated By
+  lastActivatedOn: string (ISO 8601 Format), # Optional. The Alert Last Activated on
+  activatedCount: number, # Optional. The Alert Activated Count
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="Create(String,RequestContent,RequestContext)">
+<example>
+This sample shows how to call Create with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertClient(endpoint, credential);
+
+var data = new {};
+
+Response response = client.Create("<accountId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call Create with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertClient(endpoint, credential);
+
+var data = new {
+    id = "<id>",
+    name = "<name>",
+    description = "<description>",
+    status = "ENABLED",
+    notificationFrequency = "IMMEDIATE",
+    notificationType = "EMAIL",
+    condition = "<condition>",
+    alertingScopes = new[] {
+        new {
+            level = "CATALOG_PATH",
+            type = "<type>",
+            id = "<id>",
+        }
+    },
+    createdOn = "2022-05-10T18:57:31.2311892Z",
+    createdBy = "<createdBy>",
+    lastUpdatedOn = "2022-05-10T18:57:31.2311892Z",
+    lastUpdatedBy = "<lastUpdatedBy>",
+    lastActivatedOn = "2022-05-10T18:57:31.2311892Z",
+    activatedCount = 1234,
+};
+
+Response response = client.Create("<accountId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("status").ToString());
+Console.WriteLine(result.GetProperty("notificationFrequency").ToString());
+Console.WriteLine(result.GetProperty("notificationType").ToString());
+Console.WriteLine(result.GetProperty("condition").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("level").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("createdOn").ToString());
+Console.WriteLine(result.GetProperty("createdBy").ToString());
+Console.WriteLine(result.GetProperty("lastUpdatedOn").ToString());
+Console.WriteLine(result.GetProperty("lastUpdatedBy").ToString());
+Console.WriteLine(result.GetProperty("lastActivatedOn").ToString());
+Console.WriteLine(result.GetProperty("activatedCount").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request and response payloads.
+
+Request Body:
+
+Schema for <c>DQAlert</c>:
+<code>{
+  id: string, # Optional. The Alert Id
+  name: string, # Optional. The Alert Name
+  description: string, # Optional. The Alert Status
+  status: &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. The Alert Status
+  notificationFrequency: &quot;IMMEDIATE&quot;, # Optional. The Alert Notification Frequency
+  notificationType: &quot;EMAIL&quot;, # Optional. The Alert Notification Type
+  condition: string, # Optional. The Alert Condition
+  alertingScopes: [
+    {
+      level: &quot;CATALOG_PATH&quot;, # Optional.
+      type: string, # Optional.
+      id: string, # Optional.
+    }
+  ], # Optional. The Alert Scope
+  createdOn: string (ISO 8601 Format), # Optional. The Alert Create Time
+  createdBy: string, # Optional. The Alert Created By
+  lastUpdatedOn: string (ISO 8601 Format), # Optional. The Alert Last Updated Time
+  lastUpdatedBy: string, # Optional. The Alert Last Updated By
+  lastActivatedOn: string (ISO 8601 Format), # Optional. The Alert Last Activated on
+  activatedCount: number, # Optional. The Alert Activated Count
+}
+</code>
+
+Response Body:
+
+Schema for <c>DQAlert</c>:
+<code>{
+  id: string, # Optional. The Alert Id
+  name: string, # Optional. The Alert Name
+  description: string, # Optional. The Alert Status
+  status: &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. The Alert Status
+  notificationFrequency: &quot;IMMEDIATE&quot;, # Optional. The Alert Notification Frequency
+  notificationType: &quot;EMAIL&quot;, # Optional. The Alert Notification Type
+  condition: string, # Optional. The Alert Condition
+  alertingScopes: [
+    {
+      level: &quot;CATALOG_PATH&quot;, # Optional.
+      type: string, # Optional.
+      id: string, # Optional.
+    }
+  ], # Optional. The Alert Scope
+  createdOn: string (ISO 8601 Format), # Optional. The Alert Create Time
+  createdBy: string, # Optional. The Alert Created By
+  lastUpdatedOn: string (ISO 8601 Format), # Optional. The Alert Last Updated Time
+  lastUpdatedBy: string, # Optional. The Alert Last Updated By
+  lastActivatedOn: string (ISO 8601 Format), # Optional. The Alert Last Activated on
+  activatedCount: number, # Optional. The Alert Activated Count
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="GetAlertAsync(String,String,RequestContext)">
+<example>
+This sample shows how to call GetAlertAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertClient(endpoint, credential);
+
+Response response = await client.GetAlertAsync("<accountId>", "<alertId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("status").ToString());
+Console.WriteLine(result.GetProperty("notificationFrequency").ToString());
+Console.WriteLine(result.GetProperty("notificationType").ToString());
+Console.WriteLine(result.GetProperty("condition").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("level").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("createdOn").ToString());
+Console.WriteLine(result.GetProperty("createdBy").ToString());
+Console.WriteLine(result.GetProperty("lastUpdatedOn").ToString());
+Console.WriteLine(result.GetProperty("lastUpdatedBy").ToString());
+Console.WriteLine(result.GetProperty("lastActivatedOn").ToString());
+Console.WriteLine(result.GetProperty("activatedCount").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>DQAlert</c>:
+<code>{
+  id: string, # Optional. The Alert Id
+  name: string, # Optional. The Alert Name
+  description: string, # Optional. The Alert Status
+  status: &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. The Alert Status
+  notificationFrequency: &quot;IMMEDIATE&quot;, # Optional. The Alert Notification Frequency
+  notificationType: &quot;EMAIL&quot;, # Optional. The Alert Notification Type
+  condition: string, # Optional. The Alert Condition
+  alertingScopes: [
+    {
+      level: &quot;CATALOG_PATH&quot;, # Optional.
+      type: string, # Optional.
+      id: string, # Optional.
+    }
+  ], # Optional. The Alert Scope
+  createdOn: string (ISO 8601 Format), # Optional. The Alert Create Time
+  createdBy: string, # Optional. The Alert Created By
+  lastUpdatedOn: string (ISO 8601 Format), # Optional. The Alert Last Updated Time
+  lastUpdatedBy: string, # Optional. The Alert Last Updated By
+  lastActivatedOn: string (ISO 8601 Format), # Optional. The Alert Last Activated on
+  activatedCount: number, # Optional. The Alert Activated Count
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="GetAlert(String,String,RequestContext)">
+<example>
+This sample shows how to call GetAlert with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertClient(endpoint, credential);
+
+Response response = client.GetAlert("<accountId>", "<alertId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("status").ToString());
+Console.WriteLine(result.GetProperty("notificationFrequency").ToString());
+Console.WriteLine(result.GetProperty("notificationType").ToString());
+Console.WriteLine(result.GetProperty("condition").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("level").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("createdOn").ToString());
+Console.WriteLine(result.GetProperty("createdBy").ToString());
+Console.WriteLine(result.GetProperty("lastUpdatedOn").ToString());
+Console.WriteLine(result.GetProperty("lastUpdatedBy").ToString());
+Console.WriteLine(result.GetProperty("lastActivatedOn").ToString());
+Console.WriteLine(result.GetProperty("activatedCount").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>DQAlert</c>:
+<code>{
+  id: string, # Optional. The Alert Id
+  name: string, # Optional. The Alert Name
+  description: string, # Optional. The Alert Status
+  status: &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. The Alert Status
+  notificationFrequency: &quot;IMMEDIATE&quot;, # Optional. The Alert Notification Frequency
+  notificationType: &quot;EMAIL&quot;, # Optional. The Alert Notification Type
+  condition: string, # Optional. The Alert Condition
+  alertingScopes: [
+    {
+      level: &quot;CATALOG_PATH&quot;, # Optional.
+      type: string, # Optional.
+      id: string, # Optional.
+    }
+  ], # Optional. The Alert Scope
+  createdOn: string (ISO 8601 Format), # Optional. The Alert Create Time
+  createdBy: string, # Optional. The Alert Created By
+  lastUpdatedOn: string (ISO 8601 Format), # Optional. The Alert Last Updated Time
+  lastUpdatedBy: string, # Optional. The Alert Last Updated By
+  lastActivatedOn: string (ISO 8601 Format), # Optional. The Alert Last Activated on
+  activatedCount: number, # Optional. The Alert Activated Count
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="UpdateAsync(String,String,RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call UpdateAsync with required parameters and request content and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertClient(endpoint, credential);
+
+var data = new {};
+
+Response response = await client.UpdateAsync("<accountId>", "<alertId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("status").ToString());
+Console.WriteLine(result.GetProperty("notificationFrequency").ToString());
+Console.WriteLine(result.GetProperty("notificationType").ToString());
+Console.WriteLine(result.GetProperty("condition").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("level").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("createdOn").ToString());
+Console.WriteLine(result.GetProperty("createdBy").ToString());
+Console.WriteLine(result.GetProperty("lastUpdatedOn").ToString());
+Console.WriteLine(result.GetProperty("lastUpdatedBy").ToString());
+Console.WriteLine(result.GetProperty("lastActivatedOn").ToString());
+Console.WriteLine(result.GetProperty("activatedCount").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>DQAlert</c>:
+<code>{
+  id: string, # Optional. The Alert Id
+  name: string, # Optional. The Alert Name
+  description: string, # Optional. The Alert Status
+  status: &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. The Alert Status
+  notificationFrequency: &quot;IMMEDIATE&quot;, # Optional. The Alert Notification Frequency
+  notificationType: &quot;EMAIL&quot;, # Optional. The Alert Notification Type
+  condition: string, # Optional. The Alert Condition
+  alertingScopes: [
+    {
+      level: &quot;CATALOG_PATH&quot;, # Optional.
+      type: string, # Optional.
+      id: string, # Optional.
+    }
+  ], # Optional. The Alert Scope
+  createdOn: string (ISO 8601 Format), # Optional. The Alert Create Time
+  createdBy: string, # Optional. The Alert Created By
+  lastUpdatedOn: string (ISO 8601 Format), # Optional. The Alert Last Updated Time
+  lastUpdatedBy: string, # Optional. The Alert Last Updated By
+  lastActivatedOn: string (ISO 8601 Format), # Optional. The Alert Last Activated on
+  activatedCount: number, # Optional. The Alert Activated Count
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="Update(String,String,RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call Update with required parameters and request content and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertClient(endpoint, credential);
+
+var data = new {};
+
+Response response = client.Update("<accountId>", "<alertId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("status").ToString());
+Console.WriteLine(result.GetProperty("notificationFrequency").ToString());
+Console.WriteLine(result.GetProperty("notificationType").ToString());
+Console.WriteLine(result.GetProperty("condition").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("level").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("alertingScopes")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("createdOn").ToString());
+Console.WriteLine(result.GetProperty("createdBy").ToString());
+Console.WriteLine(result.GetProperty("lastUpdatedOn").ToString());
+Console.WriteLine(result.GetProperty("lastUpdatedBy").ToString());
+Console.WriteLine(result.GetProperty("lastActivatedOn").ToString());
+Console.WriteLine(result.GetProperty("activatedCount").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>DQAlert</c>:
+<code>{
+  id: string, # Optional. The Alert Id
+  name: string, # Optional. The Alert Name
+  description: string, # Optional. The Alert Status
+  status: &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. The Alert Status
+  notificationFrequency: &quot;IMMEDIATE&quot;, # Optional. The Alert Notification Frequency
+  notificationType: &quot;EMAIL&quot;, # Optional. The Alert Notification Type
+  condition: string, # Optional. The Alert Condition
+  alertingScopes: [
+    {
+      level: &quot;CATALOG_PATH&quot;, # Optional.
+      type: string, # Optional.
+      id: string, # Optional.
+    }
+  ], # Optional. The Alert Scope
+  createdOn: string (ISO 8601 Format), # Optional. The Alert Create Time
+  createdBy: string, # Optional. The Alert Created By
+  lastUpdatedOn: string (ISO 8601 Format), # Optional. The Alert Last Updated Time
+  lastUpdatedBy: string, # Optional. The Alert Last Updated By
+  lastActivatedOn: string (ISO 8601 Format), # Optional. The Alert Last Activated on
+  activatedCount: number, # Optional. The Alert Activated Count
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="DeleteAsync(String,String,RequestContext)">
+<example>
+This sample shows how to call DeleteAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertClient(endpoint, credential);
+
+Response response = await client.DeleteAsync("<accountId>", "<alertId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+    </member>
+    <member name="Delete(String,String,RequestContext)">
+<example>
+This sample shows how to call Delete with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertClient(endpoint, credential);
+
+Response response = client.Delete("<accountId>", "<alertId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+    </member>
+    <member name="ValidateAsync(String,RequestContent,RequestContext)">
+<example>
+This sample shows how to call ValidateAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertClient(endpoint, credential);
+
+var data = new {};
+
+Response response = await client.ValidateAsync("<accountId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call ValidateAsync with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertClient(endpoint, credential);
+
+var data = new {
+    alertName = "<alertName>",
+    values = new[] {
+        new {
+            level = "CATALOG_PATH",
+            type = "<type>",
+            id = "<id>",
+        }
+    },
+};
+
+Response response = await client.ValidateAsync("<accountId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request payload.
+
+Request Body:
+
+Schema for <c>AlertNameValidation</c>:
+<code>{
+  alertName: string, # Optional. The Alert Name
+  values: [
+    {
+      level: &quot;CATALOG_PATH&quot;, # Optional.
+      type: string, # Optional.
+      id: string, # Optional.
+    }
+  ], # Optional.
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="Validate(String,RequestContent,RequestContext)">
+<example>
+This sample shows how to call Validate with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertClient(endpoint, credential);
+
+var data = new {};
+
+Response response = client.Validate("<accountId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call Validate with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertClient(endpoint, credential);
+
+var data = new {
+    alertName = "<alertName>",
+    values = new[] {
+        new {
+            level = "CATALOG_PATH",
+            type = "<type>",
+            id = "<id>",
+        }
+    },
+};
+
+Response response = client.Validate("<accountId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request payload.
+
+Request Body:
+
+Schema for <c>AlertNameValidation</c>:
+<code>{
+  alertName: string, # Optional. The Alert Name
+  values: [
+    {
+      level: &quot;CATALOG_PATH&quot;, # Optional.
+      type: string, # Optional.
+      id: string, # Optional.
+    }
+  ], # Optional.
+}
+</code>
+
+</remarks>
+    </member>
+  </members>
+</doc>

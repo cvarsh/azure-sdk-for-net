@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <members>
+    <member name="GetAssessmentJobListAsync(String,String,RequestContext)">
+<example>
+This sample shows how to call GetAssessmentJobListAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AssessmentJobListClient(endpoint, credential);
+
+Response response = await client.GetAssessmentJobListAsync("<accountId>", "<assetId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("accountId").ToString());
+Console.WriteLine(result[0].GetProperty("assetId").ToString());
+Console.WriteLine(result[0].GetProperty("jobId").ToString());
+Console.WriteLine(result[0].GetProperty("jobRunId").ToString());
+Console.WriteLine(result[0].GetProperty("jobStartTime").ToString());
+Console.WriteLine(result[0].GetProperty("jobEndTime").ToString());
+Console.WriteLine(result[0].GetProperty("totalRunTime").ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").ToString());
+Console.WriteLine(result[0].GetProperty("message").ToString());
+Console.WriteLine(result[0].GetProperty("globalScore").ToString());
+Console.WriteLine(result[0].GetProperty("jobEnvironment").ToString());
+Console.WriteLine(result[0].GetProperty("scheduleId").ToString());
+Console.WriteLine(result[0].GetProperty("assetType").ToString());
+Console.WriteLine(result[0].GetProperty("statusCode").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>JobStatusEntity</c>:
+<code>{
+  accountId: string, # Optional. The JobStatusEntity AccountId
+  assetId: string, # Optional. The JobStatusEntity AssetID
+  jobId: string, # Optional. The JobStatusEntity JobID
+  jobRunId: string, # Optional. The JobStatusEntity JobRunId
+  jobStartTime: string (ISO 8601 Format), # Optional. The JobStatusEntity JobStartTime
+  jobEndTime: string (ISO 8601 Format), # Optional. The JobStatusEntity JobEndTime
+  totalRunTime: string, # Optional. The JobStatusEntity TotalRunTime
+  jobStatus: string, # Optional. The JobStatusEntity JobStatus
+  message: string, # Optional. The JobStatusEntity Message
+  globalScore: number, # Optional. The JobStatusEntity GlobalScore
+  jobEnvironment: string, # Optional. The JobStatusEntity JobEnvironment
+  scheduleId: string, # Optional. The JobStatusEntity ScheduleId
+  assetType: string, # Optional. The JobStatusEntity AssetType
+  statusCode: number, # Optional. The JobStatusEntity StatusCode
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="GetAssessmentJobList(String,String,RequestContext)">
+<example>
+This sample shows how to call GetAssessmentJobList with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AssessmentJobListClient(endpoint, credential);
+
+Response response = client.GetAssessmentJobList("<accountId>", "<assetId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("accountId").ToString());
+Console.WriteLine(result[0].GetProperty("assetId").ToString());
+Console.WriteLine(result[0].GetProperty("jobId").ToString());
+Console.WriteLine(result[0].GetProperty("jobRunId").ToString());
+Console.WriteLine(result[0].GetProperty("jobStartTime").ToString());
+Console.WriteLine(result[0].GetProperty("jobEndTime").ToString());
+Console.WriteLine(result[0].GetProperty("totalRunTime").ToString());
+Console.WriteLine(result[0].GetProperty("jobStatus").ToString());
+Console.WriteLine(result[0].GetProperty("message").ToString());
+Console.WriteLine(result[0].GetProperty("globalScore").ToString());
+Console.WriteLine(result[0].GetProperty("jobEnvironment").ToString());
+Console.WriteLine(result[0].GetProperty("scheduleId").ToString());
+Console.WriteLine(result[0].GetProperty("assetType").ToString());
+Console.WriteLine(result[0].GetProperty("statusCode").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>JobStatusEntity</c>:
+<code>{
+  accountId: string, # Optional. The JobStatusEntity AccountId
+  assetId: string, # Optional. The JobStatusEntity AssetID
+  jobId: string, # Optional. The JobStatusEntity JobID
+  jobRunId: string, # Optional. The JobStatusEntity JobRunId
+  jobStartTime: string (ISO 8601 Format), # Optional. The JobStatusEntity JobStartTime
+  jobEndTime: string (ISO 8601 Format), # Optional. The JobStatusEntity JobEndTime
+  totalRunTime: string, # Optional. The JobStatusEntity TotalRunTime
+  jobStatus: string, # Optional. The JobStatusEntity JobStatus
+  message: string, # Optional. The JobStatusEntity Message
+  globalScore: number, # Optional. The JobStatusEntity GlobalScore
+  jobEnvironment: string, # Optional. The JobStatusEntity JobEnvironment
+  scheduleId: string, # Optional. The JobStatusEntity ScheduleId
+  assetType: string, # Optional. The JobStatusEntity AssetType
+  statusCode: number, # Optional. The JobStatusEntity StatusCode
+}
+</code>
+
+</remarks>
+    </member>
+  </members>
+</doc>
