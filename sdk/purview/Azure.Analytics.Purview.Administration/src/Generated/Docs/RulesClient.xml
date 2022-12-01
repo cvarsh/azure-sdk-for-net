@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <members>
+    <member name="CreateAsync(String,String,RequestContent,RequestContext)">
+<example>
+This sample shows how to call CreateAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new RulesClient(endpoint, credential);
+
+var data = new {};
+
+Response response = await client.CreateAsync("<accountId>", "<assetId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call CreateAsync with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new RulesClient(endpoint, credential);
+
+var data = new {
+    modelVersion = "<modelVersion>",
+    dataSourceId = "<dataSourceId>",
+    dataSourceFqn = "<dataSourceFqn>",
+    favouriteFields = new[] {
+        "<String>"
+    },
+    schemaAtSource = new {
+        schemaProvider = "CATALOG",
+        schema = "<schema>",
+        refreshedAt = 1234L,
+    },
+    schemaReference = new {
+        key = new {
+            key = "<String>",
+        },
+    },
+    dataSourceType = "CATALOG_ASSET",
+    rules = new[] {
+        new {
+            id = "<id>",
+            name = "<name>",
+            description = "<description>",
+            status = "INCOMPLETE",
+            level = "ASSET",
+            type = "NOTNULL",
+            tags = new[] {
+                "<String>"
+            },
+            typeProperties = new {},
+        }
+    },
+};
+
+Response response = await client.CreateAsync("<accountId>", "<assetId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("modelVersion").ToString());
+Console.WriteLine(result.GetProperty("dataSourceId").ToString());
+Console.WriteLine(result.GetProperty("dataSourceFqn").ToString());
+Console.WriteLine(result.GetProperty("favouriteFields")[0].ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schemaProvider").ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schema").ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("refreshedAt").ToString());
+Console.WriteLine(result.GetProperty("schemaReference").GetProperty("<test>").GetProperty("<test>").ToString());
+Console.WriteLine(result.GetProperty("dataSourceType").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("status").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("level").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("tags")[0].ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("typeProperties").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request and response payloads.
+
+Request Body:
+
+Schema for <c>DataQualityRules</c>:
+<code>{
+  modelVersion: string, # Optional. The DataQualityRules ModelVersion
+  dataSourceId: string, # Optional. The DataQualityRules DataSourceId
+  dataSourceFqn: string, # Optional. The DataQualityRules DataSourceFQN
+  favouriteFields: [string], # Optional. The DataQualityRules FavouriteFields
+  schemaAtSource: {
+    schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional. The SourceSchema SchemaProvider
+    schema: string, # Optional. The SourceSchema Schema
+    refreshedAt: number, # Optional. The SourceSchema RefreshedAt
+  }, # Optional. The SourceSchema Model
+  schemaReference: Dictionary&lt;string, Dictionary&lt;string, string&gt;&gt;, # Optional. The DataQualityRules SchemaReference
+  dataSourceType: &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional. The DataQualityRules DataSourceType
+  rules: [Rule], # Optional. The DataQualityRules Rules
+}
+</code>
+
+Response Body:
+
+Schema for <c>DataQualityRules</c>:
+<code>{
+  modelVersion: string, # Optional. The DataQualityRules ModelVersion
+  dataSourceId: string, # Optional. The DataQualityRules DataSourceId
+  dataSourceFqn: string, # Optional. The DataQualityRules DataSourceFQN
+  favouriteFields: [string], # Optional. The DataQualityRules FavouriteFields
+  schemaAtSource: {
+    schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional. The SourceSchema SchemaProvider
+    schema: string, # Optional. The SourceSchema Schema
+    refreshedAt: number, # Optional. The SourceSchema RefreshedAt
+  }, # Optional. The SourceSchema Model
+  schemaReference: Dictionary&lt;string, Dictionary&lt;string, string&gt;&gt;, # Optional. The DataQualityRules SchemaReference
+  dataSourceType: &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional. The DataQualityRules DataSourceType
+  rules: [Rule], # Optional. The DataQualityRules Rules
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="Create(String,String,RequestContent,RequestContext)">
+<example>
+This sample shows how to call Create with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new RulesClient(endpoint, credential);
+
+var data = new {};
+
+Response response = client.Create("<accountId>", "<assetId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call Create with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new RulesClient(endpoint, credential);
+
+var data = new {
+    modelVersion = "<modelVersion>",
+    dataSourceId = "<dataSourceId>",
+    dataSourceFqn = "<dataSourceFqn>",
+    favouriteFields = new[] {
+        "<String>"
+    },
+    schemaAtSource = new {
+        schemaProvider = "CATALOG",
+        schema = "<schema>",
+        refreshedAt = 1234L,
+    },
+    schemaReference = new {
+        key = new {
+            key = "<String>",
+        },
+    },
+    dataSourceType = "CATALOG_ASSET",
+    rules = new[] {
+        new {
+            id = "<id>",
+            name = "<name>",
+            description = "<description>",
+            status = "INCOMPLETE",
+            level = "ASSET",
+            type = "NOTNULL",
+            tags = new[] {
+                "<String>"
+            },
+            typeProperties = new {},
+        }
+    },
+};
+
+Response response = client.Create("<accountId>", "<assetId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("modelVersion").ToString());
+Console.WriteLine(result.GetProperty("dataSourceId").ToString());
+Console.WriteLine(result.GetProperty("dataSourceFqn").ToString());
+Console.WriteLine(result.GetProperty("favouriteFields")[0].ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schemaProvider").ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schema").ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("refreshedAt").ToString());
+Console.WriteLine(result.GetProperty("schemaReference").GetProperty("<test>").GetProperty("<test>").ToString());
+Console.WriteLine(result.GetProperty("dataSourceType").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("status").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("level").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("tags")[0].ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("typeProperties").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request and response payloads.
+
+Request Body:
+
+Schema for <c>DataQualityRules</c>:
+<code>{
+  modelVersion: string, # Optional. The DataQualityRules ModelVersion
+  dataSourceId: string, # Optional. The DataQualityRules DataSourceId
+  dataSourceFqn: string, # Optional. The DataQualityRules DataSourceFQN
+  favouriteFields: [string], # Optional. The DataQualityRules FavouriteFields
+  schemaAtSource: {
+    schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional. The SourceSchema SchemaProvider
+    schema: string, # Optional. The SourceSchema Schema
+    refreshedAt: number, # Optional. The SourceSchema RefreshedAt
+  }, # Optional. The SourceSchema Model
+  schemaReference: Dictionary&lt;string, Dictionary&lt;string, string&gt;&gt;, # Optional. The DataQualityRules SchemaReference
+  dataSourceType: &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional. The DataQualityRules DataSourceType
+  rules: [Rule], # Optional. The DataQualityRules Rules
+}
+</code>
+
+Response Body:
+
+Schema for <c>DataQualityRules</c>:
+<code>{
+  modelVersion: string, # Optional. The DataQualityRules ModelVersion
+  dataSourceId: string, # Optional. The DataQualityRules DataSourceId
+  dataSourceFqn: string, # Optional. The DataQualityRules DataSourceFQN
+  favouriteFields: [string], # Optional. The DataQualityRules FavouriteFields
+  schemaAtSource: {
+    schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional. The SourceSchema SchemaProvider
+    schema: string, # Optional. The SourceSchema Schema
+    refreshedAt: number, # Optional. The SourceSchema RefreshedAt
+  }, # Optional. The SourceSchema Model
+  schemaReference: Dictionary&lt;string, Dictionary&lt;string, string&gt;&gt;, # Optional. The DataQualityRules SchemaReference
+  dataSourceType: &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional. The DataQualityRules DataSourceType
+  rules: [Rule], # Optional. The DataQualityRules Rules
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="GetRuleAsync(String,String,RequestContext)">
+<example>
+This sample shows how to call GetRuleAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new RulesClient(endpoint, credential);
+
+Response response = await client.GetRuleAsync("<accountId>", "<assetId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("modelVersion").ToString());
+Console.WriteLine(result.GetProperty("dataSourceId").ToString());
+Console.WriteLine(result.GetProperty("dataSourceFqn").ToString());
+Console.WriteLine(result.GetProperty("favouriteFields")[0].ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schemaProvider").ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schema").ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("refreshedAt").ToString());
+Console.WriteLine(result.GetProperty("schemaReference").GetProperty("<test>").GetProperty("<test>").ToString());
+Console.WriteLine(result.GetProperty("dataSourceType").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("status").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("level").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("tags")[0].ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("typeProperties").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>DataQualityRules</c>:
+<code>{
+  modelVersion: string, # Optional. The DataQualityRules ModelVersion
+  dataSourceId: string, # Optional. The DataQualityRules DataSourceId
+  dataSourceFqn: string, # Optional. The DataQualityRules DataSourceFQN
+  favouriteFields: [string], # Optional. The DataQualityRules FavouriteFields
+  schemaAtSource: {
+    schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional. The SourceSchema SchemaProvider
+    schema: string, # Optional. The SourceSchema Schema
+    refreshedAt: number, # Optional. The SourceSchema RefreshedAt
+  }, # Optional. The SourceSchema Model
+  schemaReference: Dictionary&lt;string, Dictionary&lt;string, string&gt;&gt;, # Optional. The DataQualityRules SchemaReference
+  dataSourceType: &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional. The DataQualityRules DataSourceType
+  rules: [Rule], # Optional. The DataQualityRules Rules
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="GetRule(String,String,RequestContext)">
+<example>
+This sample shows how to call GetRule with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new RulesClient(endpoint, credential);
+
+Response response = client.GetRule("<accountId>", "<assetId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("modelVersion").ToString());
+Console.WriteLine(result.GetProperty("dataSourceId").ToString());
+Console.WriteLine(result.GetProperty("dataSourceFqn").ToString());
+Console.WriteLine(result.GetProperty("favouriteFields")[0].ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schemaProvider").ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schema").ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("refreshedAt").ToString());
+Console.WriteLine(result.GetProperty("schemaReference").GetProperty("<test>").GetProperty("<test>").ToString());
+Console.WriteLine(result.GetProperty("dataSourceType").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("status").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("level").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("tags")[0].ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("typeProperties").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>DataQualityRules</c>:
+<code>{
+  modelVersion: string, # Optional. The DataQualityRules ModelVersion
+  dataSourceId: string, # Optional. The DataQualityRules DataSourceId
+  dataSourceFqn: string, # Optional. The DataQualityRules DataSourceFQN
+  favouriteFields: [string], # Optional. The DataQualityRules FavouriteFields
+  schemaAtSource: {
+    schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional. The SourceSchema SchemaProvider
+    schema: string, # Optional. The SourceSchema Schema
+    refreshedAt: number, # Optional. The SourceSchema RefreshedAt
+  }, # Optional. The SourceSchema Model
+  schemaReference: Dictionary&lt;string, Dictionary&lt;string, string&gt;&gt;, # Optional. The DataQualityRules SchemaReference
+  dataSourceType: &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional. The DataQualityRules DataSourceType
+  rules: [Rule], # Optional. The DataQualityRules Rules
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="UpdateAsync(String,String,RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call UpdateAsync with required parameters and request content and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new RulesClient(endpoint, credential);
+
+var data = new {};
+
+Response response = await client.UpdateAsync("<accountId>", "<assetId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("modelVersion").ToString());
+Console.WriteLine(result.GetProperty("dataSourceId").ToString());
+Console.WriteLine(result.GetProperty("dataSourceFqn").ToString());
+Console.WriteLine(result.GetProperty("favouriteFields")[0].ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schemaProvider").ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schema").ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("refreshedAt").ToString());
+Console.WriteLine(result.GetProperty("schemaReference").GetProperty("<test>").GetProperty("<test>").ToString());
+Console.WriteLine(result.GetProperty("dataSourceType").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("status").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("level").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("tags")[0].ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("typeProperties").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>DataQualityRules</c>:
+<code>{
+  modelVersion: string, # Optional. The DataQualityRules ModelVersion
+  dataSourceId: string, # Optional. The DataQualityRules DataSourceId
+  dataSourceFqn: string, # Optional. The DataQualityRules DataSourceFQN
+  favouriteFields: [string], # Optional. The DataQualityRules FavouriteFields
+  schemaAtSource: {
+    schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional. The SourceSchema SchemaProvider
+    schema: string, # Optional. The SourceSchema Schema
+    refreshedAt: number, # Optional. The SourceSchema RefreshedAt
+  }, # Optional. The SourceSchema Model
+  schemaReference: Dictionary&lt;string, Dictionary&lt;string, string&gt;&gt;, # Optional. The DataQualityRules SchemaReference
+  dataSourceType: &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional. The DataQualityRules DataSourceType
+  rules: [Rule], # Optional. The DataQualityRules Rules
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="Update(String,String,RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call Update with required parameters and request content and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new RulesClient(endpoint, credential);
+
+var data = new {};
+
+Response response = client.Update("<accountId>", "<assetId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("modelVersion").ToString());
+Console.WriteLine(result.GetProperty("dataSourceId").ToString());
+Console.WriteLine(result.GetProperty("dataSourceFqn").ToString());
+Console.WriteLine(result.GetProperty("favouriteFields")[0].ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schemaProvider").ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("schema").ToString());
+Console.WriteLine(result.GetProperty("schemaAtSource").GetProperty("refreshedAt").ToString());
+Console.WriteLine(result.GetProperty("schemaReference").GetProperty("<test>").GetProperty("<test>").ToString());
+Console.WriteLine(result.GetProperty("dataSourceType").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("status").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("level").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("tags")[0].ToString());
+Console.WriteLine(result.GetProperty("rules")[0].GetProperty("typeProperties").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>DataQualityRules</c>:
+<code>{
+  modelVersion: string, # Optional. The DataQualityRules ModelVersion
+  dataSourceId: string, # Optional. The DataQualityRules DataSourceId
+  dataSourceFqn: string, # Optional. The DataQualityRules DataSourceFQN
+  favouriteFields: [string], # Optional. The DataQualityRules FavouriteFields
+  schemaAtSource: {
+    schemaProvider: &quot;CATALOG&quot; | &quot;DATAQUALITY_SCAN&quot;, # Optional. The SourceSchema SchemaProvider
+    schema: string, # Optional. The SourceSchema Schema
+    refreshedAt: number, # Optional. The SourceSchema RefreshedAt
+  }, # Optional. The SourceSchema Model
+  schemaReference: Dictionary&lt;string, Dictionary&lt;string, string&gt;&gt;, # Optional. The DataQualityRules SchemaReference
+  dataSourceType: &quot;CATALOG_ASSET&quot; | &quot;FLOWLET&quot;, # Optional. The DataQualityRules DataSourceType
+  rules: [Rule], # Optional. The DataQualityRules Rules
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="DeleteAsync(String,String,RequestContext)">
+<example>
+This sample shows how to call DeleteAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new RulesClient(endpoint, credential);
+
+Response response = await client.DeleteAsync("<accountId>", "<assetId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+    </member>
+    <member name="Delete(String,String,RequestContext)">
+<example>
+This sample shows how to call Delete with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new RulesClient(endpoint, credential);
+
+Response response = client.Delete("<accountId>", "<assetId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+    </member>
+  </members>
+</doc>

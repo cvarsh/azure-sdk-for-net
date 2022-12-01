@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <members>
+    <member name="GetRuleTrendingsByIdAsync(String,String,RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call GetRuleTrendingsByIdAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new RuleTrendingsByIdClient(endpoint, credential);
+
+var data = new {};
+
+Response response = await client.GetRuleTrendingsByIdAsync("<accountId>", "<assetId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call GetRuleTrendingsByIdAsync with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new RuleTrendingsByIdClient(endpoint, credential);
+
+var data = new {
+    jobCount = 1234,
+    ruleId = "<ruleId>",
+    start = 1234L,
+    end = 1234L,
+};
+
+Response response = await client.GetRuleTrendingsByIdAsync("<accountId>", "<assetId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("ruleId").ToString());
+Console.WriteLine(result.GetProperty("scores")[0].GetProperty("jobTime").ToString());
+Console.WriteLine(result.GetProperty("scores")[0].GetProperty("jobId").ToString());
+Console.WriteLine(result.GetProperty("scores")[0].GetProperty("score").ToString());
+Console.WriteLine(result.GetProperty("scores")[0].GetProperty("totalRows").ToString());
+Console.WriteLine(result.GetProperty("scores")[0].GetProperty("failedRows").ToString());
+Console.WriteLine(result.GetProperty("scores")[0].GetProperty("passedRows").ToString());
+Console.WriteLine(result.GetProperty("scores")[0].GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("scores")[0].GetProperty("status").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request and response payloads.
+
+Request Body:
+
+Schema for <c>RuleTrendingQueryPayload</c>:
+<code>{
+  jobCount: number, # Optional. The RuleTrendingQueryPayload JobCount
+  ruleId: string, # Optional. The RuleTrendingQueryPayload RuleId
+  start: number, # Optional. The RuleTrendingQueryPayload Start
+  end: number, # Optional. The RuleTrendingQueryPayload End
+}
+</code>
+
+Response Body:
+
+Schema for <c>RuleTrending</c>:
+<code>{
+  ruleId: string, # Optional. The RuleTrending RuleId
+  scores: [
+    {
+      jobTime: string (ISO 8601 Format), # Optional. The RuleTrendingEntity JobTime
+      jobId: string, # Optional. The RuleTrendingEntity JobId
+      score: number, # Optional. The RuleTrendingEntity TotalRows
+      totalRows: number, # Optional. The RuleTrendingEntity Id
+      failedRows: number, # Optional. The RuleTrendingEntity FailedRows
+      passedRows: number, # Optional. The RuleTrendingEntity PassedRows
+      description: string, # Optional. The RuleTrendingEntity Description
+      status: string, # Optional. The RuleTrendingEntity Status
+    }
+  ], # Optional. The RuleTrending Scores
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="GetRuleTrendingsById(String,String,RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call GetRuleTrendingsById with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new RuleTrendingsByIdClient(endpoint, credential);
+
+var data = new {};
+
+Response response = client.GetRuleTrendingsById("<accountId>", "<assetId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call GetRuleTrendingsById with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new RuleTrendingsByIdClient(endpoint, credential);
+
+var data = new {
+    jobCount = 1234,
+    ruleId = "<ruleId>",
+    start = 1234L,
+    end = 1234L,
+};
+
+Response response = client.GetRuleTrendingsById("<accountId>", "<assetId>", RequestContent.Create(data), ContentType.ApplicationOctetStream);
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("ruleId").ToString());
+Console.WriteLine(result.GetProperty("scores")[0].GetProperty("jobTime").ToString());
+Console.WriteLine(result.GetProperty("scores")[0].GetProperty("jobId").ToString());
+Console.WriteLine(result.GetProperty("scores")[0].GetProperty("score").ToString());
+Console.WriteLine(result.GetProperty("scores")[0].GetProperty("totalRows").ToString());
+Console.WriteLine(result.GetProperty("scores")[0].GetProperty("failedRows").ToString());
+Console.WriteLine(result.GetProperty("scores")[0].GetProperty("passedRows").ToString());
+Console.WriteLine(result.GetProperty("scores")[0].GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("scores")[0].GetProperty("status").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request and response payloads.
+
+Request Body:
+
+Schema for <c>RuleTrendingQueryPayload</c>:
+<code>{
+  jobCount: number, # Optional. The RuleTrendingQueryPayload JobCount
+  ruleId: string, # Optional. The RuleTrendingQueryPayload RuleId
+  start: number, # Optional. The RuleTrendingQueryPayload Start
+  end: number, # Optional. The RuleTrendingQueryPayload End
+}
+</code>
+
+Response Body:
+
+Schema for <c>RuleTrending</c>:
+<code>{
+  ruleId: string, # Optional. The RuleTrending RuleId
+  scores: [
+    {
+      jobTime: string (ISO 8601 Format), # Optional. The RuleTrendingEntity JobTime
+      jobId: string, # Optional. The RuleTrendingEntity JobId
+      score: number, # Optional. The RuleTrendingEntity TotalRows
+      totalRows: number, # Optional. The RuleTrendingEntity Id
+      failedRows: number, # Optional. The RuleTrendingEntity FailedRows
+      passedRows: number, # Optional. The RuleTrendingEntity PassedRows
+      description: string, # Optional. The RuleTrendingEntity Description
+      status: string, # Optional. The RuleTrendingEntity Status
+    }
+  ], # Optional. The RuleTrending Scores
+}
+</code>
+
+</remarks>
+    </member>
+  </members>
+</doc>
