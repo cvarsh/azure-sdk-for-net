@@ -19,11 +19,6 @@ namespace Azure.ResourceManager.MachineLearning.Models
             writer.WriteStartObject();
             writer.WritePropertyName("computeType");
             writer.WriteStringValue(ComputeType.ToString());
-            if (Optional.IsDefined(ComputeLocation))
-            {
-                writer.WritePropertyName("computeLocation");
-                writer.WriteStringValue(ComputeLocation);
-            }
             if (Optional.IsDefined(Description))
             {
                 if (Description != null)
@@ -47,11 +42,6 @@ namespace Azure.ResourceManager.MachineLearning.Models
                 {
                     writer.WriteNull("resourceId");
                 }
-            }
-            if (Optional.IsDefined(DisableLocalAuth))
-            {
-                writer.WritePropertyName("disableLocalAuth");
-                writer.WriteBooleanValue(DisableLocalAuth.Value);
             }
             writer.WriteEndObject();
         }

@@ -1535,10 +1535,10 @@ namespace Azure.ResourceManager.MachineLearning.Models
     public abstract partial class Compute
     {
         protected Compute() { }
-        public string ComputeLocation { get { throw null; } set { } }
+        public string ComputeLocation { get { throw null; } }
         public System.DateTimeOffset? CreatedOn { get { throw null; } }
         public string Description { get { throw null; } set { } }
-        public bool? DisableLocalAuth { get { throw null; } set { } }
+        public bool? DisableLocalAuth { get { throw null; } }
         public bool? IsAttachedCompute { get { throw null; } }
         public System.DateTimeOffset? ModifiedOn { get { throw null; } }
         public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.MachineLearning.Models.ErrorResponse> ProvisioningErrors { get { throw null; } }

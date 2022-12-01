@@ -52,7 +52,7 @@ namespace Azure.ResourceManager.MachineLearning.Models
         /// <summary> The type of compute. </summary>
         internal ComputeType ComputeType { get; set; }
         /// <summary> Location for the underlying compute. </summary>
-        public string ComputeLocation { get; set; }
+        public string ComputeLocation { get; }
         /// <summary> The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. </summary>
         public ProvisioningState? ProvisioningState { get; }
         /// <summary> The description of the Machine Learning compute. </summary>
@@ -68,6 +68,6 @@ namespace Azure.ResourceManager.MachineLearning.Models
         /// <summary> Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false. </summary>
         public bool? IsAttachedCompute { get; }
         /// <summary> Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication. </summary>
-        public bool? DisableLocalAuth { get; set; }
+        public bool? DisableLocalAuth { get; }
     }
 }
