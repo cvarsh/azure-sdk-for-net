@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <members>
+    <member name="CreateAsync(String,RequestContent,RequestContext)">
+<example>
+This sample shows how to call CreateAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewSourceClient(endpoint, credential);
+
+var data = new {};
+
+Response response = await client.CreateAsync("<accountId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call CreateAsync with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewSourceClient(endpoint, credential);
+
+var data = new {
+    kind = "<kind>",
+    name = "<name>",
+    properties = new {
+        description = "<description>",
+        collection = new {
+            type = "<type>",
+            referenceName = "<referenceName>",
+        },
+    },
+};
+
+Response response = await client.CreateAsync("<accountId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request payload.
+
+Request Body:
+
+Schema for <c>ViewSource</c>:
+<code>{
+  kind: string, # Optional. The ViewSource Kind
+  name: string, # Optional. The ViewSource Name
+  properties: {
+    description: string, # Optional. The ViewSourceProperties Description
+    collection: {
+      type: string, # Optional. The Collection Type
+      referenceName: string, # Optional. The Collection ReferenceName
+    }, # Optional. The Alert Model
+  }, # Optional. The ViewSourceProperties Model
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="Create(String,RequestContent,RequestContext)">
+<example>
+This sample shows how to call Create with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewSourceClient(endpoint, credential);
+
+var data = new {};
+
+Response response = client.Create("<accountId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call Create with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewSourceClient(endpoint, credential);
+
+var data = new {
+    kind = "<kind>",
+    name = "<name>",
+    properties = new {
+        description = "<description>",
+        collection = new {
+            type = "<type>",
+            referenceName = "<referenceName>",
+        },
+    },
+};
+
+Response response = client.Create("<accountId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request payload.
+
+Request Body:
+
+Schema for <c>ViewSource</c>:
+<code>{
+  kind: string, # Optional. The ViewSource Kind
+  name: string, # Optional. The ViewSource Name
+  properties: {
+    description: string, # Optional. The ViewSourceProperties Description
+    collection: {
+      type: string, # Optional. The Collection Type
+      referenceName: string, # Optional. The Collection ReferenceName
+    }, # Optional. The Alert Model
+  }, # Optional. The ViewSourceProperties Model
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="GetListAsync(String,RequestContext)">
+<example>
+This sample shows how to call GetListAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewSourceClient(endpoint, credential);
+
+Response response = await client.GetListAsync("<accountId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("name").ToString());
+Console.WriteLine(result[0].GetProperty("parentCollection").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>ViewSourceDTO</c>:
+<code>{
+  name: string, # Optional. The ViewSourceDTO Name
+  parentCollection: string, # Optional. The ViewSourceDTO ParentCollection
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="GetList(String,RequestContext)">
+<example>
+This sample shows how to call GetList with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewSourceClient(endpoint, credential);
+
+Response response = client.GetList("<accountId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("name").ToString());
+Console.WriteLine(result[0].GetProperty("parentCollection").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>ViewSourceDTO</c>:
+<code>{
+  name: string, # Optional. The ViewSourceDTO Name
+  parentCollection: string, # Optional. The ViewSourceDTO ParentCollection
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="ValidateAsync(String,String,RequestContext)">
+<example>
+This sample shows how to call ValidateAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewSourceClient(endpoint, credential);
+
+Response response = await client.ValidateAsync("<accountId>", "<source>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+    </member>
+    <member name="Validate(String,String,RequestContext)">
+<example>
+This sample shows how to call Validate with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewSourceClient(endpoint, credential);
+
+Response response = client.Validate("<accountId>", "<source>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+    </member>
+    <member name="GetViewSourceAsync(String,String,RequestContext)">
+<example>
+This sample shows how to call GetViewSourceAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewSourceClient(endpoint, credential);
+
+Response response = await client.GetViewSourceAsync("<accountId>", "<source>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("views")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("views")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("views")[0].GetProperty("updatedTime").ToString());
+Console.WriteLine(result.GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("properties").GetProperty("createdAt").ToString());
+Console.WriteLine(result.GetProperty("properties").GetProperty("lastModifiedAt").ToString());
+Console.WriteLine(result.GetProperty("properties").GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("properties").GetProperty("collection").GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("properties").GetProperty("collection").GetProperty("referenceName").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>ViewSourceDetail</c>:
+<code>{
+  views: [
+    {
+      id: string, # Optional. The ViewEntry Id
+      name: string, # Optional. The ViewEntry Name
+      updatedTime: number, # Optional. The ViewEntry UpdatedTime
+    }
+  ], # Optional. The ViewSourceDetail Views
+  name: string, # Optional. The ViewSourceResponseDTO Name
+  properties: {
+    createdAt: string, # Optional. The ViewSourcePropertiesDTO CreatedAt
+    lastModifiedAt: string, # Optional. The ViewSourcePropertiesDTO LastModifiedAt
+    description: string, # Optional. The ViewSourceProperties Description
+    collection: {
+      type: string, # Optional. The Collection Type
+      referenceName: string, # Optional. The Collection ReferenceName
+    }, # Optional. The Alert Model
+  }, # Optional. The ViewSourcePropertiesDTO Model
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="GetViewSource(String,String,RequestContext)">
+<example>
+This sample shows how to call GetViewSource with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ViewSourceClient(endpoint, credential);
+
+Response response = client.GetViewSource("<accountId>", "<source>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("views")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("views")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("views")[0].GetProperty("updatedTime").ToString());
+Console.WriteLine(result.GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("properties").GetProperty("createdAt").ToString());
+Console.WriteLine(result.GetProperty("properties").GetProperty("lastModifiedAt").ToString());
+Console.WriteLine(result.GetProperty("properties").GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("properties").GetProperty("collection").GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("properties").GetProperty("collection").GetProperty("referenceName").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>ViewSourceDetail</c>:
+<code>{
+  views: [
+    {
+      id: string, # Optional. The ViewEntry Id
+      name: string, # Optional. The ViewEntry Name
+      updatedTime: number, # Optional. The ViewEntry UpdatedTime
+    }
+  ], # Optional. The ViewSourceDetail Views
+  name: string, # Optional. The ViewSourceResponseDTO Name
+  properties: {
+    createdAt: string, # Optional. The ViewSourcePropertiesDTO CreatedAt
+    lastModifiedAt: string, # Optional. The ViewSourcePropertiesDTO LastModifiedAt
+    description: string, # Optional. The ViewSourceProperties Description
+    collection: {
+      type: string, # Optional. The Collection Type
+      referenceName: string, # Optional. The Collection ReferenceName
+    }, # Optional. The Alert Model
+  }, # Optional. The ViewSourcePropertiesDTO Model
+}
+</code>
+
+</remarks>
+    </member>
+  </members>
+</doc>

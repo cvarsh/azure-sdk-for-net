@@ -1,0 +1,817 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <members>
+    <member name="CreateAsync(String,RequestContent,Boolean,RequestContext)">
+<example>
+This sample shows how to call CreateAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleClient(endpoint, credential);
+
+var data = new {};
+
+Response response = await client.CreateAsync("<accountId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call CreateAsync with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleClient(endpoint, credential);
+
+var data = new {
+    scheduleId = "<scheduleId>",
+    scheduleName = "<scheduleName>",
+    description = "<description>",
+    recurrence = new {
+        frequency = "<frequency>",
+        interval = 1234,
+        startTime = "2022-05-10T18:57:31.2311892Z",
+        endTime = "2022-05-10T18:57:31.2311892Z",
+        schedule = new {},
+        timezone = "<timezone>",
+    },
+    datasources = new[] {
+        new {
+            datasourceKind = "<datasourceKind>",
+            datasourceName = "<datasourceName>",
+            includes = new[] {
+                "<String>"
+            },
+            properties = new {},
+            credentials = new {
+                credentialType = "AccountKey",
+                referenceName = "<referenceName>",
+                credentialProperties = new {},
+            },
+        }
+    },
+    scheduleStatus = "RUNNING",
+    runOnce = true,
+};
+
+Response response = await client.CreateAsync("<accountId>", RequestContent.Create(data), true);
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("scheduleId").ToString());
+Console.WriteLine(result.GetProperty("scheduleName").ToString());
+Console.WriteLine(result.GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("frequency").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("interval").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("startTime").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("endTime").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("schedule").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("timezone").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceKind").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceName").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("includes")[0].ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("properties").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialType").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("referenceName").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialProperties").ToString());
+Console.WriteLine(result.GetProperty("scheduleStatus").ToString());
+Console.WriteLine(result.GetProperty("runOnce").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request and response payloads.
+
+Request Body:
+
+Schema for <c>ScheduleMetadata</c>:
+<code>{
+  scheduleId: string, # Optional. The ScheduleMetadata ScheduleId
+  scheduleName: string, # Optional. The ScheduleMetadata ScheduleName
+  description: string, # Optional. The ScheduleMetadata Description
+  recurrence: {
+    frequency: string, # Optional. The TriggerRecurrence Frequency
+    interval: number, # Optional. The TriggerRecurrence Interval
+    startTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence StartTime
+    endTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence EndTime
+    schedule: any, # Optional. The TriggerRecurrence Schedule
+    timezone: string, # Optional. The TriggerRecurrence TimeZone
+  }, # Optional. The TriggerRecurrence Model
+  datasources: [
+    {
+      datasourceKind: string, # Optional. The Assets DatasourceKind
+      datasourceName: string, # Optional. The Assets Data Source Name
+      includes: [string], # Optional.
+      properties: any, # Optional. The Assets Properties
+      credentials: {
+        credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        referenceName: string, # Optional.
+        credentialProperties: any, # Optional. Anything
+      }, # Optional. The Assets Model
+    }
+  ], # Optional. The ScheduleMetadata Datasources
+  scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional. The ScheduleMetadata ScheduleStatus
+  runOnce: boolean, # Optional. The ScheduleMetadata RunOnce
+}
+</code>
+
+Response Body:
+
+Schema for <c>ScheduleMetadata</c>:
+<code>{
+  scheduleId: string, # Optional. The ScheduleMetadata ScheduleId
+  scheduleName: string, # Optional. The ScheduleMetadata ScheduleName
+  description: string, # Optional. The ScheduleMetadata Description
+  recurrence: {
+    frequency: string, # Optional. The TriggerRecurrence Frequency
+    interval: number, # Optional. The TriggerRecurrence Interval
+    startTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence StartTime
+    endTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence EndTime
+    schedule: any, # Optional. The TriggerRecurrence Schedule
+    timezone: string, # Optional. The TriggerRecurrence TimeZone
+  }, # Optional. The TriggerRecurrence Model
+  datasources: [
+    {
+      datasourceKind: string, # Optional. The Assets DatasourceKind
+      datasourceName: string, # Optional. The Assets Data Source Name
+      includes: [string], # Optional.
+      properties: any, # Optional. The Assets Properties
+      credentials: {
+        credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        referenceName: string, # Optional.
+        credentialProperties: any, # Optional. Anything
+      }, # Optional. The Assets Model
+    }
+  ], # Optional. The ScheduleMetadata Datasources
+  scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional. The ScheduleMetadata ScheduleStatus
+  runOnce: boolean, # Optional. The ScheduleMetadata RunOnce
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="Create(String,RequestContent,Boolean,RequestContext)">
+<example>
+This sample shows how to call Create with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleClient(endpoint, credential);
+
+var data = new {};
+
+Response response = client.Create("<accountId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call Create with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleClient(endpoint, credential);
+
+var data = new {
+    scheduleId = "<scheduleId>",
+    scheduleName = "<scheduleName>",
+    description = "<description>",
+    recurrence = new {
+        frequency = "<frequency>",
+        interval = 1234,
+        startTime = "2022-05-10T18:57:31.2311892Z",
+        endTime = "2022-05-10T18:57:31.2311892Z",
+        schedule = new {},
+        timezone = "<timezone>",
+    },
+    datasources = new[] {
+        new {
+            datasourceKind = "<datasourceKind>",
+            datasourceName = "<datasourceName>",
+            includes = new[] {
+                "<String>"
+            },
+            properties = new {},
+            credentials = new {
+                credentialType = "AccountKey",
+                referenceName = "<referenceName>",
+                credentialProperties = new {},
+            },
+        }
+    },
+    scheduleStatus = "RUNNING",
+    runOnce = true,
+};
+
+Response response = client.Create("<accountId>", RequestContent.Create(data), true);
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("scheduleId").ToString());
+Console.WriteLine(result.GetProperty("scheduleName").ToString());
+Console.WriteLine(result.GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("frequency").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("interval").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("startTime").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("endTime").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("schedule").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("timezone").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceKind").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceName").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("includes")[0].ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("properties").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialType").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("referenceName").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialProperties").ToString());
+Console.WriteLine(result.GetProperty("scheduleStatus").ToString());
+Console.WriteLine(result.GetProperty("runOnce").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request and response payloads.
+
+Request Body:
+
+Schema for <c>ScheduleMetadata</c>:
+<code>{
+  scheduleId: string, # Optional. The ScheduleMetadata ScheduleId
+  scheduleName: string, # Optional. The ScheduleMetadata ScheduleName
+  description: string, # Optional. The ScheduleMetadata Description
+  recurrence: {
+    frequency: string, # Optional. The TriggerRecurrence Frequency
+    interval: number, # Optional. The TriggerRecurrence Interval
+    startTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence StartTime
+    endTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence EndTime
+    schedule: any, # Optional. The TriggerRecurrence Schedule
+    timezone: string, # Optional. The TriggerRecurrence TimeZone
+  }, # Optional. The TriggerRecurrence Model
+  datasources: [
+    {
+      datasourceKind: string, # Optional. The Assets DatasourceKind
+      datasourceName: string, # Optional. The Assets Data Source Name
+      includes: [string], # Optional.
+      properties: any, # Optional. The Assets Properties
+      credentials: {
+        credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        referenceName: string, # Optional.
+        credentialProperties: any, # Optional. Anything
+      }, # Optional. The Assets Model
+    }
+  ], # Optional. The ScheduleMetadata Datasources
+  scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional. The ScheduleMetadata ScheduleStatus
+  runOnce: boolean, # Optional. The ScheduleMetadata RunOnce
+}
+</code>
+
+Response Body:
+
+Schema for <c>ScheduleMetadata</c>:
+<code>{
+  scheduleId: string, # Optional. The ScheduleMetadata ScheduleId
+  scheduleName: string, # Optional. The ScheduleMetadata ScheduleName
+  description: string, # Optional. The ScheduleMetadata Description
+  recurrence: {
+    frequency: string, # Optional. The TriggerRecurrence Frequency
+    interval: number, # Optional. The TriggerRecurrence Interval
+    startTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence StartTime
+    endTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence EndTime
+    schedule: any, # Optional. The TriggerRecurrence Schedule
+    timezone: string, # Optional. The TriggerRecurrence TimeZone
+  }, # Optional. The TriggerRecurrence Model
+  datasources: [
+    {
+      datasourceKind: string, # Optional. The Assets DatasourceKind
+      datasourceName: string, # Optional. The Assets Data Source Name
+      includes: [string], # Optional.
+      properties: any, # Optional. The Assets Properties
+      credentials: {
+        credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        referenceName: string, # Optional.
+        credentialProperties: any, # Optional. Anything
+      }, # Optional. The Assets Model
+    }
+  ], # Optional. The ScheduleMetadata Datasources
+  scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional. The ScheduleMetadata ScheduleStatus
+  runOnce: boolean, # Optional. The ScheduleMetadata RunOnce
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="UpdateAsync(String,String,RequestContent,Boolean,RequestContext)">
+<example>
+This sample shows how to call UpdateAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleClient(endpoint, credential);
+
+var data = new {};
+
+Response response = await client.UpdateAsync("<accountId>", "<scheduleId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call UpdateAsync with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleClient(endpoint, credential);
+
+var data = new {
+    scheduleId = "<scheduleId>",
+    scheduleName = "<scheduleName>",
+    description = "<description>",
+    recurrence = new {
+        frequency = "<frequency>",
+        interval = 1234,
+        startTime = "2022-05-10T18:57:31.2311892Z",
+        endTime = "2022-05-10T18:57:31.2311892Z",
+        schedule = new {},
+        timezone = "<timezone>",
+    },
+    datasources = new[] {
+        new {
+            datasourceKind = "<datasourceKind>",
+            datasourceName = "<datasourceName>",
+            includes = new[] {
+                "<String>"
+            },
+            properties = new {},
+            credentials = new {
+                credentialType = "AccountKey",
+                referenceName = "<referenceName>",
+                credentialProperties = new {},
+            },
+        }
+    },
+    scheduleStatus = "RUNNING",
+    runOnce = true,
+};
+
+Response response = await client.UpdateAsync("<accountId>", "<scheduleId>", RequestContent.Create(data), true);
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("scheduleId").ToString());
+Console.WriteLine(result.GetProperty("scheduleName").ToString());
+Console.WriteLine(result.GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("frequency").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("interval").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("startTime").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("endTime").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("schedule").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("timezone").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceKind").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceName").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("includes")[0].ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("properties").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialType").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("referenceName").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialProperties").ToString());
+Console.WriteLine(result.GetProperty("scheduleStatus").ToString());
+Console.WriteLine(result.GetProperty("runOnce").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request and response payloads.
+
+Request Body:
+
+Schema for <c>ScheduleMetadata</c>:
+<code>{
+  scheduleId: string, # Optional. The ScheduleMetadata ScheduleId
+  scheduleName: string, # Optional. The ScheduleMetadata ScheduleName
+  description: string, # Optional. The ScheduleMetadata Description
+  recurrence: {
+    frequency: string, # Optional. The TriggerRecurrence Frequency
+    interval: number, # Optional. The TriggerRecurrence Interval
+    startTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence StartTime
+    endTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence EndTime
+    schedule: any, # Optional. The TriggerRecurrence Schedule
+    timezone: string, # Optional. The TriggerRecurrence TimeZone
+  }, # Optional. The TriggerRecurrence Model
+  datasources: [
+    {
+      datasourceKind: string, # Optional. The Assets DatasourceKind
+      datasourceName: string, # Optional. The Assets Data Source Name
+      includes: [string], # Optional.
+      properties: any, # Optional. The Assets Properties
+      credentials: {
+        credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        referenceName: string, # Optional.
+        credentialProperties: any, # Optional. Anything
+      }, # Optional. The Assets Model
+    }
+  ], # Optional. The ScheduleMetadata Datasources
+  scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional. The ScheduleMetadata ScheduleStatus
+  runOnce: boolean, # Optional. The ScheduleMetadata RunOnce
+}
+</code>
+
+Response Body:
+
+Schema for <c>ScheduleMetadata</c>:
+<code>{
+  scheduleId: string, # Optional. The ScheduleMetadata ScheduleId
+  scheduleName: string, # Optional. The ScheduleMetadata ScheduleName
+  description: string, # Optional. The ScheduleMetadata Description
+  recurrence: {
+    frequency: string, # Optional. The TriggerRecurrence Frequency
+    interval: number, # Optional. The TriggerRecurrence Interval
+    startTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence StartTime
+    endTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence EndTime
+    schedule: any, # Optional. The TriggerRecurrence Schedule
+    timezone: string, # Optional. The TriggerRecurrence TimeZone
+  }, # Optional. The TriggerRecurrence Model
+  datasources: [
+    {
+      datasourceKind: string, # Optional. The Assets DatasourceKind
+      datasourceName: string, # Optional. The Assets Data Source Name
+      includes: [string], # Optional.
+      properties: any, # Optional. The Assets Properties
+      credentials: {
+        credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        referenceName: string, # Optional.
+        credentialProperties: any, # Optional. Anything
+      }, # Optional. The Assets Model
+    }
+  ], # Optional. The ScheduleMetadata Datasources
+  scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional. The ScheduleMetadata ScheduleStatus
+  runOnce: boolean, # Optional. The ScheduleMetadata RunOnce
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="Update(String,String,RequestContent,Boolean,RequestContext)">
+<example>
+This sample shows how to call Update with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleClient(endpoint, credential);
+
+var data = new {};
+
+Response response = client.Update("<accountId>", "<scheduleId>", RequestContent.Create(data));
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+This sample shows how to call Update with all parameters and request content, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleClient(endpoint, credential);
+
+var data = new {
+    scheduleId = "<scheduleId>",
+    scheduleName = "<scheduleName>",
+    description = "<description>",
+    recurrence = new {
+        frequency = "<frequency>",
+        interval = 1234,
+        startTime = "2022-05-10T18:57:31.2311892Z",
+        endTime = "2022-05-10T18:57:31.2311892Z",
+        schedule = new {},
+        timezone = "<timezone>",
+    },
+    datasources = new[] {
+        new {
+            datasourceKind = "<datasourceKind>",
+            datasourceName = "<datasourceName>",
+            includes = new[] {
+                "<String>"
+            },
+            properties = new {},
+            credentials = new {
+                credentialType = "AccountKey",
+                referenceName = "<referenceName>",
+                credentialProperties = new {},
+            },
+        }
+    },
+    scheduleStatus = "RUNNING",
+    runOnce = true,
+};
+
+Response response = client.Update("<accountId>", "<scheduleId>", RequestContent.Create(data), true);
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("scheduleId").ToString());
+Console.WriteLine(result.GetProperty("scheduleName").ToString());
+Console.WriteLine(result.GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("frequency").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("interval").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("startTime").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("endTime").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("schedule").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("timezone").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceKind").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceName").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("includes")[0].ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("properties").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialType").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("referenceName").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialProperties").ToString());
+Console.WriteLine(result.GetProperty("scheduleStatus").ToString());
+Console.WriteLine(result.GetProperty("runOnce").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the request and response payloads.
+
+Request Body:
+
+Schema for <c>ScheduleMetadata</c>:
+<code>{
+  scheduleId: string, # Optional. The ScheduleMetadata ScheduleId
+  scheduleName: string, # Optional. The ScheduleMetadata ScheduleName
+  description: string, # Optional. The ScheduleMetadata Description
+  recurrence: {
+    frequency: string, # Optional. The TriggerRecurrence Frequency
+    interval: number, # Optional. The TriggerRecurrence Interval
+    startTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence StartTime
+    endTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence EndTime
+    schedule: any, # Optional. The TriggerRecurrence Schedule
+    timezone: string, # Optional. The TriggerRecurrence TimeZone
+  }, # Optional. The TriggerRecurrence Model
+  datasources: [
+    {
+      datasourceKind: string, # Optional. The Assets DatasourceKind
+      datasourceName: string, # Optional. The Assets Data Source Name
+      includes: [string], # Optional.
+      properties: any, # Optional. The Assets Properties
+      credentials: {
+        credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        referenceName: string, # Optional.
+        credentialProperties: any, # Optional. Anything
+      }, # Optional. The Assets Model
+    }
+  ], # Optional. The ScheduleMetadata Datasources
+  scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional. The ScheduleMetadata ScheduleStatus
+  runOnce: boolean, # Optional. The ScheduleMetadata RunOnce
+}
+</code>
+
+Response Body:
+
+Schema for <c>ScheduleMetadata</c>:
+<code>{
+  scheduleId: string, # Optional. The ScheduleMetadata ScheduleId
+  scheduleName: string, # Optional. The ScheduleMetadata ScheduleName
+  description: string, # Optional. The ScheduleMetadata Description
+  recurrence: {
+    frequency: string, # Optional. The TriggerRecurrence Frequency
+    interval: number, # Optional. The TriggerRecurrence Interval
+    startTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence StartTime
+    endTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence EndTime
+    schedule: any, # Optional. The TriggerRecurrence Schedule
+    timezone: string, # Optional. The TriggerRecurrence TimeZone
+  }, # Optional. The TriggerRecurrence Model
+  datasources: [
+    {
+      datasourceKind: string, # Optional. The Assets DatasourceKind
+      datasourceName: string, # Optional. The Assets Data Source Name
+      includes: [string], # Optional.
+      properties: any, # Optional. The Assets Properties
+      credentials: {
+        credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        referenceName: string, # Optional.
+        credentialProperties: any, # Optional. Anything
+      }, # Optional. The Assets Model
+    }
+  ], # Optional. The ScheduleMetadata Datasources
+  scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional. The ScheduleMetadata ScheduleStatus
+  runOnce: boolean, # Optional. The ScheduleMetadata RunOnce
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="GetScheduleAsync(String,String,RequestContext)">
+<example>
+This sample shows how to call GetScheduleAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleClient(endpoint, credential);
+
+Response response = await client.GetScheduleAsync("<accountId>", "<scheduleId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("scheduleId").ToString());
+Console.WriteLine(result.GetProperty("scheduleName").ToString());
+Console.WriteLine(result.GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("frequency").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("interval").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("startTime").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("endTime").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("schedule").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("timezone").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceKind").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceName").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("includes")[0].ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("properties").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialType").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("referenceName").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialProperties").ToString());
+Console.WriteLine(result.GetProperty("scheduleStatus").ToString());
+Console.WriteLine(result.GetProperty("runOnce").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>ScheduleMetadata</c>:
+<code>{
+  scheduleId: string, # Optional. The ScheduleMetadata ScheduleId
+  scheduleName: string, # Optional. The ScheduleMetadata ScheduleName
+  description: string, # Optional. The ScheduleMetadata Description
+  recurrence: {
+    frequency: string, # Optional. The TriggerRecurrence Frequency
+    interval: number, # Optional. The TriggerRecurrence Interval
+    startTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence StartTime
+    endTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence EndTime
+    schedule: any, # Optional. The TriggerRecurrence Schedule
+    timezone: string, # Optional. The TriggerRecurrence TimeZone
+  }, # Optional. The TriggerRecurrence Model
+  datasources: [
+    {
+      datasourceKind: string, # Optional. The Assets DatasourceKind
+      datasourceName: string, # Optional. The Assets Data Source Name
+      includes: [string], # Optional.
+      properties: any, # Optional. The Assets Properties
+      credentials: {
+        credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        referenceName: string, # Optional.
+        credentialProperties: any, # Optional. Anything
+      }, # Optional. The Assets Model
+    }
+  ], # Optional. The ScheduleMetadata Datasources
+  scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional. The ScheduleMetadata ScheduleStatus
+  runOnce: boolean, # Optional. The ScheduleMetadata RunOnce
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="GetSchedule(String,String,RequestContext)">
+<example>
+This sample shows how to call GetSchedule with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleClient(endpoint, credential);
+
+Response response = client.GetSchedule("<accountId>", "<scheduleId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("scheduleId").ToString());
+Console.WriteLine(result.GetProperty("scheduleName").ToString());
+Console.WriteLine(result.GetProperty("description").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("frequency").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("interval").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("startTime").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("endTime").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("schedule").ToString());
+Console.WriteLine(result.GetProperty("recurrence").GetProperty("timezone").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceKind").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("datasourceName").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("includes")[0].ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("properties").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialType").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("referenceName").ToString());
+Console.WriteLine(result.GetProperty("datasources")[0].GetProperty("credentials").GetProperty("credentialProperties").ToString());
+Console.WriteLine(result.GetProperty("scheduleStatus").ToString());
+Console.WriteLine(result.GetProperty("runOnce").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>ScheduleMetadata</c>:
+<code>{
+  scheduleId: string, # Optional. The ScheduleMetadata ScheduleId
+  scheduleName: string, # Optional. The ScheduleMetadata ScheduleName
+  description: string, # Optional. The ScheduleMetadata Description
+  recurrence: {
+    frequency: string, # Optional. The TriggerRecurrence Frequency
+    interval: number, # Optional. The TriggerRecurrence Interval
+    startTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence StartTime
+    endTime: string (ISO 8601 Format), # Optional. The TriggerRecurrence EndTime
+    schedule: any, # Optional. The TriggerRecurrence Schedule
+    timezone: string, # Optional. The TriggerRecurrence TimeZone
+  }, # Optional. The TriggerRecurrence Model
+  datasources: [
+    {
+      datasourceKind: string, # Optional. The Assets DatasourceKind
+      datasourceName: string, # Optional. The Assets Data Source Name
+      includes: [string], # Optional.
+      properties: any, # Optional. The Assets Properties
+      credentials: {
+        credentialType: &quot;AccountKey&quot; | &quot;ServicePrincipal&quot; | &quot;BasicAuth&quot; | &quot;SqlAuth&quot; | &quot;AmazonARN&quot; | &quot;ConsumerKeyAuth&quot; | &quot;DelegatedAuth&quot; | &quot;ManagedIdentity&quot;, # Optional.
+        referenceName: string, # Optional.
+        credentialProperties: any, # Optional. Anything
+      }, # Optional. The Assets Model
+    }
+  ], # Optional. The ScheduleMetadata Datasources
+  scheduleStatus: &quot;RUNNING&quot; | &quot;PAUSED&quot; | &quot;DELETED&quot; | &quot;DELETING&quot; | &quot;TRIGGER_DELETED&quot; | &quot;PIPELINE_DELETED&quot;, # Optional. The ScheduleMetadata ScheduleStatus
+  runOnce: boolean, # Optional. The ScheduleMetadata RunOnce
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="DeleteAsync(String,String,RequestContext)">
+<example>
+This sample shows how to call DeleteAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleClient(endpoint, credential);
+
+Response response = await client.DeleteAsync("<accountId>", "<scheduleId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+    </member>
+    <member name="Delete(String,String,RequestContext)">
+<example>
+This sample shows how to call Delete with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleClient(endpoint, credential);
+
+Response response = client.Delete("<accountId>", "<scheduleId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+    </member>
+    <member name="CancelAsync(String,String,String,RequestContext)">
+<example>
+This sample shows how to call CancelAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleClient(endpoint, credential);
+
+Response response = await client.CancelAsync("<accountId>", "<scheduleId>", "<runId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+    </member>
+    <member name="Cancel(String,String,String,RequestContext)">
+<example>
+This sample shows how to call Cancel with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleClient(endpoint, credential);
+
+Response response = client.Cancel("<accountId>", "<scheduleId>", "<runId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+    </member>
+    <member name="TriggerAsync(String,String,RequestContext)">
+<example>
+This sample shows how to call TriggerAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleClient(endpoint, credential);
+
+Response response = await client.TriggerAsync("<accountId>", "<scheduleId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+    </member>
+    <member name="Trigger(String,String,RequestContext)">
+<example>
+This sample shows how to call Trigger with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new ScheduleClient(endpoint, credential);
+
+Response response = client.Trigger("<accountId>", "<scheduleId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.ToString());
+]]></code>
+</example>
+    </member>
+  </members>
+</doc>

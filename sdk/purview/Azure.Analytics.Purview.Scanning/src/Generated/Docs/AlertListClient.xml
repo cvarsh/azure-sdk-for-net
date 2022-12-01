@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <members>
+    <member name="GetAlertListAsync(String,String,String,Boolean,String,RequestContext)">
+<example>
+This sample shows how to call GetAlertListAsync with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertListClient(endpoint, credential);
+
+Response response = await client.GetAlertListAsync("<accountId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("values")[0].ToString());
+]]></code>
+This sample shows how to call GetAlertListAsync with all parameters, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertListClient(endpoint, credential);
+
+Response response = await client.GetAlertListAsync("<accountId>", "<level>", "<scopeId>", true, "<skipToken>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("name").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("description").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("status").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("notificationFrequency").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("notificationType").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("condition").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("alertingScopes")[0].GetProperty("level").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("alertingScopes")[0].GetProperty("type").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("alertingScopes")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("createdOn").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("createdBy").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("lastUpdatedOn").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("lastUpdatedBy").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("lastActivatedOn").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("activatedCount").ToString());
+Console.WriteLine(result[0].GetProperty("nextLink").ToString());
+Console.WriteLine(result[0].GetProperty("count").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>DQAlertPagedResults</c>:
+<code>{
+  values: [
+    {
+      id: string, # Optional. The Alert Id
+      name: string, # Optional. The Alert Name
+      description: string, # Optional. The Alert Status
+      status: &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. The Alert Status
+      notificationFrequency: &quot;IMMEDIATE&quot;, # Optional. The Alert Notification Frequency
+      notificationType: &quot;EMAIL&quot;, # Optional. The Alert Notification Type
+      condition: string, # Optional. The Alert Condition
+      alertingScopes: [
+        {
+          level: &quot;CATALOG_PATH&quot;, # Optional.
+          type: string, # Optional.
+          id: string, # Optional.
+        }
+      ], # Optional. The Alert Scope
+      createdOn: string (ISO 8601 Format), # Optional. The Alert Create Time
+      createdBy: string, # Optional. The Alert Created By
+      lastUpdatedOn: string (ISO 8601 Format), # Optional. The Alert Last Updated Time
+      lastUpdatedBy: string, # Optional. The Alert Last Updated By
+      lastActivatedOn: string (ISO 8601 Format), # Optional. The Alert Last Activated on
+      activatedCount: number, # Optional. The Alert Activated Count
+    }
+  ], # Required. The PagedResults Values
+  nextLink: string, # Optional. The PagedResults NextLink
+  count: number, # Optional. The PagedResults Count
+}
+</code>
+
+</remarks>
+    </member>
+    <member name="GetAlertList(String,String,String,Boolean,String,RequestContext)">
+<example>
+This sample shows how to call GetAlertList with required parameters and parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertListClient(endpoint, credential);
+
+Response response = client.GetAlertList("<accountId>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("values")[0].ToString());
+]]></code>
+This sample shows how to call GetAlertList with all parameters, and how to parse the result.
+<code><![CDATA[
+var credential = new DefaultAzureCredential();
+var endpoint = new Uri("<https://my-service.azure.com>");
+var client = new AlertListClient(endpoint, credential);
+
+Response response = client.GetAlertList("<accountId>", "<level>", "<scopeId>", true, "<skipToken>");
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("name").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("description").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("status").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("notificationFrequency").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("notificationType").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("condition").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("alertingScopes")[0].GetProperty("level").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("alertingScopes")[0].GetProperty("type").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("alertingScopes")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("createdOn").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("createdBy").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("lastUpdatedOn").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("lastUpdatedBy").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("lastActivatedOn").ToString());
+Console.WriteLine(result[0].GetProperty("values")[0].GetProperty("activatedCount").ToString());
+Console.WriteLine(result[0].GetProperty("nextLink").ToString());
+Console.WriteLine(result[0].GetProperty("count").ToString());
+]]></code>
+</example>
+<remarks>
+Below is the JSON schema for the response payload.
+
+Response Body:
+
+Schema for <c>DQAlertPagedResults</c>:
+<code>{
+  values: [
+    {
+      id: string, # Optional. The Alert Id
+      name: string, # Optional. The Alert Name
+      description: string, # Optional. The Alert Status
+      status: &quot;ENABLED&quot; | &quot;DISABLED&quot;, # Optional. The Alert Status
+      notificationFrequency: &quot;IMMEDIATE&quot;, # Optional. The Alert Notification Frequency
+      notificationType: &quot;EMAIL&quot;, # Optional. The Alert Notification Type
+      condition: string, # Optional. The Alert Condition
+      alertingScopes: [
+        {
+          level: &quot;CATALOG_PATH&quot;, # Optional.
+          type: string, # Optional.
+          id: string, # Optional.
+        }
+      ], # Optional. The Alert Scope
+      createdOn: string (ISO 8601 Format), # Optional. The Alert Create Time
+      createdBy: string, # Optional. The Alert Created By
+      lastUpdatedOn: string (ISO 8601 Format), # Optional. The Alert Last Updated Time
+      lastUpdatedBy: string, # Optional. The Alert Last Updated By
+      lastActivatedOn: string (ISO 8601 Format), # Optional. The Alert Last Activated on
+      activatedCount: number, # Optional. The Alert Activated Count
+    }
+  ], # Required. The PagedResults Values
+  nextLink: string, # Optional. The PagedResults NextLink
+  count: number, # Optional. The PagedResults Count
+}
+</code>
+
+</remarks>
+    </member>
+  </members>
+</doc>
