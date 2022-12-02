@@ -213,6 +213,7 @@ namespace Azure.ResourceManager.DeviceProvisioningServices.Models
         public System.Collections.Generic.IList<Azure.ResourceManager.DeviceProvisioningServices.Models.IotHubDefinitionDescription> IotHubs { get { throw null; } }
         public System.Collections.Generic.IList<Azure.ResourceManager.DeviceProvisioningServices.Models.DeviceProvisioningServicesIPFilterRule> IPFilterRules { get { throw null; } }
         public bool? IsDataResidencyEnabled { get { throw null; } set { } }
+        public string PortalOperationsHostName { get { throw null; } set { } }
         public System.Collections.Generic.IList<Azure.ResourceManager.DeviceProvisioningServices.DeviceProvisioningServicesPrivateEndpointConnectionData> PrivateEndpointConnections { get { throw null; } }
         public string ProvisioningState { get { throw null; } set { } }
         public Azure.ResourceManager.DeviceProvisioningServices.Models.DeviceProvisioningServicesPublicNetworkAccess? PublicNetworkAccess { get { throw null; } set { } }
