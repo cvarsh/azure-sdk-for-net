@@ -680,6 +680,18 @@ namespace Azure.ResourceManager.AppService
                     writer.WriteNull("ipSecurityRestrictions");
                 }
             }
+            if (Optional.IsDefined(IPSecurityRestrictionsDefaultAction))
+            {
+                if (IPSecurityRestrictionsDefaultAction != null)
+                {
+                    writer.WritePropertyName("ipSecurityRestrictionsDefaultAction");
+                    writer.WriteStringValue(IPSecurityRestrictionsDefaultAction.Value.ToString());
+                }
+                else
+                {
+                    writer.WriteNull("ipSecurityRestrictionsDefaultAction");
+                }
+            }
             if (Optional.IsCollectionDefined(ScmIPSecurityRestrictions))
             {
                 if (ScmIPSecurityRestrictions != null)
@@ -695,6 +707,18 @@ namespace Azure.ResourceManager.AppService
                 else
                 {
                     writer.WriteNull("scmIpSecurityRestrictions");
+                }
+            }
+            if (Optional.IsDefined(ScmIPSecurityRestrictionsDefaultAction))
+            {
+                if (ScmIPSecurityRestrictionsDefaultAction != null)
+                {
+                    writer.WritePropertyName("scmIpSecurityRestrictionsDefaultAction");
+                    writer.WriteStringValue(ScmIPSecurityRestrictionsDefaultAction.Value.ToString());
+                }
+                else
+                {
+                    writer.WriteNull("scmIpSecurityRestrictionsDefaultAction");
                 }
             }
             if (Optional.IsDefined(AllowIPSecurityRestrictionsForScmToUseMain))
@@ -923,7 +947,9 @@ namespace Azure.ResourceManager.AppService
             Optional<int?> xManagedServiceIdentityId = default;
             Optional<string> keyVaultReferenceIdentity = default;
             Optional<IList<AppServiceIPSecurityRestriction>> ipSecurityRestrictions = default;
+            Optional<DefaultAction?> ipSecurityRestrictionsDefaultAction = default;
             Optional<IList<AppServiceIPSecurityRestriction>> scmIPSecurityRestrictions = default;
+            Optional<DefaultAction?> scmIPSecurityRestrictionsDefaultAction = default;
             Optional<bool?> scmIPSecurityRestrictionsUseMain = default;
             Optional<bool?> http20Enabled = default;
             Optional<AppServiceSupportedTlsVersion?> minTlsVersion = default;
@@ -1538,6 +1564,16 @@ namespace Azure.ResourceManager.AppService
                             ipSecurityRestrictions = array;
                             continue;
                         }
+                        if (property0.NameEquals("ipSecurityRestrictionsDefaultAction"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                ipSecurityRestrictionsDefaultAction = null;
+                                continue;
+                            }
+                            ipSecurityRestrictionsDefaultAction = new DefaultAction(property0.Value.GetString());
+                            continue;
+                        }
                         if (property0.NameEquals("scmIpSecurityRestrictions"))
                         {
                             if (property0.Value.ValueKind == JsonValueKind.Null)
@@ -1551,6 +1587,16 @@ namespace Azure.ResourceManager.AppService
                                 array.Add(AppServiceIPSecurityRestriction.DeserializeAppServiceIPSecurityRestriction(item));
                             }
                             scmIPSecurityRestrictions = array;
+                            continue;
+                        }
+                        if (property0.NameEquals("scmIpSecurityRestrictionsDefaultAction"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                scmIPSecurityRestrictionsDefaultAction = null;
+                                continue;
+                            }
+                            scmIPSecurityRestrictionsDefaultAction = new DefaultAction(property0.Value.GetString());
                             continue;
                         }
                         if (property0.NameEquals("scmIpSecurityRestrictionsUseMain"))
@@ -1692,7 +1738,7 @@ namespace Azure.ResourceManager.AppService
                     continue;
                 }
             }
-            return new SiteConfigData(id, name, type, systemData.Value, Optional.ToNullable(numberOfWorkers), Optional.ToList(defaultDocuments), netFrameworkVersion.Value, phpVersion.Value, pythonVersion.Value, nodeVersion.Value, powerShellVersion.Value, linuxFxVersion.Value, windowsFxVersion.Value, Optional.ToNullable(requestTracingEnabled), Optional.ToNullable(requestTracingExpirationTime), Optional.ToNullable(remoteDebuggingEnabled), remoteDebuggingVersion.Value, Optional.ToNullable(httpLoggingEnabled), Optional.ToNullable(acrUseManagedIdentityCreds), acrUserManagedIdentityId.Value, Optional.ToNullable(logsDirectorySizeLimit), Optional.ToNullable(detailedErrorLoggingEnabled), publishingUsername.Value, Optional.ToList(appSettings), Optional.ToList(connectionStrings), machineKey.Value, Optional.ToList(handlerMappings), documentRoot.Value, Optional.ToNullable(scmType), Optional.ToNullable(use32BitWorkerProcess), Optional.ToNullable(webSocketsEnabled), Optional.ToNullable(alwaysOn), javaVersion.Value, javaContainer.Value, javaContainerVersion.Value, appCommandLine.Value, Optional.ToNullable(managedPipelineMode), Optional.ToList(virtualApplications), Optional.ToNullable(loadBalancing), experiments.Value, limits.Value, Optional.ToNullable(autoHealEnabled), autoHealRules.Value, tracingOptions.Value, vnetName.Value, Optional.ToNullable(vnetRouteAllEnabled), Optional.ToNullable(vnetPrivatePortsCount), cors.Value, push.Value, apiDefinition.Value, apiManagementConfig.Value, autoSwapSlotName.Value, Optional.ToNullable(localMySqlEnabled), Optional.ToNullable(managedServiceIdentityId), Optional.ToNullable(xManagedServiceIdentityId), keyVaultReferenceIdentity.Value, Optional.ToList(ipSecurityRestrictions), Optional.ToList(scmIPSecurityRestrictions), Optional.ToNullable(scmIPSecurityRestrictionsUseMain), Optional.ToNullable(http20Enabled), Optional.ToNullable(minTlsVersion), Optional.ToNullable(scmMinTlsVersion), Optional.ToNullable(ftpsState), Optional.ToNullable(preWarmedInstanceCount), Optional.ToNullable(functionAppScaleLimit), healthCheckPath.Value, Optional.ToNullable(functionsRuntimeScaleMonitoringEnabled), websiteTimeZone.Value, Optional.ToNullable(minimumElasticInstanceCount), Optional.ToDictionary(azureStorageAccounts), publicNetworkAccess.Value, kind.Value);
+            return new SiteConfigData(id, name, type, systemData.Value, Optional.ToNullable(numberOfWorkers), Optional.ToList(defaultDocuments), netFrameworkVersion.Value, phpVersion.Value, pythonVersion.Value, nodeVersion.Value, powerShellVersion.Value, linuxFxVersion.Value, windowsFxVersion.Value, Optional.ToNullable(requestTracingEnabled), Optional.ToNullable(requestTracingExpirationTime), Optional.ToNullable(remoteDebuggingEnabled), remoteDebuggingVersion.Value, Optional.ToNullable(httpLoggingEnabled), Optional.ToNullable(acrUseManagedIdentityCreds), acrUserManagedIdentityId.Value, Optional.ToNullable(logsDirectorySizeLimit), Optional.ToNullable(detailedErrorLoggingEnabled), publishingUsername.Value, Optional.ToList(appSettings), Optional.ToList(connectionStrings), machineKey.Value, Optional.ToList(handlerMappings), documentRoot.Value, Optional.ToNullable(scmType), Optional.ToNullable(use32BitWorkerProcess), Optional.ToNullable(webSocketsEnabled), Optional.ToNullable(alwaysOn), javaVersion.Value, javaContainer.Value, javaContainerVersion.Value, appCommandLine.Value, Optional.ToNullable(managedPipelineMode), Optional.ToList(virtualApplications), Optional.ToNullable(loadBalancing), experiments.Value, limits.Value, Optional.ToNullable(autoHealEnabled), autoHealRules.Value, tracingOptions.Value, vnetName.Value, Optional.ToNullable(vnetRouteAllEnabled), Optional.ToNullable(vnetPrivatePortsCount), cors.Value, push.Value, apiDefinition.Value, apiManagementConfig.Value, autoSwapSlotName.Value, Optional.ToNullable(localMySqlEnabled), Optional.ToNullable(managedServiceIdentityId), Optional.ToNullable(xManagedServiceIdentityId), keyVaultReferenceIdentity.Value, Optional.ToList(ipSecurityRestrictions), Optional.ToNullable(ipSecurityRestrictionsDefaultAction), Optional.ToList(scmIPSecurityRestrictions), Optional.ToNullable(scmIPSecurityRestrictionsDefaultAction), Optional.ToNullable(scmIPSecurityRestrictionsUseMain), Optional.ToNullable(http20Enabled), Optional.ToNullable(minTlsVersion), Optional.ToNullable(scmMinTlsVersion), Optional.ToNullable(ftpsState), Optional.ToNullable(preWarmedInstanceCount), Optional.ToNullable(functionAppScaleLimit), healthCheckPath.Value, Optional.ToNullable(functionsRuntimeScaleMonitoringEnabled), websiteTimeZone.Value, Optional.ToNullable(minimumElasticInstanceCount), Optional.ToDictionary(azureStorageAccounts), publicNetworkAccess.Value, kind.Value);
         }
     }
 }
