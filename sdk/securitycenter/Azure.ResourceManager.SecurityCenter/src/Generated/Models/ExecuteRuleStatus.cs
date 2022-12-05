@@ -7,7 +7,7 @@
 
 namespace Azure.ResourceManager.SecurityCenter.Models
 {
-    /// <summary> Execute status of Security GovernanceRule over a given scope. </summary>
+    /// <summary> Execute status of governance rule over a given scope. </summary>
     public partial class ExecuteRuleStatus
     {
         /// <summary> Initializes a new instance of ExecuteRuleStatus. </summary>
@@ -16,13 +16,13 @@ namespace Azure.ResourceManager.SecurityCenter.Models
         }
 
         /// <summary> Initializes a new instance of ExecuteRuleStatus. </summary>
-        /// <param name="operationId"> Unique key for the execution of GovernanceRule. </param>
+        /// <param name="operationId"> Unique key for the execution of governance rule. </param>
         internal ExecuteRuleStatus(string operationId)
         {
             OperationId = operationId;
         }
 
-        /// <summary> Unique key for the execution of GovernanceRule. </summary>
+        /// <summary> Unique key for the execution of governance rule. </summary>
         public string OperationId { get; }
     }
 }
