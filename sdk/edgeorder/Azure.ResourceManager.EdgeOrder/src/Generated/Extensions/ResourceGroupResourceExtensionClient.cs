@@ -19,8 +19,8 @@ namespace Azure.ResourceManager.EdgeOrder
     /// <summary> A class to add extension methods to ResourceGroupResource. </summary>
     internal partial class ResourceGroupResourceExtensionClient : ArmResource
     {
-        private ClientDiagnostics _defaultClientDiagnostics;
-        private EdgeOrderManagementRestOperations _defaultRestClient;
+        private ClientDiagnostics _edgeOrderOrdersClientDiagnostics;
+        private OrdersRestOperations _edgeOrderOrdersRestClient;
 
         /// <summary> Initializes a new instance of the <see cref="ResourceGroupResourceExtensionClient"/> class for mocking. </summary>
         protected ResourceGroupResourceExtensionClient()
@@ -34,8 +34,8 @@ namespace Azure.ResourceManager.EdgeOrder
         {
         }
 
-        private ClientDiagnostics DefaultClientDiagnostics => _defaultClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.EdgeOrder", ProviderConstants.DefaultProviderNamespace, Diagnostics);
-        private EdgeOrderManagementRestOperations DefaultRestClient => _defaultRestClient ??= new EdgeOrderManagementRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
+        private ClientDiagnostics EdgeOrderOrdersClientDiagnostics => _edgeOrderOrdersClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.EdgeOrder", EdgeOrderResource.ResourceType.Namespace, Diagnostics);
+        private OrdersRestOperations EdgeOrderOrdersRestClient => _edgeOrderOrdersRestClient ??= new OrdersRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, GetApiVersionOrNull(EdgeOrderResource.ResourceType));
 
         private string GetApiVersionOrNull(ResourceType resourceType)
         {
@@ -50,13 +50,6 @@ namespace Azure.ResourceManager.EdgeOrder
             return GetCachedClient(Client => new EdgeOrderAddressCollection(Client, Id));
         }
 
-        /// <summary> Gets a collection of EdgeOrderResources in the ResourceGroupResource. </summary>
-        /// <returns> An object representing collection of EdgeOrderResources and their operations over a EdgeOrderResource. </returns>
-        public virtual EdgeOrderCollection GetEdgeOrders()
-        {
-            return GetCachedClient(Client => new EdgeOrderCollection(Client, Id));
-        }
-
         /// <summary> Gets a collection of EdgeOrderItemResources in the ResourceGroupResource. </summary>
         /// <returns> An object representing collection of EdgeOrderItemResources and their operations over a EdgeOrderItemResource. </returns>
         public virtual EdgeOrderItemCollection GetEdgeOrderItems()
@@ -64,23 +57,31 @@ namespace Azure.ResourceManager.EdgeOrder
             return GetCachedClient(Client => new EdgeOrderItemCollection(Client, Id));
         }
 
+        /// <summary> Gets a collection of EdgeOrderResources in the ResourceGroupResource. </summary>
+        /// <returns> An object representing collection of EdgeOrderResources and their operations over a EdgeOrderResource. </returns>
+        public virtual EdgeOrderCollection GetEdgeOrders()
+        {
+            return GetCachedClient(Client => new EdgeOrderCollection(Client, Id));
+        }
+
         /// <summary>
-        /// Lists order at resource group level.
+        /// List orders at resource group level.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orders
-        /// Operation Id: ListOrderAtResourceGroupLevel
+        /// Operation Id: Orders_ListByResourceGroup
         /// </summary>
-        /// <param name="skipToken"> $skipToken is supported on Get list of order, which provides the next page in the list of order. </param>
+        /// <param name="skipToken"> $skipToken is supported on Get list of orders, which provides the next page in the list of orders. </param>
+        /// <param name="top"> $top is supported on fetching list of resources. $top=10 means that the first 10 items in the list will be returned to the API caller. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> An async collection of <see cref="EdgeOrderResource" /> that may take multiple service requests to iterate over. </returns>
-        public virtual AsyncPageable<EdgeOrderResource> GetEdgeOrdersAsync(string skipToken = null, CancellationToken cancellationToken = default)
+        public virtual AsyncPageable<EdgeOrderResource> GetEdgeOrdersAsync(string skipToken = null, int? top = null, CancellationToken cancellationToken = default)
         {
             async Task<Page<EdgeOrderResource>> FirstPageFunc(int? pageSizeHint)
             {
-                using var scope = DefaultClientDiagnostics.CreateScope("ResourceGroupResourceExtensionClient.GetEdgeOrders");
+                using var scope = EdgeOrderOrdersClientDiagnostics.CreateScope("ResourceGroupResourceExtensionClient.GetEdgeOrders");
                 scope.Start();
                 try
                 {
-                    var response = await DefaultRestClient.ListOrderAtResourceGroupLevelAsync(Id.SubscriptionId, Id.ResourceGroupName, skipToken, cancellationToken: cancellationToken).ConfigureAwait(false);
+                    var response = await EdgeOrderOrdersRestClient.ListByResourceGroupAsync(Id.SubscriptionId, Id.ResourceGroupName, skipToken, top, cancellationToken: cancellationToken).ConfigureAwait(false);
                     return Page.FromValues(response.Value.Value.Select(value => new EdgeOrderResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
                 }
                 catch (Exception e)
@@ -91,11 +92,11 @@ namespace Azure.ResourceManager.EdgeOrder
             }
             async Task<Page<EdgeOrderResource>> NextPageFunc(string nextLink, int? pageSizeHint)
             {
-                using var scope = DefaultClientDiagnostics.CreateScope("ResourceGroupResourceExtensionClient.GetEdgeOrders");
+                using var scope = EdgeOrderOrdersClientDiagnostics.CreateScope("ResourceGroupResourceExtensionClient.GetEdgeOrders");
                 scope.Start();
                 try
                 {
-                    var response = await DefaultRestClient.ListOrderAtResourceGroupLevelNextPageAsync(nextLink, Id.SubscriptionId, Id.ResourceGroupName, skipToken, cancellationToken: cancellationToken).ConfigureAwait(false);
+                    var response = await EdgeOrderOrdersRestClient.ListByResourceGroupNextPageAsync(nextLink, Id.SubscriptionId, Id.ResourceGroupName, skipToken, top, cancellationToken: cancellationToken).ConfigureAwait(false);
                     return Page.FromValues(response.Value.Value.Select(value => new EdgeOrderResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
                 }
                 catch (Exception e)
@@ -108,22 +109,23 @@ namespace Azure.ResourceManager.EdgeOrder
         }
 
         /// <summary>
-        /// Lists order at resource group level.
+        /// List orders at resource group level.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orders
-        /// Operation Id: ListOrderAtResourceGroupLevel
+        /// Operation Id: Orders_ListByResourceGroup
         /// </summary>
-        /// <param name="skipToken"> $skipToken is supported on Get list of order, which provides the next page in the list of order. </param>
+        /// <param name="skipToken"> $skipToken is supported on Get list of orders, which provides the next page in the list of orders. </param>
+        /// <param name="top"> $top is supported on fetching list of resources. $top=10 means that the first 10 items in the list will be returned to the API caller. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> A collection of <see cref="EdgeOrderResource" /> that may take multiple service requests to iterate over. </returns>
-        public virtual Pageable<EdgeOrderResource> GetEdgeOrders(string skipToken = null, CancellationToken cancellationToken = default)
+        public virtual Pageable<EdgeOrderResource> GetEdgeOrders(string skipToken = null, int? top = null, CancellationToken cancellationToken = default)
         {
             Page<EdgeOrderResource> FirstPageFunc(int? pageSizeHint)
             {
-                using var scope = DefaultClientDiagnostics.CreateScope("ResourceGroupResourceExtensionClient.GetEdgeOrders");
+                using var scope = EdgeOrderOrdersClientDiagnostics.CreateScope("ResourceGroupResourceExtensionClient.GetEdgeOrders");
                 scope.Start();
                 try
                 {
-                    var response = DefaultRestClient.ListOrderAtResourceGroupLevel(Id.SubscriptionId, Id.ResourceGroupName, skipToken, cancellationToken: cancellationToken);
+                    var response = EdgeOrderOrdersRestClient.ListByResourceGroup(Id.SubscriptionId, Id.ResourceGroupName, skipToken, top, cancellationToken: cancellationToken);
                     return Page.FromValues(response.Value.Value.Select(value => new EdgeOrderResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
                 }
                 catch (Exception e)
@@ -134,11 +136,11 @@ namespace Azure.ResourceManager.EdgeOrder
             }
             Page<EdgeOrderResource> NextPageFunc(string nextLink, int? pageSizeHint)
             {
-                using var scope = DefaultClientDiagnostics.CreateScope("ResourceGroupResourceExtensionClient.GetEdgeOrders");
+                using var scope = EdgeOrderOrdersClientDiagnostics.CreateScope("ResourceGroupResourceExtensionClient.GetEdgeOrders");
                 scope.Start();
                 try
                 {
-                    var response = DefaultRestClient.ListOrderAtResourceGroupLevelNextPage(nextLink, Id.SubscriptionId, Id.ResourceGroupName, skipToken, cancellationToken: cancellationToken);
+                    var response = EdgeOrderOrdersRestClient.ListByResourceGroupNextPage(nextLink, Id.SubscriptionId, Id.ResourceGroupName, skipToken, top, cancellationToken: cancellationToken);
                     return Page.FromValues(response.Value.Value.Select(value => new EdgeOrderResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
                 }
                 catch (Exception e)
