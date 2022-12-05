@@ -9,7 +9,7 @@ csharp: true
 library-name: Blueprint
 namespace: Azure.ResourceManager.Blueprint
 # default tag is a preview version
-require: https://github.com/Azure/azure-rest-api-specs/blob/4270cc435fd2496bdb2a5f056dbddb463e52c7c2/specification/blueprint/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/3c62b7327bf2af158732af7c87189f79c421ba48/specification/blueprint/resource-manager/readme.md
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
 skip-csproj: true
