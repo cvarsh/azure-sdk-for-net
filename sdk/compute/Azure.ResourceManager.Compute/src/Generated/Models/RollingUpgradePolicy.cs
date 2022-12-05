@@ -22,7 +22,8 @@ namespace Azure.ResourceManager.Compute.Models
         /// <param name="pauseTimeBetweenBatches"> The wait time between completing the update for all virtual machines in one batch and starting the next batch. The time duration should be specified in ISO 8601 format. The default value is 0 seconds (PT0S). </param>
         /// <param name="enableCrossZoneUpgrade"> Allow VMSS to ignore AZ boundaries when constructing upgrade batches. Take into consideration the Update Domain and maxBatchInstancePercent to determine the batch size. </param>
         /// <param name="prioritizeUnhealthyInstances"> Upgrade all unhealthy instances in a scale set before any healthy instances. </param>
-        internal RollingUpgradePolicy(int? maxBatchInstancePercent, int? maxUnhealthyInstancePercent, int? maxUnhealthyUpgradedInstancePercent, string pauseTimeBetweenBatches, bool? enableCrossZoneUpgrade, bool? prioritizeUnhealthyInstances)
+        /// <param name="rollbackFailedInstancesOnPolicyBreach"> Rollback failed instances to previous model if the Rolling Upgrade policy is violated. </param>
+        internal RollingUpgradePolicy(int? maxBatchInstancePercent, int? maxUnhealthyInstancePercent, int? maxUnhealthyUpgradedInstancePercent, string pauseTimeBetweenBatches, bool? enableCrossZoneUpgrade, bool? prioritizeUnhealthyInstances, bool? rollbackFailedInstancesOnPolicyBreach)
         {
             MaxBatchInstancePercent = maxBatchInstancePercent;
             MaxUnhealthyInstancePercent = maxUnhealthyInstancePercent;
@@ -30,6 +31,7 @@ namespace Azure.ResourceManager.Compute.Models
             PauseTimeBetweenBatches = pauseTimeBetweenBatches;
             EnableCrossZoneUpgrade = enableCrossZoneUpgrade;
             PrioritizeUnhealthyInstances = prioritizeUnhealthyInstances;
+            RollbackFailedInstancesOnPolicyBreach = rollbackFailedInstancesOnPolicyBreach;
         }
 
         /// <summary> The maximum percent of total virtual machine instances that will be upgraded simultaneously by the rolling upgrade in one batch. As this is a maximum, unhealthy instances in previous or future batches can cause the percentage of instances in a batch to decrease to ensure higher reliability. The default value for this parameter is 20%. </summary>
@@ -44,5 +46,7 @@ namespace Azure.ResourceManager.Compute.Models
         public bool? EnableCrossZoneUpgrade { get; set; }
         /// <summary> Upgrade all unhealthy instances in a scale set before any healthy instances. </summary>
         public bool? PrioritizeUnhealthyInstances { get; set; }
+        /// <summary> Rollback failed instances to previous model if the Rolling Upgrade policy is violated. </summary>
+        public bool? RollbackFailedInstancesOnPolicyBreach { get; set; }
     }
 }

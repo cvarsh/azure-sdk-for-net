@@ -45,6 +45,11 @@ namespace Azure.ResourceManager.Compute.Models
                 writer.WritePropertyName("prioritizeUnhealthyInstances");
                 writer.WriteBooleanValue(PrioritizeUnhealthyInstances.Value);
             }
+            if (Optional.IsDefined(RollbackFailedInstancesOnPolicyBreach))
+            {
+                writer.WritePropertyName("rollbackFailedInstancesOnPolicyBreach");
+                writer.WriteBooleanValue(RollbackFailedInstancesOnPolicyBreach.Value);
+            }
             writer.WriteEndObject();
         }
 
@@ -56,6 +61,7 @@ namespace Azure.ResourceManager.Compute.Models
             Optional<string> pauseTimeBetweenBatches = default;
             Optional<bool> enableCrossZoneUpgrade = default;
             Optional<bool> prioritizeUnhealthyInstances = default;
+            Optional<bool> rollbackFailedInstancesOnPolicyBreach = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("maxBatchInstancePercent"))
@@ -113,8 +119,18 @@ namespace Azure.ResourceManager.Compute.Models
                     prioritizeUnhealthyInstances = property.Value.GetBoolean();
                     continue;
                 }
+                if (property.NameEquals("rollbackFailedInstancesOnPolicyBreach"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    rollbackFailedInstancesOnPolicyBreach = property.Value.GetBoolean();
+                    continue;
+                }
             }
-            return new RollingUpgradePolicy(Optional.ToNullable(maxBatchInstancePercent), Optional.ToNullable(maxUnhealthyInstancePercent), Optional.ToNullable(maxUnhealthyUpgradedInstancePercent), pauseTimeBetweenBatches.Value, Optional.ToNullable(enableCrossZoneUpgrade), Optional.ToNullable(prioritizeUnhealthyInstances));
+            return new RollingUpgradePolicy(Optional.ToNullable(maxBatchInstancePercent), Optional.ToNullable(maxUnhealthyInstancePercent), Optional.ToNullable(maxUnhealthyUpgradedInstancePercent), pauseTimeBetweenBatches.Value, Optional.ToNullable(enableCrossZoneUpgrade), Optional.ToNullable(prioritizeUnhealthyInstances), Optional.ToNullable(rollbackFailedInstancesOnPolicyBreach));
         }
     }
 }
