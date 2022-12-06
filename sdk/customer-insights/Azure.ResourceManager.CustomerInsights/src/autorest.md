@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: CustomerInsights
 namespace: Azure.ResourceManager.CustomerInsights
-require: https://github.com/Azure/azure-rest-api-specs/blob/066eb8c81e14e0f3b22b6700c67693eef5f79ea9/specification/customer-insights/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/a649865f9b9943d400db80dc3020ba7d037e95ed/specification/customer-insights/resource-manager/readme.md
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
 skip-csproj: true
