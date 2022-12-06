@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: Peering
 namespace: Azure.ResourceManager.Peering
-require: https://github.com/Azure/azure-rest-api-specs/blob/5fc05d0f0b15cbf16de942cadce464b495c66a58/specification/peering/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/a649865f9b9943d400db80dc3020ba7d037e95ed/specification/peering/resource-manager/readme.md
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
 skip-csproj: true
