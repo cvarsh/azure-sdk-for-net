@@ -9,7 +9,7 @@ csharp: true
 library-name: DeploymentManager
 namespace: Azure.ResourceManager.DeploymentManager
 # default tag is a preview version
-require: https://github.com/Azure/azure-rest-api-specs/blob/2f28b5026a4b44adefd0237087acb0c48cfe31a6/specification/deploymentmanager/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/a649865f9b9943d400db80dc3020ba7d037e95ed/specification/deploymentmanager/resource-manager/readme.md
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
 skip-csproj: true
