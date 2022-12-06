@@ -27,6 +27,8 @@ namespace Azure.ResourceManager.PolicyInsights
         private PolicyStatesRestOperations _policyStatesRestClient;
         private ClientDiagnostics _policyRestrictionsClientDiagnostics;
         private PolicyRestrictionsRestOperations _policyRestrictionsRestClient;
+        private ClientDiagnostics _componentPolicyStatesClientDiagnostics;
+        private ComponentPolicyStatesRestOperations _componentPolicyStatesRestClient;
 
         /// <summary> Initializes a new instance of the <see cref="ResourceGroupResourceExtensionClient"/> class for mocking. </summary>
         protected ResourceGroupResourceExtensionClient()
@@ -48,6 +50,8 @@ namespace Azure.ResourceManager.PolicyInsights
         private PolicyStatesRestOperations PolicyStatesRestClient => _policyStatesRestClient ??= new PolicyStatesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
         private ClientDiagnostics PolicyRestrictionsClientDiagnostics => _policyRestrictionsClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.PolicyInsights", ProviderConstants.DefaultProviderNamespace, Diagnostics);
         private PolicyRestrictionsRestOperations PolicyRestrictionsRestClient => _policyRestrictionsRestClient ??= new PolicyRestrictionsRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
+        private ClientDiagnostics ComponentPolicyStatesClientDiagnostics => _componentPolicyStatesClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.PolicyInsights", ProviderConstants.DefaultProviderNamespace, Diagnostics);
+        private ComponentPolicyStatesRestOperations ComponentPolicyStatesRestClient => _componentPolicyStatesRestClient ??= new ComponentPolicyStatesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
 
         private string GetApiVersionOrNull(ResourceType resourceType)
         {
@@ -473,6 +477,148 @@ namespace Azure.ResourceManager.PolicyInsights
                 scope.Failed(e);
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Queries component policy states under resource group scope.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PolicyInsights/componentPolicyStates/{componentPolicyStatesResource}/queryResults
+        /// Operation Id: ComponentPolicyStates_ListQueryResultsForResourceGroup
+        /// </summary>
+        /// <param name="componentPolicyStatesResource"> The virtual resource under ComponentPolicyStates resource type. In a given time range, &apos;latest&apos; represents the latest component policy state(s). </param>
+        /// <param name="top"> Maximum number of records to return. </param>
+        /// <param name="orderBy"> Ordering expression using OData notation. One or more comma-separated column names with an optional &quot;desc&quot; (the default) or &quot;asc&quot;, e.g. &quot;$orderby=PolicyAssignmentId, ResourceId asc&quot;. </param>
+        /// <param name="select"> Select expression using OData notation. Limits the columns on each record to just those requested, e.g. &quot;$select=PolicyAssignmentId, ResourceId&quot;. </param>
+        /// <param name="from"> ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified, the service uses ($to - 1-day). </param>
+        /// <param name="to"> ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the service uses request time. </param>
+        /// <param name="filter"> OData filter expression. </param>
+        /// <param name="apply"> OData apply expression for aggregations. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <returns> An async collection of <see cref="ComponentPolicyState" /> that may take multiple service requests to iterate over. </returns>
+        public virtual AsyncPageable<ComponentPolicyState> GetQueryResultsForResourceGroupComponentPolicyStatesAsync(ComponentPolicyStatesResource componentPolicyStatesResource, int? top = null, string orderBy = null, string select = null, DateTimeOffset? @from = null, DateTimeOffset? to = null, string filter = null, string apply = null, CancellationToken cancellationToken = default)
+        {
+            async Task<Page<ComponentPolicyState>> FirstPageFunc(int? pageSizeHint)
+            {
+                using var scope = ComponentPolicyStatesClientDiagnostics.CreateScope("ResourceGroupResourceExtensionClient.GetQueryResultsForResourceGroupComponentPolicyStates");
+                scope.Start();
+                try
+                {
+                    var response = await ComponentPolicyStatesRestClient.ListQueryResultsForResourceGroupAsync(Id.SubscriptionId, Id.ResourceGroupName, componentPolicyStatesResource, top, orderBy, select, from, to, filter, apply, cancellationToken: cancellationToken).ConfigureAwait(false);
+                    return Page.FromValues(response.Value.Value, null, response.GetRawResponse());
+                }
+                catch (Exception e)
+                {
+                    scope.Failed(e);
+                    throw;
+                }
+            }
+            return PageableHelpers.CreateAsyncEnumerable(FirstPageFunc, null);
+        }
+
+        /// <summary>
+        /// Queries component policy states under resource group scope.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PolicyInsights/componentPolicyStates/{componentPolicyStatesResource}/queryResults
+        /// Operation Id: ComponentPolicyStates_ListQueryResultsForResourceGroup
+        /// </summary>
+        /// <param name="componentPolicyStatesResource"> The virtual resource under ComponentPolicyStates resource type. In a given time range, &apos;latest&apos; represents the latest component policy state(s). </param>
+        /// <param name="top"> Maximum number of records to return. </param>
+        /// <param name="orderBy"> Ordering expression using OData notation. One or more comma-separated column names with an optional &quot;desc&quot; (the default) or &quot;asc&quot;, e.g. &quot;$orderby=PolicyAssignmentId, ResourceId asc&quot;. </param>
+        /// <param name="select"> Select expression using OData notation. Limits the columns on each record to just those requested, e.g. &quot;$select=PolicyAssignmentId, ResourceId&quot;. </param>
+        /// <param name="from"> ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified, the service uses ($to - 1-day). </param>
+        /// <param name="to"> ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the service uses request time. </param>
+        /// <param name="filter"> OData filter expression. </param>
+        /// <param name="apply"> OData apply expression for aggregations. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <returns> A collection of <see cref="ComponentPolicyState" /> that may take multiple service requests to iterate over. </returns>
+        public virtual Pageable<ComponentPolicyState> GetQueryResultsForResourceGroupComponentPolicyStates(ComponentPolicyStatesResource componentPolicyStatesResource, int? top = null, string orderBy = null, string select = null, DateTimeOffset? @from = null, DateTimeOffset? to = null, string filter = null, string apply = null, CancellationToken cancellationToken = default)
+        {
+            Page<ComponentPolicyState> FirstPageFunc(int? pageSizeHint)
+            {
+                using var scope = ComponentPolicyStatesClientDiagnostics.CreateScope("ResourceGroupResourceExtensionClient.GetQueryResultsForResourceGroupComponentPolicyStates");
+                scope.Start();
+                try
+                {
+                    var response = ComponentPolicyStatesRestClient.ListQueryResultsForResourceGroup(Id.SubscriptionId, Id.ResourceGroupName, componentPolicyStatesResource, top, orderBy, select, from, to, filter, apply, cancellationToken: cancellationToken);
+                    return Page.FromValues(response.Value.Value, null, response.GetRawResponse());
+                }
+                catch (Exception e)
+                {
+                    scope.Failed(e);
+                    throw;
+                }
+            }
+            return PageableHelpers.CreateEnumerable(FirstPageFunc, null);
+        }
+
+        /// <summary>
+        /// Queries component policy states for the resource group level policy assignment.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{authorizationNamespace}/policyAssignments/{policyAssignmentName}/providers/Microsoft.PolicyInsights/componentPolicyStates/{componentPolicyStatesResource}/queryResults
+        /// Operation Id: ComponentPolicyStates_ListQueryResultsForResourceGroupLevelPolicyAssignment
+        /// </summary>
+        /// <param name="policyAssignmentName"> Policy assignment name. </param>
+        /// <param name="componentPolicyStatesResource"> The virtual resource under ComponentPolicyStates resource type. In a given time range, &apos;latest&apos; represents the latest component policy state(s). </param>
+        /// <param name="top"> Maximum number of records to return. </param>
+        /// <param name="orderBy"> Ordering expression using OData notation. One or more comma-separated column names with an optional &quot;desc&quot; (the default) or &quot;asc&quot;, e.g. &quot;$orderby=PolicyAssignmentId, ResourceId asc&quot;. </param>
+        /// <param name="select"> Select expression using OData notation. Limits the columns on each record to just those requested, e.g. &quot;$select=PolicyAssignmentId, ResourceId&quot;. </param>
+        /// <param name="from"> ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified, the service uses ($to - 1-day). </param>
+        /// <param name="to"> ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the service uses request time. </param>
+        /// <param name="filter"> OData filter expression. </param>
+        /// <param name="apply"> OData apply expression for aggregations. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <returns> An async collection of <see cref="ComponentPolicyState" /> that may take multiple service requests to iterate over. </returns>
+        public virtual AsyncPageable<ComponentPolicyState> GetQueryResultsForResourceGroupLevelPolicyAssignmentComponentPolicyStatesAsync(string policyAssignmentName, ComponentPolicyStatesResource componentPolicyStatesResource, int? top = null, string orderBy = null, string select = null, DateTimeOffset? @from = null, DateTimeOffset? to = null, string filter = null, string apply = null, CancellationToken cancellationToken = default)
+        {
+            async Task<Page<ComponentPolicyState>> FirstPageFunc(int? pageSizeHint)
+            {
+                using var scope = ComponentPolicyStatesClientDiagnostics.CreateScope("ResourceGroupResourceExtensionClient.GetQueryResultsForResourceGroupLevelPolicyAssignmentComponentPolicyStates");
+                scope.Start();
+                try
+                {
+                    var response = await ComponentPolicyStatesRestClient.ListQueryResultsForResourceGroupLevelPolicyAssignmentAsync(Id.SubscriptionId, Id.ResourceGroupName, policyAssignmentName, componentPolicyStatesResource, top, orderBy, select, from, to, filter, apply, cancellationToken: cancellationToken).ConfigureAwait(false);
+                    return Page.FromValues(response.Value.Value, null, response.GetRawResponse());
+                }
+                catch (Exception e)
+                {
+                    scope.Failed(e);
+                    throw;
+                }
+            }
+            return PageableHelpers.CreateAsyncEnumerable(FirstPageFunc, null);
+        }
+
+        /// <summary>
+        /// Queries component policy states for the resource group level policy assignment.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{authorizationNamespace}/policyAssignments/{policyAssignmentName}/providers/Microsoft.PolicyInsights/componentPolicyStates/{componentPolicyStatesResource}/queryResults
+        /// Operation Id: ComponentPolicyStates_ListQueryResultsForResourceGroupLevelPolicyAssignment
+        /// </summary>
+        /// <param name="policyAssignmentName"> Policy assignment name. </param>
+        /// <param name="componentPolicyStatesResource"> The virtual resource under ComponentPolicyStates resource type. In a given time range, &apos;latest&apos; represents the latest component policy state(s). </param>
+        /// <param name="top"> Maximum number of records to return. </param>
+        /// <param name="orderBy"> Ordering expression using OData notation. One or more comma-separated column names with an optional &quot;desc&quot; (the default) or &quot;asc&quot;, e.g. &quot;$orderby=PolicyAssignmentId, ResourceId asc&quot;. </param>
+        /// <param name="select"> Select expression using OData notation. Limits the columns on each record to just those requested, e.g. &quot;$select=PolicyAssignmentId, ResourceId&quot;. </param>
+        /// <param name="from"> ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified, the service uses ($to - 1-day). </param>
+        /// <param name="to"> ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the service uses request time. </param>
+        /// <param name="filter"> OData filter expression. </param>
+        /// <param name="apply"> OData apply expression for aggregations. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <returns> A collection of <see cref="ComponentPolicyState" /> that may take multiple service requests to iterate over. </returns>
+        public virtual Pageable<ComponentPolicyState> GetQueryResultsForResourceGroupLevelPolicyAssignmentComponentPolicyStates(string policyAssignmentName, ComponentPolicyStatesResource componentPolicyStatesResource, int? top = null, string orderBy = null, string select = null, DateTimeOffset? @from = null, DateTimeOffset? to = null, string filter = null, string apply = null, CancellationToken cancellationToken = default)
+        {
+            Page<ComponentPolicyState> FirstPageFunc(int? pageSizeHint)
+            {
+                using var scope = ComponentPolicyStatesClientDiagnostics.CreateScope("ResourceGroupResourceExtensionClient.GetQueryResultsForResourceGroupLevelPolicyAssignmentComponentPolicyStates");
+                scope.Start();
+                try
+                {
+                    var response = ComponentPolicyStatesRestClient.ListQueryResultsForResourceGroupLevelPolicyAssignment(Id.SubscriptionId, Id.ResourceGroupName, policyAssignmentName, componentPolicyStatesResource, top, orderBy, select, from, to, filter, apply, cancellationToken: cancellationToken);
+                    return Page.FromValues(response.Value.Value, null, response.GetRawResponse());
+                }
+                catch (Exception e)
+                {
+                    scope.Failed(e);
+                    throw;
+                }
+            }
+            return PageableHelpers.CreateEnumerable(FirstPageFunc, null);
         }
     }
 }
