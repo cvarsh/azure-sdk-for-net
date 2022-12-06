@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace Azure.ResourceManager.ContainerRegistry.Models
 {
-    /// <summary> The provisioning state of this agent pool. </summary>
+    /// <summary> The provisioning state of private endpoint connection resource. </summary>
     public readonly partial struct ContainerRegistryProvisioningState : IEquatable<ContainerRegistryProvisioningState>
     {
         private readonly string _value;

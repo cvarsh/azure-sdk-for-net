@@ -135,44 +135,6 @@ namespace Azure.ResourceManager.ContainerRegistry
             return resourceGroupResource.GetContainerRegistries().Get(registryName, cancellationToken);
         }
 
-        #region ConnectedRegistryResource
-        /// <summary>
-        /// Gets an object representing a <see cref="ConnectedRegistryResource" /> along with the instance operations that can be performed on it but with no data.
-        /// You can use <see cref="ConnectedRegistryResource.CreateResourceIdentifier" /> to create a <see cref="ConnectedRegistryResource" /> <see cref="ResourceIdentifier" /> from its components.
-        /// </summary>
-        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
-        /// <param name="id"> The resource ID of the resource to get. </param>
-        /// <returns> Returns a <see cref="ConnectedRegistryResource" /> object. </returns>
-        public static ConnectedRegistryResource GetConnectedRegistryResource(this ArmClient client, ResourceIdentifier id)
-        {
-            return client.GetResourceClient(() =>
-            {
-                ConnectedRegistryResource.ValidateResourceId(id);
-                return new ConnectedRegistryResource(client, id);
-            }
-            );
-        }
-        #endregion
-
-        #region ExportPipelineResource
-        /// <summary>
-        /// Gets an object representing an <see cref="ExportPipelineResource" /> along with the instance operations that can be performed on it but with no data.
-        /// You can use <see cref="ExportPipelineResource.CreateResourceIdentifier" /> to create an <see cref="ExportPipelineResource" /> <see cref="ResourceIdentifier" /> from its components.
-        /// </summary>
-        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
-        /// <param name="id"> The resource ID of the resource to get. </param>
-        /// <returns> Returns a <see cref="ExportPipelineResource" /> object. </returns>
-        public static ExportPipelineResource GetExportPipelineResource(this ArmClient client, ResourceIdentifier id)
-        {
-            return client.GetResourceClient(() =>
-            {
-                ExportPipelineResource.ValidateResourceId(id);
-                return new ExportPipelineResource(client, id);
-            }
-            );
-        }
-        #endregion
-
         #region ContainerRegistryResource
         /// <summary>
         /// Gets an object representing a <see cref="ContainerRegistryResource" /> along with the instance operations that can be performed on it but with no data.
@@ -206,44 +168,6 @@ namespace Azure.ResourceManager.ContainerRegistry
             {
                 ContainerRegistryPrivateLinkResource.ValidateResourceId(id);
                 return new ContainerRegistryPrivateLinkResource(client, id);
-            }
-            );
-        }
-        #endregion
-
-        #region ImportPipelineResource
-        /// <summary>
-        /// Gets an object representing an <see cref="ImportPipelineResource" /> along with the instance operations that can be performed on it but with no data.
-        /// You can use <see cref="ImportPipelineResource.CreateResourceIdentifier" /> to create an <see cref="ImportPipelineResource" /> <see cref="ResourceIdentifier" /> from its components.
-        /// </summary>
-        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
-        /// <param name="id"> The resource ID of the resource to get. </param>
-        /// <returns> Returns a <see cref="ImportPipelineResource" /> object. </returns>
-        public static ImportPipelineResource GetImportPipelineResource(this ArmClient client, ResourceIdentifier id)
-        {
-            return client.GetResourceClient(() =>
-            {
-                ImportPipelineResource.ValidateResourceId(id);
-                return new ImportPipelineResource(client, id);
-            }
-            );
-        }
-        #endregion
-
-        #region ContainerRegistryPipelineRunResource
-        /// <summary>
-        /// Gets an object representing a <see cref="ContainerRegistryPipelineRunResource" /> along with the instance operations that can be performed on it but with no data.
-        /// You can use <see cref="ContainerRegistryPipelineRunResource.CreateResourceIdentifier" /> to create a <see cref="ContainerRegistryPipelineRunResource" /> <see cref="ResourceIdentifier" /> from its components.
-        /// </summary>
-        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
-        /// <param name="id"> The resource ID of the resource to get. </param>
-        /// <returns> Returns a <see cref="ContainerRegistryPipelineRunResource" /> object. </returns>
-        public static ContainerRegistryPipelineRunResource GetContainerRegistryPipelineRunResource(this ArmClient client, ResourceIdentifier id)
-        {
-            return client.GetResourceClient(() =>
-            {
-                ContainerRegistryPipelineRunResource.ValidateResourceId(id);
-                return new ContainerRegistryPipelineRunResource(client, id);
             }
             );
         }
@@ -287,44 +211,6 @@ namespace Azure.ResourceManager.ContainerRegistry
         }
         #endregion
 
-        #region ScopeMapResource
-        /// <summary>
-        /// Gets an object representing a <see cref="ScopeMapResource" /> along with the instance operations that can be performed on it but with no data.
-        /// You can use <see cref="ScopeMapResource.CreateResourceIdentifier" /> to create a <see cref="ScopeMapResource" /> <see cref="ResourceIdentifier" /> from its components.
-        /// </summary>
-        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
-        /// <param name="id"> The resource ID of the resource to get. </param>
-        /// <returns> Returns a <see cref="ScopeMapResource" /> object. </returns>
-        public static ScopeMapResource GetScopeMapResource(this ArmClient client, ResourceIdentifier id)
-        {
-            return client.GetResourceClient(() =>
-            {
-                ScopeMapResource.ValidateResourceId(id);
-                return new ScopeMapResource(client, id);
-            }
-            );
-        }
-        #endregion
-
-        #region ContainerRegistryTokenResource
-        /// <summary>
-        /// Gets an object representing a <see cref="ContainerRegistryTokenResource" /> along with the instance operations that can be performed on it but with no data.
-        /// You can use <see cref="ContainerRegistryTokenResource.CreateResourceIdentifier" /> to create a <see cref="ContainerRegistryTokenResource" /> <see cref="ResourceIdentifier" /> from its components.
-        /// </summary>
-        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
-        /// <param name="id"> The resource ID of the resource to get. </param>
-        /// <returns> Returns a <see cref="ContainerRegistryTokenResource" /> object. </returns>
-        public static ContainerRegistryTokenResource GetContainerRegistryTokenResource(this ArmClient client, ResourceIdentifier id)
-        {
-            return client.GetResourceClient(() =>
-            {
-                ContainerRegistryTokenResource.ValidateResourceId(id);
-                return new ContainerRegistryTokenResource(client, id);
-            }
-            );
-        }
-        #endregion
-
         #region ContainerRegistryWebhookResource
         /// <summary>
         /// Gets an object representing a <see cref="ContainerRegistryWebhookResource" /> along with the instance operations that can be performed on it but with no data.
@@ -339,82 +225,6 @@ namespace Azure.ResourceManager.ContainerRegistry
             {
                 ContainerRegistryWebhookResource.ValidateResourceId(id);
                 return new ContainerRegistryWebhookResource(client, id);
-            }
-            );
-        }
-        #endregion
-
-        #region ContainerRegistryAgentPoolResource
-        /// <summary>
-        /// Gets an object representing a <see cref="ContainerRegistryAgentPoolResource" /> along with the instance operations that can be performed on it but with no data.
-        /// You can use <see cref="ContainerRegistryAgentPoolResource.CreateResourceIdentifier" /> to create a <see cref="ContainerRegistryAgentPoolResource" /> <see cref="ResourceIdentifier" /> from its components.
-        /// </summary>
-        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
-        /// <param name="id"> The resource ID of the resource to get. </param>
-        /// <returns> Returns a <see cref="ContainerRegistryAgentPoolResource" /> object. </returns>
-        public static ContainerRegistryAgentPoolResource GetContainerRegistryAgentPoolResource(this ArmClient client, ResourceIdentifier id)
-        {
-            return client.GetResourceClient(() =>
-            {
-                ContainerRegistryAgentPoolResource.ValidateResourceId(id);
-                return new ContainerRegistryAgentPoolResource(client, id);
-            }
-            );
-        }
-        #endregion
-
-        #region ContainerRegistryRunResource
-        /// <summary>
-        /// Gets an object representing a <see cref="ContainerRegistryRunResource" /> along with the instance operations that can be performed on it but with no data.
-        /// You can use <see cref="ContainerRegistryRunResource.CreateResourceIdentifier" /> to create a <see cref="ContainerRegistryRunResource" /> <see cref="ResourceIdentifier" /> from its components.
-        /// </summary>
-        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
-        /// <param name="id"> The resource ID of the resource to get. </param>
-        /// <returns> Returns a <see cref="ContainerRegistryRunResource" /> object. </returns>
-        public static ContainerRegistryRunResource GetContainerRegistryRunResource(this ArmClient client, ResourceIdentifier id)
-        {
-            return client.GetResourceClient(() =>
-            {
-                ContainerRegistryRunResource.ValidateResourceId(id);
-                return new ContainerRegistryRunResource(client, id);
-            }
-            );
-        }
-        #endregion
-
-        #region ContainerRegistryTaskRunResource
-        /// <summary>
-        /// Gets an object representing a <see cref="ContainerRegistryTaskRunResource" /> along with the instance operations that can be performed on it but with no data.
-        /// You can use <see cref="ContainerRegistryTaskRunResource.CreateResourceIdentifier" /> to create a <see cref="ContainerRegistryTaskRunResource" /> <see cref="ResourceIdentifier" /> from its components.
-        /// </summary>
-        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
-        /// <param name="id"> The resource ID of the resource to get. </param>
-        /// <returns> Returns a <see cref="ContainerRegistryTaskRunResource" /> object. </returns>
-        public static ContainerRegistryTaskRunResource GetContainerRegistryTaskRunResource(this ArmClient client, ResourceIdentifier id)
-        {
-            return client.GetResourceClient(() =>
-            {
-                ContainerRegistryTaskRunResource.ValidateResourceId(id);
-                return new ContainerRegistryTaskRunResource(client, id);
-            }
-            );
-        }
-        #endregion
-
-        #region ContainerRegistryTaskResource
-        /// <summary>
-        /// Gets an object representing a <see cref="ContainerRegistryTaskResource" /> along with the instance operations that can be performed on it but with no data.
-        /// You can use <see cref="ContainerRegistryTaskResource.CreateResourceIdentifier" /> to create a <see cref="ContainerRegistryTaskResource" /> <see cref="ResourceIdentifier" /> from its components.
-        /// </summary>
-        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
-        /// <param name="id"> The resource ID of the resource to get. </param>
-        /// <returns> Returns a <see cref="ContainerRegistryTaskResource" /> object. </returns>
-        public static ContainerRegistryTaskResource GetContainerRegistryTaskResource(this ArmClient client, ResourceIdentifier id)
-        {
-            return client.GetResourceClient(() =>
-            {
-                ContainerRegistryTaskResource.ValidateResourceId(id);
-                return new ContainerRegistryTaskResource(client, id);
             }
             );
         }
