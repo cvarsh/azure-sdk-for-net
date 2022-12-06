@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: Advisor
 namespace: Azure.ResourceManager.Advisor
-require: https://github.com/Azure/azure-rest-api-specs/blob/db6d33733cd1eb939b863a6cdbcb9de12ac002e1/specification/advisor/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/a649865f9b9943d400db80dc3020ba7d037e95ed/specification/advisor/resource-manager/readme.md
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
 skip-csproj: true
