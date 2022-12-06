@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: Authorization
 namespace: Azure.ResourceManager.Authorization
-require: https://github.com/Azure/azure-rest-api-specs/blob/a436672b07fb1fe276c203b086b3f0e0d0c4aa24/specification/authorization/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/a649865f9b9943d400db80dc3020ba7d037e95ed/specification/authorization/resource-manager/readme.md
 tag: package-2022-04-01
 output-folder: Generated/
 clear-output-folder: true
