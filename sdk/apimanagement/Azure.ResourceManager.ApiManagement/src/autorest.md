@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: ApiManagement
 namespace: Azure.ResourceManager.ApiManagement
-require: https://github.com/Azure/azure-rest-api-specs/blob/2f28b5026a4b44adefd0237087acb0c48cfe31a6/specification/apimanagement/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/b2ef7a77a391f371c6a4f806c9b9f4f305bca697/specification/apimanagement/resource-manager/readme.md
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
 skip-csproj: true
