@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: DeviceProvisioningServices
 namespace: Azure.ResourceManager.DeviceProvisioningServices
-require: https://github.com/Azure/azure-rest-api-specs/blob/df70965d3a207eb2a628c96aa6ed935edc6b7911/specification/deviceprovisioningservices/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/a649865f9b9943d400db80dc3020ba7d037e95ed/specification/deviceprovisioningservices/resource-manager/readme.md
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
 skip-csproj: true
