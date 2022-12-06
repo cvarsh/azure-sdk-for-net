@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: Redis
 namespace: Azure.ResourceManager.Redis
-require: https://github.com/Azure/azure-rest-api-specs/blob/68847d6ae901f0cb2efa62ae2c523ad8cf5c2ea3/specification/redis/resource-manager/readme.md 
+require: https://github.com/Azure/azure-rest-api-specs/blob/b2ef7a77a391f371c6a4f806c9b9f4f305bca697/specification/redis/resource-manager/readme.md 
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
 skip-csproj: true
