@@ -8,8 +8,8 @@ title: Conversations
 license-header: MICROSOFT_MIT_NO_VERSION
 
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/40f5247a48ff1eec044c8441c422af0628a8a288/specification/cognitiveservices/data-plane/Language/preview/2022-10-01-preview/analyzeconversations.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/40f5247a48ff1eec044c8441c422af0628a8a288/specification/cognitiveservices/data-plane/Language/preview/2022-10-01-preview/analyzeconversations-authoring.json
+- https://github.com/Azure/azure-rest-api-specs/blob/a649865f9b9943d400db80dc3020ba7d037e95ed/specification/cognitiveservices/data-plane/Language/preview/2022-10-01-preview/analyzeconversations.json
+- https://github.com/Azure/azure-rest-api-specs/blob/a649865f9b9943d400db80dc3020ba7d037e95ed/specification/cognitiveservices/data-plane/Language/preview/2022-10-01-preview/analyzeconversations-authoring.json
 clear-output-folder: true
 
 data-plane: true
