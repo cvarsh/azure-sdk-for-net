@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: Billing
 namespace: Azure.ResourceManager.Billing
-require: https://github.com/Azure/azure-rest-api-specs/blob/6b08774c89877269e73e11ac3ecbd1bd4e14f5a0/specification/billing/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/a649865f9b9943d400db80dc3020ba7d037e95ed/specification/billing/resource-manager/readme.md
 tag: package-2021-10
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
