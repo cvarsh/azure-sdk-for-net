@@ -6,6 +6,9 @@
 #nullable disable
 
 using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Azure;
 using Azure.Core;
@@ -278,70 +281,6 @@ namespace Azure.Developer.LoadTesting
             }
         }
 
-        /// <summary> Get all test runs with given filters. </summary>
-        /// <param name="orderBy"> Sort on one of the field - status, displayName, executedDateTime in (field asc/desc) format. eg: displayName asc. </param>
-        /// <param name="continuationToken"> Continuation token to get the next page of response. </param>
-        /// <param name="search"> Filter search based on searchable fields - description, executedUser. </param>
-        /// <param name="executionFrom"> The end DateTime(ISO 8601 literal format) of test-run execution time filter range. </param>
-        /// <param name="executionTo"> The start DateTime(ISO 8601 literal format) of test-run execution time filter range. </param>
-        /// <param name="status">
-        /// Comma separated list of test run status, value can be -  &quot;ACCEPTED&quot;, &quot;NOTSTARTED&quot;,&quot;PROVISIONING&quot;,&quot;PROVISIONED&quot;,&quot;CONFIGURING&quot;,
-        /// &quot;CONFIGURED&quot;,&quot;EXECUTING&quot;,&quot;EXECUTED&quot;,&quot;DEPROVISIONING&quot;,&quot;DEPROVISIONED&quot;,&quot;DONE&quot;,&quot;CANCELLED&quot;,&quot;FAILED&quot;.
-        /// </param>
-        /// <param name="maxPageSize"> Number of results in response. </param>
-        /// <param name="testId"> Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
-        /// <include file="Docs/TestRunClient.xml" path="doc/members/member[@name='GetTestRunsSearchesAsync(String,String,String,DateTimeOffset,DateTimeOffset,String,Int32,String,RequestContext)']/*" />
-        public virtual async Task<Response> GetTestRunsSearchesAsync(string orderBy = null, string continuationToken = null, string search = null, DateTimeOffset? executionFrom = null, DateTimeOffset? executionTo = null, string status = null, int? maxPageSize = null, string testId = null, RequestContext context = null)
-        {
-            using var scope = ClientDiagnostics.CreateScope("TestRunClient.GetTestRunsSearches");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateGetTestRunsSearchesRequest(orderBy, continuationToken, search, executionFrom, executionTo, status, maxPageSize, testId, context);
-                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
-        /// <summary> Get all test runs with given filters. </summary>
-        /// <param name="orderBy"> Sort on one of the field - status, displayName, executedDateTime in (field asc/desc) format. eg: displayName asc. </param>
-        /// <param name="continuationToken"> Continuation token to get the next page of response. </param>
-        /// <param name="search"> Filter search based on searchable fields - description, executedUser. </param>
-        /// <param name="executionFrom"> The end DateTime(ISO 8601 literal format) of test-run execution time filter range. </param>
-        /// <param name="executionTo"> The start DateTime(ISO 8601 literal format) of test-run execution time filter range. </param>
-        /// <param name="status">
-        /// Comma separated list of test run status, value can be -  &quot;ACCEPTED&quot;, &quot;NOTSTARTED&quot;,&quot;PROVISIONING&quot;,&quot;PROVISIONED&quot;,&quot;CONFIGURING&quot;,
-        /// &quot;CONFIGURED&quot;,&quot;EXECUTING&quot;,&quot;EXECUTED&quot;,&quot;DEPROVISIONING&quot;,&quot;DEPROVISIONED&quot;,&quot;DONE&quot;,&quot;CANCELLED&quot;,&quot;FAILED&quot;.
-        /// </param>
-        /// <param name="maxPageSize"> Number of results in response. </param>
-        /// <param name="testId"> Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
-        /// <include file="Docs/TestRunClient.xml" path="doc/members/member[@name='GetTestRunsSearches(String,String,String,DateTimeOffset,DateTimeOffset,String,Int32,String,RequestContext)']/*" />
-        public virtual Response GetTestRunsSearches(string orderBy = null, string continuationToken = null, string search = null, DateTimeOffset? executionFrom = null, DateTimeOffset? executionTo = null, string status = null, int? maxPageSize = null, string testId = null, RequestContext context = null)
-        {
-            using var scope = ClientDiagnostics.CreateScope("TestRunClient.GetTestRunsSearches");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateGetTestRunsSearchesRequest(orderBy, continuationToken, search, executionFrom, executionTo, status, maxPageSize, testId, context);
-                return _pipeline.ProcessMessage(message, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
         /// <summary> Stop test run by name. </summary>
         /// <param name="testRunId"> Unique name of the load test run, must be a valid URL character ^[a-z0-9_-]*$. </param>
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
@@ -499,6 +438,82 @@ namespace Azure.Developer.LoadTesting
             {
                 scope.Failed(e);
                 throw;
+            }
+        }
+
+        /// <summary> Get all test runs with given filters. </summary>
+        /// <param name="orderBy"> Sort on one of the field - status, displayName, executedDateTime in (field asc/desc) format. eg: displayName asc. </param>
+        /// <param name="continuationToken"> Continuation token to get the next page of response. </param>
+        /// <param name="search"> Filter search based on searchable fields - description, executedUser. </param>
+        /// <param name="executionFrom"> The end DateTime(ISO 8601 literal format) of test-run execution time filter range. </param>
+        /// <param name="executionTo"> The start DateTime(ISO 8601 literal format) of test-run execution time filter range. </param>
+        /// <param name="status">
+        /// Comma separated list of test run status, value can be -  &quot;ACCEPTED&quot;, &quot;NOTSTARTED&quot;,&quot;PROVISIONING&quot;,&quot;PROVISIONED&quot;,&quot;CONFIGURING&quot;,
+        /// &quot;CONFIGURED&quot;,&quot;EXECUTING&quot;,&quot;EXECUTED&quot;,&quot;DEPROVISIONING&quot;,&quot;DEPROVISIONED&quot;,&quot;DONE&quot;,&quot;CANCELLED&quot;,&quot;FAILED&quot;.
+        /// </param>
+        /// <param name="maxPageSize"> Number of results in response. </param>
+        /// <param name="testId"> Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The <see cref="AsyncPageable{T}"/> from the service containing a list of <see cref="BinaryData"/> objects. Details of the body schema for each item in the collection are in the Remarks section below. </returns>
+        /// <include file="Docs/TestRunClient.xml" path="doc/members/member[@name='GetTestRunsSearchesAsync(String,String,String,DateTimeOffset,DateTimeOffset,String,Int32,String,RequestContext)']/*" />
+        public virtual AsyncPageable<BinaryData> GetTestRunsSearchesAsync(string orderBy = null, string continuationToken = null, string search = null, DateTimeOffset? executionFrom = null, DateTimeOffset? executionTo = null, string status = null, int? maxPageSize = null, string testId = null, RequestContext context = null)
+        {
+            return GetTestRunsSearchesImplementationAsync("TestRunClient.GetTestRunsSearches", orderBy, continuationToken, search, executionFrom, executionTo, status, maxPageSize, testId, context);
+        }
+
+        private AsyncPageable<BinaryData> GetTestRunsSearchesImplementationAsync(string diagnosticsScopeName, string orderBy, string continuationToken, string search, DateTimeOffset? executionFrom, DateTimeOffset? executionTo, string status, int? maxPageSize, string testId, RequestContext context)
+        {
+            return PageableHelpers.CreateAsyncPageable(CreateEnumerableAsync, ClientDiagnostics, diagnosticsScopeName);
+            async IAsyncEnumerable<Page<BinaryData>> CreateEnumerableAsync(string nextLink, int? pageSizeHint, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+            {
+                do
+                {
+                    var message = string.IsNullOrEmpty(nextLink)
+                        ? CreateGetTestRunsSearchesRequest(orderBy, continuationToken, search, executionFrom, executionTo, status, maxPageSize, testId, context)
+                        : CreateGetTestRunsSearchesNextPageRequest(nextLink, orderBy, continuationToken, search, executionFrom, executionTo, status, maxPageSize, testId, context);
+                    var page = await LowLevelPageableHelpers.ProcessMessageAsync(_pipeline, message, context, "value", "nextLink", cancellationToken).ConfigureAwait(false);
+                    nextLink = page.ContinuationToken;
+                    yield return page;
+                } while (!string.IsNullOrEmpty(nextLink));
+            }
+        }
+
+        /// <summary> Get all test runs with given filters. </summary>
+        /// <param name="orderBy"> Sort on one of the field - status, displayName, executedDateTime in (field asc/desc) format. eg: displayName asc. </param>
+        /// <param name="continuationToken"> Continuation token to get the next page of response. </param>
+        /// <param name="search"> Filter search based on searchable fields - description, executedUser. </param>
+        /// <param name="executionFrom"> The end DateTime(ISO 8601 literal format) of test-run execution time filter range. </param>
+        /// <param name="executionTo"> The start DateTime(ISO 8601 literal format) of test-run execution time filter range. </param>
+        /// <param name="status">
+        /// Comma separated list of test run status, value can be -  &quot;ACCEPTED&quot;, &quot;NOTSTARTED&quot;,&quot;PROVISIONING&quot;,&quot;PROVISIONED&quot;,&quot;CONFIGURING&quot;,
+        /// &quot;CONFIGURED&quot;,&quot;EXECUTING&quot;,&quot;EXECUTED&quot;,&quot;DEPROVISIONING&quot;,&quot;DEPROVISIONED&quot;,&quot;DONE&quot;,&quot;CANCELLED&quot;,&quot;FAILED&quot;.
+        /// </param>
+        /// <param name="maxPageSize"> Number of results in response. </param>
+        /// <param name="testId"> Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The <see cref="Pageable{T}"/> from the service containing a list of <see cref="BinaryData"/> objects. Details of the body schema for each item in the collection are in the Remarks section below. </returns>
+        /// <include file="Docs/TestRunClient.xml" path="doc/members/member[@name='GetTestRunsSearches(String,String,String,DateTimeOffset,DateTimeOffset,String,Int32,String,RequestContext)']/*" />
+        public virtual Pageable<BinaryData> GetTestRunsSearches(string orderBy = null, string continuationToken = null, string search = null, DateTimeOffset? executionFrom = null, DateTimeOffset? executionTo = null, string status = null, int? maxPageSize = null, string testId = null, RequestContext context = null)
+        {
+            return GetTestRunsSearchesImplementation("TestRunClient.GetTestRunsSearches", orderBy, continuationToken, search, executionFrom, executionTo, status, maxPageSize, testId, context);
+        }
+
+        private Pageable<BinaryData> GetTestRunsSearchesImplementation(string diagnosticsScopeName, string orderBy, string continuationToken, string search, DateTimeOffset? executionFrom, DateTimeOffset? executionTo, string status, int? maxPageSize, string testId, RequestContext context)
+        {
+            return PageableHelpers.CreatePageable(CreateEnumerable, ClientDiagnostics, diagnosticsScopeName);
+            IEnumerable<Page<BinaryData>> CreateEnumerable(string nextLink, int? pageSizeHint)
+            {
+                do
+                {
+                    var message = string.IsNullOrEmpty(nextLink)
+                        ? CreateGetTestRunsSearchesRequest(orderBy, continuationToken, search, executionFrom, executionTo, status, maxPageSize, testId, context)
+                        : CreateGetTestRunsSearchesNextPageRequest(nextLink, orderBy, continuationToken, search, executionFrom, executionTo, status, maxPageSize, testId, context);
+                    var page = LowLevelPageableHelpers.ProcessMessage(_pipeline, message, context, "value", "nextLink");
+                    nextLink = page.ContinuationToken;
+                    yield return page;
+                } while (!string.IsNullOrEmpty(nextLink));
             }
         }
 
@@ -669,6 +684,20 @@ namespace Azure.Developer.LoadTesting
             uri.AppendPath(testRunId, true);
             uri.AppendPath("/clientMetricsFilters", false);
             uri.AppendQuery("api-version", _apiVersion, true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateGetTestRunsSearchesNextPageRequest(string nextLink, string orderBy, string continuationToken, string search, DateTimeOffset? executionFrom, DateTimeOffset? executionTo, string status, int? maxPageSize, string testId, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.AppendRaw("https://", false);
+            uri.Reset(_endpoint);
+            uri.AppendRawNextLink(nextLink, false);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             return message;
