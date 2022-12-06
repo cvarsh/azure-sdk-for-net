@@ -82,6 +82,17 @@ namespace Azure.Messaging.EventGrid
         public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementApiReleaseDeletedEventData ApiManagementApiReleaseDeletedEventData(string resourceUri = null) { throw null; }
         public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementApiReleaseUpdatedEventData ApiManagementApiReleaseUpdatedEventData(string resourceUri = null) { throw null; }
         public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementApiUpdatedEventData ApiManagementApiUpdatedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementGatewayApiAddedEventData ApiManagementGatewayApiAddedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementGatewayApiRemovedEventData ApiManagementGatewayApiRemovedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementGatewayCertificateAuthorityCreatedEventData ApiManagementGatewayCertificateAuthorityCreatedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementGatewayCertificateAuthorityDeletedEventData ApiManagementGatewayCertificateAuthorityDeletedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementGatewayCertificateAuthorityUpdatedEventData ApiManagementGatewayCertificateAuthorityUpdatedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementGatewayCreatedEventData ApiManagementGatewayCreatedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementGatewayDeletedEventData ApiManagementGatewayDeletedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementGatewayHostnameConfigurationCreatedEventData ApiManagementGatewayHostnameConfigurationCreatedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementGatewayHostnameConfigurationDeletedEventData ApiManagementGatewayHostnameConfigurationDeletedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementGatewayHostnameConfigurationUpdatedEventData ApiManagementGatewayHostnameConfigurationUpdatedEventData(string resourceUri = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementGatewayUpdatedEventData ApiManagementGatewayUpdatedEventData(string resourceUri = null) { throw null; }
         public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementProductCreatedEventData ApiManagementProductCreatedEventData(string resourceUri = null) { throw null; }
         public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementProductDeletedEventData ApiManagementProductDeletedEventData(string resourceUri = null) { throw null; }
         public static Azure.Messaging.EventGrid.SystemEvents.ApiManagementProductUpdatedEventData ApiManagementProductUpdatedEventData(string resourceUri = null) { throw null; }
@@ -302,6 +313,17 @@ namespace Azure.Messaging.EventGrid
         public const string ApiManagementApiReleaseDeleted = "Microsoft.ApiManagement.APIReleaseDeleted";
         public const string ApiManagementApiReleaseUpdated = "Microsoft.ApiManagement.APIReleaseUpdated";
         public const string ApiManagementApiUpdated = "Microsoft.ApiManagement.APIUpdated";
+        public const string ApiManagementGatewayApiAdded = "Microsoft.ApiManagement.GatewayAPIAdded";
+        public const string ApiManagementGatewayApiRemoved = "Microsoft.ApiManagement.GatewayAPIRemoved";
+        public const string ApiManagementGatewayCertificateAuthorityCreated = "Microsoft.ApiManagement.GatewayCertificateAuthorityCreated";
+        public const string ApiManagementGatewayCertificateAuthorityDeleted = "Microsoft.ApiManagement.GatewayCertificateAuthorityDeleted";
+        public const string ApiManagementGatewayCertificateAuthorityUpdated = "Microsoft.ApiManagement.GatewayCertificateAuthorityUpdated";
+        public const string ApiManagementGatewayCreated = "Microsoft.ApiManagement.GatewayCreated";
+        public const string ApiManagementGatewayDeleted = "Microsoft.ApiManagement.GatewayDeleted";
+        public const string ApiManagementGatewayHostnameConfigurationCreated = "Microsoft.ApiManagement.GatewayHostnameConfigurationCreated";
+        public const string ApiManagementGatewayHostnameConfigurationDeleted = "Microsoft.ApiManagement.GatewayHostnameConfigurationDeleted";
+        public const string ApiManagementGatewayHostnameConfigurationUpdated = "Microsoft.ApiManagement.GatewayHostnameConfigurationUpdated";
+        public const string ApiManagementGatewayUpdated = "Microsoft.ApiManagement.GatewayUpdated";
         public const string ApiManagementProductCreated = "Microsoft.ApiManagement.ProductCreated";
         public const string ApiManagementProductDeleted = "Microsoft.ApiManagement.ProductDeleted";
         public const string ApiManagementProductUpdated = "Microsoft.ApiManagement.ProductUpdated";
@@ -790,6 +812,61 @@ namespace Azure.Messaging.EventGrid.SystemEvents
     public partial class ApiManagementApiUpdatedEventData
     {
         internal ApiManagementApiUpdatedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementGatewayApiAddedEventData
+    {
+        internal ApiManagementGatewayApiAddedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementGatewayApiRemovedEventData
+    {
+        internal ApiManagementGatewayApiRemovedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementGatewayCertificateAuthorityCreatedEventData
+    {
+        internal ApiManagementGatewayCertificateAuthorityCreatedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementGatewayCertificateAuthorityDeletedEventData
+    {
+        internal ApiManagementGatewayCertificateAuthorityDeletedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementGatewayCertificateAuthorityUpdatedEventData
+    {
+        internal ApiManagementGatewayCertificateAuthorityUpdatedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementGatewayCreatedEventData
+    {
+        internal ApiManagementGatewayCreatedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementGatewayDeletedEventData
+    {
+        internal ApiManagementGatewayDeletedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementGatewayHostnameConfigurationCreatedEventData
+    {
+        internal ApiManagementGatewayHostnameConfigurationCreatedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementGatewayHostnameConfigurationDeletedEventData
+    {
+        internal ApiManagementGatewayHostnameConfigurationDeletedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementGatewayHostnameConfigurationUpdatedEventData
+    {
+        internal ApiManagementGatewayHostnameConfigurationUpdatedEventData() { }
+        public string ResourceUri { get { throw null; } }
+    }
+    public partial class ApiManagementGatewayUpdatedEventData
+    {
+        internal ApiManagementGatewayUpdatedEventData() { }
         public string ResourceUri { get { throw null; } }
     }
     public partial class ApiManagementProductCreatedEventData
