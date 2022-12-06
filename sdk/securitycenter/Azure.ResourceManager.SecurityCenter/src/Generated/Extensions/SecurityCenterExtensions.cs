@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Azure;
 using Azure.Core;
 using Azure.ResourceManager;
+using Azure.ResourceManager.ManagementGroups;
 using Azure.ResourceManager.Resources;
 using Azure.ResourceManager.SecurityCenter.Models;
 
@@ -584,12 +585,12 @@ namespace Azure.ResourceManager.SecurityCenter
         }
 
         /// <summary>
-        /// Get a specific governanceRule for the requested scope by ruleId
+        /// Get a specific governance rule for the requested scope by ruleId
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Security/governanceRules/{ruleId}
         /// Operation Id: GovernanceRules_Get
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="ruleId"> The security GovernanceRule key - unique key for the standard GovernanceRule. </param>
+        /// <param name="ruleId"> The governance rule key - unique key for the standard governance rule (GUID). </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentException"> <paramref name="ruleId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ArgumentNullException"> <paramref name="ruleId"/> is null. </exception>
@@ -600,12 +601,12 @@ namespace Azure.ResourceManager.SecurityCenter
         }
 
         /// <summary>
-        /// Get a specific governanceRule for the requested scope by ruleId
+        /// Get a specific governance rule for the requested scope by ruleId
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.Security/governanceRules/{ruleId}
         /// Operation Id: GovernanceRules_Get
         /// </summary>
         /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="ruleId"> The security GovernanceRule key - unique key for the standard GovernanceRule. </param>
+        /// <param name="ruleId"> The governance rule key - unique key for the standard governance rule (GUID). </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentException"> <paramref name="ruleId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ArgumentNullException"> <paramref name="ruleId"/> is null. </exception>
@@ -1684,6 +1685,53 @@ namespace Azure.ResourceManager.SecurityCenter
             return resourceGroupResource.GetSecurityConnectors().Get(securityConnectorName, cancellationToken);
         }
 
+        /// <summary> Gets a collection of ApiCollectionResponseResources in the ResourceGroupResource. </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="serviceName"> The name of the API Management service. </param>
+        /// <exception cref="ArgumentException"> <paramref name="serviceName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="serviceName"/> is null. </exception>
+        /// <returns> An object representing collection of ApiCollectionResponseResources and their operations over a ApiCollectionResponseResource. </returns>
+        public static ApiCollectionResponseCollection GetApiCollectionResponses(this ResourceGroupResource resourceGroupResource, string serviceName)
+        {
+            Argument.AssertNotNullOrEmpty(serviceName, nameof(serviceName));
+
+            return GetExtensionClient(resourceGroupResource).GetApiCollectionResponses(serviceName);
+        }
+
+        /// <summary>
+        /// Gets an Azure API Management API if it has been onboarded to Defender for APIs. If an Azure API Management API is onboarded to Defender for APIs, the system will monitor the operations within the Azure API Management API for intrusive behaviors and provide alerts for attacks that have been detected.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/providers/Microsoft.Security/apiCollections/{apiCollectionId}
+        /// Operation Id: APICollection_Get
+        /// </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="serviceName"> The name of the API Management service. </param>
+        /// <param name="apiCollectionId"> A string representing the apiCollections resource within the Microsoft.Security provider namespace. This string matches the Azure API Management API name. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="serviceName"/> or <paramref name="apiCollectionId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="serviceName"/> or <paramref name="apiCollectionId"/> is null. </exception>
+        [ForwardsClientCalls]
+        public static async Task<Response<ApiCollectionResponseResource>> GetApiCollectionResponseAsync(this ResourceGroupResource resourceGroupResource, string serviceName, string apiCollectionId, CancellationToken cancellationToken = default)
+        {
+            return await resourceGroupResource.GetApiCollectionResponses(serviceName).GetAsync(apiCollectionId, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets an Azure API Management API if it has been onboarded to Defender for APIs. If an Azure API Management API is onboarded to Defender for APIs, the system will monitor the operations within the Azure API Management API for intrusive behaviors and provide alerts for attacks that have been detected.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/providers/Microsoft.Security/apiCollections/{apiCollectionId}
+        /// Operation Id: APICollection_Get
+        /// </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="serviceName"> The name of the API Management service. </param>
+        /// <param name="apiCollectionId"> A string representing the apiCollections resource within the Microsoft.Security provider namespace. This string matches the Azure API Management API name. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="serviceName"/> or <paramref name="apiCollectionId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="serviceName"/> or <paramref name="apiCollectionId"/> is null. </exception>
+        [ForwardsClientCalls]
+        public static Response<ApiCollectionResponseResource> GetApiCollectionResponse(this ResourceGroupResource resourceGroupResource, string serviceName, string apiCollectionId, CancellationToken cancellationToken = default)
+        {
+            return resourceGroupResource.GetApiCollectionResponses(serviceName).Get(apiCollectionId, cancellationToken);
+        }
+
         /// <summary>
         /// Gets the list of all possible traffic between resources for the subscription and location, based on connection type.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/allowedConnections/{connectionType}
@@ -1906,6 +1954,55 @@ namespace Azure.ResourceManager.SecurityCenter
         public static Pageable<SecurityAlertData> GetAlertsByResourceGroup(this ResourceGroupResource resourceGroupResource, CancellationToken cancellationToken = default)
         {
             return GetExtensionClient(resourceGroupResource).GetAlertsByResourceGroup(cancellationToken);
+        }
+
+        private static ManagementGroupResourceExtensionClient GetExtensionClient(ManagementGroupResource managementGroupResource)
+        {
+            return managementGroupResource.GetCachedClient((client) =>
+            {
+                return new ManagementGroupResourceExtensionClient(client, managementGroupResource.Id);
+            }
+            );
+        }
+
+        /// <summary> Gets a collection of ManagementGroupGovernanceRuleResources in the ManagementGroupResource. </summary>
+        /// <param name="managementGroupResource"> The <see cref="ManagementGroupResource" /> instance the method will execute against. </param>
+        /// <returns> An object representing collection of ManagementGroupGovernanceRuleResources and their operations over a ManagementGroupGovernanceRuleResource. </returns>
+        public static ManagementGroupGovernanceRuleCollection GetManagementGroupGovernanceRules(this ManagementGroupResource managementGroupResource)
+        {
+            return GetExtensionClient(managementGroupResource).GetManagementGroupGovernanceRules();
+        }
+
+        /// <summary>
+        /// Get a specific governance rule for the requested scope by ruleId
+        /// Request Path: /providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Security/governanceRules/{ruleId}
+        /// Operation Id: managementGroupGovernanceRules_Get
+        /// </summary>
+        /// <param name="managementGroupResource"> The <see cref="ManagementGroupResource" /> instance the method will execute against. </param>
+        /// <param name="ruleId"> The governance rule key - unique key for the standard governance rule (GUID). </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="ruleId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="ruleId"/> is null. </exception>
+        [ForwardsClientCalls]
+        public static async Task<Response<ManagementGroupGovernanceRuleResource>> GetManagementGroupGovernanceRuleAsync(this ManagementGroupResource managementGroupResource, string ruleId, CancellationToken cancellationToken = default)
+        {
+            return await managementGroupResource.GetManagementGroupGovernanceRules().GetAsync(ruleId, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Get a specific governance rule for the requested scope by ruleId
+        /// Request Path: /providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Security/governanceRules/{ruleId}
+        /// Operation Id: managementGroupGovernanceRules_Get
+        /// </summary>
+        /// <param name="managementGroupResource"> The <see cref="ManagementGroupResource" /> instance the method will execute against. </param>
+        /// <param name="ruleId"> The governance rule key - unique key for the standard governance rule (GUID). </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="ruleId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="ruleId"/> is null. </exception>
+        [ForwardsClientCalls]
+        public static Response<ManagementGroupGovernanceRuleResource> GetManagementGroupGovernanceRule(this ManagementGroupResource managementGroupResource, string ruleId, CancellationToken cancellationToken = default)
+        {
+            return managementGroupResource.GetManagementGroupGovernanceRules().Get(ruleId, cancellationToken);
         }
 
         private static ArmResourceExtensionClient GetExtensionClient(ArmClient client, ResourceIdentifier scope)
@@ -2997,6 +3094,25 @@ namespace Azure.ResourceManager.SecurityCenter
         }
         #endregion
 
+        #region ManagementGroupGovernanceRuleResource
+        /// <summary>
+        /// Gets an object representing a <see cref="ManagementGroupGovernanceRuleResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="ManagementGroupGovernanceRuleResource.CreateResourceIdentifier" /> to create a <see cref="ManagementGroupGovernanceRuleResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="ManagementGroupGovernanceRuleResource" /> object. </returns>
+        public static ManagementGroupGovernanceRuleResource GetManagementGroupGovernanceRuleResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                ManagementGroupGovernanceRuleResource.ValidateResourceId(id);
+                return new ManagementGroupGovernanceRuleResource(client, id);
+            }
+            );
+        }
+        #endregion
+
         #region GovernanceAssignmentResource
         /// <summary>
         /// Gets an object representing a <see cref="GovernanceAssignmentResource" /> along with the instance operations that can be performed on it but with no data.
@@ -3049,6 +3165,25 @@ namespace Azure.ResourceManager.SecurityCenter
             {
                 SecurityConnectorApplicationResource.ValidateResourceId(id);
                 return new SecurityConnectorApplicationResource(client, id);
+            }
+            );
+        }
+        #endregion
+
+        #region ApiCollectionResponseResource
+        /// <summary>
+        /// Gets an object representing an <see cref="ApiCollectionResponseResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="ApiCollectionResponseResource.CreateResourceIdentifier" /> to create an <see cref="ApiCollectionResponseResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="ApiCollectionResponseResource" /> object. </returns>
+        public static ApiCollectionResponseResource GetApiCollectionResponseResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                ApiCollectionResponseResource.ValidateResourceId(id);
+                return new ApiCollectionResponseResource(client, id);
             }
             );
         }

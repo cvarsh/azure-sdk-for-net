@@ -6,11 +6,13 @@
 #nullable disable
 
 using System;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
+using Azure.ResourceManager.SecurityCenter.Models;
 
 namespace Azure.ResourceManager.SecurityCenter
 {
@@ -55,14 +57,14 @@ namespace Azure.ResourceManager.SecurityCenter
             return message;
         }
 
-        /// <summary> Get a specific governanceRule execution status for the requested scope by ruleId and operationId. </summary>
+        /// <summary> Get a specific governance rule execution status for the requested scope by ruleId and operationId. </summary>
         /// <param name="subscriptionId"> Azure subscription ID. </param>
-        /// <param name="ruleId"> The security GovernanceRule key - unique key for the standard GovernanceRule. </param>
-        /// <param name="operationId"> The security GovernanceRule execution key - unique key for the execution of GovernanceRule. </param>
+        /// <param name="ruleId"> The governance rule key - unique key for the standard governance rule (GUID). </param>
+        /// <param name="operationId"> The governance rule execution key - unique key for the execution of governance rule. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="ruleId"/> or <paramref name="operationId"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="ruleId"/> or <paramref name="operationId"/> is an empty string, and was expected to be non-empty. </exception>
-        public async Task<Response> GetAsync(string subscriptionId, string ruleId, string operationId, CancellationToken cancellationToken = default)
+        public async Task<Response<ExecuteRuleStatus>> GetAsync(string subscriptionId, string ruleId, string operationId, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(ruleId, nameof(ruleId));
@@ -73,21 +75,27 @@ namespace Azure.ResourceManager.SecurityCenter
             switch (message.Response.Status)
             {
                 case 200:
+                    {
+                        ExecuteRuleStatus value = default;
+                        using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
+                        value = ExecuteRuleStatus.DeserializeExecuteRuleStatus(document.RootElement);
+                        return Response.FromValue(value, message.Response);
+                    }
                 case 202:
-                    return message.Response;
+                    return Response.FromValue((ExecuteRuleStatus)null, message.Response);
                 default:
                     throw new RequestFailedException(message.Response);
             }
         }
 
-        /// <summary> Get a specific governanceRule execution status for the requested scope by ruleId and operationId. </summary>
+        /// <summary> Get a specific governance rule execution status for the requested scope by ruleId and operationId. </summary>
         /// <param name="subscriptionId"> Azure subscription ID. </param>
-        /// <param name="ruleId"> The security GovernanceRule key - unique key for the standard GovernanceRule. </param>
-        /// <param name="operationId"> The security GovernanceRule execution key - unique key for the execution of GovernanceRule. </param>
+        /// <param name="ruleId"> The governance rule key - unique key for the standard governance rule (GUID). </param>
+        /// <param name="operationId"> The governance rule execution key - unique key for the execution of governance rule. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="ruleId"/> or <paramref name="operationId"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/>, <paramref name="ruleId"/> or <paramref name="operationId"/> is an empty string, and was expected to be non-empty. </exception>
-        public Response Get(string subscriptionId, string ruleId, string operationId, CancellationToken cancellationToken = default)
+        public Response<ExecuteRuleStatus> Get(string subscriptionId, string ruleId, string operationId, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
             Argument.AssertNotNullOrEmpty(ruleId, nameof(ruleId));
@@ -98,8 +106,14 @@ namespace Azure.ResourceManager.SecurityCenter
             switch (message.Response.Status)
             {
                 case 200:
+                    {
+                        ExecuteRuleStatus value = default;
+                        using var document = JsonDocument.Parse(message.Response.ContentStream);
+                        value = ExecuteRuleStatus.DeserializeExecuteRuleStatus(document.RootElement);
+                        return Response.FromValue(value, message.Response);
+                    }
                 case 202:
-                    return message.Response;
+                    return Response.FromValue((ExecuteRuleStatus)null, message.Response);
                 default:
                     throw new RequestFailedException(message.Response);
             }
