@@ -9,7 +9,7 @@ using System;
 
 namespace Azure.Security.Attestation
 {
-    /// <summary> Defines the &quot;initialization time data&quot; used to provision the attestation target for use by the MAA. </summary>
+    /// <summary> Initialization time data are a conduit for any configuration information that is unknown when building the Trusted Execution Environment (TEE) and is defined at TEE launch time. This data can be used with confidential container or VM scenarios to capture configuration settings such as disk volume content, network configuration, etc. </summary>
     internal partial class InitTimeData
     {
         /// <summary> Initializes a new instance of InitTimeData. </summary>
@@ -17,7 +17,7 @@ namespace Azure.Security.Attestation
         {
         }
 
-        /// <summary> UTF-8 encoded Initialization Data passed into the trusted environment when it is created. </summary>
+        /// <summary> Initialization time data are passed into the Trusted Execution Environment (TEE) when it is created. For an Icelake SGX quote, the SHA256 hash of the InitTimeData must match the lower 32 bytes of the quote&apos;s &quot;config id&quot; attribute. For a SEV-SNP quote, the SHA256 hash of the InitTimeData must match the quote&apos;s &quot;host data&quot; attribute. </summary>
         public byte[] Data { get; set; }
         /// <summary> The type of data contained within the &quot;data&quot; field. </summary>
         public DataType? DataType { get; set; }
