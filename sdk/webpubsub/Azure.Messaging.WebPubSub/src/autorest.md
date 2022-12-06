@@ -9,7 +9,7 @@ Run `dotnet build /t:GenerateCode` to generate code.
 ``` yaml
 title: WebPubSubServiceClient
 input-file:
-- https://github.com/Azure/azure-rest-api-specs/blob/1735a92bdc79b446385a36ba063ea5235680709f/specification/webpubsub/data-plane/WebPubSub/stable/2022-11-01/webpubsub.json
+- https://github.com/Azure/azure-rest-api-specs/blob/b2ef7a77a391f371c6a4f806c9b9f4f305bca697/specification/webpubsub/data-plane/WebPubSub/stable/2022-11-01/webpubsub.json
 credential-types: AzureKeyCredential
 credential-header-name: Ocp-Apim-Subscription-Key
 ```
