@@ -6,7 +6,7 @@ Run `dotnet build /t:GenerateCode` to generate code.
 azure-arm: true
 library-name: WebPubSub
 namespace: Azure.ResourceManager.WebPubSub
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/47b551f58ee1b24f4783c2e927b1673b39d87348/specification/webpubsub/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/a649865f9b9943d400db80dc3020ba7d037e95ed/specification/webpubsub/resource-manager/readme.md
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
 skip-csproj: true
