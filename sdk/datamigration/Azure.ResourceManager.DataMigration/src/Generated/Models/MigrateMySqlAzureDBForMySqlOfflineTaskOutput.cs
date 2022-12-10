@@ -12,25 +12,20 @@ namespace Azure.ResourceManager.DataMigration.Models
     /// Please note <see cref="MigrateMySqlAzureDBForMySqlOfflineTaskOutput"/> is the base class. According to the scenario, a derived class of the base class might need to be assigned here, or this property needs to be casted to one of the possible derived classes.
     /// The available derived classes include <see cref="MigrateMySqlAzureDBForMySqlOfflineTaskOutputDatabaseLevel"/>, <see cref="MigrateMySqlAzureDBForMySqlOfflineTaskOutputError"/>, <see cref="MigrateMySqlAzureDBForMySqlOfflineTaskOutputMigrationLevel"/> and <see cref="MigrateMySqlAzureDBForMySqlOfflineTaskOutputTableLevel"/>.
     /// </summary>
-    public abstract partial class MigrateMySqlAzureDBForMySqlOfflineTaskOutput
+    public partial class MigrateMySqlAzureDBForMySqlOfflineTaskOutput : MigrateMySqlAzureDBForMySqlTaskResult
     {
         /// <summary> Initializes a new instance of MigrateMySqlAzureDBForMySqlOfflineTaskOutput. </summary>
-        protected MigrateMySqlAzureDBForMySqlOfflineTaskOutput()
+        internal MigrateMySqlAzureDBForMySqlOfflineTaskOutput()
         {
+            ResultType = "MigrateMySqlAzureDbForMySqlOfflineTaskOutput";
         }
 
         /// <summary> Initializes a new instance of MigrateMySqlAzureDBForMySqlOfflineTaskOutput. </summary>
         /// <param name="id"> Result identifier. </param>
         /// <param name="resultType"> Result type. </param>
-        internal MigrateMySqlAzureDBForMySqlOfflineTaskOutput(string id, string resultType)
+        internal MigrateMySqlAzureDBForMySqlOfflineTaskOutput(string id, string resultType) : base(id, resultType)
         {
-            Id = id;
-            ResultType = resultType;
+            ResultType = resultType ?? "MigrateMySqlAzureDbForMySqlOfflineTaskOutput";
         }
-
-        /// <summary> Result identifier. </summary>
-        public string Id { get; }
-        /// <summary> Result type. </summary>
-        internal string ResultType { get; set; }
     }
 }

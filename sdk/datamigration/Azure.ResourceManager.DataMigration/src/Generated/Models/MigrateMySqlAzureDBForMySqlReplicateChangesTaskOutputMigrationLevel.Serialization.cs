@@ -11,32 +11,37 @@ using Azure.Core;
 
 namespace Azure.ResourceManager.DataMigration.Models
 {
-    public partial class MigrateMySqlAzureDBForMySqlSyncTaskOutputDatabaseLevel
+    public partial class MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevel
     {
-        internal static MigrateMySqlAzureDBForMySqlSyncTaskOutputDatabaseLevel DeserializeMigrateMySqlAzureDBForMySqlSyncTaskOutputDatabaseLevel(JsonElement element)
+        internal static MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevel DeserializeMigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevel(JsonElement element)
         {
-            Optional<string> databaseName = default;
+            Optional<MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevelMigrationType> migrationType = default;
             Optional<DateTimeOffset> startedOn = default;
             Optional<DateTimeOffset> endedOn = default;
-            Optional<SyncDatabaseMigrationReportingState> migrationState = default;
-            Optional<long> incomingChanges = default;
-            Optional<long> appliedChanges = default;
-            Optional<long> cdcInsertCounter = default;
-            Optional<long> cdcDeleteCounter = default;
-            Optional<long> cdcUpdateCounter = default;
-            Optional<long> fullLoadCompletedTables = default;
-            Optional<long> fullLoadLoadingTables = default;
-            Optional<long> fullLoadQueuedTables = default;
-            Optional<long> fullLoadErroredTables = default;
-            Optional<bool> initializationCompleted = default;
-            Optional<long> latency = default;
+            Optional<MigrationStatus> status = default;
+            Optional<string> sourceServerVersion = default;
+            Optional<string> targetServerVersion = default;
+            Optional<DateTimeOffset> lastStorageUpdate = default;
+            Optional<string> migrationId = default;
+            Optional<bool> hasServerLevelError = default;
+            Optional<BinaryData> retryingSummary = default;
+            Optional<string> totalRetryingTime = default;
+            Optional<int> totalSourceRetryCount = default;
+            Optional<int> totalTargetRetryCount = default;
+            Optional<int> totalOtherRetryCount = default;
+            Optional<MySqlContinuousDataMovementProgress> continuousDataMovementProgress = default;
             Optional<string> id = default;
             string resultType = default;
             foreach (var property in element.EnumerateObject())
             {
-                if (property.NameEquals("databaseName"))
+                if (property.NameEquals("migrationType"))
                 {
-                    databaseName = property.Value.GetString();
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    migrationType = new MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevelMigrationType(property.Value.GetString());
                     continue;
                 }
                 if (property.NameEquals("startedOn"))
@@ -59,124 +64,104 @@ namespace Azure.ResourceManager.DataMigration.Models
                     endedOn = property.Value.GetDateTimeOffset("O");
                     continue;
                 }
-                if (property.NameEquals("migrationState"))
+                if (property.NameEquals("status"))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
                     {
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    migrationState = new SyncDatabaseMigrationReportingState(property.Value.GetString());
+                    status = new MigrationStatus(property.Value.GetString());
                     continue;
                 }
-                if (property.NameEquals("incomingChanges"))
+                if (property.NameEquals("sourceServerVersion"))
                 {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        property.ThrowNonNullablePropertyIsNull();
-                        continue;
-                    }
-                    incomingChanges = property.Value.GetInt64();
+                    sourceServerVersion = property.Value.GetString();
                     continue;
                 }
-                if (property.NameEquals("appliedChanges"))
+                if (property.NameEquals("targetServerVersion"))
                 {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        property.ThrowNonNullablePropertyIsNull();
-                        continue;
-                    }
-                    appliedChanges = property.Value.GetInt64();
+                    targetServerVersion = property.Value.GetString();
                     continue;
                 }
-                if (property.NameEquals("cdcInsertCounter"))
+                if (property.NameEquals("lastStorageUpdate"))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
                     {
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    cdcInsertCounter = property.Value.GetInt64();
+                    lastStorageUpdate = property.Value.GetDateTimeOffset("O");
                     continue;
                 }
-                if (property.NameEquals("cdcDeleteCounter"))
+                if (property.NameEquals("migrationId"))
                 {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        property.ThrowNonNullablePropertyIsNull();
-                        continue;
-                    }
-                    cdcDeleteCounter = property.Value.GetInt64();
+                    migrationId = property.Value.GetString();
                     continue;
                 }
-                if (property.NameEquals("cdcUpdateCounter"))
+                if (property.NameEquals("hasServerLevelError"))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
                     {
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    cdcUpdateCounter = property.Value.GetInt64();
+                    hasServerLevelError = property.Value.GetBoolean();
                     continue;
                 }
-                if (property.NameEquals("fullLoadCompletedTables"))
+                if (property.NameEquals("retryingSummary"))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
                     {
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    fullLoadCompletedTables = property.Value.GetInt64();
+                    retryingSummary = BinaryData.FromString(property.Value.GetRawText());
                     continue;
                 }
-                if (property.NameEquals("fullLoadLoadingTables"))
+                if (property.NameEquals("totalRetryingTime"))
                 {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        property.ThrowNonNullablePropertyIsNull();
-                        continue;
-                    }
-                    fullLoadLoadingTables = property.Value.GetInt64();
+                    totalRetryingTime = property.Value.GetString();
                     continue;
                 }
-                if (property.NameEquals("fullLoadQueuedTables"))
+                if (property.NameEquals("totalSourceRetryCount"))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
                     {
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    fullLoadQueuedTables = property.Value.GetInt64();
+                    totalSourceRetryCount = property.Value.GetInt32();
                     continue;
                 }
-                if (property.NameEquals("fullLoadErroredTables"))
+                if (property.NameEquals("totalTargetRetryCount"))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
                     {
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    fullLoadErroredTables = property.Value.GetInt64();
+                    totalTargetRetryCount = property.Value.GetInt32();
                     continue;
                 }
-                if (property.NameEquals("initializationCompleted"))
+                if (property.NameEquals("totalOtherRetryCount"))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
                     {
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    initializationCompleted = property.Value.GetBoolean();
+                    totalOtherRetryCount = property.Value.GetInt32();
                     continue;
                 }
-                if (property.NameEquals("latency"))
+                if (property.NameEquals("continuousDataMovementProgress"))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
                     {
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    latency = property.Value.GetInt64();
+                    continuousDataMovementProgress = MySqlContinuousDataMovementProgress.DeserializeMySqlContinuousDataMovementProgress(property.Value);
                     continue;
                 }
                 if (property.NameEquals("id"))
@@ -190,7 +175,7 @@ namespace Azure.ResourceManager.DataMigration.Models
                     continue;
                 }
             }
-            return new MigrateMySqlAzureDBForMySqlSyncTaskOutputDatabaseLevel(id.Value, resultType, databaseName.Value, Optional.ToNullable(startedOn), Optional.ToNullable(endedOn), Optional.ToNullable(migrationState), Optional.ToNullable(incomingChanges), Optional.ToNullable(appliedChanges), Optional.ToNullable(cdcInsertCounter), Optional.ToNullable(cdcDeleteCounter), Optional.ToNullable(cdcUpdateCounter), Optional.ToNullable(fullLoadCompletedTables), Optional.ToNullable(fullLoadLoadingTables), Optional.ToNullable(fullLoadQueuedTables), Optional.ToNullable(fullLoadErroredTables), Optional.ToNullable(initializationCompleted), Optional.ToNullable(latency));
+            return new MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevel(id.Value, resultType, Optional.ToNullable(migrationType), Optional.ToNullable(startedOn), Optional.ToNullable(endedOn), Optional.ToNullable(status), sourceServerVersion.Value, targetServerVersion.Value, Optional.ToNullable(lastStorageUpdate), migrationId.Value, Optional.ToNullable(hasServerLevelError), retryingSummary.Value, totalRetryingTime.Value, Optional.ToNullable(totalSourceRetryCount), Optional.ToNullable(totalTargetRetryCount), Optional.ToNullable(totalOtherRetryCount), continuousDataMovementProgress.Value);
         }
     }
 }

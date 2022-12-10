@@ -16,7 +16,7 @@ namespace Azure.ResourceManager.DataMigration.Models
         /// <summary> Initializes a new instance of MigrateMySqlAzureDBForMySqlSyncTaskProperties. </summary>
         public MigrateMySqlAzureDBForMySqlSyncTaskProperties()
         {
-            Output = new ChangeTrackingList<MigrateMySqlAzureDBForMySqlSyncTaskOutput>();
+            Output = new ChangeTrackingList<MigrateMySqlAzureDBForMySqlTaskResult>();
             TaskType = TaskType.MigrateMySqlAzureDBForMySqlSync;
         }
 
@@ -33,10 +33,10 @@ namespace Azure.ResourceManager.DataMigration.Models
         /// <param name="input"> Task input. </param>
         /// <param name="output">
         /// Task output. This is ignored if submitted.
-        /// Please note <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutput"/> is the base class. According to the scenario, a derived class of the base class might need to be assigned here, or this property needs to be casted to one of the possible derived classes.
-        /// The available derived classes include <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutputDatabaseError"/>, <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutputDatabaseLevel"/>, <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutputError"/>, <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutputMigrationLevel"/> and <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutputTableLevel"/>.
+        /// Please note <see cref="MigrateMySqlAzureDBForMySqlTaskResult"/> is the base class. According to the scenario, a derived class of the base class might need to be assigned here, or this property needs to be casted to one of the possible derived classes.
+        /// The available derived classes include <see cref="MigrateMySqlAzureDBForMySqlOfflineTaskOutputDatabaseLevel"/>, <see cref="MigrateMySqlAzureDBForMySqlOfflineTaskOutputError"/>, <see cref="MigrateMySqlAzureDBForMySqlOfflineTaskOutput"/>, <see cref="MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutput"/>, <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutput"/>, <see cref="MigrateMySqlAzureDBForMySqlOfflineTaskOutputMigrationLevel"/> and <see cref="MigrateMySqlAzureDBForMySqlOfflineTaskOutputTableLevel"/>.
         /// </param>
-        internal MigrateMySqlAzureDBForMySqlSyncTaskProperties(TaskType taskType, IReadOnlyList<ODataError> errors, TaskState? state, IReadOnlyList<CommandProperties> commands, IDictionary<string, string> clientData, MigrateMySqlAzureDBForMySqlSyncTaskInput input, IReadOnlyList<MigrateMySqlAzureDBForMySqlSyncTaskOutput> output) : base(taskType, errors, state, commands, clientData)
+        internal MigrateMySqlAzureDBForMySqlSyncTaskProperties(TaskType taskType, IReadOnlyList<ODataError> errors, TaskState? state, IReadOnlyList<CommandProperties> commands, IDictionary<string, string> clientData, MigrateMySqlAzureDBForMySqlSyncTaskInput input, IReadOnlyList<MigrateMySqlAzureDBForMySqlTaskResult> output) : base(taskType, errors, state, commands, clientData)
         {
             Input = input;
             Output = output;
@@ -47,9 +47,9 @@ namespace Azure.ResourceManager.DataMigration.Models
         public MigrateMySqlAzureDBForMySqlSyncTaskInput Input { get; set; }
         /// <summary>
         /// Task output. This is ignored if submitted.
-        /// Please note <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutput"/> is the base class. According to the scenario, a derived class of the base class might need to be assigned here, or this property needs to be casted to one of the possible derived classes.
-        /// The available derived classes include <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutputDatabaseError"/>, <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutputDatabaseLevel"/>, <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutputError"/>, <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutputMigrationLevel"/> and <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutputTableLevel"/>.
+        /// Please note <see cref="MigrateMySqlAzureDBForMySqlTaskResult"/> is the base class. According to the scenario, a derived class of the base class might need to be assigned here, or this property needs to be casted to one of the possible derived classes.
+        /// The available derived classes include <see cref="MigrateMySqlAzureDBForMySqlOfflineTaskOutputDatabaseLevel"/>, <see cref="MigrateMySqlAzureDBForMySqlOfflineTaskOutputError"/>, <see cref="MigrateMySqlAzureDBForMySqlOfflineTaskOutput"/>, <see cref="MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutput"/>, <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutput"/>, <see cref="MigrateMySqlAzureDBForMySqlOfflineTaskOutputMigrationLevel"/> and <see cref="MigrateMySqlAzureDBForMySqlOfflineTaskOutputTableLevel"/>.
         /// </summary>
-        public IReadOnlyList<MigrateMySqlAzureDBForMySqlSyncTaskOutput> Output { get; }
+        public IReadOnlyList<MigrateMySqlAzureDBForMySqlTaskResult> Output { get; }
     }
 }

@@ -7,30 +7,21 @@
 
 namespace Azure.ResourceManager.DataMigration.Models
 {
-    /// <summary>
-    /// Output for the task that migrates MySQL databases to Azure Database for MySQL for online migrations
-    /// Please note <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutput"/> is the base class. According to the scenario, a derived class of the base class might need to be assigned here, or this property needs to be casted to one of the possible derived classes.
-    /// The available derived classes include <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutputDatabaseError"/>, <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutputDatabaseLevel"/>, <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutputError"/>, <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutputMigrationLevel"/> and <see cref="MigrateMySqlAzureDBForMySqlSyncTaskOutputTableLevel"/>.
-    /// </summary>
-    public abstract partial class MigrateMySqlAzureDBForMySqlSyncTaskOutput
+    /// <summary> Output for the task that migrates MySQL databases to Azure Database for MySQL for online migrations. </summary>
+    public partial class MigrateMySqlAzureDBForMySqlSyncTaskOutput : MigrateMySqlAzureDBForMySqlTaskResult
     {
         /// <summary> Initializes a new instance of MigrateMySqlAzureDBForMySqlSyncTaskOutput. </summary>
-        protected MigrateMySqlAzureDBForMySqlSyncTaskOutput()
+        internal MigrateMySqlAzureDBForMySqlSyncTaskOutput()
         {
+            ResultType = "MigrateMySqlAzureDbForMySqlSyncTaskOutput";
         }
 
         /// <summary> Initializes a new instance of MigrateMySqlAzureDBForMySqlSyncTaskOutput. </summary>
         /// <param name="id"> Result identifier. </param>
         /// <param name="resultType"> Result type. </param>
-        internal MigrateMySqlAzureDBForMySqlSyncTaskOutput(string id, string resultType)
+        internal MigrateMySqlAzureDBForMySqlSyncTaskOutput(string id, string resultType) : base(id, resultType)
         {
-            Id = id;
-            ResultType = resultType;
+            ResultType = resultType ?? "MigrateMySqlAzureDbForMySqlSyncTaskOutput";
         }
-
-        /// <summary> Result identifier. </summary>
-        public string Id { get; }
-        /// <summary> Result type. </summary>
-        internal string ResultType { get; set; }
     }
 }

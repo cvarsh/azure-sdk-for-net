@@ -10,9 +10,9 @@ using Azure.Core;
 
 namespace Azure.ResourceManager.DataMigration.Models
 {
-    internal partial class UnknownMigrateMySqlAzureDBForMySqlOfflineTaskOutput
+    internal partial class UnknownMigrateMySqlAzureDBForMySqlTaskResult
     {
-        internal static UnknownMigrateMySqlAzureDBForMySqlOfflineTaskOutput DeserializeUnknownMigrateMySqlAzureDBForMySqlOfflineTaskOutput(JsonElement element)
+        internal static UnknownMigrateMySqlAzureDBForMySqlTaskResult DeserializeUnknownMigrateMySqlAzureDBForMySqlTaskResult(JsonElement element)
         {
             Optional<string> id = default;
             string resultType = "Unknown";
@@ -29,7 +29,7 @@ namespace Azure.ResourceManager.DataMigration.Models
                     continue;
                 }
             }
-            return new UnknownMigrateMySqlAzureDBForMySqlOfflineTaskOutput(id.Value, resultType);
+            return new UnknownMigrateMySqlAzureDBForMySqlTaskResult(id.Value, resultType);
         }
     }
 }
