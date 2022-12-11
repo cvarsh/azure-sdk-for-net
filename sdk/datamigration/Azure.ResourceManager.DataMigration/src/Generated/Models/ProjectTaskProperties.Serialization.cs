@@ -66,10 +66,6 @@ namespace Azure.ResourceManager.DataMigration.Models
                     case "Migrate.SqlServer.AzureSqlDbMI.Sync.LRS": return MigrateSqlServerSqlMISyncTaskProperties.DeserializeMigrateSqlServerSqlMISyncTaskProperties(element);
                     case "Migrate.SqlServer.SqlDb": return MigrateSqlServerSqlDBTaskProperties.DeserializeMigrateSqlServerSqlDBTaskProperties(element);
                     case "Migrate.Ssis": return MigrateSsisTaskProperties.DeserializeMigrateSsisTaskProperties(element);
-                    case "MigrateSchemaSqlServerSqlDb": return MigrateSchemaSqlServerSqlDBTaskProperties.DeserializeMigrateSchemaSqlServerSqlDBTaskProperties(element);
-                    case "Service.Check.OCI": return CheckOciDriverTaskProperties.DeserializeCheckOciDriverTaskProperties(element);
-                    case "Service.Install.OCI": return InstallOciDriverTaskProperties.DeserializeInstallOciDriverTaskProperties(element);
-                    case "Service.Upload.OCI": return UploadOciDriverTaskProperties.DeserializeUploadOciDriverTaskProperties(element);
                     case "Validate.MongoDb": return ValidateMongoDBTaskProperties.DeserializeValidateMongoDBTaskProperties(element);
                     case "Validate.Oracle.AzureDbPostgreSql.Sync": return ValidateOracleAzureDBForPostgreSqlSyncTaskProperties.DeserializeValidateOracleAzureDBForPostgreSqlSyncTaskProperties(element);
                     case "ValidateMigrationInput.SqlServer.AzureSqlDbMI": return ValidateMigrationInputSqlServerSqlMITaskProperties.DeserializeValidateMigrationInputSqlServerSqlMITaskProperties(element);

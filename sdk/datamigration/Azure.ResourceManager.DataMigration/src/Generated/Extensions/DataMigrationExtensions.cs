@@ -29,32 +29,6 @@ namespace Azure.ResourceManager.DataMigration
         }
 
         /// <summary>
-        /// Retrieve all SQL migration services in the subscriptions.
-        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/sqlMigrationServices
-        /// Operation Id: SqlMigrationServices_ListBySubscription
-        /// </summary>
-        /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <returns> An async collection of <see cref="SqlMigrationServiceResource" /> that may take multiple service requests to iterate over. </returns>
-        public static AsyncPageable<SqlMigrationServiceResource> GetSqlMigrationServicesAsync(this SubscriptionResource subscriptionResource, CancellationToken cancellationToken = default)
-        {
-            return GetExtensionClient(subscriptionResource).GetSqlMigrationServicesAsync(cancellationToken);
-        }
-
-        /// <summary>
-        /// Retrieve all SQL migration services in the subscriptions.
-        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/sqlMigrationServices
-        /// Operation Id: SqlMigrationServices_ListBySubscription
-        /// </summary>
-        /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <returns> A collection of <see cref="SqlMigrationServiceResource" /> that may take multiple service requests to iterate over. </returns>
-        public static Pageable<SqlMigrationServiceResource> GetSqlMigrationServices(this SubscriptionResource subscriptionResource, CancellationToken cancellationToken = default)
-        {
-            return GetExtensionClient(subscriptionResource).GetSqlMigrationServices(cancellationToken);
-        }
-
-        /// <summary>
         /// The skus action returns the list of SKUs that DMS supports.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/skus
         /// Operation Id: ResourceSkus_ListSkus
@@ -168,6 +142,32 @@ namespace Azure.ResourceManager.DataMigration
             return GetExtensionClient(subscriptionResource).GetUsages(location, cancellationToken);
         }
 
+        /// <summary>
+        /// Retrieve all SQL migration services in the subscriptions.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/sqlMigrationServices
+        /// Operation Id: SqlMigrationServices_ListBySubscription
+        /// </summary>
+        /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <returns> An async collection of <see cref="SqlMigrationServiceResource" /> that may take multiple service requests to iterate over. </returns>
+        public static AsyncPageable<SqlMigrationServiceResource> GetSqlMigrationServicesAsync(this SubscriptionResource subscriptionResource, CancellationToken cancellationToken = default)
+        {
+            return GetExtensionClient(subscriptionResource).GetSqlMigrationServicesAsync(cancellationToken);
+        }
+
+        /// <summary>
+        /// Retrieve all SQL migration services in the subscriptions.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/sqlMigrationServices
+        /// Operation Id: SqlMigrationServices_ListBySubscription
+        /// </summary>
+        /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <returns> A collection of <see cref="SqlMigrationServiceResource" /> that may take multiple service requests to iterate over. </returns>
+        public static Pageable<SqlMigrationServiceResource> GetSqlMigrationServices(this SubscriptionResource subscriptionResource, CancellationToken cancellationToken = default)
+        {
+            return GetExtensionClient(subscriptionResource).GetSqlMigrationServices(cancellationToken);
+        }
+
         private static ResourceGroupResourceExtensionClient GetExtensionClient(ResourceGroupResource resourceGroupResource)
         {
             return resourceGroupResource.GetCachedClient((client) =>
@@ -175,6 +175,46 @@ namespace Azure.ResourceManager.DataMigration
                 return new ResourceGroupResourceExtensionClient(client, resourceGroupResource.Id);
             }
             );
+        }
+
+        /// <summary> Gets a collection of DataMigrationServiceResources in the ResourceGroupResource. </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <returns> An object representing collection of DataMigrationServiceResources and their operations over a DataMigrationServiceResource. </returns>
+        public static DataMigrationServiceCollection GetDataMigrationServices(this ResourceGroupResource resourceGroupResource)
+        {
+            return GetExtensionClient(resourceGroupResource).GetDataMigrationServices();
+        }
+
+        /// <summary>
+        /// The services resource is the top-level resource that represents the Database Migration Service. The GET method retrieves information about a service instance.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}
+        /// Operation Id: Services_Get
+        /// </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="serviceName"> Name of the service. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="serviceName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="serviceName"/> is null. </exception>
+        [ForwardsClientCalls]
+        public static async Task<Response<DataMigrationServiceResource>> GetDataMigrationServiceAsync(this ResourceGroupResource resourceGroupResource, string serviceName, CancellationToken cancellationToken = default)
+        {
+            return await resourceGroupResource.GetDataMigrationServices().GetAsync(serviceName, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// The services resource is the top-level resource that represents the Database Migration Service. The GET method retrieves information about a service instance.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}
+        /// Operation Id: Services_Get
+        /// </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="serviceName"> Name of the service. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="serviceName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="serviceName"/> is null. </exception>
+        [ForwardsClientCalls]
+        public static Response<DataMigrationServiceResource> GetDataMigrationService(this ResourceGroupResource resourceGroupResource, string serviceName, CancellationToken cancellationToken = default)
+        {
+            return resourceGroupResource.GetDataMigrationServices().Get(serviceName, cancellationToken);
         }
 
         /// <summary> Gets a collection of DatabaseMigrationSqlDBResources in the ResourceGroupResource. </summary>
@@ -355,122 +395,6 @@ namespace Azure.ResourceManager.DataMigration
             return resourceGroupResource.GetSqlMigrationServices().Get(sqlMigrationServiceName, cancellationToken);
         }
 
-        /// <summary> Gets a collection of DataMigrationServiceResources in the ResourceGroupResource. </summary>
-        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
-        /// <returns> An object representing collection of DataMigrationServiceResources and their operations over a DataMigrationServiceResource. </returns>
-        public static DataMigrationServiceCollection GetDataMigrationServices(this ResourceGroupResource resourceGroupResource)
-        {
-            return GetExtensionClient(resourceGroupResource).GetDataMigrationServices();
-        }
-
-        /// <summary>
-        /// The services resource is the top-level resource that represents the Database Migration Service. The GET method retrieves information about a service instance.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}
-        /// Operation Id: Services_Get
-        /// </summary>
-        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
-        /// <param name="serviceName"> Name of the service. </param>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentException"> <paramref name="serviceName"/> is an empty string, and was expected to be non-empty. </exception>
-        /// <exception cref="ArgumentNullException"> <paramref name="serviceName"/> is null. </exception>
-        [ForwardsClientCalls]
-        public static async Task<Response<DataMigrationServiceResource>> GetDataMigrationServiceAsync(this ResourceGroupResource resourceGroupResource, string serviceName, CancellationToken cancellationToken = default)
-        {
-            return await resourceGroupResource.GetDataMigrationServices().GetAsync(serviceName, cancellationToken).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// The services resource is the top-level resource that represents the Database Migration Service. The GET method retrieves information about a service instance.
-        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}
-        /// Operation Id: Services_Get
-        /// </summary>
-        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
-        /// <param name="serviceName"> Name of the service. </param>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentException"> <paramref name="serviceName"/> is an empty string, and was expected to be non-empty. </exception>
-        /// <exception cref="ArgumentNullException"> <paramref name="serviceName"/> is null. </exception>
-        [ForwardsClientCalls]
-        public static Response<DataMigrationServiceResource> GetDataMigrationService(this ResourceGroupResource resourceGroupResource, string serviceName, CancellationToken cancellationToken = default)
-        {
-            return resourceGroupResource.GetDataMigrationServices().Get(serviceName, cancellationToken);
-        }
-
-        #region DatabaseMigrationSqlDBResource
-        /// <summary>
-        /// Gets an object representing a <see cref="DatabaseMigrationSqlDBResource" /> along with the instance operations that can be performed on it but with no data.
-        /// You can use <see cref="DatabaseMigrationSqlDBResource.CreateResourceIdentifier" /> to create a <see cref="DatabaseMigrationSqlDBResource" /> <see cref="ResourceIdentifier" /> from its components.
-        /// </summary>
-        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
-        /// <param name="id"> The resource ID of the resource to get. </param>
-        /// <returns> Returns a <see cref="DatabaseMigrationSqlDBResource" /> object. </returns>
-        public static DatabaseMigrationSqlDBResource GetDatabaseMigrationSqlDBResource(this ArmClient client, ResourceIdentifier id)
-        {
-            return client.GetResourceClient(() =>
-            {
-                DatabaseMigrationSqlDBResource.ValidateResourceId(id);
-                return new DatabaseMigrationSqlDBResource(client, id);
-            }
-            );
-        }
-        #endregion
-
-        #region DatabaseMigrationSqlMIResource
-        /// <summary>
-        /// Gets an object representing a <see cref="DatabaseMigrationSqlMIResource" /> along with the instance operations that can be performed on it but with no data.
-        /// You can use <see cref="DatabaseMigrationSqlMIResource.CreateResourceIdentifier" /> to create a <see cref="DatabaseMigrationSqlMIResource" /> <see cref="ResourceIdentifier" /> from its components.
-        /// </summary>
-        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
-        /// <param name="id"> The resource ID of the resource to get. </param>
-        /// <returns> Returns a <see cref="DatabaseMigrationSqlMIResource" /> object. </returns>
-        public static DatabaseMigrationSqlMIResource GetDatabaseMigrationSqlMIResource(this ArmClient client, ResourceIdentifier id)
-        {
-            return client.GetResourceClient(() =>
-            {
-                DatabaseMigrationSqlMIResource.ValidateResourceId(id);
-                return new DatabaseMigrationSqlMIResource(client, id);
-            }
-            );
-        }
-        #endregion
-
-        #region DatabaseMigrationSqlVmResource
-        /// <summary>
-        /// Gets an object representing a <see cref="DatabaseMigrationSqlVmResource" /> along with the instance operations that can be performed on it but with no data.
-        /// You can use <see cref="DatabaseMigrationSqlVmResource.CreateResourceIdentifier" /> to create a <see cref="DatabaseMigrationSqlVmResource" /> <see cref="ResourceIdentifier" /> from its components.
-        /// </summary>
-        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
-        /// <param name="id"> The resource ID of the resource to get. </param>
-        /// <returns> Returns a <see cref="DatabaseMigrationSqlVmResource" /> object. </returns>
-        public static DatabaseMigrationSqlVmResource GetDatabaseMigrationSqlVmResource(this ArmClient client, ResourceIdentifier id)
-        {
-            return client.GetResourceClient(() =>
-            {
-                DatabaseMigrationSqlVmResource.ValidateResourceId(id);
-                return new DatabaseMigrationSqlVmResource(client, id);
-            }
-            );
-        }
-        #endregion
-
-        #region SqlMigrationServiceResource
-        /// <summary>
-        /// Gets an object representing a <see cref="SqlMigrationServiceResource" /> along with the instance operations that can be performed on it but with no data.
-        /// You can use <see cref="SqlMigrationServiceResource.CreateResourceIdentifier" /> to create a <see cref="SqlMigrationServiceResource" /> <see cref="ResourceIdentifier" /> from its components.
-        /// </summary>
-        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
-        /// <param name="id"> The resource ID of the resource to get. </param>
-        /// <returns> Returns a <see cref="SqlMigrationServiceResource" /> object. </returns>
-        public static SqlMigrationServiceResource GetSqlMigrationServiceResource(this ArmClient client, ResourceIdentifier id)
-        {
-            return client.GetResourceClient(() =>
-            {
-                SqlMigrationServiceResource.ValidateResourceId(id);
-                return new SqlMigrationServiceResource(client, id);
-            }
-            );
-        }
-        #endregion
-
         #region DataMigrationServiceResource
         /// <summary>
         /// Gets an object representing a <see cref="DataMigrationServiceResource" /> along with the instance operations that can be performed on it but with no data.
@@ -561,6 +485,82 @@ namespace Azure.ResourceManager.DataMigration
             {
                 ProjectFileResource.ValidateResourceId(id);
                 return new ProjectFileResource(client, id);
+            }
+            );
+        }
+        #endregion
+
+        #region DatabaseMigrationSqlDBResource
+        /// <summary>
+        /// Gets an object representing a <see cref="DatabaseMigrationSqlDBResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="DatabaseMigrationSqlDBResource.CreateResourceIdentifier" /> to create a <see cref="DatabaseMigrationSqlDBResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="DatabaseMigrationSqlDBResource" /> object. </returns>
+        public static DatabaseMigrationSqlDBResource GetDatabaseMigrationSqlDBResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                DatabaseMigrationSqlDBResource.ValidateResourceId(id);
+                return new DatabaseMigrationSqlDBResource(client, id);
+            }
+            );
+        }
+        #endregion
+
+        #region DatabaseMigrationSqlMIResource
+        /// <summary>
+        /// Gets an object representing a <see cref="DatabaseMigrationSqlMIResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="DatabaseMigrationSqlMIResource.CreateResourceIdentifier" /> to create a <see cref="DatabaseMigrationSqlMIResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="DatabaseMigrationSqlMIResource" /> object. </returns>
+        public static DatabaseMigrationSqlMIResource GetDatabaseMigrationSqlMIResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                DatabaseMigrationSqlMIResource.ValidateResourceId(id);
+                return new DatabaseMigrationSqlMIResource(client, id);
+            }
+            );
+        }
+        #endregion
+
+        #region DatabaseMigrationSqlVmResource
+        /// <summary>
+        /// Gets an object representing a <see cref="DatabaseMigrationSqlVmResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="DatabaseMigrationSqlVmResource.CreateResourceIdentifier" /> to create a <see cref="DatabaseMigrationSqlVmResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="DatabaseMigrationSqlVmResource" /> object. </returns>
+        public static DatabaseMigrationSqlVmResource GetDatabaseMigrationSqlVmResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                DatabaseMigrationSqlVmResource.ValidateResourceId(id);
+                return new DatabaseMigrationSqlVmResource(client, id);
+            }
+            );
+        }
+        #endregion
+
+        #region SqlMigrationServiceResource
+        /// <summary>
+        /// Gets an object representing a <see cref="SqlMigrationServiceResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="SqlMigrationServiceResource.CreateResourceIdentifier" /> to create a <see cref="SqlMigrationServiceResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="SqlMigrationServiceResource" /> object. </returns>
+        public static SqlMigrationServiceResource GetSqlMigrationServiceResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                SqlMigrationServiceResource.ValidateResourceId(id);
+                return new SqlMigrationServiceResource(client, id);
             }
             );
         }

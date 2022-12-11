@@ -20,14 +20,14 @@ namespace Azure.ResourceManager.DataMigration
     /// <summary> A class to add extension methods to SubscriptionResource. </summary>
     internal partial class SubscriptionResourceExtensionClient : ArmResource
     {
-        private ClientDiagnostics _sqlMigrationServiceClientDiagnostics;
-        private SqlMigrationServicesRestOperations _sqlMigrationServiceRestClient;
         private ClientDiagnostics _resourceSkusClientDiagnostics;
         private ResourceSkusRestOperations _resourceSkusRestClient;
         private ClientDiagnostics _dataMigrationServiceServicesClientDiagnostics;
         private ServicesRestOperations _dataMigrationServiceServicesRestClient;
         private ClientDiagnostics _usagesClientDiagnostics;
         private UsagesRestOperations _usagesRestClient;
+        private ClientDiagnostics _sqlMigrationServiceClientDiagnostics;
+        private SqlMigrationServicesRestOperations _sqlMigrationServiceRestClient;
 
         /// <summary> Initializes a new instance of the <see cref="SubscriptionResourceExtensionClient"/> class for mocking. </summary>
         protected SubscriptionResourceExtensionClient()
@@ -41,103 +41,19 @@ namespace Azure.ResourceManager.DataMigration
         {
         }
 
-        private ClientDiagnostics SqlMigrationServiceClientDiagnostics => _sqlMigrationServiceClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.DataMigration", SqlMigrationServiceResource.ResourceType.Namespace, Diagnostics);
-        private SqlMigrationServicesRestOperations SqlMigrationServiceRestClient => _sqlMigrationServiceRestClient ??= new SqlMigrationServicesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, GetApiVersionOrNull(SqlMigrationServiceResource.ResourceType));
         private ClientDiagnostics ResourceSkusClientDiagnostics => _resourceSkusClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.DataMigration", ProviderConstants.DefaultProviderNamespace, Diagnostics);
         private ResourceSkusRestOperations ResourceSkusRestClient => _resourceSkusRestClient ??= new ResourceSkusRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
         private ClientDiagnostics DataMigrationServiceServicesClientDiagnostics => _dataMigrationServiceServicesClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.DataMigration", DataMigrationServiceResource.ResourceType.Namespace, Diagnostics);
         private ServicesRestOperations DataMigrationServiceServicesRestClient => _dataMigrationServiceServicesRestClient ??= new ServicesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, GetApiVersionOrNull(DataMigrationServiceResource.ResourceType));
         private ClientDiagnostics UsagesClientDiagnostics => _usagesClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.DataMigration", ProviderConstants.DefaultProviderNamespace, Diagnostics);
         private UsagesRestOperations UsagesRestClient => _usagesRestClient ??= new UsagesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
+        private ClientDiagnostics SqlMigrationServiceClientDiagnostics => _sqlMigrationServiceClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.DataMigration", SqlMigrationServiceResource.ResourceType.Namespace, Diagnostics);
+        private SqlMigrationServicesRestOperations SqlMigrationServiceRestClient => _sqlMigrationServiceRestClient ??= new SqlMigrationServicesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, GetApiVersionOrNull(SqlMigrationServiceResource.ResourceType));
 
         private string GetApiVersionOrNull(Core.ResourceType resourceType)
         {
             TryGetApiVersion(resourceType, out string apiVersion);
             return apiVersion;
-        }
-
-        /// <summary>
-        /// Retrieve all SQL migration services in the subscriptions.
-        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/sqlMigrationServices
-        /// Operation Id: SqlMigrationServices_ListBySubscription
-        /// </summary>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <returns> An async collection of <see cref="SqlMigrationServiceResource" /> that may take multiple service requests to iterate over. </returns>
-        public virtual AsyncPageable<SqlMigrationServiceResource> GetSqlMigrationServicesAsync(CancellationToken cancellationToken = default)
-        {
-            async Task<Page<SqlMigrationServiceResource>> FirstPageFunc(int? pageSizeHint)
-            {
-                using var scope = SqlMigrationServiceClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.GetSqlMigrationServices");
-                scope.Start();
-                try
-                {
-                    var response = await SqlMigrationServiceRestClient.ListBySubscriptionAsync(Id.SubscriptionId, cancellationToken: cancellationToken).ConfigureAwait(false);
-                    return Page.FromValues(response.Value.Value.Select(value => new SqlMigrationServiceResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
-                }
-                catch (Exception e)
-                {
-                    scope.Failed(e);
-                    throw;
-                }
-            }
-            async Task<Page<SqlMigrationServiceResource>> NextPageFunc(string nextLink, int? pageSizeHint)
-            {
-                using var scope = SqlMigrationServiceClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.GetSqlMigrationServices");
-                scope.Start();
-                try
-                {
-                    var response = await SqlMigrationServiceRestClient.ListBySubscriptionNextPageAsync(nextLink, Id.SubscriptionId, cancellationToken: cancellationToken).ConfigureAwait(false);
-                    return Page.FromValues(response.Value.Value.Select(value => new SqlMigrationServiceResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
-                }
-                catch (Exception e)
-                {
-                    scope.Failed(e);
-                    throw;
-                }
-            }
-            return PageableHelpers.CreateAsyncEnumerable(FirstPageFunc, NextPageFunc);
-        }
-
-        /// <summary>
-        /// Retrieve all SQL migration services in the subscriptions.
-        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/sqlMigrationServices
-        /// Operation Id: SqlMigrationServices_ListBySubscription
-        /// </summary>
-        /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <returns> A collection of <see cref="SqlMigrationServiceResource" /> that may take multiple service requests to iterate over. </returns>
-        public virtual Pageable<SqlMigrationServiceResource> GetSqlMigrationServices(CancellationToken cancellationToken = default)
-        {
-            Page<SqlMigrationServiceResource> FirstPageFunc(int? pageSizeHint)
-            {
-                using var scope = SqlMigrationServiceClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.GetSqlMigrationServices");
-                scope.Start();
-                try
-                {
-                    var response = SqlMigrationServiceRestClient.ListBySubscription(Id.SubscriptionId, cancellationToken: cancellationToken);
-                    return Page.FromValues(response.Value.Value.Select(value => new SqlMigrationServiceResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
-                }
-                catch (Exception e)
-                {
-                    scope.Failed(e);
-                    throw;
-                }
-            }
-            Page<SqlMigrationServiceResource> NextPageFunc(string nextLink, int? pageSizeHint)
-            {
-                using var scope = SqlMigrationServiceClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.GetSqlMigrationServices");
-                scope.Start();
-                try
-                {
-                    var response = SqlMigrationServiceRestClient.ListBySubscriptionNextPage(nextLink, Id.SubscriptionId, cancellationToken: cancellationToken);
-                    return Page.FromValues(response.Value.Value.Select(value => new SqlMigrationServiceResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
-                }
-                catch (Exception e)
-                {
-                    scope.Failed(e);
-                    throw;
-                }
-            }
-            return PageableHelpers.CreateEnumerable(FirstPageFunc, NextPageFunc);
         }
 
         /// <summary>
@@ -432,6 +348,90 @@ namespace Azure.ResourceManager.DataMigration
                 {
                     var response = UsagesRestClient.ListNextPage(nextLink, Id.SubscriptionId, location, cancellationToken: cancellationToken);
                     return Page.FromValues(response.Value.Value, response.Value.NextLink, response.GetRawResponse());
+                }
+                catch (Exception e)
+                {
+                    scope.Failed(e);
+                    throw;
+                }
+            }
+            return PageableHelpers.CreateEnumerable(FirstPageFunc, NextPageFunc);
+        }
+
+        /// <summary>
+        /// Retrieve all SQL migration services in the subscriptions.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/sqlMigrationServices
+        /// Operation Id: SqlMigrationServices_ListBySubscription
+        /// </summary>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <returns> An async collection of <see cref="SqlMigrationServiceResource" /> that may take multiple service requests to iterate over. </returns>
+        public virtual AsyncPageable<SqlMigrationServiceResource> GetSqlMigrationServicesAsync(CancellationToken cancellationToken = default)
+        {
+            async Task<Page<SqlMigrationServiceResource>> FirstPageFunc(int? pageSizeHint)
+            {
+                using var scope = SqlMigrationServiceClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.GetSqlMigrationServices");
+                scope.Start();
+                try
+                {
+                    var response = await SqlMigrationServiceRestClient.ListBySubscriptionAsync(Id.SubscriptionId, cancellationToken: cancellationToken).ConfigureAwait(false);
+                    return Page.FromValues(response.Value.Value.Select(value => new SqlMigrationServiceResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
+                }
+                catch (Exception e)
+                {
+                    scope.Failed(e);
+                    throw;
+                }
+            }
+            async Task<Page<SqlMigrationServiceResource>> NextPageFunc(string nextLink, int? pageSizeHint)
+            {
+                using var scope = SqlMigrationServiceClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.GetSqlMigrationServices");
+                scope.Start();
+                try
+                {
+                    var response = await SqlMigrationServiceRestClient.ListBySubscriptionNextPageAsync(nextLink, Id.SubscriptionId, cancellationToken: cancellationToken).ConfigureAwait(false);
+                    return Page.FromValues(response.Value.Value.Select(value => new SqlMigrationServiceResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
+                }
+                catch (Exception e)
+                {
+                    scope.Failed(e);
+                    throw;
+                }
+            }
+            return PageableHelpers.CreateAsyncEnumerable(FirstPageFunc, NextPageFunc);
+        }
+
+        /// <summary>
+        /// Retrieve all SQL migration services in the subscriptions.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/sqlMigrationServices
+        /// Operation Id: SqlMigrationServices_ListBySubscription
+        /// </summary>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <returns> A collection of <see cref="SqlMigrationServiceResource" /> that may take multiple service requests to iterate over. </returns>
+        public virtual Pageable<SqlMigrationServiceResource> GetSqlMigrationServices(CancellationToken cancellationToken = default)
+        {
+            Page<SqlMigrationServiceResource> FirstPageFunc(int? pageSizeHint)
+            {
+                using var scope = SqlMigrationServiceClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.GetSqlMigrationServices");
+                scope.Start();
+                try
+                {
+                    var response = SqlMigrationServiceRestClient.ListBySubscription(Id.SubscriptionId, cancellationToken: cancellationToken);
+                    return Page.FromValues(response.Value.Value.Select(value => new SqlMigrationServiceResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
+                }
+                catch (Exception e)
+                {
+                    scope.Failed(e);
+                    throw;
+                }
+            }
+            Page<SqlMigrationServiceResource> NextPageFunc(string nextLink, int? pageSizeHint)
+            {
+                using var scope = SqlMigrationServiceClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.GetSqlMigrationServices");
+                scope.Start();
+                try
+                {
+                    var response = SqlMigrationServiceRestClient.ListBySubscriptionNextPage(nextLink, Id.SubscriptionId, cancellationToken: cancellationToken);
+                    return Page.FromValues(response.Value.Value.Select(value => new SqlMigrationServiceResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
                 }
                 catch (Exception e)
                 {
