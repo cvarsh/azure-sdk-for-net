@@ -16,15 +16,10 @@ namespace Azure.ResourceManager.SecurityInsights.Models
     {
         internal static IncidentList DeserializeIncidentList(JsonElement element)
         {
-            Optional<string> nextLink = default;
             IReadOnlyList<IncidentData> value = default;
+            Optional<string> nextLink = default;
             foreach (var property in element.EnumerateObject())
             {
-                if (property.NameEquals("nextLink"))
-                {
-                    nextLink = property.Value.GetString();
-                    continue;
-                }
                 if (property.NameEquals("value"))
                 {
                     List<IncidentData> array = new List<IncidentData>();
@@ -35,8 +30,13 @@ namespace Azure.ResourceManager.SecurityInsights.Models
                     value = array;
                     continue;
                 }
+                if (property.NameEquals("nextLink"))
+                {
+                    nextLink = property.Value.GetString();
+                    continue;
+                }
             }
-            return new IncidentList(nextLink.Value, value);
+            return new IncidentList(value, nextLink.Value);
         }
     }
 }
