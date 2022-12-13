@@ -5,6 +5,8 @@
 
 #nullable disable
 
+using System.Collections.Generic;
+using Azure;
 using Azure.Core;
 
 namespace Azure.ResourceManager.DataBox.Models
@@ -18,6 +20,8 @@ namespace Azure.ResourceManager.DataBox.Models
         }
 
         /// <summary> Initializes a new instance of DataBoxDiskGranularCopyProgress. </summary>
+        /// <param name="error"> Provides additional information about an http error response. </param>
+        /// <param name="actions"> Available actions on the job. </param>
         /// <param name="storageAccountName"> Name of the storage account. This will be empty for data account types other than storage account. </param>
         /// <param name="transferType"> Transfer type of data. </param>
         /// <param name="dataAccountType"> Data Account Type. </param>
@@ -38,7 +42,7 @@ namespace Azure.ResourceManager.DataBox.Models
         /// </param>
         /// <param name="serialNumber"> Disk Serial Number. </param>
         /// <param name="copyStatus"> The Status of the copy. </param>
-        internal DataBoxDiskGranularCopyProgress(string storageAccountName, DataBoxJobTransferType? transferType, DataAccountType? dataAccountType, ResourceIdentifier accountId, long? bytesProcessed, long? totalBytesToProcess, long? filesProcessed, long? totalFilesToProcess, long? invalidFilesProcessed, long? invalidFileBytesUploaded, long? renamedContainerCount, long? filesErroredOut, long? directoriesErroredOut, long? invalidDirectoriesProcessed, bool? isEnumerationInProgress, string serialNumber, DataBoxCopyStatus? copyStatus) : base(storageAccountName, transferType, dataAccountType, accountId, bytesProcessed, totalBytesToProcess, filesProcessed, totalFilesToProcess, invalidFilesProcessed, invalidFileBytesUploaded, renamedContainerCount, filesErroredOut, directoriesErroredOut, invalidDirectoriesProcessed, isEnumerationInProgress)
+        internal DataBoxDiskGranularCopyProgress(ResponseError error, IReadOnlyList<CustomerResolutionCode> actions, string storageAccountName, DataBoxJobTransferType? transferType, DataAccountType? dataAccountType, ResourceIdentifier accountId, long? bytesProcessed, long? totalBytesToProcess, long? filesProcessed, long? totalFilesToProcess, long? invalidFilesProcessed, long? invalidFileBytesUploaded, long? renamedContainerCount, long? filesErroredOut, long? directoriesErroredOut, long? invalidDirectoriesProcessed, bool? isEnumerationInProgress, string serialNumber, DataBoxCopyStatus? copyStatus) : base(error, actions, storageAccountName, transferType, dataAccountType, accountId, bytesProcessed, totalBytesToProcess, filesProcessed, totalFilesToProcess, invalidFilesProcessed, invalidFileBytesUploaded, renamedContainerCount, filesErroredOut, directoriesErroredOut, invalidDirectoriesProcessed, isEnumerationInProgress)
         {
             SerialNumber = serialNumber;
             CopyStatus = copyStatus;

@@ -5,12 +5,14 @@
 
 #nullable disable
 
+using System.Collections.Generic;
+using Azure;
 using Azure.Core;
 
 namespace Azure.ResourceManager.DataBox.Models
 {
     /// <summary> Granular Copy progress. </summary>
-    public partial class GranularCopyProgress
+    public partial class GranularCopyProgress : CustomerInterventionStageProgress
     {
         /// <summary> Initializes a new instance of GranularCopyProgress. </summary>
         internal GranularCopyProgress()
@@ -18,6 +20,8 @@ namespace Azure.ResourceManager.DataBox.Models
         }
 
         /// <summary> Initializes a new instance of GranularCopyProgress. </summary>
+        /// <param name="error"> Provides additional information about an http error response. </param>
+        /// <param name="actions"> Available actions on the job. </param>
         /// <param name="storageAccountName"> Name of the storage account. This will be empty for data account types other than storage account. </param>
         /// <param name="transferType"> Transfer type of data. </param>
         /// <param name="dataAccountType"> Data Account Type. </param>
@@ -36,7 +40,7 @@ namespace Azure.ResourceManager.DataBox.Models
         /// To indicate if enumeration of data is in progress. 
         /// Until this is true, the TotalBytesToProcess may not be valid.
         /// </param>
-        internal GranularCopyProgress(string storageAccountName, DataBoxJobTransferType? transferType, DataAccountType? dataAccountType, ResourceIdentifier accountId, long? bytesProcessed, long? totalBytesToProcess, long? filesProcessed, long? totalFilesToProcess, long? invalidFilesProcessed, long? invalidFileBytesUploaded, long? renamedContainerCount, long? filesErroredOut, long? directoriesErroredOut, long? invalidDirectoriesProcessed, bool? isEnumerationInProgress)
+        internal GranularCopyProgress(ResponseError error, IReadOnlyList<CustomerResolutionCode> actions, string storageAccountName, DataBoxJobTransferType? transferType, DataAccountType? dataAccountType, ResourceIdentifier accountId, long? bytesProcessed, long? totalBytesToProcess, long? filesProcessed, long? totalFilesToProcess, long? invalidFilesProcessed, long? invalidFileBytesUploaded, long? renamedContainerCount, long? filesErroredOut, long? directoriesErroredOut, long? invalidDirectoriesProcessed, bool? isEnumerationInProgress) : base(error, actions)
         {
             StorageAccountName = storageAccountName;
             TransferType = transferType;
