@@ -244,15 +244,16 @@ namespace Azure.ResourceManager.HybridConnectivity
         /// Request Path: /{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listCredentials
         /// Operation Id: Endpoints_ListCredentials
         /// </summary>
+        /// <param name="content"> Object of type ListCredentialsRequest. </param>
         /// <param name="expiresin"> The is how long the endpoint access token is valid (in seconds). </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual async Task<Response<TargetResourceEndpointAccess>> GetCredentialsAsync(long? expiresin = null, CancellationToken cancellationToken = default)
+        public virtual async Task<Response<TargetResourceEndpointAccess>> GetCredentialsAsync(ListCredentialsContent content = null, long? expiresin = null, CancellationToken cancellationToken = default)
         {
             using var scope = _endpointResourceEndpointsClientDiagnostics.CreateScope("EndpointResource.GetCredentials");
             scope.Start();
             try
             {
-                var response = await _endpointResourceEndpointsRestClient.ListCredentialsAsync(Id.Parent, Id.Name, expiresin, cancellationToken).ConfigureAwait(false);
+                var response = await _endpointResourceEndpointsRestClient.ListCredentialsAsync(Id.Parent, Id.Name, content, expiresin, cancellationToken).ConfigureAwait(false);
                 return response;
             }
             catch (Exception e)
@@ -267,15 +268,114 @@ namespace Azure.ResourceManager.HybridConnectivity
         /// Request Path: /{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listCredentials
         /// Operation Id: Endpoints_ListCredentials
         /// </summary>
+        /// <param name="content"> Object of type ListCredentialsRequest. </param>
         /// <param name="expiresin"> The is how long the endpoint access token is valid (in seconds). </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual Response<TargetResourceEndpointAccess> GetCredentials(long? expiresin = null, CancellationToken cancellationToken = default)
+        public virtual Response<TargetResourceEndpointAccess> GetCredentials(ListCredentialsContent content = null, long? expiresin = null, CancellationToken cancellationToken = default)
         {
             using var scope = _endpointResourceEndpointsClientDiagnostics.CreateScope("EndpointResource.GetCredentials");
             scope.Start();
             try
             {
-                var response = _endpointResourceEndpointsRestClient.ListCredentials(Id.Parent, Id.Name, expiresin, cancellationToken);
+                var response = _endpointResourceEndpointsRestClient.ListCredentials(Id.Parent, Id.Name, content, expiresin, cancellationToken);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Gets the ingress gateway endpoint credentials 
+        /// Request Path: /{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listIngressGatewayCredentials
+        /// Operation Id: Endpoints_ListIngressGatewayCredentials
+        /// </summary>
+        /// <param name="expiresin"> The is how long the endpoint access token is valid (in seconds). </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual async Task<Response<IngressGatewayResource>> GetIngressGatewayCredentialsAsync(long? expiresin = null, CancellationToken cancellationToken = default)
+        {
+            using var scope = _endpointResourceEndpointsClientDiagnostics.CreateScope("EndpointResource.GetIngressGatewayCredentials");
+            scope.Start();
+            try
+            {
+                var response = await _endpointResourceEndpointsRestClient.ListIngressGatewayCredentialsAsync(Id.Parent, Id.Name, expiresin, cancellationToken).ConfigureAwait(false);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Gets the ingress gateway endpoint credentials 
+        /// Request Path: /{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listIngressGatewayCredentials
+        /// Operation Id: Endpoints_ListIngressGatewayCredentials
+        /// </summary>
+        /// <param name="expiresin"> The is how long the endpoint access token is valid (in seconds). </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual Response<IngressGatewayResource> GetIngressGatewayCredentials(long? expiresin = null, CancellationToken cancellationToken = default)
+        {
+            using var scope = _endpointResourceEndpointsClientDiagnostics.CreateScope("EndpointResource.GetIngressGatewayCredentials");
+            scope.Start();
+            try
+            {
+                var response = _endpointResourceEndpointsRestClient.ListIngressGatewayCredentials(Id.Parent, Id.Name, expiresin, cancellationToken);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Fetches the managed proxy details 
+        /// Request Path: /{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listManagedProxyDetails
+        /// Operation Id: Endpoints_ListManagedProxyDetails
+        /// </summary>
+        /// <param name="content"> Object of type ManagedProxyRequest. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="content"/> is null. </exception>
+        public virtual async Task<Response<ManagedProxyResource>> GetManagedProxyDetailsAsync(ManagedProxyContent content, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(content, nameof(content));
+
+            using var scope = _endpointResourceEndpointsClientDiagnostics.CreateScope("EndpointResource.GetManagedProxyDetails");
+            scope.Start();
+            try
+            {
+                var response = await _endpointResourceEndpointsRestClient.ListManagedProxyDetailsAsync(Id.Parent, Id.Name, content, cancellationToken).ConfigureAwait(false);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Fetches the managed proxy details 
+        /// Request Path: /{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listManagedProxyDetails
+        /// Operation Id: Endpoints_ListManagedProxyDetails
+        /// </summary>
+        /// <param name="content"> Object of type ManagedProxyRequest. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="content"/> is null. </exception>
+        public virtual Response<ManagedProxyResource> GetManagedProxyDetails(ManagedProxyContent content, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(content, nameof(content));
+
+            using var scope = _endpointResourceEndpointsClientDiagnostics.CreateScope("EndpointResource.GetManagedProxyDetails");
+            scope.Start();
+            try
+            {
+                var response = _endpointResourceEndpointsRestClient.ListManagedProxyDetails(Id.Parent, Id.Name, content, cancellationToken);
                 return response;
             }
             catch (Exception e)
