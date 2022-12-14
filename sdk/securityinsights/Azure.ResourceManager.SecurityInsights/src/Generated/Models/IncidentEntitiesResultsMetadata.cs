@@ -11,17 +11,17 @@ namespace Azure.ResourceManager.SecurityInsights.Models
     public partial class IncidentEntitiesResultsMetadata
     {
         /// <summary> Initializes a new instance of IncidentEntitiesResultsMetadata. </summary>
-        /// <param name="count"> Total number of aggregations of the given kind in the incident related entities result. </param>
         /// <param name="entityKind"> The kind of the aggregated entity. </param>
-        internal IncidentEntitiesResultsMetadata(int count, EntityKind entityKind)
+        /// <param name="count"> Total number of aggregations of the given kind in the incident related entities result. </param>
+        internal IncidentEntitiesResultsMetadata(EntityKind entityKind, int count)
         {
-            Count = count;
             EntityKind = entityKind;
+            Count = count;
         }
 
-        /// <summary> Total number of aggregations of the given kind in the incident related entities result. </summary>
-        public int Count { get; }
         /// <summary> The kind of the aggregated entity. </summary>
         public EntityKind EntityKind { get; }
+        /// <summary> Total number of aggregations of the given kind in the incident related entities result. </summary>
+        public int Count { get; }
     }
 }
