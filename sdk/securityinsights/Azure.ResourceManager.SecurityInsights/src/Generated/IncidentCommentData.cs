@@ -26,26 +26,26 @@ namespace Azure.ResourceManager.SecurityInsights
         /// <param name="name"> The name. </param>
         /// <param name="resourceType"> The resourceType. </param>
         /// <param name="systemData"> The systemData. </param>
+        /// <param name="message"> The comment message. </param>
         /// <param name="createdTimeUtc"> The time the comment was created. </param>
         /// <param name="lastModifiedTimeUtc"> The time the comment was updated. </param>
-        /// <param name="message"> The comment message. </param>
         /// <param name="author"> Describes the client that created the comment. </param>
         /// <param name="etag"> Etag of the azure resource. </param>
-        internal IncidentCommentData(ResourceIdentifier id, string name, ResourceType resourceType, SystemData systemData, DateTimeOffset? createdTimeUtc, DateTimeOffset? lastModifiedTimeUtc, string message, ClientInfo author, ETag? etag) : base(id, name, resourceType, systemData)
+        internal IncidentCommentData(ResourceIdentifier id, string name, ResourceType resourceType, SystemData systemData, string message, DateTimeOffset? createdTimeUtc, DateTimeOffset? lastModifiedTimeUtc, ClientInfo author, ETag? etag) : base(id, name, resourceType, systemData)
         {
+            Message = message;
             CreatedTimeUtc = createdTimeUtc;
             LastModifiedTimeUtc = lastModifiedTimeUtc;
-            Message = message;
             Author = author;
             ETag = etag;
         }
 
+        /// <summary> The comment message. </summary>
+        public string Message { get; set; }
         /// <summary> The time the comment was created. </summary>
         public DateTimeOffset? CreatedTimeUtc { get; }
         /// <summary> The time the comment was updated. </summary>
         public DateTimeOffset? LastModifiedTimeUtc { get; }
-        /// <summary> The comment message. </summary>
-        public string Message { get; set; }
         /// <summary> Describes the client that created the comment. </summary>
         public ClientInfo Author { get; }
         /// <summary> Etag of the azure resource. </summary>
