@@ -45,7 +45,7 @@ namespace Azure.ResourceManager.Storage.Models
         public ManagedServiceIdentity Identity { get; set; }
         /// <summary> Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet. </summary>
         public AllowedCopyScope? AllowedCopyScope { get; set; }
-        /// <summary> Allow or disallow public network access to Storage Account. Value is optional but if passed in, must be &apos;Enabled&apos; or &apos;Disabled&apos;. </summary>
+        /// <summary> Allow, disallow, or let Network Security Perimeter configuration to evaluate public network access to Storage Account. Value is optional but if passed in, must be &apos;Enabled&apos;, &apos;Disabled&apos; or &apos;SecuredByPerimeter&apos;. </summary>
         public StoragePublicNetworkAccess? PublicNetworkAccess { get; set; }
         /// <summary> SasPolicy assigned to the storage account. </summary>
         public StorageAccountSasPolicy SasPolicy { get; set; }
