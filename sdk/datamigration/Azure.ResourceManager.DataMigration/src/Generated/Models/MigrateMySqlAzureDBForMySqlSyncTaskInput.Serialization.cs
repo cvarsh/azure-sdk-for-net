@@ -27,6 +27,52 @@ namespace Azure.ResourceManager.DataMigration.Models
                 writer.WriteObjectValue(item);
             }
             writer.WriteEndArray();
+            if (Optional.IsDefined(SourceServerResourceId))
+            {
+                writer.WritePropertyName("sourceServerResourceId");
+                writer.WriteStringValue(SourceServerResourceId);
+            }
+            if (Optional.IsDefined(TargetServerResourceId))
+            {
+                writer.WritePropertyName("targetServerResourceId");
+                writer.WriteStringValue(TargetServerResourceId);
+            }
+            if (Optional.IsCollectionDefined(OptionalAgentSettings))
+            {
+                writer.WritePropertyName("optionalAgentSettings");
+                writer.WriteStartObject();
+                foreach (var item in OptionalAgentSettings)
+                {
+                    writer.WritePropertyName(item.Key);
+                    writer.WriteStringValue(item.Value);
+                }
+                writer.WriteEndObject();
+            }
+            if (Optional.IsDefined(EncryptedKeyForSecureFields))
+            {
+                writer.WritePropertyName("encryptedKeyForSecureFields");
+                writer.WriteStringValue(EncryptedKeyForSecureFields);
+            }
+            if (Optional.IsDefined(MigrateAllViews))
+            {
+                writer.WritePropertyName("migrateAllViews");
+                writer.WriteBooleanValue(MigrateAllViews.Value);
+            }
+            if (Optional.IsDefined(MigrateAllTriggers))
+            {
+                writer.WritePropertyName("migrateAllTriggers");
+                writer.WriteBooleanValue(MigrateAllTriggers.Value);
+            }
+            if (Optional.IsDefined(MigrateAllEvents))
+            {
+                writer.WritePropertyName("migrateAllEvents");
+                writer.WriteBooleanValue(MigrateAllEvents.Value);
+            }
+            if (Optional.IsDefined(MigrateAllRoutines))
+            {
+                writer.WritePropertyName("migrateAllRoutines");
+                writer.WriteBooleanValue(MigrateAllRoutines.Value);
+            }
             writer.WriteEndObject();
         }
 
@@ -35,6 +81,14 @@ namespace Azure.ResourceManager.DataMigration.Models
             MySqlConnectionInfo sourceConnectionInfo = default;
             MySqlConnectionInfo targetConnectionInfo = default;
             IList<MigrateMySqlAzureDBForMySqlSyncDatabaseInput> selectedDatabases = default;
+            Optional<string> sourceServerResourceId = default;
+            Optional<string> targetServerResourceId = default;
+            Optional<IDictionary<string, string>> optionalAgentSettings = default;
+            Optional<string> encryptedKeyForSecureFields = default;
+            Optional<bool> migrateAllViews = default;
+            Optional<bool> migrateAllTriggers = default;
+            Optional<bool> migrateAllEvents = default;
+            Optional<bool> migrateAllRoutines = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("sourceConnectionInfo"))
@@ -57,8 +111,78 @@ namespace Azure.ResourceManager.DataMigration.Models
                     selectedDatabases = array;
                     continue;
                 }
+                if (property.NameEquals("sourceServerResourceId"))
+                {
+                    sourceServerResourceId = property.Value.GetString();
+                    continue;
+                }
+                if (property.NameEquals("targetServerResourceId"))
+                {
+                    targetServerResourceId = property.Value.GetString();
+                    continue;
+                }
+                if (property.NameEquals("optionalAgentSettings"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    Dictionary<string, string> dictionary = new Dictionary<string, string>();
+                    foreach (var property0 in property.Value.EnumerateObject())
+                    {
+                        dictionary.Add(property0.Name, property0.Value.GetString());
+                    }
+                    optionalAgentSettings = dictionary;
+                    continue;
+                }
+                if (property.NameEquals("encryptedKeyForSecureFields"))
+                {
+                    encryptedKeyForSecureFields = property.Value.GetString();
+                    continue;
+                }
+                if (property.NameEquals("migrateAllViews"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    migrateAllViews = property.Value.GetBoolean();
+                    continue;
+                }
+                if (property.NameEquals("migrateAllTriggers"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    migrateAllTriggers = property.Value.GetBoolean();
+                    continue;
+                }
+                if (property.NameEquals("migrateAllEvents"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    migrateAllEvents = property.Value.GetBoolean();
+                    continue;
+                }
+                if (property.NameEquals("migrateAllRoutines"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    migrateAllRoutines = property.Value.GetBoolean();
+                    continue;
+                }
             }
-            return new MigrateMySqlAzureDBForMySqlSyncTaskInput(sourceConnectionInfo, targetConnectionInfo, selectedDatabases);
+            return new MigrateMySqlAzureDBForMySqlSyncTaskInput(Optional.ToNullable(migrateAllViews), Optional.ToNullable(migrateAllTriggers), Optional.ToNullable(migrateAllEvents), Optional.ToNullable(migrateAllRoutines), sourceConnectionInfo, targetConnectionInfo, selectedDatabases, sourceServerResourceId.Value, targetServerResourceId.Value, Optional.ToDictionary(optionalAgentSettings), encryptedKeyForSecureFields.Value);
         }
     }
 }

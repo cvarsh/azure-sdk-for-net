@@ -13,7 +13,7 @@ using Azure.Core;
 namespace Azure.ResourceManager.DataMigration.Models
 {
     /// <summary> Input for the task that migrates MySQL databases to Azure Database for MySQL for online migrations. </summary>
-    public partial class MigrateMySqlAzureDBForMySqlSyncTaskInput
+    public partial class MigrateMySqlAzureDBForMySqlSyncTaskInput : MySqlSchemaMigrationOptions
     {
         /// <summary> Initializes a new instance of MigrateMySqlAzureDBForMySqlSyncTaskInput. </summary>
         /// <param name="sourceConnectionInfo"> Connection information for source MySQL. </param>
@@ -29,17 +29,30 @@ namespace Azure.ResourceManager.DataMigration.Models
             SourceConnectionInfo = sourceConnectionInfo;
             TargetConnectionInfo = targetConnectionInfo;
             SelectedDatabases = selectedDatabases.ToList();
+            OptionalAgentSettings = new ChangeTrackingDictionary<string, string>();
         }
 
         /// <summary> Initializes a new instance of MigrateMySqlAzureDBForMySqlSyncTaskInput. </summary>
+        /// <param name="migrateAllViews"> If true, all view definitions will be migrated in the selected databases. </param>
+        /// <param name="migrateAllTriggers"> If true, all trigger definitions will be migrated in the selected databases. </param>
+        /// <param name="migrateAllEvents"> If true, all event definitions will be migrated in the selected databases. </param>
+        /// <param name="migrateAllRoutines"> If true, all routine definitions will be migrated in the selected databases. </param>
         /// <param name="sourceConnectionInfo"> Connection information for source MySQL. </param>
         /// <param name="targetConnectionInfo"> Connection information for target Azure Database for MySQL. </param>
         /// <param name="selectedDatabases"> Databases to migrate. </param>
-        internal MigrateMySqlAzureDBForMySqlSyncTaskInput(MySqlConnectionInfo sourceConnectionInfo, MySqlConnectionInfo targetConnectionInfo, IList<MigrateMySqlAzureDBForMySqlSyncDatabaseInput> selectedDatabases)
+        /// <param name="sourceServerResourceId"> Optional resource Id of the source server if it is an azure instance. </param>
+        /// <param name="targetServerResourceId"> Optional resource Id of the target server. </param>
+        /// <param name="optionalAgentSettings"> Optional parameters for fine tuning the data transfer rate during migration. </param>
+        /// <param name="encryptedKeyForSecureFields"> encrypted key for secure fields. </param>
+        internal MigrateMySqlAzureDBForMySqlSyncTaskInput(bool? migrateAllViews, bool? migrateAllTriggers, bool? migrateAllEvents, bool? migrateAllRoutines, MySqlConnectionInfo sourceConnectionInfo, MySqlConnectionInfo targetConnectionInfo, IList<MigrateMySqlAzureDBForMySqlSyncDatabaseInput> selectedDatabases, string sourceServerResourceId, string targetServerResourceId, IDictionary<string, string> optionalAgentSettings, string encryptedKeyForSecureFields) : base(migrateAllViews, migrateAllTriggers, migrateAllEvents, migrateAllRoutines)
         {
             SourceConnectionInfo = sourceConnectionInfo;
             TargetConnectionInfo = targetConnectionInfo;
             SelectedDatabases = selectedDatabases;
+            SourceServerResourceId = sourceServerResourceId;
+            TargetServerResourceId = targetServerResourceId;
+            OptionalAgentSettings = optionalAgentSettings;
+            EncryptedKeyForSecureFields = encryptedKeyForSecureFields;
         }
 
         /// <summary> Connection information for source MySQL. </summary>
@@ -48,5 +61,13 @@ namespace Azure.ResourceManager.DataMigration.Models
         public MySqlConnectionInfo TargetConnectionInfo { get; set; }
         /// <summary> Databases to migrate. </summary>
         public IList<MigrateMySqlAzureDBForMySqlSyncDatabaseInput> SelectedDatabases { get; }
+        /// <summary> Optional resource Id of the source server if it is an azure instance. </summary>
+        public string SourceServerResourceId { get; set; }
+        /// <summary> Optional resource Id of the target server. </summary>
+        public string TargetServerResourceId { get; set; }
+        /// <summary> Optional parameters for fine tuning the data transfer rate during migration. </summary>
+        public IDictionary<string, string> OptionalAgentSettings { get; }
+        /// <summary> encrypted key for secure fields. </summary>
+        public string EncryptedKeyForSecureFields { get; set; }
     }
 }

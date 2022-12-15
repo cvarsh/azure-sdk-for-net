@@ -11,19 +11,19 @@ using Azure.Core;
 namespace Azure.ResourceManager.DataMigration.Models
 {
     /// <summary> Database specific information for MySQL to Azure Database for MySQL migration task inputs. </summary>
-    public partial class MigrateMySqlAzureDBForMySqlSyncDatabaseInput
+    public partial class MigrateMySqlAzureDBForMySqlReplicateChangesDatabaseInput
     {
-        /// <summary> Initializes a new instance of MigrateMySqlAzureDBForMySqlSyncDatabaseInput. </summary>
-        public MigrateMySqlAzureDBForMySqlSyncDatabaseInput()
+        /// <summary> Initializes a new instance of MigrateMySqlAzureDBForMySqlReplicateChangesDatabaseInput. </summary>
+        public MigrateMySqlAzureDBForMySqlReplicateChangesDatabaseInput()
         {
             TableMap = new ChangeTrackingDictionary<string, string>();
         }
 
-        /// <summary> Initializes a new instance of MigrateMySqlAzureDBForMySqlSyncDatabaseInput. </summary>
+        /// <summary> Initializes a new instance of MigrateMySqlAzureDBForMySqlReplicateChangesDatabaseInput. </summary>
         /// <param name="name"> Name of the database. </param>
         /// <param name="targetDatabaseName"> Name of target database. Note: Target database will be truncated before starting migration. </param>
         /// <param name="tableMap"> Mapping of source to target tables. </param>
-        internal MigrateMySqlAzureDBForMySqlSyncDatabaseInput(string name, string targetDatabaseName, IDictionary<string, string> tableMap)
+        internal MigrateMySqlAzureDBForMySqlReplicateChangesDatabaseInput(string name, string targetDatabaseName, IDictionary<string, string> tableMap)
         {
             Name = name;
             TargetDatabaseName = targetDatabaseName;

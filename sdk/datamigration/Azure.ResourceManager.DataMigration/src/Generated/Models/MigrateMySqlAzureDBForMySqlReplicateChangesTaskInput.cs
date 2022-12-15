@@ -12,15 +12,15 @@ using Azure.Core;
 
 namespace Azure.ResourceManager.DataMigration.Models
 {
-    /// <summary> Input for the task that migrates MySQL databases to Azure Database for MySQL for offline migrations. </summary>
-    public partial class MigrateMySqlAzureDBForMySqlOfflineTaskInput : MySqlSchemaMigrationOptions
+    /// <summary> Input for the task that migrates MySQL databases to Azure Database for MySQL for the replicate changes migrations. </summary>
+    public partial class MigrateMySqlAzureDBForMySqlReplicateChangesTaskInput
     {
-        /// <summary> Initializes a new instance of MigrateMySqlAzureDBForMySqlOfflineTaskInput. </summary>
+        /// <summary> Initializes a new instance of MigrateMySqlAzureDBForMySqlReplicateChangesTaskInput. </summary>
         /// <param name="sourceConnectionInfo"> Connection information for source MySQL. </param>
         /// <param name="targetConnectionInfo"> Connection information for target Azure Database for MySQL. </param>
         /// <param name="selectedDatabases"> Databases to migrate. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="sourceConnectionInfo"/>, <paramref name="targetConnectionInfo"/> or <paramref name="selectedDatabases"/> is null. </exception>
-        public MigrateMySqlAzureDBForMySqlOfflineTaskInput(MySqlConnectionInfo sourceConnectionInfo, MySqlConnectionInfo targetConnectionInfo, IEnumerable<MigrateMySqlAzureDBForMySqlOfflineDatabaseInput> selectedDatabases)
+        public MigrateMySqlAzureDBForMySqlReplicateChangesTaskInput(MySqlConnectionInfo sourceConnectionInfo, MySqlConnectionInfo targetConnectionInfo, IEnumerable<MigrateMySqlAzureDBForMySqlReplicateChangesDatabaseInput> selectedDatabases)
         {
             Argument.AssertNotNull(sourceConnectionInfo, nameof(sourceConnectionInfo));
             Argument.AssertNotNull(targetConnectionInfo, nameof(targetConnectionInfo));
@@ -29,13 +29,10 @@ namespace Azure.ResourceManager.DataMigration.Models
             SourceConnectionInfo = sourceConnectionInfo;
             TargetConnectionInfo = targetConnectionInfo;
             SelectedDatabases = selectedDatabases.ToList();
+            OptionalAgentSettings = new ChangeTrackingDictionary<string, string>();
         }
 
-        /// <summary> Initializes a new instance of MigrateMySqlAzureDBForMySqlOfflineTaskInput. </summary>
-        /// <param name="migrateAllViews"> If true, all view definitions will be migrated in the selected databases. </param>
-        /// <param name="migrateAllTriggers"> If true, all trigger definitions will be migrated in the selected databases. </param>
-        /// <param name="migrateAllEvents"> If true, all event definitions will be migrated in the selected databases. </param>
-        /// <param name="migrateAllRoutines"> If true, all routine definitions will be migrated in the selected databases. </param>
+        /// <summary> Initializes a new instance of MigrateMySqlAzureDBForMySqlReplicateChangesTaskInput. </summary>
         /// <param name="sourceConnectionInfo"> Connection information for source MySQL. </param>
         /// <param name="targetConnectionInfo"> Connection information for target Azure Database for MySQL. </param>
         /// <param name="selectedDatabases"> Databases to migrate. </param>
@@ -44,8 +41,9 @@ namespace Azure.ResourceManager.DataMigration.Models
         /// <param name="sourceServerResourceId"> Optional resource Id of the source server if it is an azure instance. </param>
         /// <param name="targetServerResourceId"> Optional resource Id of the target server. </param>
         /// <param name="optionalAgentSettings"> Optional parameters for fine tuning the data transfer rate during migration. </param>
+        /// <param name="binLogInfo"> The binlog position to start replicating changes at. </param>
         /// <param name="encryptedKeyForSecureFields"> encrypted key for secure fields. </param>
-        internal MigrateMySqlAzureDBForMySqlOfflineTaskInput(bool? migrateAllViews, bool? migrateAllTriggers, bool? migrateAllEvents, bool? migrateAllRoutines, MySqlConnectionInfo sourceConnectionInfo, MySqlConnectionInfo targetConnectionInfo, IList<MigrateMySqlAzureDBForMySqlOfflineDatabaseInput> selectedDatabases, bool? makeSourceServerReadOnly, DateTimeOffset? startedOn, string sourceServerResourceId, string targetServerResourceId, MigrateMySqlAzureDBForMySqlOfflineTaskInputOptionalAgentSettings optionalAgentSettings, string encryptedKeyForSecureFields) : base(migrateAllViews, migrateAllTriggers, migrateAllEvents, migrateAllRoutines)
+        internal MigrateMySqlAzureDBForMySqlReplicateChangesTaskInput(MySqlConnectionInfo sourceConnectionInfo, MySqlConnectionInfo targetConnectionInfo, IList<MigrateMySqlAzureDBForMySqlReplicateChangesDatabaseInput> selectedDatabases, bool? makeSourceServerReadOnly, DateTimeOffset? startedOn, string sourceServerResourceId, string targetServerResourceId, IDictionary<string, string> optionalAgentSettings, MySqlBinlogPositionInput binLogInfo, string encryptedKeyForSecureFields)
         {
             SourceConnectionInfo = sourceConnectionInfo;
             TargetConnectionInfo = targetConnectionInfo;
@@ -55,6 +53,7 @@ namespace Azure.ResourceManager.DataMigration.Models
             SourceServerResourceId = sourceServerResourceId;
             TargetServerResourceId = targetServerResourceId;
             OptionalAgentSettings = optionalAgentSettings;
+            BinLogInfo = binLogInfo;
             EncryptedKeyForSecureFields = encryptedKeyForSecureFields;
         }
 
@@ -63,7 +62,7 @@ namespace Azure.ResourceManager.DataMigration.Models
         /// <summary> Connection information for target Azure Database for MySQL. </summary>
         public MySqlConnectionInfo TargetConnectionInfo { get; set; }
         /// <summary> Databases to migrate. </summary>
-        public IList<MigrateMySqlAzureDBForMySqlOfflineDatabaseInput> SelectedDatabases { get; }
+        public IList<MigrateMySqlAzureDBForMySqlReplicateChangesDatabaseInput> SelectedDatabases { get; }
         /// <summary> Setting to set the source server read only. </summary>
         public bool? MakeSourceServerReadOnly { get; set; }
         /// <summary> Parameter to specify when the migration started. </summary>
@@ -73,7 +72,9 @@ namespace Azure.ResourceManager.DataMigration.Models
         /// <summary> Optional resource Id of the target server. </summary>
         public string TargetServerResourceId { get; set; }
         /// <summary> Optional parameters for fine tuning the data transfer rate during migration. </summary>
-        public MigrateMySqlAzureDBForMySqlOfflineTaskInputOptionalAgentSettings OptionalAgentSettings { get; set; }
+        public IDictionary<string, string> OptionalAgentSettings { get; }
+        /// <summary> The binlog position to start replicating changes at. </summary>
+        public MySqlBinlogPositionInput BinLogInfo { get; set; }
         /// <summary> encrypted key for secure fields. </summary>
         public string EncryptedKeyForSecureFields { get; set; }
     }

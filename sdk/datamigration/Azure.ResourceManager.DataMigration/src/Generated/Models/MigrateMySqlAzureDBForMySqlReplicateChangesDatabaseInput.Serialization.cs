@@ -11,7 +11,7 @@ using Azure.Core;
 
 namespace Azure.ResourceManager.DataMigration.Models
 {
-    public partial class MigrateMySqlAzureDBForMySqlSyncDatabaseInput : IUtf8JsonSerializable
+    public partial class MigrateMySqlAzureDBForMySqlReplicateChangesDatabaseInput : IUtf8JsonSerializable
     {
         void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
         {
@@ -40,7 +40,7 @@ namespace Azure.ResourceManager.DataMigration.Models
             writer.WriteEndObject();
         }
 
-        internal static MigrateMySqlAzureDBForMySqlSyncDatabaseInput DeserializeMigrateMySqlAzureDBForMySqlSyncDatabaseInput(JsonElement element)
+        internal static MigrateMySqlAzureDBForMySqlReplicateChangesDatabaseInput DeserializeMigrateMySqlAzureDBForMySqlReplicateChangesDatabaseInput(JsonElement element)
         {
             Optional<string> name = default;
             Optional<string> targetDatabaseName = default;
@@ -73,7 +73,7 @@ namespace Azure.ResourceManager.DataMigration.Models
                     continue;
                 }
             }
-            return new MigrateMySqlAzureDBForMySqlSyncDatabaseInput(name.Value, targetDatabaseName.Value, Optional.ToDictionary(tableMap));
+            return new MigrateMySqlAzureDBForMySqlReplicateChangesDatabaseInput(name.Value, targetDatabaseName.Value, Optional.ToDictionary(tableMap));
         }
     }
 }

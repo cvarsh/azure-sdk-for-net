@@ -11,7 +11,7 @@ using Azure.Core;
 
 namespace Azure.ResourceManager.DataMigration.Models
 {
-    public partial class MigrateMySqlAzureDBForMySqlSyncTaskProperties : IUtf8JsonSerializable
+    public partial class MigrateMySqlAzureDBForMySqlReplicateChangesTaskProperties : IUtf8JsonSerializable
     {
         void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
         {
@@ -20,6 +20,16 @@ namespace Azure.ResourceManager.DataMigration.Models
             {
                 writer.WritePropertyName("input");
                 writer.WriteObjectValue(Input);
+            }
+            if (Optional.IsDefined(IsCloneable))
+            {
+                writer.WritePropertyName("isCloneable");
+                writer.WriteBooleanValue(IsCloneable.Value);
+            }
+            if (Optional.IsDefined(TaskId))
+            {
+                writer.WritePropertyName("taskId");
+                writer.WriteStringValue(TaskId);
             }
             writer.WritePropertyName("taskType");
             writer.WriteStringValue(TaskType.ToString());
@@ -37,10 +47,12 @@ namespace Azure.ResourceManager.DataMigration.Models
             writer.WriteEndObject();
         }
 
-        internal static MigrateMySqlAzureDBForMySqlSyncTaskProperties DeserializeMigrateMySqlAzureDBForMySqlSyncTaskProperties(JsonElement element)
+        internal static MigrateMySqlAzureDBForMySqlReplicateChangesTaskProperties DeserializeMigrateMySqlAzureDBForMySqlReplicateChangesTaskProperties(JsonElement element)
         {
-            Optional<MigrateMySqlAzureDBForMySqlSyncTaskInput> input = default;
-            Optional<IReadOnlyList<MigrateMySqlAzureDBForMySqlTaskResult>> output = default;
+            Optional<MigrateMySqlAzureDBForMySqlReplicateChangesTaskInput> input = default;
+            Optional<IReadOnlyList<MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutput>> output = default;
+            Optional<bool> isCloneable = default;
+            Optional<string> taskId = default;
             TaskType taskType = default;
             Optional<IReadOnlyList<ODataError>> errors = default;
             Optional<TaskState> state = default;
@@ -55,7 +67,7 @@ namespace Azure.ResourceManager.DataMigration.Models
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    input = MigrateMySqlAzureDBForMySqlSyncTaskInput.DeserializeMigrateMySqlAzureDBForMySqlSyncTaskInput(property.Value);
+                    input = MigrateMySqlAzureDBForMySqlReplicateChangesTaskInput.DeserializeMigrateMySqlAzureDBForMySqlReplicateChangesTaskInput(property.Value);
                     continue;
                 }
                 if (property.NameEquals("output"))
@@ -65,12 +77,27 @@ namespace Azure.ResourceManager.DataMigration.Models
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    List<MigrateMySqlAzureDBForMySqlTaskResult> array = new List<MigrateMySqlAzureDBForMySqlTaskResult>();
+                    List<MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutput> array = new List<MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutput>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
-                        array.Add(MigrateMySqlAzureDBForMySqlTaskResult.DeserializeMigrateMySqlAzureDBForMySqlTaskResult(item));
+                        array.Add(MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutput.DeserializeMigrateMySqlAzureDBForMySqlReplicateChangesTaskOutput(item));
                     }
                     output = array;
+                    continue;
+                }
+                if (property.NameEquals("isCloneable"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    isCloneable = property.Value.GetBoolean();
+                    continue;
+                }
+                if (property.NameEquals("taskId"))
+                {
+                    taskId = property.Value.GetString();
                     continue;
                 }
                 if (property.NameEquals("taskType"))
@@ -134,7 +161,7 @@ namespace Azure.ResourceManager.DataMigration.Models
                     continue;
                 }
             }
-            return new MigrateMySqlAzureDBForMySqlSyncTaskProperties(taskType, Optional.ToList(errors), Optional.ToNullable(state), Optional.ToList(commands), Optional.ToDictionary(clientData), input.Value, Optional.ToList(output));
+            return new MigrateMySqlAzureDBForMySqlReplicateChangesTaskProperties(taskType, Optional.ToList(errors), Optional.ToNullable(state), Optional.ToList(commands), Optional.ToDictionary(clientData), input.Value, Optional.ToList(output), Optional.ToNullable(isCloneable), taskId.Value);
         }
     }
 }

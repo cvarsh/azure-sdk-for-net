@@ -1348,21 +1348,28 @@ namespace Azure.ResourceManager.DataMigration.Models
         public System.Collections.Generic.IDictionary<string, string> TableMap { get { throw null; } }
         public string TargetDatabaseName { get { throw null; } set { } }
     }
-    public partial class MigrateMySqlAzureDBForMySqlOfflineTaskInput
+    public partial class MigrateMySqlAzureDBForMySqlOfflineTaskInput : Azure.ResourceManager.DataMigration.Models.MySqlSchemaMigrationOptions
     {
         public MigrateMySqlAzureDBForMySqlOfflineTaskInput(Azure.ResourceManager.DataMigration.Models.MySqlConnectionInfo sourceConnectionInfo, Azure.ResourceManager.DataMigration.Models.MySqlConnectionInfo targetConnectionInfo, System.Collections.Generic.IEnumerable<Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlOfflineDatabaseInput> selectedDatabases) { }
         public string EncryptedKeyForSecureFields { get { throw null; } set { } }
         public bool? MakeSourceServerReadOnly { get { throw null; } set { } }
-        public System.Collections.Generic.IDictionary<string, string> OptionalAgentSettings { get { throw null; } }
+        public Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlOfflineTaskInputOptionalAgentSettings OptionalAgentSettings { get { throw null; } set { } }
         public System.Collections.Generic.IList<Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlOfflineDatabaseInput> SelectedDatabases { get { throw null; } }
         public Azure.ResourceManager.DataMigration.Models.MySqlConnectionInfo SourceConnectionInfo { get { throw null; } set { } }
+        public string SourceServerResourceId { get { throw null; } set { } }
         public System.DateTimeOffset? StartedOn { get { throw null; } set { } }
         public Azure.ResourceManager.DataMigration.Models.MySqlConnectionInfo TargetConnectionInfo { get { throw null; } set { } }
+        public string TargetServerResourceId { get { throw null; } set { } }
     }
-    public abstract partial class MigrateMySqlAzureDBForMySqlOfflineTaskOutput
+    public partial class MigrateMySqlAzureDBForMySqlOfflineTaskInputOptionalAgentSettings
     {
-        protected MigrateMySqlAzureDBForMySqlOfflineTaskOutput() { }
-        public string Id { get { throw null; } }
+        public MigrateMySqlAzureDBForMySqlOfflineTaskInputOptionalAgentSettings() { }
+        public System.Collections.Generic.IDictionary<string, string> AdditionalProperties { get { throw null; } }
+        public bool? EnableConsistentBackup { get { throw null; } set { } }
+    }
+    public partial class MigrateMySqlAzureDBForMySqlOfflineTaskOutput : Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlTaskResult
+    {
+        internal MigrateMySqlAzureDBForMySqlOfflineTaskOutput() { }
     }
     public partial class MigrateMySqlAzureDBForMySqlOfflineTaskOutputDatabaseLevel : Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlOfflineTaskOutput
     {
@@ -1399,6 +1406,8 @@ namespace Azure.ResourceManager.DataMigration.Models
         public System.DateTimeOffset? LastStorageUpdate { get { throw null; } }
         public string Message { get { throw null; } }
         public Azure.ResourceManager.DataMigration.Models.MigrationReportResult MigrationReportResult { get { throw null; } }
+        public Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlOfflineTaskOutputMigrationLevelMigrationType? MigrationType { get { throw null; } }
+        public Azure.ResourceManager.DataMigration.Models.MySqlBinlogPositionOutput SourceBinlogPosition { get { throw null; } }
         public string SourceServerBrandVersion { get { throw null; } }
         public string SourceServerVersion { get { throw null; } }
         public System.DateTimeOffset? StartedOn { get { throw null; } }
@@ -1406,6 +1415,23 @@ namespace Azure.ResourceManager.DataMigration.Models
         public string StatusMessage { get { throw null; } }
         public string TargetServerBrandVersion { get { throw null; } }
         public string TargetServerVersion { get { throw null; } }
+    }
+    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    public readonly partial struct MigrateMySqlAzureDBForMySqlOfflineTaskOutputMigrationLevelMigrationType : System.IEquatable<Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlOfflineTaskOutputMigrationLevelMigrationType>
+    {
+        private readonly object _dummy;
+        private readonly int _dummyPrimitive;
+        public MigrateMySqlAzureDBForMySqlOfflineTaskOutputMigrationLevelMigrationType(string value) { throw null; }
+        public static Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlOfflineTaskOutputMigrationLevelMigrationType InitialLoad { get { throw null; } }
+        public bool Equals(Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlOfflineTaskOutputMigrationLevelMigrationType other) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override bool Equals(object obj) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override int GetHashCode() { throw null; }
+        public static bool operator ==(Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlOfflineTaskOutputMigrationLevelMigrationType left, Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlOfflineTaskOutputMigrationLevelMigrationType right) { throw null; }
+        public static implicit operator Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlOfflineTaskOutputMigrationLevelMigrationType (string value) { throw null; }
+        public static bool operator !=(Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlOfflineTaskOutputMigrationLevelMigrationType left, Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlOfflineTaskOutputMigrationLevelMigrationType right) { throw null; }
+        public override string ToString() { throw null; }
     }
     public partial class MigrateMySqlAzureDBForMySqlOfflineTaskOutputTableLevel : Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlOfflineTaskOutput
     {
@@ -1429,90 +1455,112 @@ namespace Azure.ResourceManager.DataMigration.Models
         public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlOfflineTaskOutput> Output { get { throw null; } }
         public string TaskId { get { throw null; } set { } }
     }
+    public partial class MigrateMySqlAzureDBForMySqlReplicateChangesDatabaseInput
+    {
+        public MigrateMySqlAzureDBForMySqlReplicateChangesDatabaseInput() { }
+        public string Name { get { throw null; } set { } }
+        public System.Collections.Generic.IDictionary<string, string> TableMap { get { throw null; } }
+        public string TargetDatabaseName { get { throw null; } set { } }
+    }
+    public partial class MigrateMySqlAzureDBForMySqlReplicateChangesTaskInput
+    {
+        public MigrateMySqlAzureDBForMySqlReplicateChangesTaskInput(Azure.ResourceManager.DataMigration.Models.MySqlConnectionInfo sourceConnectionInfo, Azure.ResourceManager.DataMigration.Models.MySqlConnectionInfo targetConnectionInfo, System.Collections.Generic.IEnumerable<Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlReplicateChangesDatabaseInput> selectedDatabases) { }
+        public Azure.ResourceManager.DataMigration.Models.MySqlBinlogPositionInput BinLogInfo { get { throw null; } set { } }
+        public string EncryptedKeyForSecureFields { get { throw null; } set { } }
+        public bool? MakeSourceServerReadOnly { get { throw null; } set { } }
+        public System.Collections.Generic.IDictionary<string, string> OptionalAgentSettings { get { throw null; } }
+        public System.Collections.Generic.IList<Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlReplicateChangesDatabaseInput> SelectedDatabases { get { throw null; } }
+        public Azure.ResourceManager.DataMigration.Models.MySqlConnectionInfo SourceConnectionInfo { get { throw null; } set { } }
+        public string SourceServerResourceId { get { throw null; } set { } }
+        public System.DateTimeOffset? StartedOn { get { throw null; } set { } }
+        public Azure.ResourceManager.DataMigration.Models.MySqlConnectionInfo TargetConnectionInfo { get { throw null; } set { } }
+        public string TargetServerResourceId { get { throw null; } set { } }
+    }
+    public partial class MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutput : Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlTaskResult
+    {
+        internal MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutput() { }
+    }
+    public partial class MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputError : Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutput
+    {
+        internal MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputError() { }
+        public Azure.ResourceManager.DataMigration.Models.ReportableException Error { get { throw null; } }
+    }
+    public partial class MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevel : Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutput
+    {
+        internal MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevel() { }
+        public Azure.ResourceManager.DataMigration.Models.MySqlContinuousDataMovementProgress ContinuousDataMovementProgress { get { throw null; } }
+        public System.DateTimeOffset? EndedOn { get { throw null; } }
+        public bool? HasServerLevelError { get { throw null; } }
+        public System.DateTimeOffset? LastStorageUpdate { get { throw null; } }
+        public string MigrationId { get { throw null; } }
+        public Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevelMigrationType? MigrationType { get { throw null; } }
+        public System.BinaryData RetryingSummary { get { throw null; } }
+        public string SourceServerVersion { get { throw null; } }
+        public System.DateTimeOffset? StartedOn { get { throw null; } }
+        public Azure.ResourceManager.DataMigration.Models.MigrationStatus? Status { get { throw null; } }
+        public string TargetServerVersion { get { throw null; } }
+        public int? TotalOtherRetryCount { get { throw null; } }
+        public string TotalRetryingTime { get { throw null; } }
+        public int? TotalSourceRetryCount { get { throw null; } }
+        public int? TotalTargetRetryCount { get { throw null; } }
+    }
+    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    public readonly partial struct MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevelMigrationType : System.IEquatable<Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevelMigrationType>
+    {
+        private readonly object _dummy;
+        private readonly int _dummyPrimitive;
+        public MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevelMigrationType(string value) { throw null; }
+        public static Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevelMigrationType Cdc { get { throw null; } }
+        public bool Equals(Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevelMigrationType other) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override bool Equals(object obj) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override int GetHashCode() { throw null; }
+        public static bool operator ==(Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevelMigrationType left, Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevelMigrationType right) { throw null; }
+        public static implicit operator Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevelMigrationType (string value) { throw null; }
+        public static bool operator !=(Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevelMigrationType left, Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputMigrationLevelMigrationType right) { throw null; }
+        public override string ToString() { throw null; }
+    }
+    public partial class MigrateMySqlAzureDBForMySqlReplicateChangesTaskProperties : Azure.ResourceManager.DataMigration.Models.ProjectTaskProperties
+    {
+        public MigrateMySqlAzureDBForMySqlReplicateChangesTaskProperties() { }
+        public Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlReplicateChangesTaskInput Input { get { throw null; } set { } }
+        public bool? IsCloneable { get { throw null; } set { } }
+        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutput> Output { get { throw null; } }
+        public string TaskId { get { throw null; } set { } }
+    }
     public partial class MigrateMySqlAzureDBForMySqlSyncDatabaseInput
     {
         public MigrateMySqlAzureDBForMySqlSyncDatabaseInput() { }
-        public System.Collections.Generic.IDictionary<string, string> MigrationSetting { get { throw null; } }
         public string Name { get { throw null; } set { } }
-        public System.Collections.Generic.IDictionary<string, string> SourceSetting { get { throw null; } }
         public System.Collections.Generic.IDictionary<string, string> TableMap { get { throw null; } }
         public string TargetDatabaseName { get { throw null; } set { } }
-        public System.Collections.Generic.IDictionary<string, string> TargetSetting { get { throw null; } }
     }
-    public partial class MigrateMySqlAzureDBForMySqlSyncTaskInput
+    public partial class MigrateMySqlAzureDBForMySqlSyncTaskInput : Azure.ResourceManager.DataMigration.Models.MySqlSchemaMigrationOptions
     {
         public MigrateMySqlAzureDBForMySqlSyncTaskInput(Azure.ResourceManager.DataMigration.Models.MySqlConnectionInfo sourceConnectionInfo, Azure.ResourceManager.DataMigration.Models.MySqlConnectionInfo targetConnectionInfo, System.Collections.Generic.IEnumerable<Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlSyncDatabaseInput> selectedDatabases) { }
+        public string EncryptedKeyForSecureFields { get { throw null; } set { } }
+        public System.Collections.Generic.IDictionary<string, string> OptionalAgentSettings { get { throw null; } }
         public System.Collections.Generic.IList<Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlSyncDatabaseInput> SelectedDatabases { get { throw null; } }
         public Azure.ResourceManager.DataMigration.Models.MySqlConnectionInfo SourceConnectionInfo { get { throw null; } set { } }
+        public string SourceServerResourceId { get { throw null; } set { } }
         public Azure.ResourceManager.DataMigration.Models.MySqlConnectionInfo TargetConnectionInfo { get { throw null; } set { } }
+        public string TargetServerResourceId { get { throw null; } set { } }
     }
-    public abstract partial class MigrateMySqlAzureDBForMySqlSyncTaskOutput
+    public partial class MigrateMySqlAzureDBForMySqlSyncTaskOutput : Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlTaskResult
     {
-        protected MigrateMySqlAzureDBForMySqlSyncTaskOutput() { }
-        public string Id { get { throw null; } }
-    }
-    public partial class MigrateMySqlAzureDBForMySqlSyncTaskOutputDatabaseError : Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlSyncTaskOutput
-    {
-        internal MigrateMySqlAzureDBForMySqlSyncTaskOutputDatabaseError() { }
-        public string ErrorMessage { get { throw null; } }
-        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.DataMigration.Models.SyncMigrationDatabaseErrorEvent> Events { get { throw null; } }
-    }
-    public partial class MigrateMySqlAzureDBForMySqlSyncTaskOutputDatabaseLevel : Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlSyncTaskOutput
-    {
-        internal MigrateMySqlAzureDBForMySqlSyncTaskOutputDatabaseLevel() { }
-        public long? AppliedChanges { get { throw null; } }
-        public long? CdcDeleteCounter { get { throw null; } }
-        public long? CdcInsertCounter { get { throw null; } }
-        public long? CdcUpdateCounter { get { throw null; } }
-        public string DatabaseName { get { throw null; } }
-        public System.DateTimeOffset? EndedOn { get { throw null; } }
-        public long? FullLoadCompletedTables { get { throw null; } }
-        public long? FullLoadErroredTables { get { throw null; } }
-        public long? FullLoadLoadingTables { get { throw null; } }
-        public long? FullLoadQueuedTables { get { throw null; } }
-        public long? IncomingChanges { get { throw null; } }
-        public bool? InitializationCompleted { get { throw null; } }
-        public long? Latency { get { throw null; } }
-        public Azure.ResourceManager.DataMigration.Models.SyncDatabaseMigrationReportingState? MigrationState { get { throw null; } }
-        public System.DateTimeOffset? StartedOn { get { throw null; } }
-    }
-    public partial class MigrateMySqlAzureDBForMySqlSyncTaskOutputError : Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlSyncTaskOutput
-    {
-        internal MigrateMySqlAzureDBForMySqlSyncTaskOutputError() { }
-        public Azure.ResourceManager.DataMigration.Models.ReportableException Error { get { throw null; } }
-    }
-    public partial class MigrateMySqlAzureDBForMySqlSyncTaskOutputMigrationLevel : Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlSyncTaskOutput
-    {
-        internal MigrateMySqlAzureDBForMySqlSyncTaskOutputMigrationLevel() { }
-        public System.DateTimeOffset? EndedOn { get { throw null; } }
-        public string SourceServer { get { throw null; } }
-        public string SourceServerVersion { get { throw null; } }
-        public System.DateTimeOffset? StartedOn { get { throw null; } }
-        public string TargetServer { get { throw null; } }
-        public string TargetServerVersion { get { throw null; } }
-    }
-    public partial class MigrateMySqlAzureDBForMySqlSyncTaskOutputTableLevel : Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlSyncTaskOutput
-    {
-        internal MigrateMySqlAzureDBForMySqlSyncTaskOutputTableLevel() { }
-        public string CdcDeleteCounter { get { throw null; } }
-        public string CdcInsertCounter { get { throw null; } }
-        public string CdcUpdateCounter { get { throw null; } }
-        public string DatabaseName { get { throw null; } }
-        public long? DataErrorsCounter { get { throw null; } }
-        public System.DateTimeOffset? FullLoadEndedOn { get { throw null; } }
-        public System.DateTimeOffset? FullLoadEstFinishOn { get { throw null; } }
-        public System.DateTimeOffset? FullLoadStartedOn { get { throw null; } }
-        public long? FullLoadTotalRows { get { throw null; } }
-        public System.DateTimeOffset? LastModifiedOn { get { throw null; } }
-        public Azure.ResourceManager.DataMigration.Models.SyncTableMigrationState? State { get { throw null; } }
-        public string TableName { get { throw null; } }
-        public long? TotalChangesApplied { get { throw null; } }
+        internal MigrateMySqlAzureDBForMySqlSyncTaskOutput() { }
     }
     public partial class MigrateMySqlAzureDBForMySqlSyncTaskProperties : Azure.ResourceManager.DataMigration.Models.ProjectTaskProperties
     {
         public MigrateMySqlAzureDBForMySqlSyncTaskProperties() { }
         public Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlSyncTaskInput Input { get { throw null; } set { } }
-        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlSyncTaskOutput> Output { get { throw null; } }
+        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.DataMigration.Models.MigrateMySqlAzureDBForMySqlTaskResult> Output { get { throw null; } }
+    }
+    public abstract partial class MigrateMySqlAzureDBForMySqlTaskResult
+    {
+        protected MigrateMySqlAzureDBForMySqlTaskResult() { }
+        public string Id { get { throw null; } }
     }
     public partial class MigrateOracleAzureDBForPostgreSqlSyncTaskProperties : Azure.ResourceManager.DataMigration.Models.ProjectTaskProperties
     {
@@ -2547,6 +2595,19 @@ namespace Azure.ResourceManager.DataMigration.Models
         public int? MinFreeCpu { get { throw null; } set { } }
         public int? MinFreeMemoryMb { get { throw null; } set { } }
     }
+    public partial class MySqlBinlogPositionInput
+    {
+        public MySqlBinlogPositionInput() { }
+        public string Filename { get { throw null; } set { } }
+        public long? Position { get { throw null; } set { } }
+    }
+    public partial class MySqlBinlogPositionOutput
+    {
+        internal MySqlBinlogPositionOutput() { }
+        public int? FileSeqNum { get { throw null; } }
+        public string Name { get { throw null; } }
+        public long? Position { get { throw null; } }
+    }
     public partial class MySqlConnectionInfo : Azure.ResourceManager.DataMigration.Models.ConnectionInfo
     {
         public MySqlConnectionInfo(string serverName, int port) { }
@@ -2556,6 +2617,28 @@ namespace Azure.ResourceManager.DataMigration.Models
         public bool? EncryptConnection { get { throw null; } set { } }
         public int Port { get { throw null; } set { } }
         public string ServerName { get { throw null; } set { } }
+    }
+    public partial class MySqlContinuousDataMovementProgress
+    {
+        internal MySqlContinuousDataMovementProgress() { }
+        public Azure.ResourceManager.DataMigration.Models.MySqlBinlogPositionOutput BinlogPosition { get { throw null; } }
+        public int? NumberOfDeleteRowsEventsProcessed { get { throw null; } }
+        public int? NumberOfQueryEventsProcessed { get { throw null; } }
+        public int? NumberOfRowsDeleted { get { throw null; } }
+        public int? NumberOfRowsInserted { get { throw null; } }
+        public int? NumberOfRowsUpdated { get { throw null; } }
+        public int? NumberOfUpdateRowsEventsProcessed { get { throw null; } }
+        public int? NumberOfWriteRowsEventsProcessed { get { throw null; } }
+        public int? SecondsBehindSource { get { throw null; } }
+        public System.DateTimeOffset? Timestamp { get { throw null; } }
+    }
+    public partial class MySqlSchemaMigrationOptions
+    {
+        public MySqlSchemaMigrationOptions() { }
+        public bool? MigrateAllEvents { get { throw null; } set { } }
+        public bool? MigrateAllRoutines { get { throw null; } set { } }
+        public bool? MigrateAllTriggers { get { throw null; } set { } }
+        public bool? MigrateAllViews { get { throw null; } set { } }
     }
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly partial struct MySqlTargetPlatformType : System.IEquatable<Azure.ResourceManager.DataMigration.Models.MySqlTargetPlatformType>

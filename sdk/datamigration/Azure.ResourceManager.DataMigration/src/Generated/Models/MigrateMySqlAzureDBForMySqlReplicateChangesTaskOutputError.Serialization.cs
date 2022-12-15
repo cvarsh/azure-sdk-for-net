@@ -10,9 +10,9 @@ using Azure.Core;
 
 namespace Azure.ResourceManager.DataMigration.Models
 {
-    public partial class MigrateMySqlAzureDBForMySqlSyncTaskOutputError
+    public partial class MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputError
     {
-        internal static MigrateMySqlAzureDBForMySqlSyncTaskOutputError DeserializeMigrateMySqlAzureDBForMySqlSyncTaskOutputError(JsonElement element)
+        internal static MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputError DeserializeMigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputError(JsonElement element)
         {
             Optional<ReportableException> error = default;
             Optional<string> id = default;
@@ -40,7 +40,7 @@ namespace Azure.ResourceManager.DataMigration.Models
                     continue;
                 }
             }
-            return new MigrateMySqlAzureDBForMySqlSyncTaskOutputError(id.Value, resultType, error.Value);
+            return new MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutputError(id.Value, resultType, error.Value);
         }
     }
 }

@@ -6,13 +6,12 @@
 #nullable disable
 
 using System.Text.Json;
-using Azure.Core;
 
 namespace Azure.ResourceManager.DataMigration.Models
 {
-    public partial class MigrateMySqlAzureDBForMySqlOfflineTaskOutput
+    public partial class MigrateMySqlAzureDBForMySqlTaskResult
     {
-        internal static MigrateMySqlAzureDBForMySqlOfflineTaskOutput DeserializeMigrateMySqlAzureDBForMySqlOfflineTaskOutput(JsonElement element)
+        internal static MigrateMySqlAzureDBForMySqlTaskResult DeserializeMigrateMySqlAzureDBForMySqlTaskResult(JsonElement element)
         {
             if (element.TryGetProperty("resultType", out JsonElement discriminator))
             {
@@ -20,26 +19,14 @@ namespace Azure.ResourceManager.DataMigration.Models
                 {
                     case "DatabaseLevelOutput": return MigrateMySqlAzureDBForMySqlOfflineTaskOutputDatabaseLevel.DeserializeMigrateMySqlAzureDBForMySqlOfflineTaskOutputDatabaseLevel(element);
                     case "ErrorOutput": return MigrateMySqlAzureDBForMySqlOfflineTaskOutputError.DeserializeMigrateMySqlAzureDBForMySqlOfflineTaskOutputError(element);
+                    case "MigrateMySqlAzureDbForMySqlOfflineTaskOutput": return MigrateMySqlAzureDBForMySqlOfflineTaskOutput.DeserializeMigrateMySqlAzureDBForMySqlOfflineTaskOutput(element);
+                    case "MigrateMySqlAzureDbForMySqlReplicateChangesTaskOutput": return MigrateMySqlAzureDBForMySqlReplicateChangesTaskOutput.DeserializeMigrateMySqlAzureDBForMySqlReplicateChangesTaskOutput(element);
+                    case "MigrateMySqlAzureDbForMySqlSyncTaskOutput": return MigrateMySqlAzureDBForMySqlSyncTaskOutput.DeserializeMigrateMySqlAzureDBForMySqlSyncTaskOutput(element);
                     case "MigrationLevelOutput": return MigrateMySqlAzureDBForMySqlOfflineTaskOutputMigrationLevel.DeserializeMigrateMySqlAzureDBForMySqlOfflineTaskOutputMigrationLevel(element);
                     case "TableLevelOutput": return MigrateMySqlAzureDBForMySqlOfflineTaskOutputTableLevel.DeserializeMigrateMySqlAzureDBForMySqlOfflineTaskOutputTableLevel(element);
                 }
             }
-            Optional<string> id = default;
-            string resultType = "MigrateMySqlAzureDbForMySqlOfflineTaskOutput";
-            foreach (var property in element.EnumerateObject())
-            {
-                if (property.NameEquals("id"))
-                {
-                    id = property.Value.GetString();
-                    continue;
-                }
-                if (property.NameEquals("resultType"))
-                {
-                    resultType = property.Value.GetString();
-                    continue;
-                }
-            }
-            return new MigrateMySqlAzureDBForMySqlOfflineTaskOutput(id.Value, resultType);
+            return UnknownMigrateMySqlAzureDBForMySqlTaskResult.DeserializeUnknownMigrateMySqlAzureDBForMySqlTaskResult(element);
         }
     }
 }
