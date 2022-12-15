@@ -26,6 +26,11 @@ namespace Azure.ResourceManager.Cdn.Models
                 }
                 writer.WriteEndObject();
             }
+            if (Optional.IsDefined(Identity))
+            {
+                writer.WritePropertyName("identity");
+                JsonSerializer.Serialize(writer, Identity);
+            }
             writer.WritePropertyName("properties");
             writer.WriteStartObject();
             if (Optional.IsDefined(OriginResponseTimeoutSeconds))
