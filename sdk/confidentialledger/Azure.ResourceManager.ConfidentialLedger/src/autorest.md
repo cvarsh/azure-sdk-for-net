@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: ConfidentialLedger
 namespace: Azure.ResourceManager.ConfidentialLedger
-require: https://github.com/Azure/azure-rest-api-specs/blob/e7bcafa885ef773c6309d6a8f3a65c5019df413d/specification/confidentialledger/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/d6a07dc7b78dd417f48a8865dc3d79ad95fff202/specification/confidentialledger/resource-manager/readme.md
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
 skip-csproj: true
