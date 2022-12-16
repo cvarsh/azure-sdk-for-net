@@ -16,15 +16,10 @@ namespace Azure.ResourceManager.SecurityInsights.Models
     {
         internal static IncidentCommentList DeserializeIncidentCommentList(JsonElement element)
         {
-            Optional<string> nextLink = default;
             IReadOnlyList<IncidentCommentData> value = default;
+            Optional<string> nextLink = default;
             foreach (var property in element.EnumerateObject())
             {
-                if (property.NameEquals("nextLink"))
-                {
-                    nextLink = property.Value.GetString();
-                    continue;
-                }
                 if (property.NameEquals("value"))
                 {
                     List<IncidentCommentData> array = new List<IncidentCommentData>();
@@ -35,8 +30,13 @@ namespace Azure.ResourceManager.SecurityInsights.Models
                     value = array;
                     continue;
                 }
+                if (property.NameEquals("nextLink"))
+                {
+                    nextLink = property.Value.GetString();
+                    continue;
+                }
             }
-            return new IncidentCommentList(nextLink.Value, value);
+            return new IncidentCommentList(value, nextLink.Value);
         }
     }
 }
