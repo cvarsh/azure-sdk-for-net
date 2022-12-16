@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: DataLakeStore
 namespace: Azure.ResourceManager.DataLakeStore
-require: https://github.com/Azure/azure-rest-api-specs/blob/3817b12e57f613a0dfd65c81fe9e8cd97af7d8c5/specification/datalake-store/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/5aa0bc2d11e2dd79cbad4a0364c50c9466aa844d/specification/datalake-store/resource-manager/readme.md
 tag: package-2016-11
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
