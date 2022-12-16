@@ -6,6 +6,9 @@
 #nullable disable
 
 using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Azure;
 using Azure.Core;
@@ -716,60 +719,6 @@ namespace Azure.Developer.LoadTesting
             }
         }
 
-        /// <summary> Get all load tests by the fully qualified resource Id e.g subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName}. </summary>
-        /// <param name="orderBy"> Sort on one of the field - lastModifiedDateTime, displayName, createdBy in (field asc/desc) format. eg: displayName asc. </param>
-        /// <param name="search"> Filter search based on searchable fields - testId, createdBy. </param>
-        /// <param name="lastUpdatedStartTime"> Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests. </param>
-        /// <param name="lastUpdatedEndTime"> End DateTime(ISO 8601 literal format) of the last updated time range to filter tests. </param>
-        /// <param name="continuationToken"> Continuation token to get the next page of response. </param>
-        /// <param name="maxPageSize"> Number of results in response. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
-        /// <include file="Docs/LoadTestAdministrationClient.xml" path="doc/members/member[@name='GetLoadTestSearchesAsync(String,String,DateTimeOffset,DateTimeOffset,String,Int32,RequestContext)']/*" />
-        public virtual async Task<Response> GetLoadTestSearchesAsync(string orderBy = null, string search = null, DateTimeOffset? lastUpdatedStartTime = null, DateTimeOffset? lastUpdatedEndTime = null, string continuationToken = null, int? maxPageSize = null, RequestContext context = null)
-        {
-            using var scope = ClientDiagnostics.CreateScope("LoadTestAdministrationClient.GetLoadTestSearches");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateGetLoadTestSearchesRequest(orderBy, search, lastUpdatedStartTime, lastUpdatedEndTime, continuationToken, maxPageSize, context);
-                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
-        /// <summary> Get all load tests by the fully qualified resource Id e.g subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName}. </summary>
-        /// <param name="orderBy"> Sort on one of the field - lastModifiedDateTime, displayName, createdBy in (field asc/desc) format. eg: displayName asc. </param>
-        /// <param name="search"> Filter search based on searchable fields - testId, createdBy. </param>
-        /// <param name="lastUpdatedStartTime"> Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests. </param>
-        /// <param name="lastUpdatedEndTime"> End DateTime(ISO 8601 literal format) of the last updated time range to filter tests. </param>
-        /// <param name="continuationToken"> Continuation token to get the next page of response. </param>
-        /// <param name="maxPageSize"> Number of results in response. </param>
-        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
-        /// <include file="Docs/LoadTestAdministrationClient.xml" path="doc/members/member[@name='GetLoadTestSearches(String,String,DateTimeOffset,DateTimeOffset,String,Int32,RequestContext)']/*" />
-        public virtual Response GetLoadTestSearches(string orderBy = null, string search = null, DateTimeOffset? lastUpdatedStartTime = null, DateTimeOffset? lastUpdatedEndTime = null, string continuationToken = null, int? maxPageSize = null, RequestContext context = null)
-        {
-            using var scope = ClientDiagnostics.CreateScope("LoadTestAdministrationClient.GetLoadTestSearches");
-            scope.Start();
-            try
-            {
-                using HttpMessage message = CreateGetLoadTestSearchesRequest(orderBy, search, lastUpdatedStartTime, lastUpdatedEndTime, continuationToken, maxPageSize, context);
-                return _pipeline.ProcessMessage(message, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
-        }
-
         /// <summary> Upload input file for a given test name. File size can&apos;t be more than 50 MB. Existing file with same name for the given test will be overwritten. File should be provided in the request body as multipart/form-data. </summary>
         /// <param name="testId"> Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$. </param>
         /// <param name="fileId"> Unique identifier for test file, must be a valid URL character ^[a-z0-9_-]*$. </param>
@@ -944,30 +893,69 @@ namespace Azure.Developer.LoadTesting
             }
         }
 
-        /// <summary> Get all test files. </summary>
-        /// <param name="testId"> Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$. </param>
+        /// <summary> Get all load tests by the fully qualified resource Id e.g subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName}. </summary>
+        /// <param name="orderBy"> Sort on one of the field - lastModifiedDateTime, displayName, createdBy in (field asc/desc) format. eg: displayName asc. </param>
+        /// <param name="search"> Filter search based on searchable fields - testId, createdBy. </param>
+        /// <param name="lastUpdatedStartTime"> Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests. </param>
+        /// <param name="lastUpdatedEndTime"> End DateTime(ISO 8601 literal format) of the last updated time range to filter tests. </param>
         /// <param name="continuationToken"> Continuation token to get the next page of response. </param>
+        /// <param name="maxPageSize"> Number of results in response. </param>
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="testId"/> is null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="testId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
-        /// <include file="Docs/LoadTestAdministrationClient.xml" path="doc/members/member[@name='GetAllTestFilesAsync(String,String,RequestContext)']/*" />
-        public virtual async Task<Response> GetAllTestFilesAsync(string testId, string continuationToken = null, RequestContext context = null)
+        /// <returns> The <see cref="AsyncPageable{T}"/> from the service containing a list of <see cref="BinaryData"/> objects. Details of the body schema for each item in the collection are in the Remarks section below. </returns>
+        /// <include file="Docs/LoadTestAdministrationClient.xml" path="doc/members/member[@name='GetLoadTestSearchesAsync(String,String,DateTimeOffset,DateTimeOffset,String,Int32,RequestContext)']/*" />
+        public virtual AsyncPageable<BinaryData> GetLoadTestSearchesAsync(string orderBy = null, string search = null, DateTimeOffset? lastUpdatedStartTime = null, DateTimeOffset? lastUpdatedEndTime = null, string continuationToken = null, int? maxPageSize = null, RequestContext context = null)
         {
-            Argument.AssertNotNullOrEmpty(testId, nameof(testId));
+            return GetLoadTestSearchesImplementationAsync("LoadTestAdministrationClient.GetLoadTestSearches", orderBy, search, lastUpdatedStartTime, lastUpdatedEndTime, continuationToken, maxPageSize, context);
+        }
 
-            using var scope = ClientDiagnostics.CreateScope("LoadTestAdministrationClient.GetAllTestFiles");
-            scope.Start();
-            try
+        private AsyncPageable<BinaryData> GetLoadTestSearchesImplementationAsync(string diagnosticsScopeName, string orderBy, string search, DateTimeOffset? lastUpdatedStartTime, DateTimeOffset? lastUpdatedEndTime, string continuationToken, int? maxPageSize, RequestContext context)
+        {
+            return PageableHelpers.CreateAsyncPageable(CreateEnumerableAsync, ClientDiagnostics, diagnosticsScopeName);
+            async IAsyncEnumerable<Page<BinaryData>> CreateEnumerableAsync(string nextLink, int? pageSizeHint, [EnumeratorCancellation] CancellationToken cancellationToken = default)
             {
-                using HttpMessage message = CreateGetAllTestFilesRequest(testId, continuationToken, context);
-                return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+                do
+                {
+                    var message = string.IsNullOrEmpty(nextLink)
+                        ? CreateGetLoadTestSearchesRequest(orderBy, search, lastUpdatedStartTime, lastUpdatedEndTime, continuationToken, maxPageSize, context)
+                        : CreateGetLoadTestSearchesNextPageRequest(nextLink, orderBy, search, lastUpdatedStartTime, lastUpdatedEndTime, continuationToken, maxPageSize, context);
+                    var page = await LowLevelPageableHelpers.ProcessMessageAsync(_pipeline, message, context, "value", "nextLink", cancellationToken).ConfigureAwait(false);
+                    nextLink = page.ContinuationToken;
+                    yield return page;
+                } while (!string.IsNullOrEmpty(nextLink));
             }
-            catch (Exception e)
+        }
+
+        /// <summary> Get all load tests by the fully qualified resource Id e.g subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName}. </summary>
+        /// <param name="orderBy"> Sort on one of the field - lastModifiedDateTime, displayName, createdBy in (field asc/desc) format. eg: displayName asc. </param>
+        /// <param name="search"> Filter search based on searchable fields - testId, createdBy. </param>
+        /// <param name="lastUpdatedStartTime"> Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests. </param>
+        /// <param name="lastUpdatedEndTime"> End DateTime(ISO 8601 literal format) of the last updated time range to filter tests. </param>
+        /// <param name="continuationToken"> Continuation token to get the next page of response. </param>
+        /// <param name="maxPageSize"> Number of results in response. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The <see cref="Pageable{T}"/> from the service containing a list of <see cref="BinaryData"/> objects. Details of the body schema for each item in the collection are in the Remarks section below. </returns>
+        /// <include file="Docs/LoadTestAdministrationClient.xml" path="doc/members/member[@name='GetLoadTestSearches(String,String,DateTimeOffset,DateTimeOffset,String,Int32,RequestContext)']/*" />
+        public virtual Pageable<BinaryData> GetLoadTestSearches(string orderBy = null, string search = null, DateTimeOffset? lastUpdatedStartTime = null, DateTimeOffset? lastUpdatedEndTime = null, string continuationToken = null, int? maxPageSize = null, RequestContext context = null)
+        {
+            return GetLoadTestSearchesImplementation("LoadTestAdministrationClient.GetLoadTestSearches", orderBy, search, lastUpdatedStartTime, lastUpdatedEndTime, continuationToken, maxPageSize, context);
+        }
+
+        private Pageable<BinaryData> GetLoadTestSearchesImplementation(string diagnosticsScopeName, string orderBy, string search, DateTimeOffset? lastUpdatedStartTime, DateTimeOffset? lastUpdatedEndTime, string continuationToken, int? maxPageSize, RequestContext context)
+        {
+            return PageableHelpers.CreatePageable(CreateEnumerable, ClientDiagnostics, diagnosticsScopeName);
+            IEnumerable<Page<BinaryData>> CreateEnumerable(string nextLink, int? pageSizeHint)
             {
-                scope.Failed(e);
-                throw;
+                do
+                {
+                    var message = string.IsNullOrEmpty(nextLink)
+                        ? CreateGetLoadTestSearchesRequest(orderBy, search, lastUpdatedStartTime, lastUpdatedEndTime, continuationToken, maxPageSize, context)
+                        : CreateGetLoadTestSearchesNextPageRequest(nextLink, orderBy, search, lastUpdatedStartTime, lastUpdatedEndTime, continuationToken, maxPageSize, context);
+                    var page = LowLevelPageableHelpers.ProcessMessage(_pipeline, message, context, "value", "nextLink");
+                    nextLink = page.ContinuationToken;
+                    yield return page;
+                } while (!string.IsNullOrEmpty(nextLink));
             }
         }
 
@@ -978,23 +966,62 @@ namespace Azure.Developer.LoadTesting
         /// <exception cref="ArgumentNullException"> <paramref name="testId"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="testId"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        /// <returns> The response returned from the service. Details of the response body schema are in the Remarks section below. </returns>
-        /// <include file="Docs/LoadTestAdministrationClient.xml" path="doc/members/member[@name='GetAllTestFiles(String,String,RequestContext)']/*" />
-        public virtual Response GetAllTestFiles(string testId, string continuationToken = null, RequestContext context = null)
+        /// <returns> The <see cref="AsyncPageable{T}"/> from the service containing a list of <see cref="BinaryData"/> objects. Details of the body schema for each item in the collection are in the Remarks section below. </returns>
+        /// <include file="Docs/LoadTestAdministrationClient.xml" path="doc/members/member[@name='GetAllTestFilesAsync(String,String,RequestContext)']/*" />
+        public virtual AsyncPageable<BinaryData> GetAllTestFilesAsync(string testId, string continuationToken = null, RequestContext context = null)
         {
             Argument.AssertNotNullOrEmpty(testId, nameof(testId));
 
-            using var scope = ClientDiagnostics.CreateScope("LoadTestAdministrationClient.GetAllTestFiles");
-            scope.Start();
-            try
+            return GetAllTestFilesImplementationAsync("LoadTestAdministrationClient.GetAllTestFiles", testId, continuationToken, context);
+        }
+
+        private AsyncPageable<BinaryData> GetAllTestFilesImplementationAsync(string diagnosticsScopeName, string testId, string continuationToken, RequestContext context)
+        {
+            return PageableHelpers.CreateAsyncPageable(CreateEnumerableAsync, ClientDiagnostics, diagnosticsScopeName);
+            async IAsyncEnumerable<Page<BinaryData>> CreateEnumerableAsync(string nextLink, int? pageSizeHint, [EnumeratorCancellation] CancellationToken cancellationToken = default)
             {
-                using HttpMessage message = CreateGetAllTestFilesRequest(testId, continuationToken, context);
-                return _pipeline.ProcessMessage(message, context);
+                do
+                {
+                    var message = string.IsNullOrEmpty(nextLink)
+                        ? CreateGetAllTestFilesRequest(testId, continuationToken, context)
+                        : CreateGetAllTestFilesNextPageRequest(nextLink, testId, continuationToken, context);
+                    var page = await LowLevelPageableHelpers.ProcessMessageAsync(_pipeline, message, context, "value", "nextLink", cancellationToken).ConfigureAwait(false);
+                    nextLink = page.ContinuationToken;
+                    yield return page;
+                } while (!string.IsNullOrEmpty(nextLink));
             }
-            catch (Exception e)
+        }
+
+        /// <summary> Get all test files. </summary>
+        /// <param name="testId"> Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$. </param>
+        /// <param name="continuationToken"> Continuation token to get the next page of response. </param>
+        /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="testId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="testId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
+        /// <returns> The <see cref="Pageable{T}"/> from the service containing a list of <see cref="BinaryData"/> objects. Details of the body schema for each item in the collection are in the Remarks section below. </returns>
+        /// <include file="Docs/LoadTestAdministrationClient.xml" path="doc/members/member[@name='GetAllTestFiles(String,String,RequestContext)']/*" />
+        public virtual Pageable<BinaryData> GetAllTestFiles(string testId, string continuationToken = null, RequestContext context = null)
+        {
+            Argument.AssertNotNullOrEmpty(testId, nameof(testId));
+
+            return GetAllTestFilesImplementation("LoadTestAdministrationClient.GetAllTestFiles", testId, continuationToken, context);
+        }
+
+        private Pageable<BinaryData> GetAllTestFilesImplementation(string diagnosticsScopeName, string testId, string continuationToken, RequestContext context)
+        {
+            return PageableHelpers.CreatePageable(CreateEnumerable, ClientDiagnostics, diagnosticsScopeName);
+            IEnumerable<Page<BinaryData>> CreateEnumerable(string nextLink, int? pageSizeHint)
             {
-                scope.Failed(e);
-                throw;
+                do
+                {
+                    var message = string.IsNullOrEmpty(nextLink)
+                        ? CreateGetAllTestFilesRequest(testId, continuationToken, context)
+                        : CreateGetAllTestFilesNextPageRequest(nextLink, testId, continuationToken, context);
+                    var page = LowLevelPageableHelpers.ProcessMessage(_pipeline, message, context, "value", "nextLink");
+                    nextLink = page.ContinuationToken;
+                    yield return page;
+                } while (!string.IsNullOrEmpty(nextLink));
             }
         }
 
@@ -1339,6 +1366,34 @@ namespace Azure.Developer.LoadTesting
             {
                 uri.AppendQuery("continuationToken", continuationToken, true);
             }
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateGetLoadTestSearchesNextPageRequest(string nextLink, string orderBy, string search, DateTimeOffset? lastUpdatedStartTime, DateTimeOffset? lastUpdatedEndTime, string continuationToken, int? maxPageSize, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.AppendRaw("https://", false);
+            uri.Reset(_endpoint);
+            uri.AppendRawNextLink(nextLink, false);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            return message;
+        }
+
+        internal HttpMessage CreateGetAllTestFilesNextPageRequest(string nextLink, string testId, string continuationToken, RequestContext context)
+        {
+            var message = _pipeline.CreateMessage(context, ResponseClassifier200);
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.AppendRaw("https://", false);
+            uri.Reset(_endpoint);
+            uri.AppendRawNextLink(nextLink, false);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json");
             return message;
