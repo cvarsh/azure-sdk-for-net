@@ -9,7 +9,7 @@ csharp: true
 library-name: BotService
 namespace: Azure.ResourceManager.BotService
 # default tag is a preview version
-require: https://github.com/Azure/azure-rest-api-specs/blob/af1be2677e619e483210064ff658e62ec25053aa/specification/botservice/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/5aa0bc2d11e2dd79cbad4a0364c50c9466aa844d/specification/botservice/resource-manager/readme.md
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
 skip-csproj: true
