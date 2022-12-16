@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: ManagedServiceIdentities
 namespace: Azure.ResourceManager.ManagedServiceIdentities
-require: https://github.com/Azure/azure-rest-api-specs/blob/1ddabd9234338d209f9755beac5c13cc0ae3b5f7/specification/msi/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/5aa0bc2d11e2dd79cbad4a0364c50c9466aa844d/specification/msi/resource-manager/readme.md
 tag: package-preview-2022-01
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
