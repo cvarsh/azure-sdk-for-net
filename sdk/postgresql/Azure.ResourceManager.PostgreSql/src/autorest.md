@@ -20,7 +20,7 @@ batch:
 ``` yaml $(tag) == 'package-2020-01-01'
 
 namespace: Azure.ResourceManager.PostgreSql
-require: https://github.com/Azure/azure-rest-api-specs/blob/eca38ee0caf445cb1e79c8e7bbaf9e1dca36479a/specification/postgresql/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/5aa0bc2d11e2dd79cbad4a0364c50c9466aa844d/specification/postgresql/resource-manager/readme.md
 output-folder: $(this-folder)/PostgreSql/Generated
 
 format-by-name-rules:
@@ -145,7 +145,7 @@ directive:
 ``` yaml $(tag) == 'package-flexibleserver-2021-06'
 
 namespace: Azure.ResourceManager.PostgreSql.FlexibleServers
-require: https://github.com/Azure/azure-rest-api-specs/blob/eca38ee0caf445cb1e79c8e7bbaf9e1dca36479a/specification/postgresql/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/5aa0bc2d11e2dd79cbad4a0364c50c9466aa844d/specification/postgresql/resource-manager/readme.md
 output-folder: $(this-folder)/PostgreSqlFlexibleServers/Generated
 
 format-by-name-rules:
