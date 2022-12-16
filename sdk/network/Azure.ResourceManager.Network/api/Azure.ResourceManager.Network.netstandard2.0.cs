@@ -2838,7 +2838,7 @@ namespace Azure.ResourceManager.Network
         System.Collections.Generic.IEnumerator<Azure.ResourceManager.Network.PrivateDnsZoneGroupResource> System.Collections.Generic.IEnumerable<Azure.ResourceManager.Network.PrivateDnsZoneGroupResource>.GetEnumerator() { throw null; }
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { throw null; }
     }
-    public partial class PrivateDnsZoneGroupData : Azure.ResourceManager.Network.Models.NetworkResourceData
+    public partial class PrivateDnsZoneGroupData : Azure.ResourceManager.Network.Models.NetworkWritableResourceData
     {
         public PrivateDnsZoneGroupData() { }
         public Azure.ETag? ETag { get { throw null; } }
@@ -2884,6 +2884,7 @@ namespace Azure.ResourceManager.Network
         public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.Network.NetworkInterfaceData> NetworkInterfaces { get { throw null; } }
         public System.Collections.Generic.IList<Azure.ResourceManager.Network.Models.NetworkPrivateLinkServiceConnection> PrivateLinkServiceConnections { get { throw null; } }
         public Azure.ResourceManager.Network.Models.NetworkProvisioningState? ProvisioningState { get { throw null; } }
+        public System.Guid? ResourceGuid { get { throw null; } set { } }
         public Azure.ResourceManager.Network.SubnetData Subnet { get { throw null; } set { } }
     }
     public partial class PrivateEndpointResource : Azure.ResourceManager.ArmResource
@@ -2938,6 +2939,7 @@ namespace Azure.ResourceManager.Network
         public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.Network.NetworkInterfaceData> NetworkInterfaces { get { throw null; } }
         public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.Network.NetworkPrivateEndpointConnectionData> PrivateEndpointConnections { get { throw null; } }
         public Azure.ResourceManager.Network.Models.NetworkProvisioningState? ProvisioningState { get { throw null; } }
+        public System.Guid? ResourceGuid { get { throw null; } set { } }
         public System.Collections.Generic.IList<string> VisibilitySubscriptions { get { throw null; } }
     }
     public partial class PrivateLinkServiceResource : Azure.ResourceManager.ArmResource
@@ -7936,6 +7938,7 @@ namespace Azure.ResourceManager.Network.Models
         public Azure.Core.ResourceIdentifier PrivateLinkServiceId { get { throw null; } set { } }
         public Azure.ResourceManager.Network.Models.NetworkProvisioningState? ProvisioningState { get { throw null; } }
         public string RequestMessage { get { throw null; } set { } }
+        public string ResolvedPrivateLinkServiceLocation { get { throw null; } set { } }
     }
     public partial class NetworkPrivateLinkServiceConnectionState
     {
@@ -8464,9 +8467,13 @@ namespace Azure.ResourceManager.Network.Models
     public partial class PrivateDnsZoneConfig
     {
         public PrivateDnsZoneConfig() { }
+        public Azure.ETag? ETag { get { throw null; } }
+        public string Id { get { throw null; } }
         public string Name { get { throw null; } set { } }
         public string PrivateDnsZoneId { get { throw null; } set { } }
+        public Azure.ResourceManager.Network.Models.NetworkProvisioningState? ProvisioningState { get { throw null; } }
         public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.Network.Models.RecordSet> RecordSets { get { throw null; } }
+        public string ResourceType { get { throw null; } }
     }
     public partial class PrivateLinkServiceIPConfiguration : Azure.ResourceManager.Network.Models.NetworkResourceData
     {
