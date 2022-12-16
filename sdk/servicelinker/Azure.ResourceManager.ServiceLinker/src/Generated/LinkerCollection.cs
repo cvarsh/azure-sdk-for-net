@@ -21,30 +21,30 @@ namespace Azure.ResourceManager.ServiceLinker
     /// <summary>
     /// A class representing a collection of <see cref="LinkerResource" /> and their operations.
     /// Each <see cref="LinkerResource" /> in the collection will belong to the same instance of <see cref="ArmResource" />.
-    /// To get a <see cref="LinkerResourceCollection" /> instance call the GetLinkerResources method from an instance of <see cref="ArmResource" />.
+    /// To get a <see cref="LinkerCollection" /> instance call the GetLinkers method from an instance of <see cref="ArmResource" />.
     /// </summary>
-    public partial class LinkerResourceCollection : ArmCollection, IEnumerable<LinkerResource>, IAsyncEnumerable<LinkerResource>
+    public partial class LinkerCollection : ArmCollection, IEnumerable<LinkerResource>, IAsyncEnumerable<LinkerResource>
     {
-        private readonly ClientDiagnostics _linkerResourceLinkerClientDiagnostics;
-        private readonly LinkerRestOperations _linkerResourceLinkerRestClient;
+        private readonly ClientDiagnostics _linkerClientDiagnostics;
+        private readonly LinkerRestOperations _linkerRestClient;
 
-        /// <summary> Initializes a new instance of the <see cref="LinkerResourceCollection"/> class for mocking. </summary>
-        protected LinkerResourceCollection()
+        /// <summary> Initializes a new instance of the <see cref="LinkerCollection"/> class for mocking. </summary>
+        protected LinkerCollection()
         {
         }
 
-        /// <summary> Initializes a new instance of the <see cref="LinkerResourceCollection"/> class. </summary>
+        /// <summary> Initializes a new instance of the <see cref="LinkerCollection"/> class. </summary>
         /// <param name="client"> The client parameters to use in these operations. </param>
         /// <param name="id"> The identifier of the parent resource that is the target of operations. </param>
-        internal LinkerResourceCollection(ArmClient client, ResourceIdentifier id) : base(client, id)
+        internal LinkerCollection(ArmClient client, ResourceIdentifier id) : base(client, id)
         {
-            _linkerResourceLinkerClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.ServiceLinker", LinkerResource.ResourceType.Namespace, Diagnostics);
-            TryGetApiVersion(LinkerResource.ResourceType, out string linkerResourceLinkerApiVersion);
-            _linkerResourceLinkerRestClient = new LinkerRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, linkerResourceLinkerApiVersion);
+            _linkerClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.ServiceLinker", LinkerResource.ResourceType.Namespace, Diagnostics);
+            TryGetApiVersion(LinkerResource.ResourceType, out string linkerApiVersion);
+            _linkerRestClient = new LinkerRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, linkerApiVersion);
         }
 
         /// <summary>
-        /// Create or update linker resource.
+        /// Create or update Linker resource.
         /// Request Path: /{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}
         /// Operation Id: Linker_CreateOrUpdate
         /// </summary>
@@ -59,12 +59,12 @@ namespace Azure.ResourceManager.ServiceLinker
             Argument.AssertNotNullOrEmpty(linkerName, nameof(linkerName));
             Argument.AssertNotNull(data, nameof(data));
 
-            using var scope = _linkerResourceLinkerClientDiagnostics.CreateScope("LinkerResourceCollection.CreateOrUpdate");
+            using var scope = _linkerClientDiagnostics.CreateScope("LinkerCollection.CreateOrUpdate");
             scope.Start();
             try
             {
-                var response = await _linkerResourceLinkerRestClient.CreateOrUpdateAsync(Id, linkerName, data, cancellationToken).ConfigureAwait(false);
-                var operation = new ServiceLinkerArmOperation<LinkerResource>(new LinkerResourceOperationSource(Client), _linkerResourceLinkerClientDiagnostics, Pipeline, _linkerResourceLinkerRestClient.CreateCreateOrUpdateRequest(Id, linkerName, data).Request, response, OperationFinalStateVia.AzureAsyncOperation);
+                var response = await _linkerRestClient.CreateOrUpdateAsync(Id, linkerName, data, cancellationToken).ConfigureAwait(false);
+                var operation = new ServiceLinkerArmOperation<LinkerResource>(new LinkerOperationSource(Client), _linkerClientDiagnostics, Pipeline, _linkerRestClient.CreateCreateOrUpdateRequest(Id, linkerName, data).Request, response, OperationFinalStateVia.AzureAsyncOperation);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -77,7 +77,7 @@ namespace Azure.ResourceManager.ServiceLinker
         }
 
         /// <summary>
-        /// Create or update linker resource.
+        /// Create or update Linker resource.
         /// Request Path: /{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}
         /// Operation Id: Linker_CreateOrUpdate
         /// </summary>
@@ -92,12 +92,12 @@ namespace Azure.ResourceManager.ServiceLinker
             Argument.AssertNotNullOrEmpty(linkerName, nameof(linkerName));
             Argument.AssertNotNull(data, nameof(data));
 
-            using var scope = _linkerResourceLinkerClientDiagnostics.CreateScope("LinkerResourceCollection.CreateOrUpdate");
+            using var scope = _linkerClientDiagnostics.CreateScope("LinkerCollection.CreateOrUpdate");
             scope.Start();
             try
             {
-                var response = _linkerResourceLinkerRestClient.CreateOrUpdate(Id, linkerName, data, cancellationToken);
-                var operation = new ServiceLinkerArmOperation<LinkerResource>(new LinkerResourceOperationSource(Client), _linkerResourceLinkerClientDiagnostics, Pipeline, _linkerResourceLinkerRestClient.CreateCreateOrUpdateRequest(Id, linkerName, data).Request, response, OperationFinalStateVia.AzureAsyncOperation);
+                var response = _linkerRestClient.CreateOrUpdate(Id, linkerName, data, cancellationToken);
+                var operation = new ServiceLinkerArmOperation<LinkerResource>(new LinkerOperationSource(Client), _linkerClientDiagnostics, Pipeline, _linkerRestClient.CreateCreateOrUpdateRequest(Id, linkerName, data).Request, response, OperationFinalStateVia.AzureAsyncOperation);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletion(cancellationToken);
                 return operation;
@@ -122,11 +122,11 @@ namespace Azure.ResourceManager.ServiceLinker
         {
             Argument.AssertNotNullOrEmpty(linkerName, nameof(linkerName));
 
-            using var scope = _linkerResourceLinkerClientDiagnostics.CreateScope("LinkerResourceCollection.Get");
+            using var scope = _linkerClientDiagnostics.CreateScope("LinkerCollection.Get");
             scope.Start();
             try
             {
-                var response = await _linkerResourceLinkerRestClient.GetAsync(Id, linkerName, cancellationToken).ConfigureAwait(false);
+                var response = await _linkerRestClient.GetAsync(Id, linkerName, cancellationToken).ConfigureAwait(false);
                 if (response.Value == null)
                     throw new RequestFailedException(response.GetRawResponse());
                 return Response.FromValue(new LinkerResource(Client, response.Value), response.GetRawResponse());
@@ -151,11 +151,11 @@ namespace Azure.ResourceManager.ServiceLinker
         {
             Argument.AssertNotNullOrEmpty(linkerName, nameof(linkerName));
 
-            using var scope = _linkerResourceLinkerClientDiagnostics.CreateScope("LinkerResourceCollection.Get");
+            using var scope = _linkerClientDiagnostics.CreateScope("LinkerCollection.Get");
             scope.Start();
             try
             {
-                var response = _linkerResourceLinkerRestClient.Get(Id, linkerName, cancellationToken);
+                var response = _linkerRestClient.Get(Id, linkerName, cancellationToken);
                 if (response.Value == null)
                     throw new RequestFailedException(response.GetRawResponse());
                 return Response.FromValue(new LinkerResource(Client, response.Value), response.GetRawResponse());
@@ -168,7 +168,7 @@ namespace Azure.ResourceManager.ServiceLinker
         }
 
         /// <summary>
-        /// Returns list of Linkers which connects to the resource.
+        /// Returns list of Linkers which connects to the resource. which supports to config both application and target service during the resource provision.
         /// Request Path: /{resourceUri}/providers/Microsoft.ServiceLinker/linkers
         /// Operation Id: Linker_List
         /// </summary>
@@ -178,11 +178,11 @@ namespace Azure.ResourceManager.ServiceLinker
         {
             async Task<Page<LinkerResource>> FirstPageFunc(int? pageSizeHint)
             {
-                using var scope = _linkerResourceLinkerClientDiagnostics.CreateScope("LinkerResourceCollection.GetAll");
+                using var scope = _linkerClientDiagnostics.CreateScope("LinkerCollection.GetAll");
                 scope.Start();
                 try
                 {
-                    var response = await _linkerResourceLinkerRestClient.ListAsync(Id, cancellationToken: cancellationToken).ConfigureAwait(false);
+                    var response = await _linkerRestClient.ListAsync(Id, cancellationToken: cancellationToken).ConfigureAwait(false);
                     return Page.FromValues(response.Value.Value.Select(value => new LinkerResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
                 }
                 catch (Exception e)
@@ -193,11 +193,11 @@ namespace Azure.ResourceManager.ServiceLinker
             }
             async Task<Page<LinkerResource>> NextPageFunc(string nextLink, int? pageSizeHint)
             {
-                using var scope = _linkerResourceLinkerClientDiagnostics.CreateScope("LinkerResourceCollection.GetAll");
+                using var scope = _linkerClientDiagnostics.CreateScope("LinkerCollection.GetAll");
                 scope.Start();
                 try
                 {
-                    var response = await _linkerResourceLinkerRestClient.ListNextPageAsync(nextLink, Id, cancellationToken: cancellationToken).ConfigureAwait(false);
+                    var response = await _linkerRestClient.ListNextPageAsync(nextLink, Id, cancellationToken: cancellationToken).ConfigureAwait(false);
                     return Page.FromValues(response.Value.Value.Select(value => new LinkerResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
                 }
                 catch (Exception e)
@@ -210,7 +210,7 @@ namespace Azure.ResourceManager.ServiceLinker
         }
 
         /// <summary>
-        /// Returns list of Linkers which connects to the resource.
+        /// Returns list of Linkers which connects to the resource. which supports to config both application and target service during the resource provision.
         /// Request Path: /{resourceUri}/providers/Microsoft.ServiceLinker/linkers
         /// Operation Id: Linker_List
         /// </summary>
@@ -220,11 +220,11 @@ namespace Azure.ResourceManager.ServiceLinker
         {
             Page<LinkerResource> FirstPageFunc(int? pageSizeHint)
             {
-                using var scope = _linkerResourceLinkerClientDiagnostics.CreateScope("LinkerResourceCollection.GetAll");
+                using var scope = _linkerClientDiagnostics.CreateScope("LinkerCollection.GetAll");
                 scope.Start();
                 try
                 {
-                    var response = _linkerResourceLinkerRestClient.List(Id, cancellationToken: cancellationToken);
+                    var response = _linkerRestClient.List(Id, cancellationToken: cancellationToken);
                     return Page.FromValues(response.Value.Value.Select(value => new LinkerResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
                 }
                 catch (Exception e)
@@ -235,11 +235,11 @@ namespace Azure.ResourceManager.ServiceLinker
             }
             Page<LinkerResource> NextPageFunc(string nextLink, int? pageSizeHint)
             {
-                using var scope = _linkerResourceLinkerClientDiagnostics.CreateScope("LinkerResourceCollection.GetAll");
+                using var scope = _linkerClientDiagnostics.CreateScope("LinkerCollection.GetAll");
                 scope.Start();
                 try
                 {
-                    var response = _linkerResourceLinkerRestClient.ListNextPage(nextLink, Id, cancellationToken: cancellationToken);
+                    var response = _linkerRestClient.ListNextPage(nextLink, Id, cancellationToken: cancellationToken);
                     return Page.FromValues(response.Value.Value.Select(value => new LinkerResource(Client, value)), response.Value.NextLink, response.GetRawResponse());
                 }
                 catch (Exception e)
@@ -264,11 +264,11 @@ namespace Azure.ResourceManager.ServiceLinker
         {
             Argument.AssertNotNullOrEmpty(linkerName, nameof(linkerName));
 
-            using var scope = _linkerResourceLinkerClientDiagnostics.CreateScope("LinkerResourceCollection.Exists");
+            using var scope = _linkerClientDiagnostics.CreateScope("LinkerCollection.Exists");
             scope.Start();
             try
             {
-                var response = await _linkerResourceLinkerRestClient.GetAsync(Id, linkerName, cancellationToken: cancellationToken).ConfigureAwait(false);
+                var response = await _linkerRestClient.GetAsync(Id, linkerName, cancellationToken: cancellationToken).ConfigureAwait(false);
                 return Response.FromValue(response.Value != null, response.GetRawResponse());
             }
             catch (Exception e)
@@ -291,11 +291,11 @@ namespace Azure.ResourceManager.ServiceLinker
         {
             Argument.AssertNotNullOrEmpty(linkerName, nameof(linkerName));
 
-            using var scope = _linkerResourceLinkerClientDiagnostics.CreateScope("LinkerResourceCollection.Exists");
+            using var scope = _linkerClientDiagnostics.CreateScope("LinkerCollection.Exists");
             scope.Start();
             try
             {
-                var response = _linkerResourceLinkerRestClient.Get(Id, linkerName, cancellationToken: cancellationToken);
+                var response = _linkerRestClient.Get(Id, linkerName, cancellationToken: cancellationToken);
                 return Response.FromValue(response.Value != null, response.GetRawResponse());
             }
             catch (Exception e)
