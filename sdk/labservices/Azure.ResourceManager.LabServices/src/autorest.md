@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: LabServices
 namespace: Azure.ResourceManager.LabServices
-require: https://github.com/Azure/azure-rest-api-specs/blob/aa8a23b8f92477d0fdce7af6ccffee1c604b3c56/specification/labservices/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/5aa0bc2d11e2dd79cbad4a0364c50c9466aa844d/specification/labservices/resource-manager/readme.md
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
 skip-csproj: true
