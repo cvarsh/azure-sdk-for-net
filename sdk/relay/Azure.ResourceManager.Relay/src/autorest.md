@@ -8,7 +8,7 @@ azure-arm: true
 csharp: true
 library-name: Relay
 namespace: Azure.ResourceManager.Relay
-require: https://github.com/Azure/azure-rest-api-specs/tree/cc8796418bed73e7e3755d8a6a2d84abcb3ec7f4/specification/relay/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/d6a07dc7b78dd417f48a8865dc3d79ad95fff202/specification/relay/resource-manager/readme.md
 output-folder: $(this-folder)/Generated
 clear-output-folder: true
 skip-csproj: true
