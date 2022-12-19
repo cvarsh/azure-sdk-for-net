@@ -37,10 +37,18 @@ namespace Microsoft.Azure.Management.Search.Models
         /// <param name="privateLinkServiceConnectionState">Describes the
         /// current state of an existing Private Link Service connection to the
         /// Azure Private Endpoint.</param>
-        public PrivateEndpointConnectionProperties(PrivateEndpointConnectionPropertiesPrivateEndpoint privateEndpoint = default(PrivateEndpointConnectionPropertiesPrivateEndpoint), PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState privateLinkServiceConnectionState = default(PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState))
+        /// <param name="groupId">The group id from the provider of resource
+        /// the private link service connection is for.</param>
+        /// <param name="provisioningState">The provisioning state of the
+        /// private link service connection. Can be Updating, Deleting, Failed,
+        /// Succeeded, or Incomplete. Possible values include: 'Updating',
+        /// 'Deleting', 'Failed', 'Succeeded', 'Incomplete', 'Canceled'</param>
+        public PrivateEndpointConnectionProperties(PrivateEndpointConnectionPropertiesPrivateEndpoint privateEndpoint = default(PrivateEndpointConnectionPropertiesPrivateEndpoint), PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState privateLinkServiceConnectionState = default(PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState), string groupId = default(string), string provisioningState = default(string))
         {
             PrivateEndpoint = privateEndpoint;
             PrivateLinkServiceConnectionState = privateLinkServiceConnectionState;
+            GroupId = groupId;
+            ProvisioningState = provisioningState;
             CustomInit();
         }
 
@@ -62,6 +70,22 @@ namespace Microsoft.Azure.Management.Search.Models
         /// </summary>
         [JsonProperty(PropertyName = "privateLinkServiceConnectionState")]
         public PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState PrivateLinkServiceConnectionState { get; set; }
+
+        /// <summary>
+        /// Gets or sets the group id from the provider of resource the private
+        /// link service connection is for.
+        /// </summary>
+        [JsonProperty(PropertyName = "groupId")]
+        public string GroupId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the provisioning state of the private link service
+        /// connection. Can be Updating, Deleting, Failed, Succeeded, or
+        /// Incomplete. Possible values include: 'Updating', 'Deleting',
+        /// 'Failed', 'Succeeded', 'Incomplete', 'Canceled'
+        /// </summary>
+        [JsonProperty(PropertyName = "provisioningState")]
+        public string ProvisioningState { get; set; }
 
     }
 }
