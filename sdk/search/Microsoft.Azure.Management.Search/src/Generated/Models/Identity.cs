@@ -31,9 +31,10 @@ namespace Microsoft.Azure.Management.Search.Models
         /// </summary>
         /// <param name="type">The identity type. Possible values include:
         /// 'None', 'SystemAssigned'</param>
-        /// <param name="principalId">The principal ID of resource
-        /// identity.</param>
-        /// <param name="tenantId">The tenant ID of resource.</param>
+        /// <param name="principalId">The principal ID of the system-assigned
+        /// identity of the search service.</param>
+        /// <param name="tenantId">The tenant ID of the system-assigned
+        /// identity of the search service.</param>
         public Identity(IdentityType type, string principalId = default(string), string tenantId = default(string))
         {
             PrincipalId = principalId;
@@ -48,13 +49,15 @@ namespace Microsoft.Azure.Management.Search.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets the principal ID of resource identity.
+        /// Gets the principal ID of the system-assigned identity of the search
+        /// service.
         /// </summary>
         [JsonProperty(PropertyName = "principalId")]
         public string PrincipalId { get; private set; }
 
         /// <summary>
-        /// Gets the tenant ID of resource.
+        /// Gets the tenant ID of the system-assigned identity of the search
+        /// service.
         /// </summary>
         [JsonProperty(PropertyName = "tenantId")]
         public string TenantId { get; private set; }

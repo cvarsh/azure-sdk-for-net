@@ -43,8 +43,8 @@ namespace Microsoft.Azure.Management.Search.Models
         /// property to 'highDensity'). 'storage_optimized_l1': Supports 1TB
         /// per partition, up to 12 partitions. 'storage_optimized_l2':
         /// Supports 2TB per partition, up to 12 partitions.'. Possible values
-        /// include: 'free', 'basic', 'standard', 'standard2', 'standard3',
-        /// 'storage_optimized_l1', 'storage_optimized_l2'</param>
+        /// include: 'Free', 'Basic', 'Standard', 'Standard2', 'Standard3',
+        /// 'StorageOptimizedL1', 'StorageOptimizedL2'</param>
         public Sku(SkuName? name = default(SkuName?))
         {
             Name = name;
@@ -67,8 +67,8 @@ namespace Microsoft.Azure.Management.Search.Models
         /// property to 'highDensity'). 'storage_optimized_l1': Supports 1TB
         /// per partition, up to 12 partitions. 'storage_optimized_l2':
         /// Supports 2TB per partition, up to 12 partitions.'. Possible values
-        /// include: 'free', 'basic', 'standard', 'standard2', 'standard3',
-        /// 'storage_optimized_l1', 'storage_optimized_l2'
+        /// include: 'Free', 'Basic', 'Standard', 'Standard2', 'Standard3',
+        /// 'StorageOptimizedL1', 'StorageOptimizedL2'
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public SkuName? Name { get; set; }

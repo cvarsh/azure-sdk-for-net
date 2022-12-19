@@ -21,18 +21,45 @@ namespace Microsoft.Azure.Management.Search.Models
     [JsonConverter(typeof(StringEnumConverter))]
     public enum SearchServiceStatus
     {
+        /// <summary>
+        /// The search service is running and no provisioning operations are
+        /// underway.
+        /// </summary>
         [EnumMember(Value = "running")]
         Running,
+        /// <summary>
+        /// The search service is being provisioned or scaled up or down.
+        /// </summary>
         [EnumMember(Value = "provisioning")]
         Provisioning,
+        /// <summary>
+        /// The search service is being deleted.
+        /// </summary>
         [EnumMember(Value = "deleting")]
         Deleting,
+        /// <summary>
+        /// The search service is degraded because underlying search units are
+        /// not healthy.
+        /// </summary>
         [EnumMember(Value = "degraded")]
         Degraded,
+        /// <summary>
+        /// The search service is disabled and all API requests will be
+        /// rejected.
+        /// </summary>
         [EnumMember(Value = "disabled")]
         Disabled,
+        /// <summary>
+        /// The search service is in error state, indicating either a failure
+        /// to provision or to be deleted.
+        /// </summary>
         [EnumMember(Value = "error")]
-        Error
+        Error,
+        /// <summary>
+        /// The search service is in a subscription that's disabled.
+        /// </summary>
+        [EnumMember(Value = "stopped")]
+        Stopped
     }
     internal static class SearchServiceStatusEnumExtension
     {
@@ -57,6 +84,8 @@ namespace Microsoft.Azure.Management.Search.Models
                     return "disabled";
                 case SearchServiceStatus.Error:
                     return "error";
+                case SearchServiceStatus.Stopped:
+                    return "stopped";
             }
             return null;
         }
@@ -77,6 +106,8 @@ namespace Microsoft.Azure.Management.Search.Models
                     return SearchServiceStatus.Disabled;
                 case "error":
                     return SearchServiceStatus.Error;
+                case "stopped":
+                    return SearchServiceStatus.Stopped;
             }
             return null;
         }

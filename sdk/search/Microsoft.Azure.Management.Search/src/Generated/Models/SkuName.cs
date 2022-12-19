@@ -21,18 +21,45 @@ namespace Microsoft.Azure.Management.Search.Models
     [JsonConverter(typeof(StringEnumConverter))]
     public enum SkuName
     {
+        /// <summary>
+        /// Free tier, with no SLA guarantees and a subset of features offered
+        /// to paid tiers.
+        /// </summary>
         [EnumMember(Value = "free")]
         Free,
+        /// <summary>
+        /// Paid tier dedicated service with up to 3 replicas.
+        /// </summary>
         [EnumMember(Value = "basic")]
         Basic,
+        /// <summary>
+        /// Paid tier dedicated service with up to 12 partitions and 12
+        /// replicas.
+        /// </summary>
         [EnumMember(Value = "standard")]
         Standard,
+        /// <summary>
+        /// Similar to 'standard', but with more capacity per search unit.
+        /// </summary>
         [EnumMember(Value = "standard2")]
         Standard2,
+        /// <summary>
+        /// The largest Standard offering with up to 12 partitions and 12
+        /// replicas (or up to 3 partitions with more indexes if you also set
+        /// the hostingMode property to 'highDensity').
+        /// </summary>
         [EnumMember(Value = "standard3")]
         Standard3,
+        /// <summary>
+        /// Paid tier dedicated service that supports 1TB per partition, up to
+        /// 12 partitions.
+        /// </summary>
         [EnumMember(Value = "storage_optimized_l1")]
         StorageOptimizedL1,
+        /// <summary>
+        /// Paid tier dedicated service that supports 2TB per partition, up to
+        /// 12 partitions.
+        /// </summary>
         [EnumMember(Value = "storage_optimized_l2")]
         StorageOptimizedL2
     }

@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Management.Search
             /// </param>
             /// <param name='keyKind'>
             /// Specifies which key to regenerate. Valid values include 'primary' and
-            /// 'secondary'. Possible values include: 'primary', 'secondary'
+            /// 'secondary'. Possible values include: 'Primary', 'Secondary'
             /// </param>
             /// <param name='searchManagementRequestOptions'>
             /// Additional parameters for the operation
@@ -121,7 +121,7 @@ namespace Microsoft.Azure.Management.Search
             /// </param>
             /// <param name='keyKind'>
             /// Specifies which key to regenerate. Valid values include 'primary' and
-            /// 'secondary'. Possible values include: 'primary', 'secondary'
+            /// 'secondary'. Possible values include: 'Primary', 'Secondary'
             /// </param>
             /// <param name='searchManagementRequestOptions'>
             /// Additional parameters for the operation

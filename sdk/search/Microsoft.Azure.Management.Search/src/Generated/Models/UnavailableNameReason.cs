@@ -16,7 +16,14 @@ namespace Microsoft.Azure.Management.Search.Models
     /// </summary>
     public static class UnavailableNameReason
     {
+        /// <summary>
+        /// The search service name does not match naming requirements.
+        /// </summary>
         public const string Invalid = "Invalid";
+        /// <summary>
+        /// The search service name is already assigned to a different search
+        /// service.
+        /// </summary>
         public const string AlreadyExists = "AlreadyExists";
     }
 }

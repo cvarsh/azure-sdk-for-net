@@ -21,8 +21,14 @@ namespace Microsoft.Azure.Management.Search.Models
     [JsonConverter(typeof(StringEnumConverter))]
     public enum AdminKeyKind
     {
+        /// <summary>
+        /// The primary API key for the search service.
+        /// </summary>
         [EnumMember(Value = "primary")]
         Primary,
+        /// <summary>
+        /// The secondary API key for the search service.
+        /// </summary>
         [EnumMember(Value = "secondary")]
         Secondary
     }

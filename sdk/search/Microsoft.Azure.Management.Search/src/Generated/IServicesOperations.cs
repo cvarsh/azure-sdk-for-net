@@ -164,7 +164,7 @@ namespace Microsoft.Azure.Management.Search
         /// </exception>
         Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string searchServiceName, SearchManagementRequestOptions searchManagementRequestOptions = default(SearchManagementRequestOptions), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Gets a list of all search services in the given resource group.
+        /// Gets a list of all Search services in the given resource group.
         /// <see href="https://aka.ms/search-manage" />
         /// </summary>
         /// <param name='resourceGroupName'>
@@ -192,7 +192,7 @@ namespace Microsoft.Azure.Management.Search
         /// </exception>
         Task<AzureOperationResponse<IPage<SearchService>>> ListByResourceGroupWithHttpMessagesAsync(string resourceGroupName, SearchManagementRequestOptions searchManagementRequestOptions = default(SearchManagementRequestOptions), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Gets a list of all search services in the given subscription.
+        /// Gets a list of all Search services in the given subscription.
         /// <see href="https://aka.ms/search-manage" />
         /// </summary>
         /// <param name='searchManagementRequestOptions'>
@@ -290,7 +290,7 @@ namespace Microsoft.Azure.Management.Search
         /// </exception>
         Task<AzureOperationResponse<SearchService>> BeginCreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string searchServiceName, SearchService service, SearchManagementRequestOptions searchManagementRequestOptions = default(SearchManagementRequestOptions), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Gets a list of all search services in the given resource group.
+        /// Gets a list of all Search services in the given resource group.
         /// <see href="https://aka.ms/search-manage" />
         /// </summary>
         /// <param name='nextPageLink'>
@@ -316,7 +316,7 @@ namespace Microsoft.Azure.Management.Search
         /// </exception>
         Task<AzureOperationResponse<IPage<SearchService>>> ListByResourceGroupNextWithHttpMessagesAsync(string nextPageLink, SearchManagementRequestOptions searchManagementRequestOptions = default(SearchManagementRequestOptions), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Gets a list of all search services in the given subscription.
+        /// Gets a list of all Search services in the given subscription.
         /// <see href="https://aka.ms/search-manage" />
         /// </summary>
         /// <param name='nextPageLink'>
