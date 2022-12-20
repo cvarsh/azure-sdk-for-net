@@ -572,18 +572,6 @@ namespace Azure.ResourceManager.DataMigration.Models
         public BlobShare() { }
         public System.Uri SasUri { get { throw null; } set { } }
     }
-    public partial class CheckOciDriverTaskOutput
-    {
-        internal CheckOciDriverTaskOutput() { }
-        public Azure.ResourceManager.DataMigration.Models.OracleOciDriverInfo InstalledDriver { get { throw null; } }
-        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.DataMigration.Models.ReportableException> ValidationErrors { get { throw null; } }
-    }
-    public partial class CheckOciDriverTaskProperties : Azure.ResourceManager.DataMigration.Models.ProjectTaskProperties
-    {
-        public CheckOciDriverTaskProperties() { }
-        public string InputServerVersion { get { throw null; } set { } }
-        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.DataMigration.Models.CheckOciDriverTaskOutput> Output { get { throw null; } }
-    }
     public abstract partial class CommandProperties
     {
         protected CommandProperties() { }
@@ -1264,17 +1252,6 @@ namespace Azure.ResourceManager.DataMigration.Models
         public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.DataMigration.Models.GetUserTablesSqlTaskOutput> Output { get { throw null; } }
         public string TaskId { get { throw null; } set { } }
     }
-    public partial class InstallOciDriverTaskOutput
-    {
-        internal InstallOciDriverTaskOutput() { }
-        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.DataMigration.Models.ReportableException> ValidationErrors { get { throw null; } }
-    }
-    public partial class InstallOciDriverTaskProperties : Azure.ResourceManager.DataMigration.Models.ProjectTaskProperties
-    {
-        public InstallOciDriverTaskProperties() { }
-        public string InputDriverPackageName { get { throw null; } set { } }
-        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.DataMigration.Models.InstallOciDriverTaskOutput> Output { get { throw null; } }
-    }
     public partial class IntegrationRuntimeMonitoringData
     {
         internal IntegrationRuntimeMonitoringData() { }
@@ -1701,71 +1678,6 @@ namespace Azure.ResourceManager.DataMigration.Models
         public bool? IsCloneable { get { throw null; } set { } }
         public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.DataMigration.Models.MigratePostgreSqlAzureDBForPostgreSqlSyncTaskOutput> Output { get { throw null; } }
         public string TaskId { get { throw null; } set { } }
-    }
-    public partial class MigrateSchemaSqlServerSqlDBDatabaseInput
-    {
-        public MigrateSchemaSqlServerSqlDBDatabaseInput() { }
-        public string Id { get { throw null; } set { } }
-        public string Name { get { throw null; } set { } }
-        public Azure.ResourceManager.DataMigration.Models.SchemaMigrationSetting SchemaSetting { get { throw null; } set { } }
-        public string TargetDatabaseName { get { throw null; } set { } }
-    }
-    public partial class MigrateSchemaSqlServerSqlDBTaskInput : Azure.ResourceManager.DataMigration.Models.SqlMigrationTaskInput
-    {
-        public MigrateSchemaSqlServerSqlDBTaskInput(Azure.ResourceManager.DataMigration.Models.SqlConnectionInfo sourceConnectionInfo, Azure.ResourceManager.DataMigration.Models.SqlConnectionInfo targetConnectionInfo, System.Collections.Generic.IEnumerable<Azure.ResourceManager.DataMigration.Models.MigrateSchemaSqlServerSqlDBDatabaseInput> selectedDatabases) : base (default(Azure.ResourceManager.DataMigration.Models.SqlConnectionInfo), default(Azure.ResourceManager.DataMigration.Models.SqlConnectionInfo)) { }
-        public string EncryptedKeyForSecureFields { get { throw null; } set { } }
-        public System.Collections.Generic.IList<Azure.ResourceManager.DataMigration.Models.MigrateSchemaSqlServerSqlDBDatabaseInput> SelectedDatabases { get { throw null; } }
-        public string StartedOn { get { throw null; } set { } }
-    }
-    public abstract partial class MigrateSchemaSqlServerSqlDBTaskOutput
-    {
-        protected MigrateSchemaSqlServerSqlDBTaskOutput() { }
-        public string Id { get { throw null; } }
-    }
-    public partial class MigrateSchemaSqlServerSqlDBTaskOutputDatabaseLevel : Azure.ResourceManager.DataMigration.Models.MigrateSchemaSqlServerSqlDBTaskOutput
-    {
-        internal MigrateSchemaSqlServerSqlDBTaskOutputDatabaseLevel() { }
-        public string DatabaseErrorResultPrefix { get { throw null; } }
-        public string DatabaseName { get { throw null; } }
-        public System.DateTimeOffset? EndedOn { get { throw null; } }
-        public string FileId { get { throw null; } }
-        public long? NumberOfFailedOperations { get { throw null; } }
-        public long? NumberOfSuccessfulOperations { get { throw null; } }
-        public string SchemaErrorResultPrefix { get { throw null; } }
-        public Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage? Stage { get { throw null; } }
-        public System.DateTimeOffset? StartedOn { get { throw null; } }
-        public Azure.ResourceManager.DataMigration.Models.MigrationState? State { get { throw null; } }
-    }
-    public partial class MigrateSchemaSqlServerSqlDBTaskOutputError : Azure.ResourceManager.DataMigration.Models.MigrateSchemaSqlServerSqlDBTaskOutput
-    {
-        internal MigrateSchemaSqlServerSqlDBTaskOutputError() { }
-        public string CommandText { get { throw null; } }
-        public string ErrorText { get { throw null; } }
-    }
-    public partial class MigrateSchemaSqlServerSqlDBTaskOutputMigrationLevel : Azure.ResourceManager.DataMigration.Models.MigrateSchemaSqlServerSqlDBTaskOutput
-    {
-        internal MigrateSchemaSqlServerSqlDBTaskOutputMigrationLevel() { }
-        public System.DateTimeOffset? EndedOn { get { throw null; } }
-        public string SourceServerBrandVersion { get { throw null; } }
-        public string SourceServerVersion { get { throw null; } }
-        public System.DateTimeOffset? StartedOn { get { throw null; } }
-        public Azure.ResourceManager.DataMigration.Models.MigrationState? State { get { throw null; } }
-        public string TargetServerBrandVersion { get { throw null; } }
-        public string TargetServerVersion { get { throw null; } }
-    }
-    public partial class MigrateSchemaSqlServerSqlDBTaskProperties : Azure.ResourceManager.DataMigration.Models.ProjectTaskProperties
-    {
-        public MigrateSchemaSqlServerSqlDBTaskProperties() { }
-        public string CreatedOn { get { throw null; } set { } }
-        public Azure.ResourceManager.DataMigration.Models.MigrateSchemaSqlServerSqlDBTaskInput Input { get { throw null; } set { } }
-        public bool? IsCloneable { get { throw null; } set { } }
-        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.DataMigration.Models.MigrateSchemaSqlServerSqlDBTaskOutput> Output { get { throw null; } }
-        public string TaskId { get { throw null; } set { } }
-    }
-    public partial class MigrateSchemaSqlTaskOutputError : Azure.ResourceManager.DataMigration.Models.MigrateSchemaSqlServerSqlDBTaskOutput
-    {
-        internal MigrateSchemaSqlTaskOutputError() { }
-        public Azure.ResourceManager.DataMigration.Models.ReportableException Error { get { throw null; } }
     }
     public partial class MigrateSqlServerSqlDBDatabaseInput
     {
@@ -2662,16 +2574,6 @@ namespace Azure.ResourceManager.DataMigration.Models
         public string ServerName { get { throw null; } set { } }
         public string ServerVersion { get { throw null; } set { } }
     }
-    public partial class OracleOciDriverInfo
-    {
-        internal OracleOciDriverInfo() { }
-        public string ArchiveChecksum { get { throw null; } }
-        public string AssemblyVersion { get { throw null; } }
-        public string DriverName { get { throw null; } }
-        public string DriverSize { get { throw null; } }
-        public string OracleChecksum { get { throw null; } }
-        public System.Collections.Generic.IReadOnlyList<string> SupportedOracleVersions { get { throw null; } }
-    }
     public partial class OrphanedUserInfo
     {
         internal OrphanedUserInfo() { }
@@ -3000,58 +2902,6 @@ namespace Azure.ResourceManager.DataMigration.Models
         public string ObjectName { get { throw null; } }
         public Azure.ResourceManager.DataMigration.Models.ObjectType? ObjectType { get { throw null; } }
         public Azure.ResourceManager.DataMigration.Models.UpdateActionType? UpdateAction { get { throw null; } }
-    }
-    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
-    public readonly partial struct SchemaMigrationOption : System.IEquatable<Azure.ResourceManager.DataMigration.Models.SchemaMigrationOption>
-    {
-        private readonly object _dummy;
-        private readonly int _dummyPrimitive;
-        public SchemaMigrationOption(string value) { throw null; }
-        public static Azure.ResourceManager.DataMigration.Models.SchemaMigrationOption ExtractFromSource { get { throw null; } }
-        public static Azure.ResourceManager.DataMigration.Models.SchemaMigrationOption None { get { throw null; } }
-        public static Azure.ResourceManager.DataMigration.Models.SchemaMigrationOption UseStorageFile { get { throw null; } }
-        public bool Equals(Azure.ResourceManager.DataMigration.Models.SchemaMigrationOption other) { throw null; }
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
-        public override bool Equals(object obj) { throw null; }
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
-        public override int GetHashCode() { throw null; }
-        public static bool operator ==(Azure.ResourceManager.DataMigration.Models.SchemaMigrationOption left, Azure.ResourceManager.DataMigration.Models.SchemaMigrationOption right) { throw null; }
-        public static implicit operator Azure.ResourceManager.DataMigration.Models.SchemaMigrationOption (string value) { throw null; }
-        public static bool operator !=(Azure.ResourceManager.DataMigration.Models.SchemaMigrationOption left, Azure.ResourceManager.DataMigration.Models.SchemaMigrationOption right) { throw null; }
-        public override string ToString() { throw null; }
-    }
-    public partial class SchemaMigrationSetting
-    {
-        public SchemaMigrationSetting() { }
-        public string FileId { get { throw null; } set { } }
-        public string FileName { get { throw null; } set { } }
-        public Azure.ResourceManager.DataMigration.Models.SchemaMigrationOption? SchemaOption { get { throw null; } set { } }
-    }
-    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
-    public readonly partial struct SchemaMigrationStage : System.IEquatable<Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage>
-    {
-        private readonly object _dummy;
-        private readonly int _dummyPrimitive;
-        public SchemaMigrationStage(string value) { throw null; }
-        public static Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage CollectingObjects { get { throw null; } }
-        public static Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage Completed { get { throw null; } }
-        public static Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage CompletedWithWarnings { get { throw null; } }
-        public static Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage DeployingSchema { get { throw null; } }
-        public static Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage DownloadingScript { get { throw null; } }
-        public static Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage Failed { get { throw null; } }
-        public static Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage GeneratingScript { get { throw null; } }
-        public static Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage NotStarted { get { throw null; } }
-        public static Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage UploadingScript { get { throw null; } }
-        public static Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage ValidatingInputs { get { throw null; } }
-        public bool Equals(Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage other) { throw null; }
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
-        public override bool Equals(object obj) { throw null; }
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
-        public override int GetHashCode() { throw null; }
-        public static bool operator ==(Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage left, Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage right) { throw null; }
-        public static implicit operator Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage (string value) { throw null; }
-        public static bool operator !=(Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage left, Azure.ResourceManager.DataMigration.Models.SchemaMigrationStage right) { throw null; }
-        public override string ToString() { throw null; }
     }
     public partial class SelectedCertificateInput
     {
@@ -3434,18 +3284,6 @@ namespace Azure.ResourceManager.DataMigration.Models
         public static implicit operator Azure.ResourceManager.DataMigration.Models.UpdateActionType (string value) { throw null; }
         public static bool operator !=(Azure.ResourceManager.DataMigration.Models.UpdateActionType left, Azure.ResourceManager.DataMigration.Models.UpdateActionType right) { throw null; }
         public override string ToString() { throw null; }
-    }
-    public partial class UploadOciDriverTaskOutput
-    {
-        internal UploadOciDriverTaskOutput() { }
-        public string DriverPackageName { get { throw null; } }
-        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.DataMigration.Models.ReportableException> ValidationErrors { get { throw null; } }
-    }
-    public partial class UploadOciDriverTaskProperties : Azure.ResourceManager.DataMigration.Models.ProjectTaskProperties
-    {
-        public UploadOciDriverTaskProperties() { }
-        public Azure.ResourceManager.DataMigration.Models.FileShare InputDriverShare { get { throw null; } set { } }
-        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.DataMigration.Models.UploadOciDriverTaskOutput> Output { get { throw null; } }
     }
     public partial class ValidateMigrationInputSqlServerSqlDBSyncTaskProperties : Azure.ResourceManager.DataMigration.Models.ProjectTaskProperties
     {

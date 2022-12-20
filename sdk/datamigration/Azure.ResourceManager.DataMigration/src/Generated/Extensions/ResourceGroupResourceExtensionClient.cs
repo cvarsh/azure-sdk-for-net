@@ -31,6 +31,13 @@ namespace Azure.ResourceManager.DataMigration
             return apiVersion;
         }
 
+        /// <summary> Gets a collection of DataMigrationServiceResources in the ResourceGroupResource. </summary>
+        /// <returns> An object representing collection of DataMigrationServiceResources and their operations over a DataMigrationServiceResource. </returns>
+        public virtual DataMigrationServiceCollection GetDataMigrationServices()
+        {
+            return GetCachedClient(Client => new DataMigrationServiceCollection(Client, Id));
+        }
+
         /// <summary> Gets a collection of DatabaseMigrationSqlDBResources in the ResourceGroupResource. </summary>
         /// <returns> An object representing collection of DatabaseMigrationSqlDBResources and their operations over a DatabaseMigrationSqlDBResource. </returns>
         public virtual DatabaseMigrationSqlDBCollection GetDatabaseMigrationSqlDBs()
@@ -57,13 +64,6 @@ namespace Azure.ResourceManager.DataMigration
         public virtual SqlMigrationServiceCollection GetSqlMigrationServices()
         {
             return GetCachedClient(Client => new SqlMigrationServiceCollection(Client, Id));
-        }
-
-        /// <summary> Gets a collection of DataMigrationServiceResources in the ResourceGroupResource. </summary>
-        /// <returns> An object representing collection of DataMigrationServiceResources and their operations over a DataMigrationServiceResource. </returns>
-        public virtual DataMigrationServiceCollection GetDataMigrationServices()
-        {
-            return GetCachedClient(Client => new DataMigrationServiceCollection(Client, Id));
         }
     }
 }
