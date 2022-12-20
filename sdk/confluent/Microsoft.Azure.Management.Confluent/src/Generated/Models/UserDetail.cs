@@ -33,11 +33,15 @@ namespace Microsoft.Azure.Management.Confluent.Models
         /// <param name="emailAddress">Email address</param>
         /// <param name="firstName">First name</param>
         /// <param name="lastName">Last name</param>
-        public UserDetail(string emailAddress, string firstName = default(string), string lastName = default(string))
+        /// <param name="userPrincipalName">User principal name</param>
+        /// <param name="aadEmail">AAD email address</param>
+        public UserDetail(string emailAddress, string firstName = default(string), string lastName = default(string), string userPrincipalName = default(string), string aadEmail = default(string))
         {
             FirstName = firstName;
             LastName = lastName;
             EmailAddress = emailAddress;
+            UserPrincipalName = userPrincipalName;
+            AadEmail = aadEmail;
             CustomInit();
         }
 
@@ -63,6 +67,18 @@ namespace Microsoft.Azure.Management.Confluent.Models
         /// </summary>
         [JsonProperty(PropertyName = "emailAddress")]
         public string EmailAddress { get; set; }
+
+        /// <summary>
+        /// Gets or sets user principal name
+        /// </summary>
+        [JsonProperty(PropertyName = "userPrincipalName")]
+        public string UserPrincipalName { get; set; }
+
+        /// <summary>
+        /// Gets or sets AAD email address
+        /// </summary>
+        [JsonProperty(PropertyName = "aadEmail")]
+        public string AadEmail { get; set; }
 
         /// <summary>
         /// Validate the object.

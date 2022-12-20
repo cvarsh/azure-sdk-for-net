@@ -51,5 +51,33 @@ namespace Microsoft.Azure.Management.Confluent
         /// Thrown when a required parameter is null
         /// </exception>
         Task<AzureOperationResponse<OrganizationResource>> ValidateOrganizationWithHttpMessagesAsync(string resourceGroupName, string organizationName, OrganizationResource body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// Organization Validate proxy resource
+        /// </summary>
+        /// <param name='resourceGroupName'>
+        /// Resource group name
+        /// </param>
+        /// <param name='organizationName'>
+        /// Organization resource name
+        /// </param>
+        /// <param name='body'>
+        /// Organization resource model
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="ResourceProviderDefaultErrorResponseException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        Task<AzureOperationResponse<ValidationResponse>> ValidateOrganizationV2WithHttpMessagesAsync(string resourceGroupName, string organizationName, OrganizationResource body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

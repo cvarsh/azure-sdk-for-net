@@ -52,9 +52,11 @@ namespace Microsoft.Azure.Management.Confluent.Models
         /// organization.</param>
         /// <param name="ssoUrl">SSO url for the Confluent
         /// organization.</param>
+        /// <param name="linkOrganization">Link an existing Confluent
+        /// organization</param>
         /// <param name="tags">Organization resource tags</param>
         /// <param name="location">Location of Organization resource</param>
-        public OrganizationResource(OfferDetail offerDetail, UserDetail userDetail, string id = default(string), string name = default(string), string type = default(string), SystemData systemData = default(SystemData), System.DateTime? createdTime = default(System.DateTime?), string provisioningState = default(string), string organizationId = default(string), string ssoUrl = default(string), IDictionary<string, string> tags = default(IDictionary<string, string>), string location = default(string))
+        public OrganizationResource(OfferDetail offerDetail, UserDetail userDetail, string id = default(string), string name = default(string), string type = default(string), SystemData systemData = default(SystemData), System.DateTime? createdTime = default(System.DateTime?), string provisioningState = default(string), string organizationId = default(string), string ssoUrl = default(string), LinkOrganization linkOrganization = default(LinkOrganization), IDictionary<string, string> tags = default(IDictionary<string, string>), string location = default(string))
         {
             Id = id;
             Name = name;
@@ -66,6 +68,7 @@ namespace Microsoft.Azure.Management.Confluent.Models
             SsoUrl = ssoUrl;
             OfferDetail = offerDetail;
             UserDetail = userDetail;
+            LinkOrganization = linkOrganization;
             Tags = tags;
             Location = location;
             CustomInit();
@@ -140,6 +143,12 @@ namespace Microsoft.Azure.Management.Confluent.Models
         public UserDetail UserDetail { get; set; }
 
         /// <summary>
+        /// Gets or sets link an existing Confluent organization
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.linkOrganization")]
+        public LinkOrganization LinkOrganization { get; set; }
+
+        /// <summary>
         /// Gets or sets organization resource tags
         /// </summary>
         [JsonProperty(PropertyName = "tags")]
@@ -174,6 +183,10 @@ namespace Microsoft.Azure.Management.Confluent.Models
             if (UserDetail != null)
             {
                 UserDetail.Validate();
+            }
+            if (LinkOrganization != null)
+            {
+                LinkOrganization.Validate();
             }
         }
     }

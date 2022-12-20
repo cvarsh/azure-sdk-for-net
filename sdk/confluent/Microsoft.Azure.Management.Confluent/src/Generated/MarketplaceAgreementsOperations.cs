@@ -76,6 +76,10 @@ namespace Microsoft.Azure.Management.Confluent
         /// </return>
         public async Task<AzureOperationResponse<IPage<ConfluentAgreementResource>>> ListWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
+            }
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");
@@ -248,6 +252,10 @@ namespace Microsoft.Azure.Management.Confluent
         /// </return>
         public async Task<AzureOperationResponse<ConfluentAgreementResource>> CreateWithHttpMessagesAsync(ConfluentAgreementResource body = default(ConfluentAgreementResource), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (Client.ApiVersion == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ApiVersion");
+            }
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");

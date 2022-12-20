@@ -12,6 +12,8 @@ namespace Microsoft.Azure.Management.Confluent.Models
 {
     using Microsoft.Rest;
     using Newtonsoft.Json;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
@@ -35,17 +37,23 @@ namespace Microsoft.Azure.Management.Confluent.Models
         /// <param name="planId">Offer Plan Id</param>
         /// <param name="planName">Offer Plan Name</param>
         /// <param name="termUnit">Offer Plan Term unit</param>
+        /// <param name="termId">Offer Plan Term Id</param>
+        /// <param name="privateOfferId">Private Offer Id</param>
+        /// <param name="privateOfferIds">Array of Private Offer Ids</param>
         /// <param name="status">SaaS Offer Status. Possible values include:
         /// 'Started', 'PendingFulfillmentStart', 'InProgress', 'Subscribed',
         /// 'Suspended', 'Reinstated', 'Succeeded', 'Failed', 'Unsubscribed',
         /// 'Updating'</param>
-        public OfferDetail(string publisherId, string id, string planId, string planName, string termUnit, string status = default(string))
+        public OfferDetail(string publisherId, string id, string planId, string planName, string termUnit, string termId = default(string), string privateOfferId = default(string), IList<string> privateOfferIds = default(IList<string>), string status = default(string))
         {
             PublisherId = publisherId;
             Id = id;
             PlanId = planId;
             PlanName = planName;
             TermUnit = termUnit;
+            TermId = termId;
+            PrivateOfferId = privateOfferId;
+            PrivateOfferIds = privateOfferIds;
             Status = status;
             CustomInit();
         }
@@ -84,6 +92,24 @@ namespace Microsoft.Azure.Management.Confluent.Models
         /// </summary>
         [JsonProperty(PropertyName = "termUnit")]
         public string TermUnit { get; set; }
+
+        /// <summary>
+        /// Gets or sets offer Plan Term Id
+        /// </summary>
+        [JsonProperty(PropertyName = "termId")]
+        public string TermId { get; set; }
+
+        /// <summary>
+        /// Gets or sets private Offer Id
+        /// </summary>
+        [JsonProperty(PropertyName = "privateOfferId")]
+        public string PrivateOfferId { get; set; }
+
+        /// <summary>
+        /// Gets or sets array of Private Offer Ids
+        /// </summary>
+        [JsonProperty(PropertyName = "privateOfferIds")]
+        public IList<string> PrivateOfferIds { get; set; }
 
         /// <summary>
         /// Gets or sets saaS Offer Status. Possible values include: 'Started',
@@ -137,16 +163,16 @@ namespace Microsoft.Azure.Management.Confluent.Models
             }
             if (PlanId != null)
             {
-                if (PlanId.Length > 50)
+                if (PlanId.Length > 200)
                 {
-                    throw new ValidationException(ValidationRules.MaxLength, "PlanId", 50);
+                    throw new ValidationException(ValidationRules.MaxLength, "PlanId", 200);
                 }
             }
             if (PlanName != null)
             {
-                if (PlanName.Length > 50)
+                if (PlanName.Length > 200)
                 {
-                    throw new ValidationException(ValidationRules.MaxLength, "PlanName", 50);
+                    throw new ValidationException(ValidationRules.MaxLength, "PlanName", 200);
                 }
             }
             if (TermUnit != null)
@@ -154,6 +180,20 @@ namespace Microsoft.Azure.Management.Confluent.Models
                 if (TermUnit.Length > 25)
                 {
                     throw new ValidationException(ValidationRules.MaxLength, "TermUnit", 25);
+                }
+            }
+            if (TermId != null)
+            {
+                if (TermId.Length > 50)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "TermId", 50);
+                }
+            }
+            if (PrivateOfferId != null)
+            {
+                if (PrivateOfferId.Length > 255)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "PrivateOfferId", 255);
                 }
             }
         }

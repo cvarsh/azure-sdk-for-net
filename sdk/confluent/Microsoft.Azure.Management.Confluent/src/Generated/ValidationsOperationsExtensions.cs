@@ -67,5 +67,51 @@ namespace Microsoft.Azure.Management.Confluent
                 }
             }
 
+            /// <summary>
+            /// Organization Validate proxy resource
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// Resource group name
+            /// </param>
+            /// <param name='organizationName'>
+            /// Organization resource name
+            /// </param>
+            /// <param name='body'>
+            /// Organization resource model
+            /// </param>
+            public static ValidationResponse ValidateOrganizationV2(this IValidationsOperations operations, string resourceGroupName, string organizationName, OrganizationResource body)
+            {
+                return operations.ValidateOrganizationV2Async(resourceGroupName, organizationName, body).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Organization Validate proxy resource
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='resourceGroupName'>
+            /// Resource group name
+            /// </param>
+            /// <param name='organizationName'>
+            /// Organization resource name
+            /// </param>
+            /// <param name='body'>
+            /// Organization resource model
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<ValidationResponse> ValidateOrganizationV2Async(this IValidationsOperations operations, string resourceGroupName, string organizationName, OrganizationResource body, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.ValidateOrganizationV2WithHttpMessagesAsync(resourceGroupName, organizationName, body, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
     }
 }
