@@ -179,6 +179,52 @@ namespace Azure.ResourceManager.HealthcareApis
         }
 
         /// <summary>
+        /// Validates Medtech mapping files against sample device data.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/validateMedtechMappings
+        /// Operation Id: Services_ValidateMedtechMappings
+        /// </summary>
+        /// <param name="content"> The mapping files and device events which will be validated. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual async Task<Response<ValidateMedtechMappingsResult>> ValidateMedtechMappingsServiceAsync(ValidateMedtechMappingsContent content, CancellationToken cancellationToken = default)
+        {
+            using var scope = HealthcareApisServiceServicesClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.ValidateMedtechMappingsService");
+            scope.Start();
+            try
+            {
+                var response = await HealthcareApisServiceServicesRestClient.ValidateMedtechMappingsAsync(Id.SubscriptionId, content, cancellationToken).ConfigureAwait(false);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Validates Medtech mapping files against sample device data.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/validateMedtechMappings
+        /// Operation Id: Services_ValidateMedtechMappings
+        /// </summary>
+        /// <param name="content"> The mapping files and device events which will be validated. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual Response<ValidateMedtechMappingsResult> ValidateMedtechMappingsService(ValidateMedtechMappingsContent content, CancellationToken cancellationToken = default)
+        {
+            using var scope = HealthcareApisServiceServicesClientDiagnostics.CreateScope("SubscriptionResourceExtensionClient.ValidateMedtechMappingsService");
+            scope.Start();
+            try
+            {
+                var response = HealthcareApisServiceServicesRestClient.ValidateMedtechMappings(Id.SubscriptionId, content, cancellationToken);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Lists all the available workspaces under the specified subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/workspaces
         /// Operation Id: Workspaces_ListBySubscription

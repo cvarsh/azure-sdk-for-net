@@ -124,6 +124,8 @@ namespace Azure.ResourceManager.HealthcareApis
         public static Azure.ResourceManager.HealthcareApis.HealthcareApisWorkspaceCollection GetHealthcareApisWorkspaces(this Azure.ResourceManager.Resources.ResourceGroupResource resourceGroupResource) { throw null; }
         public static Azure.Pageable<Azure.ResourceManager.HealthcareApis.HealthcareApisWorkspaceResource> GetHealthcareApisWorkspaces(this Azure.ResourceManager.Resources.SubscriptionResource subscriptionResource, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public static Azure.AsyncPageable<Azure.ResourceManager.HealthcareApis.HealthcareApisWorkspaceResource> GetHealthcareApisWorkspacesAsync(this Azure.ResourceManager.Resources.SubscriptionResource subscriptionResource, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public static Azure.Response<Azure.ResourceManager.HealthcareApis.Models.ValidateMedtechMappingsResult> ValidateMedtechMappingsService(this Azure.ResourceManager.Resources.SubscriptionResource subscriptionResource, Azure.ResourceManager.HealthcareApis.Models.ValidateMedtechMappingsContent content, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public static System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.HealthcareApis.Models.ValidateMedtechMappingsResult>> ValidateMedtechMappingsServiceAsync(this Azure.ResourceManager.Resources.SubscriptionResource subscriptionResource, Azure.ResourceManager.HealthcareApis.Models.ValidateMedtechMappingsContent content, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
     }
     public partial class HealthcareApisIotConnectorCollection : Azure.ResourceManager.ArmCollection, System.Collections.Generic.IAsyncEnumerable<Azure.ResourceManager.HealthcareApis.HealthcareApisIotConnectorResource>, System.Collections.Generic.IEnumerable<Azure.ResourceManager.HealthcareApis.HealthcareApisIotConnectorResource>, System.Collections.IEnumerable
     {
@@ -437,6 +439,24 @@ namespace Azure.ResourceManager.HealthcareApis
 }
 namespace Azure.ResourceManager.HealthcareApis.Models
 {
+    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    public readonly partial struct AggregateError : System.IEquatable<Azure.ResourceManager.HealthcareApis.Models.AggregateError>
+    {
+        private readonly object _dummy;
+        private readonly int _dummyPrimitive;
+        public AggregateError(string value) { throw null; }
+        public static Azure.ResourceManager.HealthcareApis.Models.AggregateError False { get { throw null; } }
+        public static Azure.ResourceManager.HealthcareApis.Models.AggregateError True { get { throw null; } }
+        public bool Equals(Azure.ResourceManager.HealthcareApis.Models.AggregateError other) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override bool Equals(object obj) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override int GetHashCode() { throw null; }
+        public static bool operator ==(Azure.ResourceManager.HealthcareApis.Models.AggregateError left, Azure.ResourceManager.HealthcareApis.Models.AggregateError right) { throw null; }
+        public static implicit operator Azure.ResourceManager.HealthcareApis.Models.AggregateError (string value) { throw null; }
+        public static bool operator !=(Azure.ResourceManager.HealthcareApis.Models.AggregateError left, Azure.ResourceManager.HealthcareApis.Models.AggregateError right) { throw null; }
+        public override string ToString() { throw null; }
+    }
     public partial class DicomServiceAuthenticationConfiguration
     {
         public DicomServiceAuthenticationConfiguration() { }
@@ -792,5 +812,94 @@ namespace Azure.ResourceManager.HealthcareApis.Models
         public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.HealthcareApis.HealthcareApisPrivateEndpointConnectionData> PrivateEndpointConnections { get { throw null; } }
         public Azure.ResourceManager.HealthcareApis.Models.HealthcareApisProvisioningState? ProvisioningState { get { throw null; } }
         public Azure.ResourceManager.HealthcareApis.Models.HealthcareApisPublicNetworkAccess? PublicNetworkAccess { get { throw null; } set { } }
+    }
+    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    public readonly partial struct MedtechMappingValidationCategory : System.IEquatable<Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationCategory>
+    {
+        private readonly object _dummy;
+        private readonly int _dummyPrimitive;
+        public MedtechMappingValidationCategory(string value) { throw null; }
+        public static Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationCategory Fhirtransformation { get { throw null; } }
+        public static Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationCategory Normalization { get { throw null; } }
+        public bool Equals(Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationCategory other) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override bool Equals(object obj) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override int GetHashCode() { throw null; }
+        public static bool operator ==(Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationCategory left, Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationCategory right) { throw null; }
+        public static implicit operator Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationCategory (string value) { throw null; }
+        public static bool operator !=(Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationCategory left, Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationCategory right) { throw null; }
+        public override string ToString() { throw null; }
+    }
+    public partial class MedtechMappingValidationError
+    {
+        internal MedtechMappingValidationError() { }
+        public Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationCategory? Category { get { throw null; } }
+        public Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationErrorLevel? Level { get { throw null; } }
+        public Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationLineInfo LineInfo { get { throw null; } }
+        public string Message { get { throw null; } }
+    }
+    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    public readonly partial struct MedtechMappingValidationErrorLevel : System.IEquatable<Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationErrorLevel>
+    {
+        private readonly object _dummy;
+        private readonly int _dummyPrimitive;
+        public MedtechMappingValidationErrorLevel(string value) { throw null; }
+        public static Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationErrorLevel Error { get { throw null; } }
+        public static Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationErrorLevel Warn { get { throw null; } }
+        public bool Equals(Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationErrorLevel other) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override bool Equals(object obj) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override int GetHashCode() { throw null; }
+        public static bool operator ==(Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationErrorLevel left, Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationErrorLevel right) { throw null; }
+        public static implicit operator Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationErrorLevel (string value) { throw null; }
+        public static bool operator !=(Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationErrorLevel left, Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationErrorLevel right) { throw null; }
+        public override string ToString() { throw null; }
+    }
+    public partial class MedtechMappingValidationLineInfo
+    {
+        internal MedtechMappingValidationLineInfo() { }
+        public int? LineNumber { get { throw null; } }
+        public int? LinePosition { get { throw null; } }
+    }
+    public partial class MedtechMeasurement
+    {
+        internal MedtechMeasurement() { }
+        public string CorrelationId { get { throw null; } }
+        public string DeviceId { get { throw null; } }
+        public string EncounterId { get { throw null; } }
+        public string MedtechMeasurementType { get { throw null; } }
+        public System.DateTimeOffset? OccurrenceTimeUtc { get { throw null; } }
+        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.HealthcareApis.Models.MedtechMeasurementProperty> Properties { get { throw null; } }
+    }
+    public partial class MedtechMeasurementProperty
+    {
+        internal MedtechMeasurementProperty() { }
+        public string Name { get { throw null; } }
+        public string Value { get { throw null; } }
+    }
+    public partial class ValidateMedtechMappingsContent
+    {
+        public ValidateMedtechMappingsContent(Azure.ResourceManager.HealthcareApis.Models.HealthcareApisIotMappingProperties deviceMapping) { }
+        public Azure.ResourceManager.HealthcareApis.Models.AggregateError? AggregateErrors { get { throw null; } set { } }
+        public System.Collections.Generic.IList<System.BinaryData> DeviceEvents { get { throw null; } }
+        public System.BinaryData DeviceMappingContent { get { throw null; } }
+        public System.BinaryData FhirMappingContent { get { throw null; } set { } }
+    }
+    public partial class ValidateMedtechMappingsDeviceResult
+    {
+        internal ValidateMedtechMappingsDeviceResult() { }
+        public System.BinaryData AggregatedCount { get { throw null; } }
+        public System.BinaryData DeviceEvent { get { throw null; } }
+        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationError> Exceptions { get { throw null; } }
+        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.HealthcareApis.Models.MedtechMeasurement> Measurements { get { throw null; } }
+        public System.Collections.Generic.IReadOnlyList<System.BinaryData> Observations { get { throw null; } }
+    }
+    public partial class ValidateMedtechMappingsResult
+    {
+        internal ValidateMedtechMappingsResult() { }
+        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.HealthcareApis.Models.ValidateMedtechMappingsDeviceResult> DeviceResults { get { throw null; } }
+        public System.Collections.Generic.IReadOnlyList<Azure.ResourceManager.HealthcareApis.Models.MedtechMappingValidationError> TemplateResultExceptions { get { throw null; } }
     }
 }

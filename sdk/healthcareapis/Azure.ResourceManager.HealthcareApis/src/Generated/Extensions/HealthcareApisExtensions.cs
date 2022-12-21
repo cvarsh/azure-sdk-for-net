@@ -87,6 +87,38 @@ namespace Azure.ResourceManager.HealthcareApis
         }
 
         /// <summary>
+        /// Validates Medtech mapping files against sample device data.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/validateMedtechMappings
+        /// Operation Id: Services_ValidateMedtechMappings
+        /// </summary>
+        /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
+        /// <param name="content"> The mapping files and device events which will be validated. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="content"/> is null. </exception>
+        public static async Task<Response<ValidateMedtechMappingsResult>> ValidateMedtechMappingsServiceAsync(this SubscriptionResource subscriptionResource, ValidateMedtechMappingsContent content, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(content, nameof(content));
+
+            return await GetExtensionClient(subscriptionResource).ValidateMedtechMappingsServiceAsync(content, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Validates Medtech mapping files against sample device data.
+        /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/validateMedtechMappings
+        /// Operation Id: Services_ValidateMedtechMappings
+        /// </summary>
+        /// <param name="subscriptionResource"> The <see cref="SubscriptionResource" /> instance the method will execute against. </param>
+        /// <param name="content"> The mapping files and device events which will be validated. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="content"/> is null. </exception>
+        public static Response<ValidateMedtechMappingsResult> ValidateMedtechMappingsService(this SubscriptionResource subscriptionResource, ValidateMedtechMappingsContent content, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(content, nameof(content));
+
+            return GetExtensionClient(subscriptionResource).ValidateMedtechMappingsService(content, cancellationToken);
+        }
+
+        /// <summary>
         /// Lists all the available workspaces under the specified subscription.
         /// Request Path: /subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/workspaces
         /// Operation Id: Workspaces_ListBySubscription
