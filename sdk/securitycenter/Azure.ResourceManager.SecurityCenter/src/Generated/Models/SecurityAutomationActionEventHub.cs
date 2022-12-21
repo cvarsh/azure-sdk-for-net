@@ -21,11 +21,13 @@ namespace Azure.ResourceManager.SecurityCenter.Models
         /// <summary> Initializes a new instance of SecurityAutomationActionEventHub. </summary>
         /// <param name="actionType"> The type of the action that will be triggered by the Automation. </param>
         /// <param name="eventHubResourceId"> The target Event Hub Azure Resource ID. </param>
-        /// <param name="sasPolicyName"> The target Event Hub SAS policy name. </param>
-        /// <param name="connectionString"> The target Event Hub connection string (it will not be included in any response). </param>
-        internal SecurityAutomationActionEventHub(ActionType actionType, ResourceIdentifier eventHubResourceId, string sasPolicyName, string connectionString) : base(actionType)
+        /// <param name="isTrustedServiceEnabled"> Indicates whether trusted service authentication is enabled. </param>
+        /// <param name="sasPolicyName"> The target Event Hub SAS policy name. Should be provided only when isTrustedServiceEnabled is set to false. </param>
+        /// <param name="connectionString"> The target Event Hub connection string (it will not be included in any response). Should be provided only when isTrustedServiceEnabled is set to false. </param>
+        internal SecurityAutomationActionEventHub(ActionType actionType, ResourceIdentifier eventHubResourceId, bool? isTrustedServiceEnabled, string sasPolicyName, string connectionString) : base(actionType)
         {
             EventHubResourceId = eventHubResourceId;
+            IsTrustedServiceEnabled = isTrustedServiceEnabled;
             SasPolicyName = sasPolicyName;
             ConnectionString = connectionString;
             ActionType = actionType;
@@ -33,9 +35,11 @@ namespace Azure.ResourceManager.SecurityCenter.Models
 
         /// <summary> The target Event Hub Azure Resource ID. </summary>
         public ResourceIdentifier EventHubResourceId { get; set; }
-        /// <summary> The target Event Hub SAS policy name. </summary>
+        /// <summary> Indicates whether trusted service authentication is enabled. </summary>
+        public bool? IsTrustedServiceEnabled { get; set; }
+        /// <summary> The target Event Hub SAS policy name. Should be provided only when isTrustedServiceEnabled is set to false. </summary>
         public string SasPolicyName { get; }
-        /// <summary> The target Event Hub connection string (it will not be included in any response). </summary>
+        /// <summary> The target Event Hub connection string (it will not be included in any response). Should be provided only when isTrustedServiceEnabled is set to false. </summary>
         public string ConnectionString { get; set; }
     }
 }

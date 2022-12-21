@@ -20,6 +20,11 @@ namespace Azure.ResourceManager.SecurityCenter.Models
                 writer.WritePropertyName("eventHubResourceId");
                 writer.WriteStringValue(EventHubResourceId);
             }
+            if (Optional.IsDefined(IsTrustedServiceEnabled))
+            {
+                writer.WritePropertyName("isTrustedServiceEnabled");
+                writer.WriteBooleanValue(IsTrustedServiceEnabled.Value);
+            }
             if (Optional.IsDefined(ConnectionString))
             {
                 writer.WritePropertyName("connectionString");
@@ -33,6 +38,7 @@ namespace Azure.ResourceManager.SecurityCenter.Models
         internal static SecurityAutomationActionEventHub DeserializeSecurityAutomationActionEventHub(JsonElement element)
         {
             Optional<ResourceIdentifier> eventHubResourceId = default;
+            Optional<bool> isTrustedServiceEnabled = default;
             Optional<string> sasPolicyName = default;
             Optional<string> connectionString = default;
             ActionType actionType = default;
@@ -46,6 +52,16 @@ namespace Azure.ResourceManager.SecurityCenter.Models
                         continue;
                     }
                     eventHubResourceId = new ResourceIdentifier(property.Value.GetString());
+                    continue;
+                }
+                if (property.NameEquals("isTrustedServiceEnabled"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    isTrustedServiceEnabled = property.Value.GetBoolean();
                     continue;
                 }
                 if (property.NameEquals("sasPolicyName"))
@@ -64,7 +80,7 @@ namespace Azure.ResourceManager.SecurityCenter.Models
                     continue;
                 }
             }
-            return new SecurityAutomationActionEventHub(actionType, eventHubResourceId.Value, sasPolicyName.Value, connectionString.Value);
+            return new SecurityAutomationActionEventHub(actionType, eventHubResourceId.Value, Optional.ToNullable(isTrustedServiceEnabled), sasPolicyName.Value, connectionString.Value);
         }
     }
 }
