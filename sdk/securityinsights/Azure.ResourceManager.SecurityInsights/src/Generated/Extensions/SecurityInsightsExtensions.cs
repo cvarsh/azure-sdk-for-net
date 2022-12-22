@@ -6,6 +6,7 @@
 #nullable disable
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure;
@@ -120,6 +121,53 @@ namespace Azure.ResourceManager.SecurityInsights
         public static Response<AlertRuleTemplateResource> GetAlertRuleTemplate(this ResourceGroupResource resourceGroupResource, string workspaceName, string alertRuleTemplateId, CancellationToken cancellationToken = default)
         {
             return resourceGroupResource.GetAlertRuleTemplates(workspaceName).Get(alertRuleTemplateId, cancellationToken);
+        }
+
+        /// <summary> Gets a collection of TriggeredAnalyticsRuleRunResources in the ResourceGroupResource. </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="workspaceName"> The name of the workspace. </param>
+        /// <exception cref="ArgumentException"> <paramref name="workspaceName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="workspaceName"/> is null. </exception>
+        /// <returns> An object representing collection of TriggeredAnalyticsRuleRunResources and their operations over a TriggeredAnalyticsRuleRunResource. </returns>
+        public static TriggeredAnalyticsRuleRunCollection GetTriggeredAnalyticsRuleRuns(this ResourceGroupResource resourceGroupResource, string workspaceName)
+        {
+            Argument.AssertNotNullOrEmpty(workspaceName, nameof(workspaceName));
+
+            return GetExtensionClient(resourceGroupResource).GetTriggeredAnalyticsRuleRuns(workspaceName);
+        }
+
+        /// <summary>
+        /// Gets the triggered analytics rule run.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/triggeredAnalyticsRuleRuns/{ruleRunId}
+        /// Operation Id: triggeredAnalyticsRuleRun_Get
+        /// </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="workspaceName"> The name of the workspace. </param>
+        /// <param name="ruleRunId"> The String to use. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="workspaceName"/> or <paramref name="ruleRunId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="workspaceName"/> or <paramref name="ruleRunId"/> is null. </exception>
+        [ForwardsClientCalls]
+        public static async Task<Response<TriggeredAnalyticsRuleRunResource>> GetTriggeredAnalyticsRuleRunAsync(this ResourceGroupResource resourceGroupResource, string workspaceName, string ruleRunId, CancellationToken cancellationToken = default)
+        {
+            return await resourceGroupResource.GetTriggeredAnalyticsRuleRuns(workspaceName).GetAsync(ruleRunId, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the triggered analytics rule run.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/triggeredAnalyticsRuleRuns/{ruleRunId}
+        /// Operation Id: triggeredAnalyticsRuleRun_Get
+        /// </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="workspaceName"> The name of the workspace. </param>
+        /// <param name="ruleRunId"> The String to use. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="workspaceName"/> or <paramref name="ruleRunId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="workspaceName"/> or <paramref name="ruleRunId"/> is null. </exception>
+        [ForwardsClientCalls]
+        public static Response<TriggeredAnalyticsRuleRunResource> GetTriggeredAnalyticsRuleRun(this ResourceGroupResource resourceGroupResource, string workspaceName, string ruleRunId, CancellationToken cancellationToken = default)
+        {
+            return resourceGroupResource.GetTriggeredAnalyticsRuleRuns(workspaceName).Get(ruleRunId, cancellationToken);
         }
 
         /// <summary> Gets a collection of AutomationRuleResources in the ResourceGroupResource. </summary>
@@ -934,6 +982,120 @@ namespace Azure.ResourceManager.SecurityInsights
         }
 
         /// <summary>
+        /// Gets a list of all recommendations.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/recommendations
+        /// Operation Id: GetRecommendations_List
+        /// </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="workspaceName"> The name of the workspace. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="workspaceName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="workspaceName"/> is null. </exception>
+        /// <returns> An async collection of <see cref="Recommendation" /> that may take multiple service requests to iterate over. </returns>
+        public static AsyncPageable<Recommendation> GetGetRecommendationsAsync(this ResourceGroupResource resourceGroupResource, string workspaceName, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(workspaceName, nameof(workspaceName));
+
+            return GetExtensionClient(resourceGroupResource).GetGetRecommendationsAsync(workspaceName, cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets a list of all recommendations.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/recommendations
+        /// Operation Id: GetRecommendations_List
+        /// </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="workspaceName"> The name of the workspace. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="workspaceName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="workspaceName"/> is null. </exception>
+        /// <returns> A collection of <see cref="Recommendation" /> that may take multiple service requests to iterate over. </returns>
+        public static Pageable<Recommendation> GetGetRecommendations(this ResourceGroupResource resourceGroupResource, string workspaceName, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(workspaceName, nameof(workspaceName));
+
+            return GetExtensionClient(resourceGroupResource).GetGetRecommendations(workspaceName, cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets a recommendation by its id.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/recommendations/{recommendationId}
+        /// Operation Id: Get_SingleRecommendation
+        /// </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="workspaceName"> The name of the workspace. </param>
+        /// <param name="recommendationId"> Recommendation Id. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="workspaceName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="workspaceName"/> is null. </exception>
+        public static async Task<Response<Recommendation>> SingleRecommendationGetAsync(this ResourceGroupResource resourceGroupResource, string workspaceName, Guid recommendationId, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(workspaceName, nameof(workspaceName));
+
+            return await GetExtensionClient(resourceGroupResource).SingleRecommendationGetAsync(workspaceName, recommendationId, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets a recommendation by its id.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/recommendations/{recommendationId}
+        /// Operation Id: Get_SingleRecommendation
+        /// </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="workspaceName"> The name of the workspace. </param>
+        /// <param name="recommendationId"> Recommendation Id. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="workspaceName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="workspaceName"/> is null. </exception>
+        public static Response<Recommendation> SingleRecommendationGet(this ResourceGroupResource resourceGroupResource, string workspaceName, Guid recommendationId, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(workspaceName, nameof(workspaceName));
+
+            return GetExtensionClient(resourceGroupResource).SingleRecommendationGet(workspaceName, recommendationId, cancellationToken);
+        }
+
+        /// <summary>
+        /// Patch a recommendation.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/recommendations/{recommendationId}
+        /// Operation Id: Update_Recommendation
+        /// </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
+        /// <param name="workspaceName"> The name of the workspace. </param>
+        /// <param name="recommendationId"> Recommendation Id. </param>
+        /// <param name="patch"> Recommendation Fields to Update. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="workspaceName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="workspaceName"/> or <paramref name="patch"/> is null. </exception>
+        public static async Task<ArmOperation<Recommendation>> RecommendationUpdateAsync(this ResourceGroupResource resourceGroupResource, WaitUntil waitUntil, string workspaceName, Guid recommendationId, IEnumerable<RecommendationPatch> patch, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(workspaceName, nameof(workspaceName));
+            Argument.AssertNotNull(patch, nameof(patch));
+
+            return await GetExtensionClient(resourceGroupResource).RecommendationUpdateAsync(waitUntil, workspaceName, recommendationId, patch, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Patch a recommendation.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/recommendations/{recommendationId}
+        /// Operation Id: Update_Recommendation
+        /// </summary>
+        /// <param name="resourceGroupResource"> The <see cref="ResourceGroupResource" /> instance the method will execute against. </param>
+        /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
+        /// <param name="workspaceName"> The name of the workspace. </param>
+        /// <param name="recommendationId"> Recommendation Id. </param>
+        /// <param name="patch"> Recommendation Fields to Update. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="workspaceName"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="workspaceName"/> or <paramref name="patch"/> is null. </exception>
+        public static ArmOperation<Recommendation> RecommendationUpdate(this ResourceGroupResource resourceGroupResource, WaitUntil waitUntil, string workspaceName, Guid recommendationId, IEnumerable<RecommendationPatch> patch, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(workspaceName, nameof(workspaceName));
+            Argument.AssertNotNull(patch, nameof(patch));
+
+            return GetExtensionClient(resourceGroupResource).RecommendationUpdate(waitUntil, workspaceName, recommendationId, patch, cancellationToken);
+        }
+
+        /// <summary>
         /// Gets a list of repositories metadata.
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/listRepositories
         /// Operation Id: SourceControl_listRepositories
@@ -1180,6 +1342,25 @@ namespace Azure.ResourceManager.SecurityInsights
         }
         #endregion
 
+        #region TriggeredAnalyticsRuleRunResource
+        /// <summary>
+        /// Gets an object representing a <see cref="TriggeredAnalyticsRuleRunResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="TriggeredAnalyticsRuleRunResource.CreateResourceIdentifier" /> to create a <see cref="TriggeredAnalyticsRuleRunResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="TriggeredAnalyticsRuleRunResource" /> object. </returns>
+        public static TriggeredAnalyticsRuleRunResource GetTriggeredAnalyticsRuleRunResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                TriggeredAnalyticsRuleRunResource.ValidateResourceId(id);
+                return new TriggeredAnalyticsRuleRunResource(client, id);
+            }
+            );
+        }
+        #endregion
+
         #region AutomationRuleResource
         /// <summary>
         /// Gets an object representing an <see cref="AutomationRuleResource" /> along with the instance operations that can be performed on it but with no data.
@@ -1384,6 +1565,25 @@ namespace Azure.ResourceManager.SecurityInsights
             {
                 IncidentCommentResource.ValidateResourceId(id);
                 return new IncidentCommentResource(client, id);
+            }
+            );
+        }
+        #endregion
+
+        #region IncidentTaskResource
+        /// <summary>
+        /// Gets an object representing an <see cref="IncidentTaskResource" /> along with the instance operations that can be performed on it but with no data.
+        /// You can use <see cref="IncidentTaskResource.CreateResourceIdentifier" /> to create an <see cref="IncidentTaskResource" /> <see cref="ResourceIdentifier" /> from its components.
+        /// </summary>
+        /// <param name="client"> The <see cref="ArmClient" /> instance the method will execute against. </param>
+        /// <param name="id"> The resource ID of the resource to get. </param>
+        /// <returns> Returns a <see cref="IncidentTaskResource" /> object. </returns>
+        public static IncidentTaskResource GetIncidentTaskResource(this ArmClient client, ResourceIdentifier id)
+        {
+            return client.GetResourceClient(() =>
+            {
+                IncidentTaskResource.ValidateResourceId(id);
+                return new IncidentTaskResource(client, id);
             }
             );
         }

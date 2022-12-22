@@ -192,7 +192,7 @@ namespace Azure.ResourceManager.SecurityInsights
         /// <param name="kind"> The entity query kind we want to fetch. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> An async collection of <see cref="EntityQueryResource" /> that may take multiple service requests to iterate over. </returns>
-        public virtual AsyncPageable<EntityQueryResource> GetAllAsync(Enum13? kind = null, CancellationToken cancellationToken = default)
+        public virtual AsyncPageable<EntityQueryResource> GetAllAsync(Enum14? kind = null, CancellationToken cancellationToken = default)
         {
             async Task<Page<EntityQueryResource>> FirstPageFunc(int? pageSizeHint)
             {
@@ -235,7 +235,7 @@ namespace Azure.ResourceManager.SecurityInsights
         /// <param name="kind"> The entity query kind we want to fetch. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <returns> A collection of <see cref="EntityQueryResource" /> that may take multiple service requests to iterate over. </returns>
-        public virtual Pageable<EntityQueryResource> GetAll(Enum13? kind = null, CancellationToken cancellationToken = default)
+        public virtual Pageable<EntityQueryResource> GetAll(Enum14? kind = null, CancellationToken cancellationToken = default)
         {
             Page<EntityQueryResource> FirstPageFunc(int? pageSizeHint)
             {
