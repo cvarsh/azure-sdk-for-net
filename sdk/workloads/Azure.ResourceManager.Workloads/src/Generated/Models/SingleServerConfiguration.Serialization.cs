@@ -29,6 +29,11 @@ namespace Azure.ResourceManager.Workloads.Models
             writer.WriteStringValue(SubnetId);
             writer.WritePropertyName("virtualMachineConfiguration");
             writer.WriteObjectValue(VirtualMachineConfiguration);
+            if (Optional.IsDefined(DBDiskConfiguration))
+            {
+                writer.WritePropertyName("dbDiskConfiguration");
+                writer.WriteObjectValue(DBDiskConfiguration);
+            }
             writer.WritePropertyName("deploymentType");
             writer.WriteStringValue(DeploymentType.ToString());
             writer.WritePropertyName("appResourceGroup");
@@ -42,6 +47,7 @@ namespace Azure.ResourceManager.Workloads.Models
             Optional<SapDatabaseType> databaseType = default;
             ResourceIdentifier subnetId = default;
             VirtualMachineConfiguration virtualMachineConfiguration = default;
+            Optional<DiskConfiguration> dbDiskConfiguration = default;
             SapDeploymentType deploymentType = default;
             string appResourceGroup = default;
             foreach (var property in element.EnumerateObject())
@@ -76,6 +82,16 @@ namespace Azure.ResourceManager.Workloads.Models
                     virtualMachineConfiguration = VirtualMachineConfiguration.DeserializeVirtualMachineConfiguration(property.Value);
                     continue;
                 }
+                if (property.NameEquals("dbDiskConfiguration"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    dbDiskConfiguration = DiskConfiguration.DeserializeDiskConfiguration(property.Value);
+                    continue;
+                }
                 if (property.NameEquals("deploymentType"))
                 {
                     deploymentType = new SapDeploymentType(property.Value.GetString());
@@ -87,7 +103,7 @@ namespace Azure.ResourceManager.Workloads.Models
                     continue;
                 }
             }
-            return new SingleServerConfiguration(deploymentType, appResourceGroup, networkConfiguration.Value, Optional.ToNullable(databaseType), subnetId, virtualMachineConfiguration);
+            return new SingleServerConfiguration(deploymentType, appResourceGroup, networkConfiguration.Value, Optional.ToNullable(databaseType), subnetId, virtualMachineConfiguration, dbDiskConfiguration.Value);
         }
     }
 }
