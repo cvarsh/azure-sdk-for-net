@@ -14,22 +14,22 @@ namespace Azure.ResourceManager.SecurityInsights.Models
     {
         internal static IncidentEntitiesResultsMetadata DeserializeIncidentEntitiesResultsMetadata(JsonElement element)
         {
-            int count = default;
             EntityKind entityKind = default;
+            int count = default;
             foreach (var property in element.EnumerateObject())
             {
-                if (property.NameEquals("count"))
-                {
-                    count = property.Value.GetInt32();
-                    continue;
-                }
                 if (property.NameEquals("entityKind"))
                 {
                     entityKind = new EntityKind(property.Value.GetString());
                     continue;
                 }
+                if (property.NameEquals("count"))
+                {
+                    count = property.Value.GetInt32();
+                    continue;
+                }
             }
-            return new IncidentEntitiesResultsMetadata(count, entityKind);
+            return new IncidentEntitiesResultsMetadata(entityKind, count);
         }
     }
 }

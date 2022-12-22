@@ -27,18 +27,18 @@ namespace Azure.ResourceManager.SecurityInsights.Models
         /// <param name="bookmarksCount"> The number of bookmarks in the incident. </param>
         /// <param name="commentsCount"> The number of comments in the incident. </param>
         /// <param name="alertProductNames"> List of product names of alerts in the incident. </param>
-        /// <param name="providerIncidentUri"> The provider incident url to the incident in Microsoft 365 Defender portal. </param>
         /// <param name="tactics"> The tactics associated with incident. </param>
-        /// <param name="techniques"> The techniques associated with incident&apos;s tactics&apos;. </param>
-        internal IncidentAdditionalData(int? alertsCount, int? bookmarksCount, int? commentsCount, IReadOnlyList<string> alertProductNames, Uri providerIncidentUri, IReadOnlyList<AttackTactic> tactics, IReadOnlyList<string> techniques)
+        /// <param name="techniques"> The techniques associated with incident&apos;s tactics. </param>
+        /// <param name="providerIncidentUri"> The provider incident url to the incident in Microsoft 365 Defender portal. </param>
+        internal IncidentAdditionalData(int? alertsCount, int? bookmarksCount, int? commentsCount, IReadOnlyList<string> alertProductNames, IReadOnlyList<AttackTactic> tactics, IReadOnlyList<string> techniques, Uri providerIncidentUri)
         {
             AlertsCount = alertsCount;
             BookmarksCount = bookmarksCount;
             CommentsCount = commentsCount;
             AlertProductNames = alertProductNames;
-            ProviderIncidentUri = providerIncidentUri;
             Tactics = tactics;
             Techniques = techniques;
+            ProviderIncidentUri = providerIncidentUri;
         }
 
         /// <summary> The number of alerts in the incident. </summary>
@@ -49,11 +49,11 @@ namespace Azure.ResourceManager.SecurityInsights.Models
         public int? CommentsCount { get; }
         /// <summary> List of product names of alerts in the incident. </summary>
         public IReadOnlyList<string> AlertProductNames { get; }
-        /// <summary> The provider incident url to the incident in Microsoft 365 Defender portal. </summary>
-        public Uri ProviderIncidentUri { get; }
         /// <summary> The tactics associated with incident. </summary>
         public IReadOnlyList<AttackTactic> Tactics { get; }
-        /// <summary> The techniques associated with incident&apos;s tactics&apos;. </summary>
+        /// <summary> The techniques associated with incident&apos;s tactics. </summary>
         public IReadOnlyList<string> Techniques { get; }
+        /// <summary> The provider incident url to the incident in Microsoft 365 Defender portal. </summary>
+        public Uri ProviderIncidentUri { get; }
     }
 }
