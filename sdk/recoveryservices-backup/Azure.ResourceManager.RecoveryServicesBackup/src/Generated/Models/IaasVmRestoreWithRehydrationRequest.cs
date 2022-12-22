@@ -20,7 +20,7 @@ namespace Azure.ResourceManager.RecoveryServicesBackup.Models
 
         /// <summary> Initializes a new instance of IaasVmRestoreWithRehydrationRequest. </summary>
         /// <param name="objectType"> This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types. </param>
-        /// <param name="recoveryPointId"> ID of the backup copy to be recovered. </param>
+        /// <param name="recoveryPointId"> Recovery Point ID Name of the backup copy to be recovered. </param>
         /// <param name="recoveryType"> Type of this recovery. </param>
         /// <param name="sourceResourceId"> Fully qualified ARM ID of the VM which is being recovered. </param>
         /// <param name="targetVirtualMachineId">
