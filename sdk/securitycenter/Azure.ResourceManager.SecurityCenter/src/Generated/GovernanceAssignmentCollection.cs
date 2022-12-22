@@ -54,13 +54,13 @@ namespace Azure.ResourceManager.SecurityCenter
         }
 
         /// <summary>
-        /// Creates or update a security GovernanceAssignment on the given subscription.
+        /// Creates or updates a governance assignment on the given subscription.
         /// Request Path: /{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}
         /// Operation Id: GovernanceAssignments_CreateOrUpdate
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
-        /// <param name="assignmentKey"> The security governance assignment key - the assessment key of the required governance assignment. </param>
-        /// <param name="data"> GovernanceAssignment over a subscription scope. </param>
+        /// <param name="assignmentKey"> The governance assignment key - the assessment key of the required governance assignment. </param>
+        /// <param name="data"> Governance assignment over a subscription scope. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentException"> <paramref name="assignmentKey"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ArgumentNullException"> <paramref name="assignmentKey"/> or <paramref name="data"/> is null. </exception>
@@ -87,13 +87,13 @@ namespace Azure.ResourceManager.SecurityCenter
         }
 
         /// <summary>
-        /// Creates or update a security GovernanceAssignment on the given subscription.
+        /// Creates or updates a governance assignment on the given subscription.
         /// Request Path: /{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}
         /// Operation Id: GovernanceAssignments_CreateOrUpdate
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
-        /// <param name="assignmentKey"> The security governance assignment key - the assessment key of the required governance assignment. </param>
-        /// <param name="data"> GovernanceAssignment over a subscription scope. </param>
+        /// <param name="assignmentKey"> The governance assignment key - the assessment key of the required governance assignment. </param>
+        /// <param name="data"> Governance assignment over a subscription scope. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentException"> <paramref name="assignmentKey"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ArgumentNullException"> <paramref name="assignmentKey"/> or <paramref name="data"/> is null. </exception>
@@ -124,7 +124,7 @@ namespace Azure.ResourceManager.SecurityCenter
         /// Request Path: /{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}
         /// Operation Id: GovernanceAssignments_Get
         /// </summary>
-        /// <param name="assignmentKey"> The security governance assignment key - the assessment key of the required governance assignment. </param>
+        /// <param name="assignmentKey"> The governance assignment key - the assessment key of the required governance assignment. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentException"> <paramref name="assignmentKey"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ArgumentNullException"> <paramref name="assignmentKey"/> is null. </exception>
@@ -153,7 +153,7 @@ namespace Azure.ResourceManager.SecurityCenter
         /// Request Path: /{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}
         /// Operation Id: GovernanceAssignments_Get
         /// </summary>
-        /// <param name="assignmentKey"> The security governance assignment key - the assessment key of the required governance assignment. </param>
+        /// <param name="assignmentKey"> The governance assignment key - the assessment key of the required governance assignment. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentException"> <paramref name="assignmentKey"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ArgumentNullException"> <paramref name="assignmentKey"/> is null. </exception>
@@ -178,7 +178,7 @@ namespace Azure.ResourceManager.SecurityCenter
         }
 
         /// <summary>
-        /// Get security governanceAssignments on all your resources inside a scope
+        /// Get governance assignments on all of your resources inside a scope
         /// Request Path: /{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments
         /// Operation Id: GovernanceAssignments_List
         /// </summary>
@@ -220,7 +220,7 @@ namespace Azure.ResourceManager.SecurityCenter
         }
 
         /// <summary>
-        /// Get security governanceAssignments on all your resources inside a scope
+        /// Get governance assignments on all of your resources inside a scope
         /// Request Path: /{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments
         /// Operation Id: GovernanceAssignments_List
         /// </summary>
@@ -266,7 +266,7 @@ namespace Azure.ResourceManager.SecurityCenter
         /// Request Path: /{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}
         /// Operation Id: GovernanceAssignments_Get
         /// </summary>
-        /// <param name="assignmentKey"> The security governance assignment key - the assessment key of the required governance assignment. </param>
+        /// <param name="assignmentKey"> The governance assignment key - the assessment key of the required governance assignment. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentException"> <paramref name="assignmentKey"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ArgumentNullException"> <paramref name="assignmentKey"/> is null. </exception>
@@ -293,7 +293,7 @@ namespace Azure.ResourceManager.SecurityCenter
         /// Request Path: /{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}
         /// Operation Id: GovernanceAssignments_Get
         /// </summary>
-        /// <param name="assignmentKey"> The security governance assignment key - the assessment key of the required governance assignment. </param>
+        /// <param name="assignmentKey"> The governance assignment key - the assessment key of the required governance assignment. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentException"> <paramref name="assignmentKey"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ArgumentNullException"> <paramref name="assignmentKey"/> is null. </exception>
