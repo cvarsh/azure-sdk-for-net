@@ -33,8 +33,187 @@ namespace Azure.ResourceManager.AppService
         {
             _pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
             _endpoint = endpoint ?? new Uri("https://management.azure.com");
-            _apiVersion = apiVersion ?? "2021-02-01";
+            _apiVersion = apiVersion ?? "2022-09-01";
             _userAgent = new TelemetryDetails(GetType().Assembly, applicationId);
+        }
+
+        internal HttpMessage CreateListProviderDetectorResponsesRequest(string subscriptionId, AzureLocation location, string resourceType)
+        {
+            var message = _pipeline.CreateMessage();
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath(subscriptionId, true);
+            uri.AppendPath("/providers/Microsoft.Web/locations/", false);
+            uri.AppendPath(location, true);
+            uri.AppendPath("/detectors", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("resource-type", resourceType, true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            _userAgent.Apply(message);
+            return message;
+        }
+
+        /// <summary> Description for List Provider Detector Responses. </summary>
+        /// <param name="subscriptionId"> Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). </param>
+        /// <param name="location"> The name of a supported Azure region. </param>
+        /// <param name="resourceType"> Resource type for which detectors are being requested. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/> or <paramref name="resourceType"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response<AppServiceDetectorListResult>> ListProviderDetectorResponsesAsync(string subscriptionId, AzureLocation location, string resourceType, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
+            Argument.AssertNotNull(resourceType, nameof(resourceType));
+
+            using var message = CreateListProviderDetectorResponsesRequest(subscriptionId, location, resourceType);
+            await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
+            switch (message.Response.Status)
+            {
+                case 200:
+                    {
+                        AppServiceDetectorListResult value = default;
+                        using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
+                        value = AppServiceDetectorListResult.DeserializeAppServiceDetectorListResult(document.RootElement);
+                        return Response.FromValue(value, message.Response);
+                    }
+                default:
+                    throw new RequestFailedException(message.Response);
+            }
+        }
+
+        /// <summary> Description for List Provider Detector Responses. </summary>
+        /// <param name="subscriptionId"> Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). </param>
+        /// <param name="location"> The name of a supported Azure region. </param>
+        /// <param name="resourceType"> Resource type for which detectors are being requested. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/> or <paramref name="resourceType"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response<AppServiceDetectorListResult> ListProviderDetectorResponses(string subscriptionId, AzureLocation location, string resourceType, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
+            Argument.AssertNotNull(resourceType, nameof(resourceType));
+
+            using var message = CreateListProviderDetectorResponsesRequest(subscriptionId, location, resourceType);
+            _pipeline.Send(message, cancellationToken);
+            switch (message.Response.Status)
+            {
+                case 200:
+                    {
+                        AppServiceDetectorListResult value = default;
+                        using var document = JsonDocument.Parse(message.Response.ContentStream);
+                        value = AppServiceDetectorListResult.DeserializeAppServiceDetectorListResult(document.RootElement);
+                        return Response.FromValue(value, message.Response);
+                    }
+                default:
+                    throw new RequestFailedException(message.Response);
+            }
+        }
+
+        internal HttpMessage CreateGetProviderDetectorResponseRequest(string subscriptionId, AzureLocation location, string detectorName, string resourceType, DateTimeOffset? startTime, DateTimeOffset? endTime, string timeGrain)
+        {
+            var message = _pipeline.CreateMessage();
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath(subscriptionId, true);
+            uri.AppendPath("/providers/Microsoft.Web/locations/", false);
+            uri.AppendPath(location, true);
+            uri.AppendPath("/detectors/", false);
+            uri.AppendPath(detectorName, true);
+            if (startTime != null)
+            {
+                uri.AppendQuery("startTime", startTime.Value, "O", true);
+            }
+            if (endTime != null)
+            {
+                uri.AppendQuery("endTime", endTime.Value, "O", true);
+            }
+            if (timeGrain != null)
+            {
+                uri.AppendQuery("timeGrain", timeGrain, true);
+            }
+            uri.AppendQuery("api-version", _apiVersion, true);
+            uri.AppendQuery("resource-type", resourceType, true);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            _userAgent.Apply(message);
+            return message;
+        }
+
+        /// <summary> Description for Get Provider Detector Response. </summary>
+        /// <param name="subscriptionId"> Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). </param>
+        /// <param name="location"> The name of a supported Azure region. </param>
+        /// <param name="detectorName"> Detector Resource Name. </param>
+        /// <param name="resourceType"> Resource type for which detectors are being requested. </param>
+        /// <param name="startTime"> Start Time. </param>
+        /// <param name="endTime"> End Time. </param>
+        /// <param name="timeGrain"> Time Grain. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="detectorName"/> or <paramref name="resourceType"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/> or <paramref name="detectorName"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response<AppServiceDetectorData>> GetProviderDetectorResponseAsync(string subscriptionId, AzureLocation location, string detectorName, string resourceType, DateTimeOffset? startTime = null, DateTimeOffset? endTime = null, string timeGrain = null, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
+            Argument.AssertNotNullOrEmpty(detectorName, nameof(detectorName));
+            Argument.AssertNotNull(resourceType, nameof(resourceType));
+
+            using var message = CreateGetProviderDetectorResponseRequest(subscriptionId, location, detectorName, resourceType, startTime, endTime, timeGrain);
+            await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
+            switch (message.Response.Status)
+            {
+                case 200:
+                    {
+                        AppServiceDetectorData value = default;
+                        using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
+                        value = AppServiceDetectorData.DeserializeAppServiceDetectorData(document.RootElement);
+                        return Response.FromValue(value, message.Response);
+                    }
+                case 404:
+                    return Response.FromValue((AppServiceDetectorData)null, message.Response);
+                default:
+                    throw new RequestFailedException(message.Response);
+            }
+        }
+
+        /// <summary> Description for Get Provider Detector Response. </summary>
+        /// <param name="subscriptionId"> Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). </param>
+        /// <param name="location"> The name of a supported Azure region. </param>
+        /// <param name="detectorName"> Detector Resource Name. </param>
+        /// <param name="resourceType"> Resource type for which detectors are being requested. </param>
+        /// <param name="startTime"> Start Time. </param>
+        /// <param name="endTime"> End Time. </param>
+        /// <param name="timeGrain"> Time Grain. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="subscriptionId"/>, <paramref name="detectorName"/> or <paramref name="resourceType"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/> or <paramref name="detectorName"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response<AppServiceDetectorData> GetProviderDetectorResponse(string subscriptionId, AzureLocation location, string detectorName, string resourceType, DateTimeOffset? startTime = null, DateTimeOffset? endTime = null, string timeGrain = null, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
+            Argument.AssertNotNullOrEmpty(detectorName, nameof(detectorName));
+            Argument.AssertNotNull(resourceType, nameof(resourceType));
+
+            using var message = CreateGetProviderDetectorResponseRequest(subscriptionId, location, detectorName, resourceType, startTime, endTime, timeGrain);
+            _pipeline.Send(message, cancellationToken);
+            switch (message.Response.Status)
+            {
+                case 200:
+                    {
+                        AppServiceDetectorData value = default;
+                        using var document = JsonDocument.Parse(message.Response.ContentStream);
+                        value = AppServiceDetectorData.DeserializeAppServiceDetectorData(document.RootElement);
+                        return Response.FromValue(value, message.Response);
+                    }
+                case 404:
+                    return Response.FromValue((AppServiceDetectorData)null, message.Response);
+                default:
+                    throw new RequestFailedException(message.Response);
+            }
         }
 
         internal HttpMessage CreateListHostingEnvironmentDetectorResponsesRequest(string subscriptionId, string resourceGroupName, string name)
@@ -2131,6 +2310,80 @@ namespace Azure.ResourceManager.AppService
                         DiagnosticDetectorResponse value = default;
                         using var document = JsonDocument.Parse(message.Response.ContentStream);
                         value = DiagnosticDetectorResponse.DeserializeDiagnosticDetectorResponse(document.RootElement);
+                        return Response.FromValue(value, message.Response);
+                    }
+                default:
+                    throw new RequestFailedException(message.Response);
+            }
+        }
+
+        internal HttpMessage CreateListProviderDetectorResponsesNextPageRequest(string nextLink, string subscriptionId, AzureLocation location, string resourceType)
+        {
+            var message = _pipeline.CreateMessage();
+            var request = message.Request;
+            request.Method = RequestMethod.Get;
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendRawNextLink(nextLink, false);
+            request.Uri = uri;
+            request.Headers.Add("Accept", "application/json");
+            _userAgent.Apply(message);
+            return message;
+        }
+
+        /// <summary> Description for List Provider Detector Responses. </summary>
+        /// <param name="nextLink"> The URL to the next page of results. </param>
+        /// <param name="subscriptionId"> Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). </param>
+        /// <param name="location"> The name of a supported Azure region. </param>
+        /// <param name="resourceType"> Resource type for which detectors are being requested. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="nextLink"/>, <paramref name="subscriptionId"/> or <paramref name="resourceType"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/> is an empty string, and was expected to be non-empty. </exception>
+        public async Task<Response<AppServiceDetectorListResult>> ListProviderDetectorResponsesNextPageAsync(string nextLink, string subscriptionId, AzureLocation location, string resourceType, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(nextLink, nameof(nextLink));
+            Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
+            Argument.AssertNotNull(resourceType, nameof(resourceType));
+
+            using var message = CreateListProviderDetectorResponsesNextPageRequest(nextLink, subscriptionId, location, resourceType);
+            await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
+            switch (message.Response.Status)
+            {
+                case 200:
+                    {
+                        AppServiceDetectorListResult value = default;
+                        using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
+                        value = AppServiceDetectorListResult.DeserializeAppServiceDetectorListResult(document.RootElement);
+                        return Response.FromValue(value, message.Response);
+                    }
+                default:
+                    throw new RequestFailedException(message.Response);
+            }
+        }
+
+        /// <summary> Description for List Provider Detector Responses. </summary>
+        /// <param name="nextLink"> The URL to the next page of results. </param>
+        /// <param name="subscriptionId"> Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). </param>
+        /// <param name="location"> The name of a supported Azure region. </param>
+        /// <param name="resourceType"> Resource type for which detectors are being requested. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="nextLink"/>, <paramref name="subscriptionId"/> or <paramref name="resourceType"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="subscriptionId"/> is an empty string, and was expected to be non-empty. </exception>
+        public Response<AppServiceDetectorListResult> ListProviderDetectorResponsesNextPage(string nextLink, string subscriptionId, AzureLocation location, string resourceType, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(nextLink, nameof(nextLink));
+            Argument.AssertNotNullOrEmpty(subscriptionId, nameof(subscriptionId));
+            Argument.AssertNotNull(resourceType, nameof(resourceType));
+
+            using var message = CreateListProviderDetectorResponsesNextPageRequest(nextLink, subscriptionId, location, resourceType);
+            _pipeline.Send(message, cancellationToken);
+            switch (message.Response.Status)
+            {
+                case 200:
+                    {
+                        AppServiceDetectorListResult value = default;
+                        using var document = JsonDocument.Parse(message.Response.ContentStream);
+                        value = AppServiceDetectorListResult.DeserializeAppServiceDetectorListResult(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
