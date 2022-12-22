@@ -6,6 +6,7 @@
 #nullable disable
 
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using Azure.Core;
 using Azure.ResourceManager.HybridConnectivity.Models;
@@ -29,6 +30,16 @@ namespace Azure.ResourceManager.HybridConnectivity
             {
                 writer.WritePropertyName("resourceId");
                 writer.WriteStringValue(ResourceId);
+            }
+            if (Optional.IsCollectionDefined(ServiceConfigurations))
+            {
+                writer.WritePropertyName("serviceConfigurations");
+                writer.WriteStartArray();
+                foreach (var item in ServiceConfigurations)
+                {
+                    writer.WriteObjectValue(item);
+                }
+                writer.WriteEndArray();
             }
             writer.WriteEndObject();
             writer.WritePropertyName("systemData");
@@ -76,6 +87,7 @@ namespace Azure.ResourceManager.HybridConnectivity
             Optional<EndpointType> type0 = default;
             Optional<string> resourceId = default;
             Optional<string> provisioningState = default;
+            Optional<IList<ServiceConfiguration>> serviceConfigurations = default;
             Optional<string> createdBy = default;
             Optional<Models.CreatedByType> createdByType = default;
             Optional<DateTimeOffset> createdAt = default;
@@ -136,6 +148,21 @@ namespace Azure.ResourceManager.HybridConnectivity
                         if (property0.NameEquals("provisioningState"))
                         {
                             provisioningState = property0.Value.GetString();
+                            continue;
+                        }
+                        if (property0.NameEquals("serviceConfigurations"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            List<ServiceConfiguration> array = new List<ServiceConfiguration>();
+                            foreach (var item in property0.Value.EnumerateArray())
+                            {
+                                array.Add(ServiceConfiguration.DeserializeServiceConfiguration(item));
+                            }
+                            serviceConfigurations = array;
                             continue;
                         }
                     }
@@ -204,7 +231,7 @@ namespace Azure.ResourceManager.HybridConnectivity
                     continue;
                 }
             }
-            return new EndpointResourceData(id, name, type, systemData.Value, Optional.ToNullable(type0), resourceId.Value, provisioningState.Value, createdBy.Value, Optional.ToNullable(createdByType), Optional.ToNullable(createdAt), lastModifiedBy.Value, Optional.ToNullable(lastModifiedByType), Optional.ToNullable(lastModifiedAt));
+            return new EndpointResourceData(id, name, type, systemData.Value, Optional.ToNullable(type0), resourceId.Value, provisioningState.Value, Optional.ToList(serviceConfigurations), createdBy.Value, Optional.ToNullable(createdByType), Optional.ToNullable(createdAt), lastModifiedBy.Value, Optional.ToNullable(lastModifiedByType), Optional.ToNullable(lastModifiedAt));
         }
     }
 }
