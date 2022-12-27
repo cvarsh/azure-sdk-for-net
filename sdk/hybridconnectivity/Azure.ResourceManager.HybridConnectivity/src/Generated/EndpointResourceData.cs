@@ -6,6 +6,7 @@
 #nullable disable
 
 using System;
+using System.Collections.Generic;
 using Azure.Core;
 using Azure.ResourceManager.HybridConnectivity.Models;
 using Azure.ResourceManager.Models;
@@ -18,6 +19,7 @@ namespace Azure.ResourceManager.HybridConnectivity
         /// <summary> Initializes a new instance of EndpointResourceData. </summary>
         public EndpointResourceData()
         {
+            ServiceConfigurations = new ChangeTrackingList<ServiceConfiguration>();
         }
 
         /// <summary> Initializes a new instance of EndpointResourceData. </summary>
@@ -27,18 +29,20 @@ namespace Azure.ResourceManager.HybridConnectivity
         /// <param name="systemData"> The systemData. </param>
         /// <param name="endpointType"> The type of endpoint. </param>
         /// <param name="resourceId"> The resource Id of the connectivity endpoint (optional). </param>
-        /// <param name="provisioningState"></param>
+        /// <param name="provisioningState"> The resource provisioning state. </param>
+        /// <param name="serviceConfigurations"> The enabled service configurations. </param>
         /// <param name="createdBy"> The identity that created the resource. </param>
         /// <param name="createdByType"> The type of identity that created the resource. </param>
         /// <param name="createdOn"> The timestamp of resource creation (UTC). </param>
         /// <param name="lastModifiedBy"> The identity that last modified the resource. </param>
         /// <param name="lastModifiedByType"> The type of identity that last modified the resource. </param>
         /// <param name="lastModifiedOn"> The timestamp of resource last modification (UTC). </param>
-        internal EndpointResourceData(ResourceIdentifier id, string name, ResourceType resourceType, SystemData systemData, EndpointType? endpointType, string resourceId, string provisioningState, string createdBy, Models.CreatedByType? createdByType, DateTimeOffset? createdOn, string lastModifiedBy, Models.CreatedByType? lastModifiedByType, DateTimeOffset? lastModifiedOn) : base(id, name, resourceType, systemData)
+        internal EndpointResourceData(ResourceIdentifier id, string name, ResourceType resourceType, SystemData systemData, EndpointType? endpointType, string resourceId, string provisioningState, IList<ServiceConfiguration> serviceConfigurations, string createdBy, Models.CreatedByType? createdByType, DateTimeOffset? createdOn, string lastModifiedBy, Models.CreatedByType? lastModifiedByType, DateTimeOffset? lastModifiedOn) : base(id, name, resourceType, systemData)
         {
             EndpointType = endpointType;
             ResourceId = resourceId;
             ProvisioningState = provisioningState;
+            ServiceConfigurations = serviceConfigurations;
             CreatedBy = createdBy;
             CreatedByType = createdByType;
             CreatedOn = createdOn;
@@ -51,8 +55,10 @@ namespace Azure.ResourceManager.HybridConnectivity
         public EndpointType? EndpointType { get; set; }
         /// <summary> The resource Id of the connectivity endpoint (optional). </summary>
         public string ResourceId { get; set; }
-        /// <summary> Gets the provisioning state. </summary>
+        /// <summary> The resource provisioning state. </summary>
         public string ProvisioningState { get; }
+        /// <summary> The enabled service configurations. </summary>
+        public IList<ServiceConfiguration> ServiceConfigurations { get; }
         /// <summary> The identity that created the resource. </summary>
         public string CreatedBy { get; set; }
         /// <summary> The type of identity that created the resource. </summary>
