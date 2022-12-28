@@ -38,16 +38,50 @@ namespace Azure.ResourceManager.DataMigration.Models
                 writer.WritePropertyName("startedOn");
                 writer.WriteStringValue(StartedOn.Value, "O");
             }
-            if (Optional.IsCollectionDefined(OptionalAgentSettings))
+            if (Optional.IsDefined(SourceServerResourceId))
+            {
+                writer.WritePropertyName("sourceServerResourceId");
+                writer.WriteStringValue(SourceServerResourceId);
+            }
+            if (Optional.IsDefined(TargetServerResourceId))
+            {
+                writer.WritePropertyName("targetServerResourceId");
+                writer.WriteStringValue(TargetServerResourceId);
+            }
+            if (Optional.IsDefined(OptionalAgentSettings))
             {
                 writer.WritePropertyName("optionalAgentSettings");
-                writer.WriteStartObject();
-                foreach (var item in OptionalAgentSettings)
-                {
-                    writer.WritePropertyName(item.Key);
-                    writer.WriteStringValue(item.Value);
-                }
-                writer.WriteEndObject();
+                writer.WriteObjectValue(OptionalAgentSettings);
+            }
+            if (Optional.IsDefined(MigrateAllViews))
+            {
+                writer.WritePropertyName("migrateAllViews");
+                writer.WriteBooleanValue(MigrateAllViews.Value);
+            }
+            if (Optional.IsDefined(MigrateAllTriggers))
+            {
+                writer.WritePropertyName("migrateAllTriggers");
+                writer.WriteBooleanValue(MigrateAllTriggers.Value);
+            }
+            if (Optional.IsDefined(MigrateAllEvents))
+            {
+                writer.WritePropertyName("migrateAllEvents");
+                writer.WriteBooleanValue(MigrateAllEvents.Value);
+            }
+            if (Optional.IsDefined(MigrateAllRoutines))
+            {
+                writer.WritePropertyName("migrateAllRoutines");
+                writer.WriteBooleanValue(MigrateAllRoutines.Value);
+            }
+            if (Optional.IsDefined(MigrateAllTablesSchema))
+            {
+                writer.WritePropertyName("migrateAllTablesSchema");
+                writer.WriteBooleanValue(MigrateAllTablesSchema.Value);
+            }
+            if (Optional.IsDefined(MigrateUserSystemTables))
+            {
+                writer.WritePropertyName("migrateUserSystemTables");
+                writer.WriteBooleanValue(MigrateUserSystemTables.Value);
             }
             if (Optional.IsDefined(EncryptedKeyForSecureFields))
             {
@@ -64,7 +98,15 @@ namespace Azure.ResourceManager.DataMigration.Models
             IList<MigrateMySqlAzureDBForMySqlOfflineDatabaseInput> selectedDatabases = default;
             Optional<bool> makeSourceServerReadOnly = default;
             Optional<DateTimeOffset> startedOn = default;
-            Optional<IDictionary<string, string>> optionalAgentSettings = default;
+            Optional<string> sourceServerResourceId = default;
+            Optional<string> targetServerResourceId = default;
+            Optional<MigrateMySqlAzureDBForMySqlOfflineTaskInputOptionalAgentSettings> optionalAgentSettings = default;
+            Optional<bool> migrateAllViews = default;
+            Optional<bool> migrateAllTriggers = default;
+            Optional<bool> migrateAllEvents = default;
+            Optional<bool> migrateAllRoutines = default;
+            Optional<bool> migrateAllTablesSchema = default;
+            Optional<bool> migrateUserSystemTables = default;
             Optional<string> encryptedKeyForSecureFields = default;
             foreach (var property in element.EnumerateObject())
             {
@@ -108,6 +150,16 @@ namespace Azure.ResourceManager.DataMigration.Models
                     startedOn = property.Value.GetDateTimeOffset("O");
                     continue;
                 }
+                if (property.NameEquals("sourceServerResourceId"))
+                {
+                    sourceServerResourceId = property.Value.GetString();
+                    continue;
+                }
+                if (property.NameEquals("targetServerResourceId"))
+                {
+                    targetServerResourceId = property.Value.GetString();
+                    continue;
+                }
                 if (property.NameEquals("optionalAgentSettings"))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
@@ -115,12 +167,67 @@ namespace Azure.ResourceManager.DataMigration.Models
                         property.ThrowNonNullablePropertyIsNull();
                         continue;
                     }
-                    Dictionary<string, string> dictionary = new Dictionary<string, string>();
-                    foreach (var property0 in property.Value.EnumerateObject())
+                    optionalAgentSettings = MigrateMySqlAzureDBForMySqlOfflineTaskInputOptionalAgentSettings.DeserializeMigrateMySqlAzureDBForMySqlOfflineTaskInputOptionalAgentSettings(property.Value);
+                    continue;
+                }
+                if (property.NameEquals("migrateAllViews"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
                     {
-                        dictionary.Add(property0.Name, property0.Value.GetString());
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
                     }
-                    optionalAgentSettings = dictionary;
+                    migrateAllViews = property.Value.GetBoolean();
+                    continue;
+                }
+                if (property.NameEquals("migrateAllTriggers"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    migrateAllTriggers = property.Value.GetBoolean();
+                    continue;
+                }
+                if (property.NameEquals("migrateAllEvents"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    migrateAllEvents = property.Value.GetBoolean();
+                    continue;
+                }
+                if (property.NameEquals("migrateAllRoutines"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    migrateAllRoutines = property.Value.GetBoolean();
+                    continue;
+                }
+                if (property.NameEquals("migrateAllTablesSchema"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    migrateAllTablesSchema = property.Value.GetBoolean();
+                    continue;
+                }
+                if (property.NameEquals("migrateUserSystemTables"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    migrateUserSystemTables = property.Value.GetBoolean();
                     continue;
                 }
                 if (property.NameEquals("encryptedKeyForSecureFields"))
@@ -129,7 +236,7 @@ namespace Azure.ResourceManager.DataMigration.Models
                     continue;
                 }
             }
-            return new MigrateMySqlAzureDBForMySqlOfflineTaskInput(sourceConnectionInfo, targetConnectionInfo, selectedDatabases, Optional.ToNullable(makeSourceServerReadOnly), Optional.ToNullable(startedOn), Optional.ToDictionary(optionalAgentSettings), encryptedKeyForSecureFields.Value);
+            return new MigrateMySqlAzureDBForMySqlOfflineTaskInput(sourceConnectionInfo, targetConnectionInfo, selectedDatabases, Optional.ToNullable(makeSourceServerReadOnly), Optional.ToNullable(startedOn), sourceServerResourceId.Value, targetServerResourceId.Value, optionalAgentSettings.Value, Optional.ToNullable(migrateAllViews), Optional.ToNullable(migrateAllTriggers), Optional.ToNullable(migrateAllEvents), Optional.ToNullable(migrateAllRoutines), Optional.ToNullable(migrateAllTablesSchema), Optional.ToNullable(migrateUserSystemTables), encryptedKeyForSecureFields.Value);
         }
     }
 }

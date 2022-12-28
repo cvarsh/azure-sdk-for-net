@@ -70,6 +70,57 @@ namespace Azure.ResourceManager.DataMigration.Models
                 }
                 writer.WriteEndObject();
             }
+            if (Optional.IsCollectionDefined(TablesToMigrateSchema))
+            {
+                writer.WritePropertyName("tablesToMigrateSchema");
+                writer.WriteStartObject();
+                foreach (var item in TablesToMigrateSchema)
+                {
+                    writer.WritePropertyName(item.Key);
+                    writer.WriteStringValue(item.Value);
+                }
+                writer.WriteEndObject();
+            }
+            if (Optional.IsCollectionDefined(SelectedViews))
+            {
+                writer.WritePropertyName("selectedViews");
+                writer.WriteStartArray();
+                foreach (var item in SelectedViews)
+                {
+                    writer.WriteStringValue(item);
+                }
+                writer.WriteEndArray();
+            }
+            if (Optional.IsCollectionDefined(SelectedTriggers))
+            {
+                writer.WritePropertyName("selectedTriggers");
+                writer.WriteStartArray();
+                foreach (var item in SelectedTriggers)
+                {
+                    writer.WriteStringValue(item);
+                }
+                writer.WriteEndArray();
+            }
+            if (Optional.IsCollectionDefined(SelectedRoutines))
+            {
+                writer.WritePropertyName("selectedRoutines");
+                writer.WriteStartArray();
+                foreach (var item in SelectedRoutines)
+                {
+                    writer.WriteStringValue(item);
+                }
+                writer.WriteEndArray();
+            }
+            if (Optional.IsCollectionDefined(SelectedEvents))
+            {
+                writer.WritePropertyName("selectedEvents");
+                writer.WriteStartArray();
+                foreach (var item in SelectedEvents)
+                {
+                    writer.WriteStringValue(item);
+                }
+                writer.WriteEndArray();
+            }
             writer.WriteEndObject();
         }
 
@@ -81,6 +132,11 @@ namespace Azure.ResourceManager.DataMigration.Models
             Optional<IDictionary<string, string>> sourceSetting = default;
             Optional<IDictionary<string, string>> targetSetting = default;
             Optional<IDictionary<string, string>> tableMap = default;
+            Optional<IDictionary<string, string>> tablesToMigrateSchema = default;
+            Optional<IList<string>> selectedViews = default;
+            Optional<IList<string>> selectedTriggers = default;
+            Optional<IList<string>> selectedRoutines = default;
+            Optional<IList<string>> selectedEvents = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("name"))
@@ -153,8 +209,83 @@ namespace Azure.ResourceManager.DataMigration.Models
                     tableMap = dictionary;
                     continue;
                 }
+                if (property.NameEquals("tablesToMigrateSchema"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    Dictionary<string, string> dictionary = new Dictionary<string, string>();
+                    foreach (var property0 in property.Value.EnumerateObject())
+                    {
+                        dictionary.Add(property0.Name, property0.Value.GetString());
+                    }
+                    tablesToMigrateSchema = dictionary;
+                    continue;
+                }
+                if (property.NameEquals("selectedViews"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    List<string> array = new List<string>();
+                    foreach (var item in property.Value.EnumerateArray())
+                    {
+                        array.Add(item.GetString());
+                    }
+                    selectedViews = array;
+                    continue;
+                }
+                if (property.NameEquals("selectedTriggers"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    List<string> array = new List<string>();
+                    foreach (var item in property.Value.EnumerateArray())
+                    {
+                        array.Add(item.GetString());
+                    }
+                    selectedTriggers = array;
+                    continue;
+                }
+                if (property.NameEquals("selectedRoutines"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    List<string> array = new List<string>();
+                    foreach (var item in property.Value.EnumerateArray())
+                    {
+                        array.Add(item.GetString());
+                    }
+                    selectedRoutines = array;
+                    continue;
+                }
+                if (property.NameEquals("selectedEvents"))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        property.ThrowNonNullablePropertyIsNull();
+                        continue;
+                    }
+                    List<string> array = new List<string>();
+                    foreach (var item in property.Value.EnumerateArray())
+                    {
+                        array.Add(item.GetString());
+                    }
+                    selectedEvents = array;
+                    continue;
+                }
             }
-            return new MigrateMySqlAzureDBForMySqlSyncDatabaseInput(name.Value, targetDatabaseName.Value, Optional.ToDictionary(migrationSetting), Optional.ToDictionary(sourceSetting), Optional.ToDictionary(targetSetting), Optional.ToDictionary(tableMap));
+            return new MigrateMySqlAzureDBForMySqlSyncDatabaseInput(name.Value, targetDatabaseName.Value, Optional.ToDictionary(migrationSetting), Optional.ToDictionary(sourceSetting), Optional.ToDictionary(targetSetting), Optional.ToDictionary(tableMap), Optional.ToDictionary(tablesToMigrateSchema), Optional.ToList(selectedViews), Optional.ToList(selectedTriggers), Optional.ToList(selectedRoutines), Optional.ToList(selectedEvents));
         }
     }
 }
