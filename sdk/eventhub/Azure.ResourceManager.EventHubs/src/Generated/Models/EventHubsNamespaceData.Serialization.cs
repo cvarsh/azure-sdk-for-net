@@ -44,6 +44,11 @@ namespace Azure.ResourceManager.EventHubs
             writer.WriteStringValue(Location);
             writer.WritePropertyName("properties");
             writer.WriteStartObject();
+            if (Optional.IsDefined(MinimumTlsVersion))
+            {
+                writer.WritePropertyName("minimumTlsVersion");
+                writer.WriteStringValue(MinimumTlsVersion.Value.ToString());
+            }
             if (Optional.IsDefined(ClusterArmId))
             {
                 writer.WritePropertyName("clusterArmId");
@@ -53,6 +58,11 @@ namespace Azure.ResourceManager.EventHubs
             {
                 writer.WritePropertyName("isAutoInflateEnabled");
                 writer.WriteBooleanValue(IsAutoInflateEnabled.Value);
+            }
+            if (Optional.IsDefined(PublicNetworkAccess))
+            {
+                writer.WritePropertyName("publicNetworkAccess");
+                writer.WriteStringValue(PublicNetworkAccess.Value.ToString());
             }
             if (Optional.IsDefined(MaximumThroughputUnits))
             {
@@ -94,6 +104,11 @@ namespace Azure.ResourceManager.EventHubs
                 writer.WritePropertyName("alternateName");
                 writer.WriteStringValue(AlternateName);
             }
+            if (Optional.IsDefined(GeoDataReplication))
+            {
+                writer.WritePropertyName("geoDataReplication");
+                writer.WriteObjectValue(GeoDataReplication);
+            }
             writer.WriteEndObject();
             writer.WriteEndObject();
         }
@@ -108,6 +123,7 @@ namespace Azure.ResourceManager.EventHubs
             string name = default;
             ResourceType type = default;
             Optional<SystemData> systemData = default;
+            Optional<TlsVersion> minimumTlsVersion = default;
             Optional<string> provisioningState = default;
             Optional<string> status = default;
             Optional<DateTimeOffset> createdAt = default;
@@ -116,6 +132,7 @@ namespace Azure.ResourceManager.EventHubs
             Optional<ResourceIdentifier> clusterArmId = default;
             Optional<string> metricId = default;
             Optional<bool> isAutoInflateEnabled = default;
+            Optional<PublicNetworkAccess> publicNetworkAccess = default;
             Optional<int> maximumThroughputUnits = default;
             Optional<bool> kafkaEnabled = default;
             Optional<bool> zoneRedundant = default;
@@ -123,6 +140,7 @@ namespace Azure.ResourceManager.EventHubs
             Optional<IList<EventHubsPrivateEndpointConnectionData>> privateEndpointConnections = default;
             Optional<bool> disableLocalAuth = default;
             Optional<string> alternateName = default;
+            Optional<GeoDataReplicationProperties> geoDataReplication = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("sku"))
@@ -199,6 +217,16 @@ namespace Azure.ResourceManager.EventHubs
                     }
                     foreach (var property0 in property.Value.EnumerateObject())
                     {
+                        if (property0.NameEquals("minimumTlsVersion"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            minimumTlsVersion = new TlsVersion(property0.Value.GetString());
+                            continue;
+                        }
                         if (property0.NameEquals("provisioningState"))
                         {
                             provisioningState = property0.Value.GetString();
@@ -257,6 +285,16 @@ namespace Azure.ResourceManager.EventHubs
                                 continue;
                             }
                             isAutoInflateEnabled = property0.Value.GetBoolean();
+                            continue;
+                        }
+                        if (property0.NameEquals("publicNetworkAccess"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            publicNetworkAccess = new PublicNetworkAccess(property0.Value.GetString());
                             continue;
                         }
                         if (property0.NameEquals("maximumThroughputUnits"))
@@ -329,11 +367,21 @@ namespace Azure.ResourceManager.EventHubs
                             alternateName = property0.Value.GetString();
                             continue;
                         }
+                        if (property0.NameEquals("geoDataReplication"))
+                        {
+                            if (property0.Value.ValueKind == JsonValueKind.Null)
+                            {
+                                property0.ThrowNonNullablePropertyIsNull();
+                                continue;
+                            }
+                            geoDataReplication = GeoDataReplicationProperties.DeserializeGeoDataReplicationProperties(property0.Value);
+                            continue;
+                        }
                     }
                     continue;
                 }
             }
-            return new EventHubsNamespaceData(id, name, type, systemData.Value, Optional.ToDictionary(tags), location, sku.Value, identity, provisioningState.Value, status.Value, Optional.ToNullable(createdAt), Optional.ToNullable(updatedAt), serviceBusEndpoint.Value, clusterArmId.Value, metricId.Value, Optional.ToNullable(isAutoInflateEnabled), Optional.ToNullable(maximumThroughputUnits), Optional.ToNullable(kafkaEnabled), Optional.ToNullable(zoneRedundant), encryption.Value, Optional.ToList(privateEndpointConnections), Optional.ToNullable(disableLocalAuth), alternateName.Value);
+            return new EventHubsNamespaceData(id, name, type, systemData.Value, Optional.ToDictionary(tags), location, sku.Value, identity, Optional.ToNullable(minimumTlsVersion), provisioningState.Value, status.Value, Optional.ToNullable(createdAt), Optional.ToNullable(updatedAt), serviceBusEndpoint.Value, clusterArmId.Value, metricId.Value, Optional.ToNullable(isAutoInflateEnabled), Optional.ToNullable(publicNetworkAccess), Optional.ToNullable(maximumThroughputUnits), Optional.ToNullable(kafkaEnabled), Optional.ToNullable(zoneRedundant), encryption.Value, Optional.ToList(privateEndpointConnections), Optional.ToNullable(disableLocalAuth), alternateName.Value, geoDataReplication.Value);
         }
     }
 }
