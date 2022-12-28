@@ -11,8 +11,12 @@ namespace Azure.ResourceManager.HybridConnectivity
         public virtual System.Threading.Tasks.Task<Azure.ResourceManager.ArmOperation> DeleteAsync(Azure.WaitUntil waitUntil, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.Response<Azure.ResourceManager.HybridConnectivity.EndpointResource> Get(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.HybridConnectivity.EndpointResource>> GetAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
-        public virtual Azure.Response<Azure.ResourceManager.HybridConnectivity.Models.TargetResourceEndpointAccess> GetCredentials(long? expiresin = default(long?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
-        public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.HybridConnectivity.Models.TargetResourceEndpointAccess>> GetCredentialsAsync(long? expiresin = default(long?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual Azure.Response<Azure.ResourceManager.HybridConnectivity.Models.TargetResourceEndpointAccess> GetCredentials(Azure.ResourceManager.HybridConnectivity.Models.ListCredentialsContent content = null, long? expiresin = default(long?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.HybridConnectivity.Models.TargetResourceEndpointAccess>> GetCredentialsAsync(Azure.ResourceManager.HybridConnectivity.Models.ListCredentialsContent content = null, long? expiresin = default(long?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual Azure.Response<Azure.ResourceManager.HybridConnectivity.Models.IngressGatewayResource> GetIngressGatewayCredentials(long? expiresin = default(long?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.HybridConnectivity.Models.IngressGatewayResource>> GetIngressGatewayCredentialsAsync(long? expiresin = default(long?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual Azure.Response<Azure.ResourceManager.HybridConnectivity.Models.ManagedProxyResource> GetManagedProxyDetails(Azure.ResourceManager.HybridConnectivity.Models.ManagedProxyContent content, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
+        public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.HybridConnectivity.Models.ManagedProxyResource>> GetManagedProxyDetailsAsync(Azure.ResourceManager.HybridConnectivity.Models.ManagedProxyContent content, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual Azure.Response<Azure.ResourceManager.HybridConnectivity.EndpointResource> Update(Azure.ResourceManager.HybridConnectivity.EndpointResourceData data, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
         public virtual System.Threading.Tasks.Task<Azure.Response<Azure.ResourceManager.HybridConnectivity.EndpointResource>> UpdateAsync(Azure.ResourceManager.HybridConnectivity.EndpointResourceData data, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { throw null; }
     }
@@ -43,6 +47,7 @@ namespace Azure.ResourceManager.HybridConnectivity
         public System.DateTimeOffset? LastModifiedOn { get { throw null; } set { } }
         public string ProvisioningState { get { throw null; } }
         public string ResourceId { get { throw null; } set { } }
+        public System.Collections.Generic.IList<Azure.ResourceManager.HybridConnectivity.Models.ServiceConfiguration> ServiceConfigurations { get { throw null; } }
     }
     public static partial class HybridConnectivityExtensions
     {
@@ -92,6 +97,61 @@ namespace Azure.ResourceManager.HybridConnectivity.Models
         public static bool operator !=(Azure.ResourceManager.HybridConnectivity.Models.EndpointType left, Azure.ResourceManager.HybridConnectivity.Models.EndpointType right) { throw null; }
         public override string ToString() { throw null; }
     }
+    public partial class IngressGatewayResource
+    {
+        internal IngressGatewayResource() { }
+        public string AccessKey { get { throw null; } }
+        public long? ExpiresOn { get { throw null; } }
+        public string Hostname { get { throw null; } }
+        public string HybridConnectionName { get { throw null; } }
+        public string NamespaceName { get { throw null; } }
+        public string NamespaceNameSuffix { get { throw null; } }
+        public string ServerId { get { throw null; } }
+        public string ServiceConfigurationToken { get { throw null; } }
+        public System.Guid? TenantId { get { throw null; } }
+    }
+    public partial class ListCredentialsContent
+    {
+        public ListCredentialsContent() { }
+        public Azure.ResourceManager.HybridConnectivity.Models.ServiceName? ServiceName { get { throw null; } set { } }
+    }
+    public partial class ManagedProxyContent
+    {
+        public ManagedProxyContent(string service) { }
+        public string Hostname { get { throw null; } set { } }
+        public string Service { get { throw null; } }
+        public Azure.ResourceManager.HybridConnectivity.Models.ServiceName? ServiceName { get { throw null; } set { } }
+    }
+    public partial class ManagedProxyResource
+    {
+        internal ManagedProxyResource() { }
+        public long ExpiresOn { get { throw null; } }
+        public string Proxy { get { throw null; } }
+    }
+    public partial class ServiceConfiguration
+    {
+        public ServiceConfiguration() { }
+        public string Port { get { throw null; } set { } }
+        public Azure.ResourceManager.HybridConnectivity.Models.ServiceName? ServiceName { get { throw null; } set { } }
+    }
+    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    public readonly partial struct ServiceName : System.IEquatable<Azure.ResourceManager.HybridConnectivity.Models.ServiceName>
+    {
+        private readonly object _dummy;
+        private readonly int _dummyPrimitive;
+        public ServiceName(string value) { throw null; }
+        public static Azure.ResourceManager.HybridConnectivity.Models.ServiceName SSH { get { throw null; } }
+        public static Azure.ResourceManager.HybridConnectivity.Models.ServiceName WAC { get { throw null; } }
+        public bool Equals(Azure.ResourceManager.HybridConnectivity.Models.ServiceName other) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override bool Equals(object obj) { throw null; }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        public override int GetHashCode() { throw null; }
+        public static bool operator ==(Azure.ResourceManager.HybridConnectivity.Models.ServiceName left, Azure.ResourceManager.HybridConnectivity.Models.ServiceName right) { throw null; }
+        public static implicit operator Azure.ResourceManager.HybridConnectivity.Models.ServiceName (string value) { throw null; }
+        public static bool operator !=(Azure.ResourceManager.HybridConnectivity.Models.ServiceName left, Azure.ResourceManager.HybridConnectivity.Models.ServiceName right) { throw null; }
+        public override string ToString() { throw null; }
+    }
     public partial class TargetResourceEndpointAccess
     {
         internal TargetResourceEndpointAccess() { }
@@ -100,5 +160,6 @@ namespace Azure.ResourceManager.HybridConnectivity.Models
         public string HybridConnectionName { get { throw null; } }
         public string NamespaceName { get { throw null; } }
         public string NamespaceNameSuffix { get { throw null; } }
+        public string ServiceConfigurationToken { get { throw null; } }
     }
 }
