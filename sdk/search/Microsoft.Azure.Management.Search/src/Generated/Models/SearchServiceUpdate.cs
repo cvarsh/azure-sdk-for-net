@@ -34,12 +34,12 @@ namespace Microsoft.Azure.Management.Search.Models
         /// <summary>
         /// Initializes a new instance of the SearchServiceUpdate class.
         /// </summary>
-        /// <param name="id">Fully qualified resource Id for the resource. Ex -
+        /// <param name="id">Fully qualified resource ID for the resource. Ex -
         /// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}</param>
         /// <param name="name">The name of the resource</param>
-        /// <param name="type">The type of the resource. Ex-
-        /// Microsoft.Compute/virtualMachines or
-        /// Microsoft.Storage/storageAccounts.</param>
+        /// <param name="type">The type of the resource. E.g.
+        /// "Microsoft.Compute/virtualMachines" or
+        /// "Microsoft.Storage/storageAccounts"</param>
         /// <param name="replicaCount">The number of replicas in the search
         /// service. If specified, it must be a value between 1 and 12
         /// inclusive for standard SKUs or between 1 and 3 inclusive for basic
@@ -54,8 +54,8 @@ namespace Microsoft.Azure.Management.Search.Models
         /// that allow up to 1000 indexes, which is much higher than the
         /// maximum indexes allowed for any other SKU. For the standard3 SKU,
         /// the value is either 'default' or 'highDensity'. For all other SKUs,
-        /// this value must be 'default'. Possible values include: 'default',
-        /// 'highDensity'</param>
+        /// this value must be 'default'. Possible values include: 'Default',
+        /// 'HighDensity'</param>
         /// <param name="publicNetworkAccess">This value can be set to
         /// 'enabled' to avoid breaking changes on existing customer resources
         /// and templates. If set to 'disabled', traffic over public interface
@@ -76,8 +76,9 @@ namespace Microsoft.Azure.Management.Search.Models
         /// or error states, it means the Azure Cognitive Search team is
         /// actively investigating the underlying issue. Dedicated services in
         /// these states are still chargeable based on the number of search
-        /// units provisioned. Possible values include: 'running',
-        /// 'provisioning', 'deleting', 'degraded', 'disabled', 'error'</param>
+        /// units provisioned. Possible values include: 'Running',
+        /// 'Provisioning', 'Deleting', 'Degraded', 'Disabled', 'Error',
+        /// 'Stopped'</param>
         /// <param name="statusDetails">The details of the search service
         /// status.</param>
         /// <param name="provisioningState">The state of the last provisioning
@@ -91,9 +92,19 @@ namespace Microsoft.Azure.Management.Search.Models
         /// service, this value tends to come back as 'succeeded' directly in
         /// the call to Create search service. This is because the free service
         /// uses capacity that is already set up. Possible values include:
-        /// 'succeeded', 'provisioning', 'failed'</param>
+        /// 'Succeeded', 'Provisioning', 'Failed'</param>
         /// <param name="networkRuleSet">Network specific rules that determine
         /// how the Azure Cognitive Search service may be reached.</param>
+        /// <param name="encryptionWithCmk">Specifies any policy regarding
+        /// encryption of resources (such as indexes) using customer manager
+        /// keys within a search service.</param>
+        /// <param name="disableLocalAuth">When set to true, calls to the
+        /// search service will not be permitted to utilize API keys for
+        /// authentication. This cannot be set to true if
+        /// 'dataPlaneAuthOptions' are defined.</param>
+        /// <param name="authOptions">Defines the options for how the data
+        /// plane API of a search service authenticates requests. This cannot
+        /// be set if 'disableLocalAuth' is set to true.</param>
         /// <param name="privateEndpointConnections">The list of private
         /// endpoint connections to the Azure Cognitive Search service.</param>
         /// <param name="sharedPrivateLinkResources">The list of shared private
@@ -109,7 +120,7 @@ namespace Microsoft.Azure.Management.Search.Models
         /// <param name="tags">Tags to help categorize the resource in the
         /// Azure portal.</param>
         /// <param name="identity">The identity of the resource.</param>
-        public SearchServiceUpdate(string id = default(string), string name = default(string), string type = default(string), int? replicaCount = default(int?), int? partitionCount = default(int?), HostingMode? hostingMode = default(HostingMode?), PublicNetworkAccess? publicNetworkAccess = default(PublicNetworkAccess?), SearchServiceStatus? status = default(SearchServiceStatus?), string statusDetails = default(string), ProvisioningState? provisioningState = default(ProvisioningState?), NetworkRuleSet networkRuleSet = default(NetworkRuleSet), IList<PrivateEndpointConnection> privateEndpointConnections = default(IList<PrivateEndpointConnection>), IList<SharedPrivateLinkResource> sharedPrivateLinkResources = default(IList<SharedPrivateLinkResource>), Sku sku = default(Sku), string location = default(string), IDictionary<string, string> tags = default(IDictionary<string, string>), Identity identity = default(Identity))
+        public SearchServiceUpdate(string id = default(string), string name = default(string), string type = default(string), int? replicaCount = default(int?), int? partitionCount = default(int?), HostingMode? hostingMode = default(HostingMode?), PublicNetworkAccess? publicNetworkAccess = default(PublicNetworkAccess?), SearchServiceStatus? status = default(SearchServiceStatus?), string statusDetails = default(string), ProvisioningState? provisioningState = default(ProvisioningState?), NetworkRuleSet networkRuleSet = default(NetworkRuleSet), EncryptionWithCmk encryptionWithCmk = default(EncryptionWithCmk), bool? disableLocalAuth = default(bool?), DataPlaneAuthOptions authOptions = default(DataPlaneAuthOptions), IList<PrivateEndpointConnection> privateEndpointConnections = default(IList<PrivateEndpointConnection>), IList<SharedPrivateLinkResource> sharedPrivateLinkResources = default(IList<SharedPrivateLinkResource>), Sku sku = default(Sku), string location = default(string), IDictionary<string, string> tags = default(IDictionary<string, string>), Identity identity = default(Identity))
             : base(id, name, type)
         {
             ReplicaCount = replicaCount;
@@ -120,6 +131,9 @@ namespace Microsoft.Azure.Management.Search.Models
             StatusDetails = statusDetails;
             ProvisioningState = provisioningState;
             NetworkRuleSet = networkRuleSet;
+            EncryptionWithCmk = encryptionWithCmk;
+            DisableLocalAuth = disableLocalAuth;
+            AuthOptions = authOptions;
             PrivateEndpointConnections = privateEndpointConnections;
             SharedPrivateLinkResources = sharedPrivateLinkResources;
             Sku = sku;
@@ -158,8 +172,8 @@ namespace Microsoft.Azure.Management.Search.Models
         /// up to 1000 indexes, which is much higher than the maximum indexes
         /// allowed for any other SKU. For the standard3 SKU, the value is
         /// either 'default' or 'highDensity'. For all other SKUs, this value
-        /// must be 'default'. Possible values include: 'default',
-        /// 'highDensity'
+        /// must be 'default'. Possible values include: 'Default',
+        /// 'HighDensity'
         /// </summary>
         [JsonProperty(PropertyName = "properties.hostingMode")]
         public HostingMode? HostingMode { get; set; }
@@ -189,8 +203,9 @@ namespace Microsoft.Azure.Management.Search.Models
         /// or error states, it means the Azure Cognitive Search team is
         /// actively investigating the underlying issue. Dedicated services in
         /// these states are still chargeable based on the number of search
-        /// units provisioned. Possible values include: 'running',
-        /// 'provisioning', 'deleting', 'degraded', 'disabled', 'error'
+        /// units provisioned. Possible values include: 'Running',
+        /// 'Provisioning', 'Deleting', 'Degraded', 'Disabled', 'Error',
+        /// 'Stopped'
         /// </summary>
         [JsonProperty(PropertyName = "properties.status")]
         public SearchServiceStatus? Status { get; private set; }
@@ -212,7 +227,7 @@ namespace Microsoft.Azure.Management.Search.Models
         /// you are using the free service, this value tends to come back as
         /// 'succeeded' directly in the call to Create search service. This is
         /// because the free service uses capacity that is already set up.
-        /// Possible values include: 'succeeded', 'provisioning', 'failed'
+        /// Possible values include: 'Succeeded', 'Provisioning', 'Failed'
         /// </summary>
         [JsonProperty(PropertyName = "properties.provisioningState")]
         public ProvisioningState? ProvisioningState { get; private set; }
@@ -223,6 +238,30 @@ namespace Microsoft.Azure.Management.Search.Models
         /// </summary>
         [JsonProperty(PropertyName = "properties.networkRuleSet")]
         public NetworkRuleSet NetworkRuleSet { get; set; }
+
+        /// <summary>
+        /// Gets or sets specifies any policy regarding encryption of resources
+        /// (such as indexes) using customer manager keys within a search
+        /// service.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.encryptionWithCmk")]
+        public EncryptionWithCmk EncryptionWithCmk { get; set; }
+
+        /// <summary>
+        /// Gets or sets when set to true, calls to the search service will not
+        /// be permitted to utilize API keys for authentication. This cannot be
+        /// set to true if 'dataPlaneAuthOptions' are defined.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.disableLocalAuth")]
+        public bool? DisableLocalAuth { get; set; }
+
+        /// <summary>
+        /// Gets or sets defines the options for how the data plane API of a
+        /// search service authenticates requests. This cannot be set if
+        /// 'disableLocalAuth' is set to true.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.authOptions")]
+        public DataPlaneAuthOptions AuthOptions { get; set; }
 
         /// <summary>
         /// Gets the list of private endpoint connections to the Azure

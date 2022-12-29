@@ -21,10 +21,19 @@ namespace Microsoft.Azure.Management.Search.Models
     [JsonConverter(typeof(StringEnumConverter))]
     public enum ProvisioningState
     {
+        /// <summary>
+        /// The last provisioning operation has completed successfully.
+        /// </summary>
         [EnumMember(Value = "succeeded")]
         Succeeded,
+        /// <summary>
+        /// The search service is being provisioned or scaled up or down.
+        /// </summary>
         [EnumMember(Value = "provisioning")]
         Provisioning,
+        /// <summary>
+        /// The last provisioning operation has failed.
+        /// </summary>
         [EnumMember(Value = "failed")]
         Failed
     }

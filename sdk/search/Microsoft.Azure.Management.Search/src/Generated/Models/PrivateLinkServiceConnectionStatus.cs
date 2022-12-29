@@ -21,12 +21,26 @@ namespace Microsoft.Azure.Management.Search.Models
     [JsonConverter(typeof(StringEnumConverter))]
     public enum PrivateLinkServiceConnectionStatus
     {
+        /// <summary>
+        /// The private endpoint connection has been created and is pending
+        /// approval.
+        /// </summary>
         [EnumMember(Value = "Pending")]
         Pending,
+        /// <summary>
+        /// The private endpoint connection is approved and is ready for use.
+        /// </summary>
         [EnumMember(Value = "Approved")]
         Approved,
+        /// <summary>
+        /// The private endpoint connection has been rejected and cannot be
+        /// used.
+        /// </summary>
         [EnumMember(Value = "Rejected")]
         Rejected,
+        /// <summary>
+        /// The private endpoint connection has been removed from the service.
+        /// </summary>
         [EnumMember(Value = "Disconnected")]
         Disconnected
     }

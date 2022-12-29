@@ -730,7 +730,7 @@ namespace Microsoft.Azure.Management.Search
         }
 
         /// <summary>
-        /// Gets a list of all search services in the given resource group.
+        /// Gets a list of all Search services in the given resource group.
         /// <see href="https://aka.ms/search-manage" />
         /// </summary>
         /// <param name='resourceGroupName'>
@@ -936,7 +936,7 @@ namespace Microsoft.Azure.Management.Search
         }
 
         /// <summary>
-        /// Gets a list of all search services in the given subscription.
+        /// Gets a list of all Search services in the given subscription.
         /// <see href="https://aka.ms/search-manage" />
         /// </summary>
         /// <param name='searchManagementRequestOptions'>
@@ -1611,7 +1611,7 @@ namespace Microsoft.Azure.Management.Search
         }
 
         /// <summary>
-        /// Gets a list of all search services in the given resource group.
+        /// Gets a list of all Search services in the given resource group.
         /// <see href="https://aka.ms/search-manage" />
         /// </summary>
         /// <param name='nextPageLink'>
@@ -1802,7 +1802,7 @@ namespace Microsoft.Azure.Management.Search
         }
 
         /// <summary>
-        /// Gets a list of all search services in the given subscription.
+        /// Gets a list of all Search services in the given subscription.
         /// <see href="https://aka.ms/search-manage" />
         /// </summary>
         /// <param name='nextPageLink'>
