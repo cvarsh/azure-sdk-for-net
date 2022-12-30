@@ -204,6 +204,7 @@ namespace Azure.Messaging.EventGrid
         public static Azure.Messaging.EventGrid.SystemEvents.StorageBlobCreatedEventData StorageBlobCreatedEventData(string api = null, string clientRequestId = null, string requestId = null, string eTag = null, string contentType = null, long? contentLength = default(long?), long? contentOffset = default(long?), string blobType = null, string url = null, string sequencer = null, string identity = null, object storageDiagnostics = null) { throw null; }
         public static Azure.Messaging.EventGrid.SystemEvents.StorageBlobDeletedEventData StorageBlobDeletedEventData(string api = null, string clientRequestId = null, string requestId = null, string contentType = null, string blobType = null, string url = null, string sequencer = null, string identity = null, object storageDiagnostics = null) { throw null; }
         public static Azure.Messaging.EventGrid.SystemEvents.StorageBlobInventoryPolicyCompletedEventData StorageBlobInventoryPolicyCompletedEventData(System.DateTimeOffset? scheduleDateTime = default(System.DateTimeOffset?), string accountName = null, string ruleName = null, string policyRunStatus = null, string policyRunStatusMessage = null, string policyRunId = null, string manifestBlobUrl = null) { throw null; }
+        public static Azure.Messaging.EventGrid.SystemEvents.StorageBlobMetadataUpdateEventData StorageBlobMetadataUpdateEventData(string api = null, string clientRequestId = null, string requestId = null, string eTag = null, string contentType = null, long? contentLength = default(long?), string blobType = null, string url = null, string sequencer = null, string identity = null, object storageDiagnostics = null) { throw null; }
         public static Azure.Messaging.EventGrid.SystemEvents.StorageBlobRenamedEventData StorageBlobRenamedEventData(string api = null, string clientRequestId = null, string requestId = null, string sourceUrl = null, string destinationUrl = null, string sequencer = null, string identity = null, object storageDiagnostics = null) { throw null; }
         public static Azure.Messaging.EventGrid.SystemEvents.StorageBlobTierChangedEventData StorageBlobTierChangedEventData(string api = null, string clientRequestId = null, string requestId = null, string contentType = null, long? contentLength = default(long?), string blobType = null, string url = null, string sequencer = null, string identity = null, object storageDiagnostics = null) { throw null; }
         public static Azure.Messaging.EventGrid.SystemEvents.StorageDirectoryCreatedEventData StorageDirectoryCreatedEventData(string api = null, string clientRequestId = null, string requestId = null, string eTag = null, string url = null, string sequencer = null, string identity = null, object storageDiagnostics = null) { throw null; }
@@ -400,6 +401,7 @@ namespace Azure.Messaging.EventGrid
         public const string StorageBlobCreated = "Microsoft.Storage.BlobCreated";
         public const string StorageBlobDeleted = "Microsoft.Storage.BlobDeleted";
         public const string StorageBlobInventoryPolicyCompleted = "Microsoft.Storage.BlobInventoryPolicyCompleted";
+        public const string StorageBlobMetadataUpdate = "Microsoft.Storage.BlobMetadataUpdate";
         public const string StorageBlobRenamed = "Microsoft.Storage.BlobRenamed";
         public const string StorageBlobTierChanged = "Microsoft.Storage.BlobTierChanged";
         public const string StorageDirectoryCreated = "Microsoft.Storage.DirectoryCreated";
@@ -2204,6 +2206,21 @@ namespace Azure.Messaging.EventGrid.SystemEvents
         public string PolicyRunStatusMessage { get { throw null; } }
         public string RuleName { get { throw null; } }
         public System.DateTimeOffset? ScheduleDateTime { get { throw null; } }
+    }
+    public partial class StorageBlobMetadataUpdateEventData
+    {
+        internal StorageBlobMetadataUpdateEventData() { }
+        public string Api { get { throw null; } }
+        public string BlobType { get { throw null; } }
+        public string ClientRequestId { get { throw null; } }
+        public long? ContentLength { get { throw null; } }
+        public string ContentType { get { throw null; } }
+        public string ETag { get { throw null; } }
+        public string Identity { get { throw null; } }
+        public string RequestId { get { throw null; } }
+        public string Sequencer { get { throw null; } }
+        public object StorageDiagnostics { get { throw null; } }
+        public string Url { get { throw null; } }
     }
     public partial class StorageBlobRenamedEventData
     {
