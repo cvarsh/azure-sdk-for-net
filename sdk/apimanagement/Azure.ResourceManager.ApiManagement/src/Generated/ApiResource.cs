@@ -246,6 +246,43 @@ namespace Azure.ResourceManager.ApiManagement
             return GetApiTags().Get(tagId, cancellationToken);
         }
 
+        /// <summary> Gets a collection of ResolverContractResources in the Api. </summary>
+        /// <returns> An object representing collection of ResolverContractResources and their operations over a ResolverContractResource. </returns>
+        public virtual ResolverContractCollection GetResolverContracts()
+        {
+            return GetCachedClient(Client => new ResolverContractCollection(Client, Id));
+        }
+
+        /// <summary>
+        /// Gets the details of the GraphQL API Resolver specified by its identifier.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}
+        /// Operation Id: GraphQLApiResolver_Get
+        /// </summary>
+        /// <param name="resolverId"> Resolver identifier within a GraphQL API. Must be unique in the current API Management service instance. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="resolverId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="resolverId"/> is null. </exception>
+        [ForwardsClientCalls]
+        public virtual async Task<Response<ResolverContractResource>> GetResolverContractAsync(string resolverId, CancellationToken cancellationToken = default)
+        {
+            return await GetResolverContracts().GetAsync(resolverId, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the details of the GraphQL API Resolver specified by its identifier.
+        /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}
+        /// Operation Id: GraphQLApiResolver_Get
+        /// </summary>
+        /// <param name="resolverId"> Resolver identifier within a GraphQL API. Must be unique in the current API Management service instance. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="resolverId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="resolverId"/> is null. </exception>
+        [ForwardsClientCalls]
+        public virtual Response<ResolverContractResource> GetResolverContract(string resolverId, CancellationToken cancellationToken = default)
+        {
+            return GetResolverContracts().Get(resolverId, cancellationToken);
+        }
+
         /// <summary> Gets a collection of ApiSchemaResources in the Api. </summary>
         /// <returns> An object representing collection of ApiSchemaResources and their operations over a ApiSchemaResource. </returns>
         public virtual ApiSchemaCollection GetApiSchemas()
