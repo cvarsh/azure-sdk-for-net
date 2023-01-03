@@ -1352,6 +1352,7 @@ namespace Azure.ResourceManager.FrontDoor.Models
         private readonly int _dummyPrimitive;
         public RuleMatchActionType(string value) { throw null; }
         public static Azure.ResourceManager.FrontDoor.Models.RuleMatchActionType Allow { get { throw null; } }
+        public static Azure.ResourceManager.FrontDoor.Models.RuleMatchActionType AnomalyScoring { get { throw null; } }
         public static Azure.ResourceManager.FrontDoor.Models.RuleMatchActionType Block { get { throw null; } }
         public static Azure.ResourceManager.FrontDoor.Models.RuleMatchActionType Log { get { throw null; } }
         public static Azure.ResourceManager.FrontDoor.Models.RuleMatchActionType Redirect { get { throw null; } }
