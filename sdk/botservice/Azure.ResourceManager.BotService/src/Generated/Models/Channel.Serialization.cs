@@ -51,11 +51,13 @@ namespace Azure.ResourceManager.BotService.Models
                     case "KikChannel": return KikChannel.DeserializeKikChannel(element);
                     case "LineChannel": return LineChannel.DeserializeLineChannel(element);
                     case "MsTeamsChannel": return MsTeamsChannel.DeserializeMsTeamsChannel(element);
+                    case "Omnichannel": return Omnichannel.DeserializeOmnichannel(element);
                     case "OutlookChannel": return OutlookChannel.DeserializeOutlookChannel(element);
                     case "SkypeChannel": return SkypeChannel.DeserializeSkypeChannel(element);
                     case "SlackChannel": return SlackChannel.DeserializeSlackChannel(element);
                     case "SmsChannel": return SmsChannel.DeserializeSmsChannel(element);
                     case "TelegramChannel": return TelegramChannel.DeserializeTelegramChannel(element);
+                    case "TelephonyChannel": return TelephonyChannel.DeserializeTelephonyChannel(element);
                     case "WebChatChannel": return WebChatChannel.DeserializeWebChatChannel(element);
                 }
             }
