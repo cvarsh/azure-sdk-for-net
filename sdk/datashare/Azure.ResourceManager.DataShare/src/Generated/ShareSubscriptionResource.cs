@@ -343,7 +343,7 @@ namespace Azure.ResourceManager.DataShare
             try
             {
                 var response = await _shareSubscriptionRestClient.CancelSynchronizationAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, shareSubscriptionSynchronization, cancellationToken).ConfigureAwait(false);
-                var operation = new DataShareArmOperation<ShareSubscriptionSynchronization>(new ShareSubscriptionSynchronizationOperationSource(), _shareSubscriptionClientDiagnostics, Pipeline, _shareSubscriptionRestClient.CreateCancelSynchronizationRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, shareSubscriptionSynchronization).Request, response, OperationFinalStateVia.AzureAsyncOperation);
+                var operation = new DataShareArmOperation<ShareSubscriptionSynchronization>(new ShareSubscriptionSynchronizationOperationSource(), _shareSubscriptionClientDiagnostics, Pipeline, _shareSubscriptionRestClient.CreateCancelSynchronizationRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, shareSubscriptionSynchronization).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -373,7 +373,7 @@ namespace Azure.ResourceManager.DataShare
             try
             {
                 var response = _shareSubscriptionRestClient.CancelSynchronization(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, shareSubscriptionSynchronization, cancellationToken);
-                var operation = new DataShareArmOperation<ShareSubscriptionSynchronization>(new ShareSubscriptionSynchronizationOperationSource(), _shareSubscriptionClientDiagnostics, Pipeline, _shareSubscriptionRestClient.CreateCancelSynchronizationRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, shareSubscriptionSynchronization).Request, response, OperationFinalStateVia.AzureAsyncOperation);
+                var operation = new DataShareArmOperation<ShareSubscriptionSynchronization>(new ShareSubscriptionSynchronizationOperationSource(), _shareSubscriptionClientDiagnostics, Pipeline, _shareSubscriptionRestClient.CreateCancelSynchronizationRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, shareSubscriptionSynchronization).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletion(cancellationToken);
                 return operation;
@@ -677,7 +677,7 @@ namespace Azure.ResourceManager.DataShare
             try
             {
                 var response = await _shareSubscriptionRestClient.SynchronizeAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, content, cancellationToken).ConfigureAwait(false);
-                var operation = new DataShareArmOperation<ShareSubscriptionSynchronization>(new ShareSubscriptionSynchronizationOperationSource(), _shareSubscriptionClientDiagnostics, Pipeline, _shareSubscriptionRestClient.CreateSynchronizeRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, content).Request, response, OperationFinalStateVia.AzureAsyncOperation);
+                var operation = new DataShareArmOperation<ShareSubscriptionSynchronization>(new ShareSubscriptionSynchronizationOperationSource(), _shareSubscriptionClientDiagnostics, Pipeline, _shareSubscriptionRestClient.CreateSynchronizeRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, content).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -707,7 +707,7 @@ namespace Azure.ResourceManager.DataShare
             try
             {
                 var response = _shareSubscriptionRestClient.Synchronize(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, content, cancellationToken);
-                var operation = new DataShareArmOperation<ShareSubscriptionSynchronization>(new ShareSubscriptionSynchronizationOperationSource(), _shareSubscriptionClientDiagnostics, Pipeline, _shareSubscriptionRestClient.CreateSynchronizeRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, content).Request, response, OperationFinalStateVia.AzureAsyncOperation);
+                var operation = new DataShareArmOperation<ShareSubscriptionSynchronization>(new ShareSubscriptionSynchronizationOperationSource(), _shareSubscriptionClientDiagnostics, Pipeline, _shareSubscriptionRestClient.CreateSynchronizeRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, content).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletion(cancellationToken);
                 return operation;
