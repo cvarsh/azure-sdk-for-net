@@ -29,6 +29,11 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery.Models
                 }
                 writer.WriteEndArray();
             }
+            if (Optional.IsDefined(OSUpgradeVersion))
+            {
+                writer.WritePropertyName("osUpgradeVersion");
+                writer.WriteStringValue(OSUpgradeVersion);
+            }
             writer.WritePropertyName("instanceType");
             writer.WriteStringValue(InstanceType);
             writer.WriteEndObject();
