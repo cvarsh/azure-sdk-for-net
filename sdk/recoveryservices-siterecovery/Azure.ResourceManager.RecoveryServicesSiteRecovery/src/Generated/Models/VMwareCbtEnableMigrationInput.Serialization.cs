@@ -87,6 +87,16 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery.Models
                 writer.WritePropertyName("targetProximityPlacementGroupId");
                 writer.WriteStringValue(TargetProximityPlacementGroupId);
             }
+            if (Optional.IsDefined(ConfidentialVmKeyVaultId))
+            {
+                writer.WritePropertyName("confidentialVmKeyVaultId");
+                writer.WriteStringValue(ConfidentialVmKeyVaultId);
+            }
+            if (Optional.IsDefined(TargetVmSecurityProfile))
+            {
+                writer.WritePropertyName("targetVmSecurityProfile");
+                writer.WriteObjectValue(TargetVmSecurityProfile);
+            }
             if (Optional.IsDefined(TargetBootDiagnosticsStorageAccountId))
             {
                 writer.WritePropertyName("targetBootDiagnosticsStorageAccountId");

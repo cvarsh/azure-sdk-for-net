@@ -17,6 +17,11 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery.Models
             writer.WriteStartObject();
             writer.WritePropertyName("performShutdown");
             writer.WriteStringValue(PerformShutdown);
+            if (Optional.IsDefined(OSUpgradeVersion))
+            {
+                writer.WritePropertyName("osUpgradeVersion");
+                writer.WriteStringValue(OSUpgradeVersion);
+            }
             writer.WritePropertyName("instanceType");
             writer.WriteStringValue(InstanceType);
             writer.WriteEndObject();
