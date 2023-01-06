@@ -34,28 +34,19 @@ namespace Microsoft.Azure.Management.AppPlatform.Models
         /// 'Stopping', 'Deleting', 'Deleted', 'Succeeded', 'Failed', 'Moving',
         /// 'Moved', 'MoveFailed'</param>
         /// <param name="networkProfile">Network profile of the Service</param>
-        /// <param name="vnetAddons">Additional Service settings in vnet
-        /// injection instance</param>
         /// <param name="version">Version of the Service</param>
         /// <param name="serviceId">ServiceInstanceEntity GUID which uniquely
         /// identifies a created resource</param>
-        /// <param name="powerState">Power state of the Service. Possible
-        /// values include: 'Running', 'Stopped'</param>
         /// <param name="fqdn">Fully qualified dns name of the service
         /// instance</param>
-        /// <param name="marketplaceResource">Purchasing 3rd party product of
-        /// the Service resource.</param>
-        public ClusterResourceProperties(string provisioningState = default(string), NetworkProfile networkProfile = default(NetworkProfile), ServiceVNetAddons vnetAddons = default(ServiceVNetAddons), int? version = default(int?), string serviceId = default(string), string powerState = default(string), bool? zoneRedundant = default(bool?), string fqdn = default(string), MarketplaceResource marketplaceResource = default(MarketplaceResource))
+        public ClusterResourceProperties(string provisioningState = default(string), NetworkProfile networkProfile = default(NetworkProfile), int? version = default(int?), string serviceId = default(string), bool? zoneRedundant = default(bool?), string fqdn = default(string))
         {
             ProvisioningState = provisioningState;
             NetworkProfile = networkProfile;
-            VnetAddons = vnetAddons;
             Version = version;
             ServiceId = serviceId;
-            PowerState = powerState;
             ZoneRedundant = zoneRedundant;
             Fqdn = fqdn;
-            MarketplaceResource = marketplaceResource;
             CustomInit();
         }
 
@@ -79,12 +70,6 @@ namespace Microsoft.Azure.Management.AppPlatform.Models
         public NetworkProfile NetworkProfile { get; set; }
 
         /// <summary>
-        /// Gets or sets additional Service settings in vnet injection instance
-        /// </summary>
-        [JsonProperty(PropertyName = "vnetAddons")]
-        public ServiceVNetAddons VnetAddons { get; set; }
-
-        /// <summary>
         /// Gets version of the Service
         /// </summary>
         [JsonProperty(PropertyName = "version")]
@@ -98,13 +83,6 @@ namespace Microsoft.Azure.Management.AppPlatform.Models
         public string ServiceId { get; private set; }
 
         /// <summary>
-        /// Gets power state of the Service. Possible values include:
-        /// 'Running', 'Stopped'
-        /// </summary>
-        [JsonProperty(PropertyName = "powerState")]
-        public string PowerState { get; private set; }
-
-        /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "zoneRedundant")]
         public bool? ZoneRedundant { get; set; }
@@ -114,12 +92,6 @@ namespace Microsoft.Azure.Management.AppPlatform.Models
         /// </summary>
         [JsonProperty(PropertyName = "fqdn")]
         public string Fqdn { get; private set; }
-
-        /// <summary>
-        /// Gets or sets purchasing 3rd party product of the Service resource.
-        /// </summary>
-        [JsonProperty(PropertyName = "marketplaceResource")]
-        public MarketplaceResource MarketplaceResource { get; set; }
 
     }
 }

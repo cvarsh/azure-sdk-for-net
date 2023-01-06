@@ -127,11 +127,6 @@ namespace Microsoft.Azure.Management.AppPlatform
         IBindingsOperations Bindings { get; }
 
         /// <summary>
-        /// Gets the IStoragesOperations.
-        /// </summary>
-        IStoragesOperations Storages { get; }
-
-        /// <summary>
         /// Gets the ICertificatesOperations.
         /// </summary>
         ICertificatesOperations Certificates { get; }
@@ -160,31 +155,6 @@ namespace Microsoft.Azure.Management.AppPlatform
         /// Gets the ISkusOperations.
         /// </summary>
         ISkusOperations Skus { get; }
-
-        /// <summary>
-        /// Gets the IGatewaysOperations.
-        /// </summary>
-        IGatewaysOperations Gateways { get; }
-
-        /// <summary>
-        /// Gets the IGatewayRouteConfigsOperations.
-        /// </summary>
-        IGatewayRouteConfigsOperations GatewayRouteConfigs { get; }
-
-        /// <summary>
-        /// Gets the IGatewayCustomDomainsOperations.
-        /// </summary>
-        IGatewayCustomDomainsOperations GatewayCustomDomains { get; }
-
-        /// <summary>
-        /// Gets the IApiPortalsOperations.
-        /// </summary>
-        IApiPortalsOperations ApiPortals { get; }
-
-        /// <summary>
-        /// Gets the IApiPortalCustomDomainsOperations.
-        /// </summary>
-        IApiPortalCustomDomainsOperations ApiPortalCustomDomains { get; }
 
     }
 }

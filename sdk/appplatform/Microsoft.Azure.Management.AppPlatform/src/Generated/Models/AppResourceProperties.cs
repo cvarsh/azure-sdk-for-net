@@ -42,15 +42,11 @@ namespace Microsoft.Azure.Management.AppPlatform.Models
         /// <param name="httpsOnly">Indicate if only https is allowed.</param>
         /// <param name="temporaryDisk">Temporary disk settings</param>
         /// <param name="persistentDisk">Persistent disk settings</param>
-        /// <param name="customPersistentDisks">List of custom persistent
-        /// disks</param>
         /// <param name="enableEndToEndTLS">Indicate if end to end TLS is
         /// enabled.</param>
         /// <param name="loadedCertificates">Collection of loaded
         /// certificates</param>
-        /// <param name="vnetAddons">Additional App settings in vnet injection
-        /// instance</param>
-        public AppResourceProperties(bool? publicProperty = default(bool?), string url = default(string), IDictionary<string, IDictionary<string, object>> addonConfigs = default(IDictionary<string, IDictionary<string, object>>), string provisioningState = default(string), string fqdn = default(string), bool? httpsOnly = default(bool?), TemporaryDisk temporaryDisk = default(TemporaryDisk), PersistentDisk persistentDisk = default(PersistentDisk), IList<CustomPersistentDiskResource> customPersistentDisks = default(IList<CustomPersistentDiskResource>), bool? enableEndToEndTLS = default(bool?), IList<LoadedCertificate> loadedCertificates = default(IList<LoadedCertificate>), AppVNetAddons vnetAddons = default(AppVNetAddons))
+        public AppResourceProperties(bool? publicProperty = default(bool?), string url = default(string), IDictionary<string, IDictionary<string, object>> addonConfigs = default(IDictionary<string, IDictionary<string, object>>), string provisioningState = default(string), string fqdn = default(string), bool? httpsOnly = default(bool?), TemporaryDisk temporaryDisk = default(TemporaryDisk), PersistentDisk persistentDisk = default(PersistentDisk), bool? enableEndToEndTLS = default(bool?), IList<LoadedCertificate> loadedCertificates = default(IList<LoadedCertificate>))
         {
             PublicProperty = publicProperty;
             Url = url;
@@ -60,10 +56,8 @@ namespace Microsoft.Azure.Management.AppPlatform.Models
             HttpsOnly = httpsOnly;
             TemporaryDisk = temporaryDisk;
             PersistentDisk = persistentDisk;
-            CustomPersistentDisks = customPersistentDisks;
             EnableEndToEndTLS = enableEndToEndTLS;
             LoadedCertificates = loadedCertificates;
-            VnetAddons = vnetAddons;
             CustomInit();
         }
 
@@ -122,12 +116,6 @@ namespace Microsoft.Azure.Management.AppPlatform.Models
         public PersistentDisk PersistentDisk { get; set; }
 
         /// <summary>
-        /// Gets or sets list of custom persistent disks
-        /// </summary>
-        [JsonProperty(PropertyName = "customPersistentDisks")]
-        public IList<CustomPersistentDiskResource> CustomPersistentDisks { get; set; }
-
-        /// <summary>
         /// Gets or sets indicate if end to end TLS is enabled.
         /// </summary>
         [JsonProperty(PropertyName = "enableEndToEndTLS")]
@@ -138,12 +126,6 @@ namespace Microsoft.Azure.Management.AppPlatform.Models
         /// </summary>
         [JsonProperty(PropertyName = "loadedCertificates")]
         public IList<LoadedCertificate> LoadedCertificates { get; set; }
-
-        /// <summary>
-        /// Gets or sets additional App settings in vnet injection instance
-        /// </summary>
-        [JsonProperty(PropertyName = "vnetAddons")]
-        public AppVNetAddons VnetAddons { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -161,23 +143,13 @@ namespace Microsoft.Azure.Management.AppPlatform.Models
             {
                 PersistentDisk.Validate();
             }
-            if (CustomPersistentDisks != null)
+            if (LoadedCertificates != null)
             {
-                foreach (var element in CustomPersistentDisks)
+                foreach (var element in LoadedCertificates)
                 {
                     if (element != null)
                     {
                         element.Validate();
-                    }
-                }
-            }
-            if (LoadedCertificates != null)
-            {
-                foreach (var element1 in LoadedCertificates)
-                {
-                    if (element1 != null)
-                    {
-                        element1.Validate();
                     }
                 }
             }

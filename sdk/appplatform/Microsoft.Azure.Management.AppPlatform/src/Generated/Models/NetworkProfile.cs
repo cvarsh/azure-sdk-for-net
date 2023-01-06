@@ -47,9 +47,7 @@ namespace Microsoft.Azure.Management.AppPlatform.Models
         /// Spring Apps resource.</param>
         /// <param name="requiredTraffics">Required inbound or outbound
         /// traffics for Azure Spring Apps resource.</param>
-        /// <param name="ingressConfig">Ingress configuration payload for Azure
-        /// Spring Apps resource.</param>
-        public NetworkProfile(string serviceRuntimeSubnetId = default(string), string appSubnetId = default(string), string serviceCidr = default(string), string serviceRuntimeNetworkResourceGroup = default(string), string appNetworkResourceGroup = default(string), NetworkProfileOutboundIPs outboundIPs = default(NetworkProfileOutboundIPs), IList<RequiredTraffic> requiredTraffics = default(IList<RequiredTraffic>), IngressConfig ingressConfig = default(IngressConfig))
+        public NetworkProfile(string serviceRuntimeSubnetId = default(string), string appSubnetId = default(string), string serviceCidr = default(string), string serviceRuntimeNetworkResourceGroup = default(string), string appNetworkResourceGroup = default(string), NetworkProfileOutboundIPs outboundIPs = default(NetworkProfileOutboundIPs), IList<RequiredTraffic> requiredTraffics = default(IList<RequiredTraffic>))
         {
             ServiceRuntimeSubnetId = serviceRuntimeSubnetId;
             AppSubnetId = appSubnetId;
@@ -58,7 +56,6 @@ namespace Microsoft.Azure.Management.AppPlatform.Models
             AppNetworkResourceGroup = appNetworkResourceGroup;
             OutboundIPs = outboundIPs;
             RequiredTraffics = requiredTraffics;
-            IngressConfig = ingressConfig;
             CustomInit();
         }
 
@@ -113,13 +110,6 @@ namespace Microsoft.Azure.Management.AppPlatform.Models
         /// </summary>
         [JsonProperty(PropertyName = "requiredTraffics")]
         public IList<RequiredTraffic> RequiredTraffics { get; private set; }
-
-        /// <summary>
-        /// Gets or sets ingress configuration payload for Azure Spring Apps
-        /// resource.
-        /// </summary>
-        [JsonProperty(PropertyName = "ingressConfig")]
-        public IngressConfig IngressConfig { get; set; }
 
     }
 }

@@ -11,8 +11,6 @@
 namespace Microsoft.Azure.Management.AppPlatform.Models
 {
     using Newtonsoft.Json;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
@@ -38,14 +36,11 @@ namespace Microsoft.Azure.Management.AppPlatform.Models
         /// identity.</param>
         /// <param name="tenantId">Tenant Id of system-assigned managed
         /// identity.</param>
-        /// <param name="userAssignedIdentities">Properties of user-assigned
-        /// managed identities</param>
-        public ManagedIdentityProperties(string type = default(string), string principalId = default(string), string tenantId = default(string), IDictionary<string, UserAssignedManagedIdentity> userAssignedIdentities = default(IDictionary<string, UserAssignedManagedIdentity>))
+        public ManagedIdentityProperties(string type = default(string), string principalId = default(string), string tenantId = default(string))
         {
             Type = type;
             PrincipalId = principalId;
             TenantId = tenantId;
-            UserAssignedIdentities = userAssignedIdentities;
             CustomInit();
         }
 
@@ -73,12 +68,6 @@ namespace Microsoft.Azure.Management.AppPlatform.Models
         /// </summary>
         [JsonProperty(PropertyName = "tenantId")]
         public string TenantId { get; set; }
-
-        /// <summary>
-        /// Gets or sets properties of user-assigned managed identities
-        /// </summary>
-        [JsonProperty(PropertyName = "userAssignedIdentities")]
-        public IDictionary<string, UserAssignedManagedIdentity> UserAssignedIdentities { get; set; }
 
     }
 }

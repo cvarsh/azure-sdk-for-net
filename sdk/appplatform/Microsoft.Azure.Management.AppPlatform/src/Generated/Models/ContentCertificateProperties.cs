@@ -43,12 +43,9 @@ namespace Microsoft.Azure.Management.AppPlatform.Models
         /// certificate.</param>
         /// <param name="subjectName">The subject name of certificate.</param>
         /// <param name="dnsNames">The domain list of certificate.</param>
-        /// <param name="provisioningState">Provisioning state of the
-        /// Certificate. Possible values include: 'Creating', 'Updating',
-        /// 'Succeeded', 'Failed', 'Deleting'</param>
         /// <param name="content">The content of uploaded certificate.</param>
-        public ContentCertificateProperties(string thumbprint = default(string), string issuer = default(string), string issuedDate = default(string), string expirationDate = default(string), string activateDate = default(string), string subjectName = default(string), IList<string> dnsNames = default(IList<string>), string provisioningState = default(string), string content = default(string))
-            : base(thumbprint, issuer, issuedDate, expirationDate, activateDate, subjectName, dnsNames, provisioningState)
+        public ContentCertificateProperties(string thumbprint = default(string), string issuer = default(string), string issuedDate = default(string), string expirationDate = default(string), string activateDate = default(string), string subjectName = default(string), IList<string> dnsNames = default(IList<string>), string content = default(string))
+            : base(thumbprint, issuer, issuedDate, expirationDate, activateDate, subjectName, dnsNames)
         {
             Content = content;
             CustomInit();
