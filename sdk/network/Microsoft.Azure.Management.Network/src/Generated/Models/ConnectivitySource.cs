@@ -34,10 +34,13 @@ namespace Microsoft.Azure.Management.Network.Models
         /// connectivity check will be initiated.</param>
         /// <param name="port">The source port from which a connectivity check
         /// will be performed.</param>
-        public ConnectivitySource(string resourceId, int? port = default(int?))
+        /// <param name="vmssIndex">The vmss instance name from which a
+        /// connectivity check will be performed.</param>
+        public ConnectivitySource(string resourceId, int? port = default(int?), string vmssIndex = default(string))
         {
             ResourceId = resourceId;
             Port = port;
+            VmssIndex = vmssIndex;
             CustomInit();
         }
 
@@ -59,6 +62,13 @@ namespace Microsoft.Azure.Management.Network.Models
         /// </summary>
         [JsonProperty(PropertyName = "port")]
         public int? Port { get; set; }
+
+        /// <summary>
+        /// Gets or sets the vmss instance name from which a connectivity check
+        /// will be performed.
+        /// </summary>
+        [JsonProperty(PropertyName = "vmssIndex")]
+        public string VmssIndex { get; set; }
 
         /// <summary>
         /// Validate the object.

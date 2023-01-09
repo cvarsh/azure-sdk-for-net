@@ -12,14 +12,13 @@ namespace Microsoft.Azure.Management.Network.Models
 {
 
     /// <summary>
-    /// Defines values for ApplicationGatewayTier.
+    /// Defines values for AnalysisModes.
     /// </summary>
-    public static class ApplicationGatewayTier
+    public static class AnalysisModes
     {
-        public const string Standard = "Standard";
-        public const string WAF = "WAF";
-        public const string StandardV2 = "Standard_v2";
-        public const string WAFV2 = "WAF_v2";
-        public const string StandardBasic = "Standard_Basic";
+        public const string NextHop = "NextHop";
+        public const string NCD = "NCD";
+        public const string PortScan = "PortScan";
+        public const string Default = "Default";
     }
 }
