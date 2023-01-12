@@ -77,6 +77,18 @@ namespace Azure.ResourceManager.Media.Models
                     writer.WriteNull("publicNetworkAccess");
                 }
             }
+            if (Optional.IsDefined(MinimumTlsVersion))
+            {
+                if (MinimumTlsVersion != null)
+                {
+                    writer.WritePropertyName("minimumTlsVersion");
+                    writer.WriteStringValue(MinimumTlsVersion.Value.ToString());
+                }
+                else
+                {
+                    writer.WriteNull("minimumTlsVersion");
+                }
+            }
             writer.WriteEndObject();
             writer.WriteEndObject();
         }
