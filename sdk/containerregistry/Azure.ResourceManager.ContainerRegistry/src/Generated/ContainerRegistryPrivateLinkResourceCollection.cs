@@ -69,7 +69,7 @@ namespace Azure.ResourceManager.ContainerRegistry
             scope.Start();
             try
             {
-                var response = await _containerRegistryPrivateLinkResourceRegistriesRestClient.GetPrivateLinkResourceAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, groupName, cancellationToken).ConfigureAwait(false);
+                var response = await _containerRegistryPrivateLinkResourceRegistriesRestClient.GetPrivateLinkResourceAsync(Guid.Parse(Id.Parent.Parent.Name), Id.Parent.Name, Id.Name, groupName, cancellationToken).ConfigureAwait(false);
                 if (response.Value == null)
                     throw new RequestFailedException(response.GetRawResponse());
                 return Response.FromValue(new ContainerRegistryPrivateLinkResource(Client, response.Value), response.GetRawResponse());
@@ -98,7 +98,7 @@ namespace Azure.ResourceManager.ContainerRegistry
             scope.Start();
             try
             {
-                var response = _containerRegistryPrivateLinkResourceRegistriesRestClient.GetPrivateLinkResource(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, groupName, cancellationToken);
+                var response = _containerRegistryPrivateLinkResourceRegistriesRestClient.GetPrivateLinkResource(Guid.Parse(Id.Parent.Parent.Name), Id.Parent.Name, Id.Name, groupName, cancellationToken);
                 if (response.Value == null)
                     throw new RequestFailedException(response.GetRawResponse());
                 return Response.FromValue(new ContainerRegistryPrivateLinkResource(Client, response.Value), response.GetRawResponse());
@@ -119,8 +119,8 @@ namespace Azure.ResourceManager.ContainerRegistry
         /// <returns> An async collection of <see cref="ContainerRegistryPrivateLinkResource" /> that may take multiple service requests to iterate over. </returns>
         public virtual AsyncPageable<ContainerRegistryPrivateLinkResource> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            HttpMessage FirstPageRequest(int? pageSizeHint) => _containerRegistryPrivateLinkResourceRegistriesRestClient.CreateListPrivateLinkResourcesRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
-            HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _containerRegistryPrivateLinkResourceRegistriesRestClient.CreateListPrivateLinkResourcesNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
+            HttpMessage FirstPageRequest(int? pageSizeHint) => _containerRegistryPrivateLinkResourceRegistriesRestClient.CreateListPrivateLinkResourcesRequest(Guid.Parse(Id.Parent.Parent.Name), Id.Parent.Name, Id.Name);
+            HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _containerRegistryPrivateLinkResourceRegistriesRestClient.CreateListPrivateLinkResourcesNextPageRequest(nextLink, Guid.Parse(Id.Parent.Parent.Name), Id.Parent.Name, Id.Name);
             return PageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => new ContainerRegistryPrivateLinkResource(Client, ContainerRegistryPrivateLinkResourceData.DeserializeContainerRegistryPrivateLinkResourceData(e)), _containerRegistryPrivateLinkResourceRegistriesClientDiagnostics, Pipeline, "ContainerRegistryPrivateLinkResourceCollection.GetAll", "value", "nextLink", cancellationToken);
         }
 
@@ -133,8 +133,8 @@ namespace Azure.ResourceManager.ContainerRegistry
         /// <returns> A collection of <see cref="ContainerRegistryPrivateLinkResource" /> that may take multiple service requests to iterate over. </returns>
         public virtual Pageable<ContainerRegistryPrivateLinkResource> GetAll(CancellationToken cancellationToken = default)
         {
-            HttpMessage FirstPageRequest(int? pageSizeHint) => _containerRegistryPrivateLinkResourceRegistriesRestClient.CreateListPrivateLinkResourcesRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
-            HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _containerRegistryPrivateLinkResourceRegistriesRestClient.CreateListPrivateLinkResourcesNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
+            HttpMessage FirstPageRequest(int? pageSizeHint) => _containerRegistryPrivateLinkResourceRegistriesRestClient.CreateListPrivateLinkResourcesRequest(Guid.Parse(Id.Parent.Parent.Name), Id.Parent.Name, Id.Name);
+            HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _containerRegistryPrivateLinkResourceRegistriesRestClient.CreateListPrivateLinkResourcesNextPageRequest(nextLink, Guid.Parse(Id.Parent.Parent.Name), Id.Parent.Name, Id.Name);
             return PageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => new ContainerRegistryPrivateLinkResource(Client, ContainerRegistryPrivateLinkResourceData.DeserializeContainerRegistryPrivateLinkResourceData(e)), _containerRegistryPrivateLinkResourceRegistriesClientDiagnostics, Pipeline, "ContainerRegistryPrivateLinkResourceCollection.GetAll", "value", "nextLink", cancellationToken);
         }
 
@@ -155,7 +155,7 @@ namespace Azure.ResourceManager.ContainerRegistry
             scope.Start();
             try
             {
-                var response = await _containerRegistryPrivateLinkResourceRegistriesRestClient.GetPrivateLinkResourceAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, groupName, cancellationToken: cancellationToken).ConfigureAwait(false);
+                var response = await _containerRegistryPrivateLinkResourceRegistriesRestClient.GetPrivateLinkResourceAsync(Guid.Parse(Id.Parent.Parent.Name), Id.Parent.Name, Id.Name, groupName, cancellationToken: cancellationToken).ConfigureAwait(false);
                 return Response.FromValue(response.Value != null, response.GetRawResponse());
             }
             catch (Exception e)
@@ -182,7 +182,7 @@ namespace Azure.ResourceManager.ContainerRegistry
             scope.Start();
             try
             {
-                var response = _containerRegistryPrivateLinkResourceRegistriesRestClient.GetPrivateLinkResource(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, groupName, cancellationToken: cancellationToken);
+                var response = _containerRegistryPrivateLinkResourceRegistriesRestClient.GetPrivateLinkResource(Guid.Parse(Id.Parent.Parent.Name), Id.Parent.Name, Id.Name, groupName, cancellationToken: cancellationToken);
                 return Response.FromValue(response.Value != null, response.GetRawResponse());
             }
             catch (Exception e)
