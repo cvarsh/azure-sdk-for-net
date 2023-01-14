@@ -285,7 +285,7 @@ namespace Azure.ResourceManager.Cdn
         }
 
         /// <summary>
-        /// Checks the quota and actual usage of the given AzureFrontDoor origin group under the given CDN profile.
+        /// Checks the quota and actual usage of endpoints under the given Azure Front Door profile..
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/usages
         /// Operation Id: FrontDoorOriginGroups_ListResourceUsage
         /// </summary>
@@ -299,7 +299,7 @@ namespace Azure.ResourceManager.Cdn
         }
 
         /// <summary>
-        /// Checks the quota and actual usage of the given AzureFrontDoor origin group under the given CDN profile.
+        /// Checks the quota and actual usage of endpoints under the given Azure Front Door profile..
         /// Request Path: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/usages
         /// Operation Id: FrontDoorOriginGroups_ListResourceUsage
         /// </summary>
