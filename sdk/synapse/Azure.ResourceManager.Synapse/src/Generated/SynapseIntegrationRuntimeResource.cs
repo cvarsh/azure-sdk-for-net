@@ -50,6 +50,8 @@ namespace Azure.ResourceManager.Synapse
         private readonly IntegrationRuntimeMonitoringDataRestOperations _integrationRuntimeMonitoringDataRestClient;
         private readonly ClientDiagnostics _integrationRuntimeStatusClientDiagnostics;
         private readonly IntegrationRuntimeStatusRestOperations _integrationRuntimeStatusRestClient;
+        private readonly ClientDiagnostics _getClientDiagnostics;
+        private readonly GetRestOperations _getRestClient;
         private readonly SynapseIntegrationRuntimeData _data;
 
         /// <summary> Initializes a new instance of the <see cref="SynapseIntegrationRuntimeResource"/> class for mocking. </summary>
@@ -90,6 +92,8 @@ namespace Azure.ResourceManager.Synapse
             _integrationRuntimeMonitoringDataRestClient = new IntegrationRuntimeMonitoringDataRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
             _integrationRuntimeStatusClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.Synapse", ProviderConstants.DefaultProviderNamespace, Diagnostics);
             _integrationRuntimeStatusRestClient = new IntegrationRuntimeStatusRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
+            _getClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.Synapse", ProviderConstants.DefaultProviderNamespace, Diagnostics);
+            _getRestClient = new GetRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint);
 #if DEBUG
 			ValidateResourceId(Id);
 #endif
@@ -403,7 +407,7 @@ namespace Azure.ResourceManager.Synapse
             try
             {
                 var response = await _synapseIntegrationRuntimeIntegrationRuntimesRestClient.StartAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken).ConfigureAwait(false);
-                var operation = new SynapseArmOperation<SynapseIntegrationRuntimeStatusResult>(new SynapseIntegrationRuntimeStatusResultOperationSource(), _synapseIntegrationRuntimeIntegrationRuntimesClientDiagnostics, Pipeline, _synapseIntegrationRuntimeIntegrationRuntimesRestClient.CreateStartRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
+                var operation = new SynapseArmOperation<SynapseIntegrationRuntimeStatusResult>(new SynapseIntegrationRuntimeStatusResultOperationSource(), _synapseIntegrationRuntimeIntegrationRuntimesClientDiagnostics, Pipeline, _synapseIntegrationRuntimeIntegrationRuntimesRestClient.CreateStartRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.AzureAsyncOperation);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -437,7 +441,7 @@ namespace Azure.ResourceManager.Synapse
             try
             {
                 var response = _synapseIntegrationRuntimeIntegrationRuntimesRestClient.Start(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken);
-                var operation = new SynapseArmOperation<SynapseIntegrationRuntimeStatusResult>(new SynapseIntegrationRuntimeStatusResultOperationSource(), _synapseIntegrationRuntimeIntegrationRuntimesClientDiagnostics, Pipeline, _synapseIntegrationRuntimeIntegrationRuntimesRestClient.CreateStartRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
+                var operation = new SynapseArmOperation<SynapseIntegrationRuntimeStatusResult>(new SynapseIntegrationRuntimeStatusResultOperationSource(), _synapseIntegrationRuntimeIntegrationRuntimesClientDiagnostics, Pipeline, _synapseIntegrationRuntimeIntegrationRuntimesRestClient.CreateStartRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.AzureAsyncOperation);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletion(cancellationToken);
                 return operation;
@@ -831,7 +835,7 @@ namespace Azure.ResourceManager.Synapse
             try
             {
                 var response = await _integrationRuntimeObjectMetadataRestClient.RefreshAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken).ConfigureAwait(false);
-                var operation = new SynapseArmOperation<SynapseSsisObjectMetadataStatusResult>(new SynapseSsisObjectMetadataStatusResultOperationSource(), _integrationRuntimeObjectMetadataClientDiagnostics, Pipeline, _integrationRuntimeObjectMetadataRestClient.CreateRefreshRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
+                var operation = new SynapseArmOperation<SynapseSsisObjectMetadataStatusResult>(new SynapseSsisObjectMetadataStatusResultOperationSource(), _integrationRuntimeObjectMetadataClientDiagnostics, Pipeline, _integrationRuntimeObjectMetadataRestClient.CreateRefreshRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.AzureAsyncOperation);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -865,7 +869,7 @@ namespace Azure.ResourceManager.Synapse
             try
             {
                 var response = _integrationRuntimeObjectMetadataRestClient.Refresh(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken);
-                var operation = new SynapseArmOperation<SynapseSsisObjectMetadataStatusResult>(new SynapseSsisObjectMetadataStatusResultOperationSource(), _integrationRuntimeObjectMetadataClientDiagnostics, Pipeline, _integrationRuntimeObjectMetadataRestClient.CreateRefreshRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
+                var operation = new SynapseArmOperation<SynapseSsisObjectMetadataStatusResult>(new SynapseSsisObjectMetadataStatusResultOperationSource(), _integrationRuntimeObjectMetadataClientDiagnostics, Pipeline, _integrationRuntimeObjectMetadataRestClient.CreateRefreshRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.AzureAsyncOperation);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletion(cancellationToken);
                 return operation;
@@ -1450,6 +1454,216 @@ namespace Azure.ResourceManager.Synapse
             try
             {
                 var response = _integrationRuntimeStatusRestClient.Get(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Get an integration runtime start operation status
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/start/operationstatuses/{integrationRuntimeOperationId}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>Get_IntegrationRuntimeStart</description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="integrationRuntimeOperationId"> Integration runtime Operation Id. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="integrationRuntimeOperationId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="integrationRuntimeOperationId"/> is null. </exception>
+        public virtual async Task<Response<IntegrationRuntimeOperationStatus>> IntegrationRuntimeStartGetAsync(string integrationRuntimeOperationId, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(integrationRuntimeOperationId, nameof(integrationRuntimeOperationId));
+
+            using var scope = _getClientDiagnostics.CreateScope("SynapseIntegrationRuntimeResource.IntegrationRuntimeStartGet");
+            scope.Start();
+            try
+            {
+                var response = await _getRestClient.IntegrationRuntimeStartAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, integrationRuntimeOperationId, cancellationToken).ConfigureAwait(false);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Get an integration runtime start operation status
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/start/operationstatuses/{integrationRuntimeOperationId}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>Get_IntegrationRuntimeStart</description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="integrationRuntimeOperationId"> Integration runtime Operation Id. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="integrationRuntimeOperationId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="integrationRuntimeOperationId"/> is null. </exception>
+        public virtual Response<IntegrationRuntimeOperationStatus> IntegrationRuntimeStartGet(string integrationRuntimeOperationId, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(integrationRuntimeOperationId, nameof(integrationRuntimeOperationId));
+
+            using var scope = _getClientDiagnostics.CreateScope("SynapseIntegrationRuntimeResource.IntegrationRuntimeStartGet");
+            scope.Start();
+            try
+            {
+                var response = _getRestClient.IntegrationRuntimeStart(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, integrationRuntimeOperationId, cancellationToken);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Get an integration runtime stop operation status
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/stop/operationstatuses/{integrationRuntimeOperationId}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>Get_IntegrationRuntimeStop</description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="integrationRuntimeOperationId"> Integration runtime Operation Id. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="integrationRuntimeOperationId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="integrationRuntimeOperationId"/> is null. </exception>
+        public virtual async Task<Response<IntegrationRuntimeStopOperationStatus>> IntegrationRuntimeStopGetAsync(string integrationRuntimeOperationId, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(integrationRuntimeOperationId, nameof(integrationRuntimeOperationId));
+
+            using var scope = _getClientDiagnostics.CreateScope("SynapseIntegrationRuntimeResource.IntegrationRuntimeStopGet");
+            scope.Start();
+            try
+            {
+                var response = await _getRestClient.IntegrationRuntimeStopAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, integrationRuntimeOperationId, cancellationToken).ConfigureAwait(false);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Get an integration runtime stop operation status
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/stop/operationstatuses/{integrationRuntimeOperationId}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>Get_IntegrationRuntimeStop</description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="integrationRuntimeOperationId"> Integration runtime Operation Id. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="integrationRuntimeOperationId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="integrationRuntimeOperationId"/> is null. </exception>
+        public virtual Response<IntegrationRuntimeStopOperationStatus> IntegrationRuntimeStopGet(string integrationRuntimeOperationId, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(integrationRuntimeOperationId, nameof(integrationRuntimeOperationId));
+
+            using var scope = _getClientDiagnostics.CreateScope("SynapseIntegrationRuntimeResource.IntegrationRuntimeStopGet");
+            scope.Start();
+            try
+            {
+                var response = _getRestClient.IntegrationRuntimeStop(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, integrationRuntimeOperationId, cancellationToken);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Get an integration runtime enable interactivequery operation status
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/enableinteractivequery/operationstatuses/{integrationRuntimeOperationId}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>Get_IntegrationRuntimeEnableInteractivequery</description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="integrationRuntimeOperationId"> Integration runtime Operation Id. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="integrationRuntimeOperationId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="integrationRuntimeOperationId"/> is null. </exception>
+        public virtual async Task<Response<IntegrationRuntimeEnableinteractivequery>> IntegrationRuntimeEnableInteractivequeryGetAsync(string integrationRuntimeOperationId, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(integrationRuntimeOperationId, nameof(integrationRuntimeOperationId));
+
+            using var scope = _getClientDiagnostics.CreateScope("SynapseIntegrationRuntimeResource.IntegrationRuntimeEnableInteractivequeryGet");
+            scope.Start();
+            try
+            {
+                var response = await _getRestClient.IntegrationRuntimeEnableInteractivequeryAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, integrationRuntimeOperationId, cancellationToken).ConfigureAwait(false);
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Get an integration runtime enable interactivequery operation status
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/enableinteractivequery/operationstatuses/{integrationRuntimeOperationId}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>Get_IntegrationRuntimeEnableInteractivequery</description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="integrationRuntimeOperationId"> Integration runtime Operation Id. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentException"> <paramref name="integrationRuntimeOperationId"/> is an empty string, and was expected to be non-empty. </exception>
+        /// <exception cref="ArgumentNullException"> <paramref name="integrationRuntimeOperationId"/> is null. </exception>
+        public virtual Response<IntegrationRuntimeEnableinteractivequery> IntegrationRuntimeEnableInteractivequeryGet(string integrationRuntimeOperationId, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(integrationRuntimeOperationId, nameof(integrationRuntimeOperationId));
+
+            using var scope = _getClientDiagnostics.CreateScope("SynapseIntegrationRuntimeResource.IntegrationRuntimeEnableInteractivequeryGet");
+            scope.Start();
+            try
+            {
+                var response = _getRestClient.IntegrationRuntimeEnableInteractivequery(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, integrationRuntimeOperationId, cancellationToken);
                 return response;
             }
             catch (Exception e)

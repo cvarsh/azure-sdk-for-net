@@ -733,14 +733,14 @@ namespace Azure.ResourceManager.Synapse
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual async Task<ArmOperation<BinaryData>> DeleteAsync(WaitUntil waitUntil, CancellationToken cancellationToken = default)
+        public virtual async Task<ArmOperation<SynapseSqlPoolResource>> DeleteAsync(WaitUntil waitUntil, CancellationToken cancellationToken = default)
         {
             using var scope = _synapseSqlPoolSqlPoolsClientDiagnostics.CreateScope("SynapseSqlPoolResource.Delete");
             scope.Start();
             try
             {
                 var response = await _synapseSqlPoolSqlPoolsRestClient.DeleteAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken).ConfigureAwait(false);
-                var operation = new SynapseArmOperation<BinaryData>(new BinaryDataOperationSource(), _synapseSqlPoolSqlPoolsClientDiagnostics, Pipeline, _synapseSqlPoolSqlPoolsRestClient.CreateDeleteRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
+                var operation = new SynapseArmOperation<SynapseSqlPoolResource>(new SynapseSqlPoolOperationSource(Client), _synapseSqlPoolSqlPoolsClientDiagnostics, Pipeline, _synapseSqlPoolSqlPoolsRestClient.CreateDeleteRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -767,14 +767,14 @@ namespace Azure.ResourceManager.Synapse
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual ArmOperation<BinaryData> Delete(WaitUntil waitUntil, CancellationToken cancellationToken = default)
+        public virtual ArmOperation<SynapseSqlPoolResource> Delete(WaitUntil waitUntil, CancellationToken cancellationToken = default)
         {
             using var scope = _synapseSqlPoolSqlPoolsClientDiagnostics.CreateScope("SynapseSqlPoolResource.Delete");
             scope.Start();
             try
             {
                 var response = _synapseSqlPoolSqlPoolsRestClient.Delete(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken);
-                var operation = new SynapseArmOperation<BinaryData>(new BinaryDataOperationSource(), _synapseSqlPoolSqlPoolsClientDiagnostics, Pipeline, _synapseSqlPoolSqlPoolsRestClient.CreateDeleteRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
+                var operation = new SynapseArmOperation<SynapseSqlPoolResource>(new SynapseSqlPoolOperationSource(Client), _synapseSqlPoolSqlPoolsClientDiagnostics, Pipeline, _synapseSqlPoolSqlPoolsRestClient.CreateDeleteRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletion(cancellationToken);
                 return operation;
@@ -799,10 +799,11 @@ namespace Azure.ResourceManager.Synapse
         /// </item>
         /// </list>
         /// </summary>
+        /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="patch"> The updated SQL pool properties. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="patch"/> is null. </exception>
-        public virtual async Task<Response<SynapseSqlPoolResource>> UpdateAsync(SynapseSqlPoolPatch patch, CancellationToken cancellationToken = default)
+        public virtual async Task<ArmOperation<SynapseSqlPoolResource>> UpdateAsync(WaitUntil waitUntil, SynapseSqlPoolPatch patch, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(patch, nameof(patch));
 
@@ -811,7 +812,10 @@ namespace Azure.ResourceManager.Synapse
             try
             {
                 var response = await _synapseSqlPoolSqlPoolsRestClient.UpdateAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, patch, cancellationToken).ConfigureAwait(false);
-                return Response.FromValue(new SynapseSqlPoolResource(Client, response.Value), response.GetRawResponse());
+                var operation = new SynapseArmOperation<SynapseSqlPoolResource>(new SynapseSqlPoolOperationSource(Client), _synapseSqlPoolSqlPoolsClientDiagnostics, Pipeline, _synapseSqlPoolSqlPoolsRestClient.CreateUpdateRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, patch).Request, response, OperationFinalStateVia.Location);
+                if (waitUntil == WaitUntil.Completed)
+                    await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
+                return operation;
             }
             catch (Exception e)
             {
@@ -833,10 +837,11 @@ namespace Azure.ResourceManager.Synapse
         /// </item>
         /// </list>
         /// </summary>
+        /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="patch"> The updated SQL pool properties. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="patch"/> is null. </exception>
-        public virtual Response<SynapseSqlPoolResource> Update(SynapseSqlPoolPatch patch, CancellationToken cancellationToken = default)
+        public virtual ArmOperation<SynapseSqlPoolResource> Update(WaitUntil waitUntil, SynapseSqlPoolPatch patch, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(patch, nameof(patch));
 
@@ -845,7 +850,10 @@ namespace Azure.ResourceManager.Synapse
             try
             {
                 var response = _synapseSqlPoolSqlPoolsRestClient.Update(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, patch, cancellationToken);
-                return Response.FromValue(new SynapseSqlPoolResource(Client, response.Value), response.GetRawResponse());
+                var operation = new SynapseArmOperation<SynapseSqlPoolResource>(new SynapseSqlPoolOperationSource(Client), _synapseSqlPoolSqlPoolsClientDiagnostics, Pipeline, _synapseSqlPoolSqlPoolsRestClient.CreateUpdateRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, patch).Request, response, OperationFinalStateVia.Location);
+                if (waitUntil == WaitUntil.Completed)
+                    operation.WaitForCompletion(cancellationToken);
+                return operation;
             }
             catch (Exception e)
             {
@@ -869,14 +877,14 @@ namespace Azure.ResourceManager.Synapse
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual async Task<ArmOperation<BinaryData>> PauseAsync(WaitUntil waitUntil, CancellationToken cancellationToken = default)
+        public virtual async Task<ArmOperation<SynapseSqlPoolResource>> PauseAsync(WaitUntil waitUntil, CancellationToken cancellationToken = default)
         {
             using var scope = _synapseSqlPoolSqlPoolsClientDiagnostics.CreateScope("SynapseSqlPoolResource.Pause");
             scope.Start();
             try
             {
                 var response = await _synapseSqlPoolSqlPoolsRestClient.PauseAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken).ConfigureAwait(false);
-                var operation = new SynapseArmOperation<BinaryData>(new BinaryDataOperationSource(), _synapseSqlPoolSqlPoolsClientDiagnostics, Pipeline, _synapseSqlPoolSqlPoolsRestClient.CreatePauseRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
+                var operation = new SynapseArmOperation<SynapseSqlPoolResource>(new SynapseSqlPoolOperationSource(Client), _synapseSqlPoolSqlPoolsClientDiagnostics, Pipeline, _synapseSqlPoolSqlPoolsRestClient.CreatePauseRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -903,14 +911,14 @@ namespace Azure.ResourceManager.Synapse
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual ArmOperation<BinaryData> Pause(WaitUntil waitUntil, CancellationToken cancellationToken = default)
+        public virtual ArmOperation<SynapseSqlPoolResource> Pause(WaitUntil waitUntil, CancellationToken cancellationToken = default)
         {
             using var scope = _synapseSqlPoolSqlPoolsClientDiagnostics.CreateScope("SynapseSqlPoolResource.Pause");
             scope.Start();
             try
             {
                 var response = _synapseSqlPoolSqlPoolsRestClient.Pause(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken);
-                var operation = new SynapseArmOperation<BinaryData>(new BinaryDataOperationSource(), _synapseSqlPoolSqlPoolsClientDiagnostics, Pipeline, _synapseSqlPoolSqlPoolsRestClient.CreatePauseRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
+                var operation = new SynapseArmOperation<SynapseSqlPoolResource>(new SynapseSqlPoolOperationSource(Client), _synapseSqlPoolSqlPoolsClientDiagnostics, Pipeline, _synapseSqlPoolSqlPoolsRestClient.CreatePauseRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletion(cancellationToken);
                 return operation;
@@ -937,14 +945,14 @@ namespace Azure.ResourceManager.Synapse
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual async Task<ArmOperation<BinaryData>> ResumeAsync(WaitUntil waitUntil, CancellationToken cancellationToken = default)
+        public virtual async Task<ArmOperation<SynapseSqlPoolResource>> ResumeAsync(WaitUntil waitUntil, CancellationToken cancellationToken = default)
         {
             using var scope = _synapseSqlPoolSqlPoolsClientDiagnostics.CreateScope("SynapseSqlPoolResource.Resume");
             scope.Start();
             try
             {
                 var response = await _synapseSqlPoolSqlPoolsRestClient.ResumeAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken).ConfigureAwait(false);
-                var operation = new SynapseArmOperation<BinaryData>(new BinaryDataOperationSource(), _synapseSqlPoolSqlPoolsClientDiagnostics, Pipeline, _synapseSqlPoolSqlPoolsRestClient.CreateResumeRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
+                var operation = new SynapseArmOperation<SynapseSqlPoolResource>(new SynapseSqlPoolOperationSource(Client), _synapseSqlPoolSqlPoolsClientDiagnostics, Pipeline, _synapseSqlPoolSqlPoolsRestClient.CreateResumeRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -971,14 +979,14 @@ namespace Azure.ResourceManager.Synapse
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual ArmOperation<BinaryData> Resume(WaitUntil waitUntil, CancellationToken cancellationToken = default)
+        public virtual ArmOperation<SynapseSqlPoolResource> Resume(WaitUntil waitUntil, CancellationToken cancellationToken = default)
         {
             using var scope = _synapseSqlPoolSqlPoolsClientDiagnostics.CreateScope("SynapseSqlPoolResource.Resume");
             scope.Start();
             try
             {
                 var response = _synapseSqlPoolSqlPoolsRestClient.Resume(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, cancellationToken);
-                var operation = new SynapseArmOperation<BinaryData>(new BinaryDataOperationSource(), _synapseSqlPoolSqlPoolsClientDiagnostics, Pipeline, _synapseSqlPoolSqlPoolsRestClient.CreateResumeRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
+                var operation = new SynapseArmOperation<SynapseSqlPoolResource>(new SynapseSqlPoolOperationSource(Client), _synapseSqlPoolSqlPoolsClientDiagnostics, Pipeline, _synapseSqlPoolSqlPoolsRestClient.CreateResumeRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name).Request, response, OperationFinalStateVia.Location);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletion(cancellationToken);
                 return operation;
@@ -1453,8 +1461,8 @@ namespace Azure.ResourceManager.Synapse
                         patch.Tags.Add(tag);
                     }
                     patch.Tags[key] = value;
-                    var result = await UpdateAsync(patch, cancellationToken: cancellationToken).ConfigureAwait(false);
-                    return result;
+                    var result = await UpdateAsync(WaitUntil.Completed, patch, cancellationToken: cancellationToken).ConfigureAwait(false);
+                    return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
             catch (Exception e)
@@ -1507,8 +1515,8 @@ namespace Azure.ResourceManager.Synapse
                         patch.Tags.Add(tag);
                     }
                     patch.Tags[key] = value;
-                    var result = Update(patch, cancellationToken: cancellationToken);
-                    return result;
+                    var result = Update(WaitUntil.Completed, patch, cancellationToken: cancellationToken);
+                    return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
             catch (Exception e)
@@ -1556,8 +1564,8 @@ namespace Azure.ResourceManager.Synapse
                     var current = (await GetAsync(cancellationToken: cancellationToken).ConfigureAwait(false)).Value.Data;
                     var patch = new SynapseSqlPoolPatch();
                     patch.Tags.ReplaceWith(tags);
-                    var result = await UpdateAsync(patch, cancellationToken: cancellationToken).ConfigureAwait(false);
-                    return result;
+                    var result = await UpdateAsync(WaitUntil.Completed, patch, cancellationToken: cancellationToken).ConfigureAwait(false);
+                    return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
             catch (Exception e)
@@ -1605,8 +1613,8 @@ namespace Azure.ResourceManager.Synapse
                     var current = Get(cancellationToken: cancellationToken).Value.Data;
                     var patch = new SynapseSqlPoolPatch();
                     patch.Tags.ReplaceWith(tags);
-                    var result = Update(patch, cancellationToken: cancellationToken);
-                    return result;
+                    var result = Update(WaitUntil.Completed, patch, cancellationToken: cancellationToken);
+                    return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
             catch (Exception e)
@@ -1657,8 +1665,8 @@ namespace Azure.ResourceManager.Synapse
                         patch.Tags.Add(tag);
                     }
                     patch.Tags.Remove(key);
-                    var result = await UpdateAsync(patch, cancellationToken: cancellationToken).ConfigureAwait(false);
-                    return result;
+                    var result = await UpdateAsync(WaitUntil.Completed, patch, cancellationToken: cancellationToken).ConfigureAwait(false);
+                    return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
             catch (Exception e)
@@ -1709,8 +1717,8 @@ namespace Azure.ResourceManager.Synapse
                         patch.Tags.Add(tag);
                     }
                     patch.Tags.Remove(key);
-                    var result = Update(patch, cancellationToken: cancellationToken);
-                    return result;
+                    var result = Update(WaitUntil.Completed, patch, cancellationToken: cancellationToken);
+                    return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
             catch (Exception e)

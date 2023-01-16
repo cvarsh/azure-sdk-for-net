@@ -15,11 +15,6 @@ namespace Azure.ResourceManager.Synapse.Models
         void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
         {
             writer.WriteStartObject();
-            if (Optional.IsDefined(Tier))
-            {
-                writer.WritePropertyName("tier");
-                writer.WriteStringValue(Tier);
-            }
             if (Optional.IsDefined(Name))
             {
                 writer.WritePropertyName("name");
