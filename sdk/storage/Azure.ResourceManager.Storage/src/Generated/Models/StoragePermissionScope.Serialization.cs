@@ -18,7 +18,7 @@ namespace Azure.ResourceManager.Storage.Models
             writer.WritePropertyName("permissions");
             writer.WriteStringValue(Permissions);
             writer.WritePropertyName("service");
-            writer.WriteStringValue(Service);
+            writer.WriteStringValue(Service.ToString());
             writer.WritePropertyName("resourceName");
             writer.WriteStringValue(ResourceName);
             writer.WriteEndObject();
@@ -27,7 +27,7 @@ namespace Azure.ResourceManager.Storage.Models
         internal static StoragePermissionScope DeserializeStoragePermissionScope(JsonElement element)
         {
             string permissions = default;
-            string service = default;
+            PermissionScopeServiceName service = default;
             string resourceName = default;
             foreach (var property in element.EnumerateObject())
             {
@@ -38,7 +38,7 @@ namespace Azure.ResourceManager.Storage.Models
                 }
                 if (property.NameEquals("service"))
                 {
-                    service = property.Value.GetString();
+                    service = new PermissionScopeServiceName(property.Value.GetString());
                     continue;
                 }
                 if (property.NameEquals("resourceName"))
