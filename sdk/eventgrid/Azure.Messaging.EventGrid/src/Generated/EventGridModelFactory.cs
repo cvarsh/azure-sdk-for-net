@@ -209,6 +209,36 @@ namespace Azure.Messaging.EventGrid
             return new SubscriptionDeletedEventData(eventSubscriptionId);
         }
 
+        /// <summary> Initializes a new instance of DataBoxCopyStartedEventData. </summary>
+        /// <param name="serialNumber"> Serial Number of the device associated with the event. The list is comma separated if more than one serial number is associated. </param>
+        /// <param name="stageName"> Name of the current Stage. </param>
+        /// <param name="stageTime"> The time at which the stage happened. </param>
+        /// <returns> A new <see cref="SystemEvents.DataBoxCopyStartedEventData"/> instance for mocking. </returns>
+        public static DataBoxCopyStartedEventData DataBoxCopyStartedEventData(string serialNumber = null, DataBoxStageName? stageName = null, DateTimeOffset? stageTime = null)
+        {
+            return new DataBoxCopyStartedEventData(serialNumber, stageName, stageTime);
+        }
+
+        /// <summary> Initializes a new instance of DataBoxCopyCompletedEventData. </summary>
+        /// <param name="serialNumber"> Serial Number of the device associated with the event. The list is comma separated if more than one serial number is associated. </param>
+        /// <param name="stageName"> Name of the current Stage. </param>
+        /// <param name="stageTime"> The time at which the stage happened. </param>
+        /// <returns> A new <see cref="SystemEvents.DataBoxCopyCompletedEventData"/> instance for mocking. </returns>
+        public static DataBoxCopyCompletedEventData DataBoxCopyCompletedEventData(string serialNumber = null, DataBoxStageName? stageName = null, DateTimeOffset? stageTime = null)
+        {
+            return new DataBoxCopyCompletedEventData(serialNumber, stageName, stageTime);
+        }
+
+        /// <summary> Initializes a new instance of DataBoxOrderCompletedEventData. </summary>
+        /// <param name="serialNumber"> Serial Number of the device associated with the event. The list is comma separated if more than one serial number is associated. </param>
+        /// <param name="stageName"> Name of the current Stage. </param>
+        /// <param name="stageTime"> The time at which the stage happened. </param>
+        /// <returns> A new <see cref="SystemEvents.DataBoxOrderCompletedEventData"/> instance for mocking. </returns>
+        public static DataBoxOrderCompletedEventData DataBoxOrderCompletedEventData(string serialNumber = null, DataBoxStageName? stageName = null, DateTimeOffset? stageTime = null)
+        {
+            return new DataBoxOrderCompletedEventData(serialNumber, stageName, stageTime);
+        }
+
         /// <summary> Initializes a new instance of DeviceLifeCycleEventProperties. </summary>
         /// <param name="deviceId"> The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &amp;#35; * ? ! ( ) , = @ ; $ &apos;. </param>
         /// <param name="hubName"> Name of the IoT Hub where the device was created or deleted. </param>
