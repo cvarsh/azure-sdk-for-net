@@ -59,7 +59,9 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// backup. Applicable only for zone-pinned Vms</param>
         /// <param name="recoveryPointMoveReadinessInfo">Eligibility of RP to
         /// be moved to another tier</param>
-        public IaasVMRecoveryPoint(string recoveryPointType = default(string), System.DateTime? recoveryPointTime = default(System.DateTime?), string recoveryPointAdditionalInfo = default(string), string sourceVMStorageType = default(string), bool? isSourceVMEncrypted = default(bool?), KeyAndSecretDetails keyAndSecret = default(KeyAndSecretDetails), bool? isInstantIlrSessionActive = default(bool?), IList<RecoveryPointTierInformationV2> recoveryPointTierDetails = default(IList<RecoveryPointTierInformationV2>), bool? isManagedVirtualMachine = default(bool?), string virtualMachineSize = default(string), bool? originalStorageAccountOption = default(bool?), string osType = default(string), RecoveryPointDiskConfiguration recoveryPointDiskConfiguration = default(RecoveryPointDiskConfiguration), IList<string> zones = default(IList<string>), IDictionary<string, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo = default(IDictionary<string, RecoveryPointMoveReadinessInfo>))
+        /// <param name="recoveryPointProperties">Properties of Recovery
+        /// Point</param>
+        public IaasVMRecoveryPoint(string recoveryPointType = default(string), System.DateTime? recoveryPointTime = default(System.DateTime?), string recoveryPointAdditionalInfo = default(string), string sourceVMStorageType = default(string), bool? isSourceVMEncrypted = default(bool?), KeyAndSecretDetails keyAndSecret = default(KeyAndSecretDetails), bool? isInstantIlrSessionActive = default(bool?), IList<RecoveryPointTierInformationV2> recoveryPointTierDetails = default(IList<RecoveryPointTierInformationV2>), bool? isManagedVirtualMachine = default(bool?), string virtualMachineSize = default(string), bool? originalStorageAccountOption = default(bool?), string osType = default(string), RecoveryPointDiskConfiguration recoveryPointDiskConfiguration = default(RecoveryPointDiskConfiguration), IList<string> zones = default(IList<string>), IDictionary<string, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo = default(IDictionary<string, RecoveryPointMoveReadinessInfo>), RecoveryPointProperties recoveryPointProperties = default(RecoveryPointProperties))
         {
             RecoveryPointType = recoveryPointType;
             RecoveryPointTime = recoveryPointTime;
@@ -76,6 +78,7 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
             RecoveryPointDiskConfiguration = recoveryPointDiskConfiguration;
             Zones = zones;
             RecoveryPointMoveReadinessInfo = recoveryPointMoveReadinessInfo;
+            RecoveryPointProperties = recoveryPointProperties;
             CustomInit();
         }
 
@@ -178,6 +181,12 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// </summary>
         [JsonProperty(PropertyName = "recoveryPointMoveReadinessInfo")]
         public IDictionary<string, RecoveryPointMoveReadinessInfo> RecoveryPointMoveReadinessInfo { get; set; }
+
+        /// <summary>
+        /// Gets or sets properties of Recovery Point
+        /// </summary>
+        [JsonProperty(PropertyName = "recoveryPointProperties")]
+        public RecoveryPointProperties RecoveryPointProperties { get; set; }
 
     }
 }

@@ -41,12 +41,15 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// information.</param>
         /// <param name="recoveryPointMoveReadinessInfo">Eligibility of RP to
         /// be moved to another tier</param>
-        public AzureWorkloadRecoveryPoint(System.DateTime? recoveryPointTimeInUTC = default(System.DateTime?), string type = default(string), IList<RecoveryPointTierInformationV2> recoveryPointTierDetails = default(IList<RecoveryPointTierInformationV2>), IDictionary<string, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo = default(IDictionary<string, RecoveryPointMoveReadinessInfo>))
+        /// <param name="recoveryPointProperties">Properties of Recovery
+        /// Point</param>
+        public AzureWorkloadRecoveryPoint(System.DateTime? recoveryPointTimeInUTC = default(System.DateTime?), string type = default(string), IList<RecoveryPointTierInformationV2> recoveryPointTierDetails = default(IList<RecoveryPointTierInformationV2>), IDictionary<string, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo = default(IDictionary<string, RecoveryPointMoveReadinessInfo>), RecoveryPointProperties recoveryPointProperties = default(RecoveryPointProperties))
         {
             RecoveryPointTimeInUTC = recoveryPointTimeInUTC;
             Type = type;
             RecoveryPointTierDetails = recoveryPointTierDetails;
             RecoveryPointMoveReadinessInfo = recoveryPointMoveReadinessInfo;
+            RecoveryPointProperties = recoveryPointProperties;
             CustomInit();
         }
 
@@ -80,6 +83,12 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// </summary>
         [JsonProperty(PropertyName = "recoveryPointMoveReadinessInfo")]
         public IDictionary<string, RecoveryPointMoveReadinessInfo> RecoveryPointMoveReadinessInfo { get; set; }
+
+        /// <summary>
+        /// Gets or sets properties of Recovery Point
+        /// </summary>
+        [JsonProperty(PropertyName = "recoveryPointProperties")]
+        public RecoveryPointProperties RecoveryPointProperties { get; set; }
 
     }
 }

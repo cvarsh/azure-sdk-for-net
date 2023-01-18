@@ -41,9 +41,11 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// information.</param>
         /// <param name="recoveryPointMoveReadinessInfo">Eligibility of RP to
         /// be moved to another tier</param>
+        /// <param name="recoveryPointProperties">Properties of Recovery
+        /// Point</param>
         /// <param name="timeRanges">List of log ranges</param>
-        public AzureWorkloadSAPHanaPointInTimeRecoveryPoint(System.DateTime? recoveryPointTimeInUTC = default(System.DateTime?), string type = default(string), IList<RecoveryPointTierInformationV2> recoveryPointTierDetails = default(IList<RecoveryPointTierInformationV2>), IDictionary<string, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo = default(IDictionary<string, RecoveryPointMoveReadinessInfo>), IList<PointInTimeRange> timeRanges = default(IList<PointInTimeRange>))
-            : base(recoveryPointTimeInUTC, type, recoveryPointTierDetails, recoveryPointMoveReadinessInfo, timeRanges)
+        public AzureWorkloadSAPHanaPointInTimeRecoveryPoint(System.DateTime? recoveryPointTimeInUTC = default(System.DateTime?), string type = default(string), IList<RecoveryPointTierInformationV2> recoveryPointTierDetails = default(IList<RecoveryPointTierInformationV2>), IDictionary<string, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo = default(IDictionary<string, RecoveryPointMoveReadinessInfo>), RecoveryPointProperties recoveryPointProperties = default(RecoveryPointProperties), IList<PointInTimeRange> timeRanges = default(IList<PointInTimeRange>))
+            : base(recoveryPointTimeInUTC, type, recoveryPointTierDetails, recoveryPointMoveReadinessInfo, recoveryPointProperties, timeRanges)
         {
             CustomInit();
         }

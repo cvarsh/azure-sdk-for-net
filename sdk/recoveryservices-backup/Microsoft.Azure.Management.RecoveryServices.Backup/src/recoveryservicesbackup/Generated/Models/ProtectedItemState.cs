@@ -22,5 +22,6 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         public const string ProtectionError = "ProtectionError";
         public const string ProtectionStopped = "ProtectionStopped";
         public const string ProtectionPaused = "ProtectionPaused";
+        public const string BackupsSuspended = "BackupsSuspended";
     }
 }

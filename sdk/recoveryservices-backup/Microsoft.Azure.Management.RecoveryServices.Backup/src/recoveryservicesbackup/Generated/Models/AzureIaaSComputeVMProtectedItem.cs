@@ -84,7 +84,8 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// item.</param>
         /// <param name="protectionState">Backup state of this backup item.
         /// Possible values include: 'Invalid', 'IRPending', 'Protected',
-        /// 'ProtectionError', 'ProtectionStopped', 'ProtectionPaused'</param>
+        /// 'ProtectionError', 'ProtectionStopped', 'ProtectionPaused',
+        /// 'BackupsSuspended'</param>
         /// <param name="healthStatus">Health status of protected item.
         /// Possible values include: 'Passed', 'ActionRequired',
         /// 'ActionSuggested', 'Invalid'</param>

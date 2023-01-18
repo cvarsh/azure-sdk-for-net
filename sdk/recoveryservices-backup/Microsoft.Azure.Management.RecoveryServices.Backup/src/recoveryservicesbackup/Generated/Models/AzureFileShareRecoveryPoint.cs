@@ -39,12 +39,15 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// fileshare, if applicable</param>
         /// <param name="recoveryPointSizeInGB">Contains recovery point
         /// size</param>
-        public AzureFileShareRecoveryPoint(string recoveryPointType = default(string), System.DateTime? recoveryPointTime = default(System.DateTime?), string fileShareSnapshotUri = default(string), int? recoveryPointSizeInGB = default(int?))
+        /// <param name="recoveryPointProperties">Properties of Recovery
+        /// Point</param>
+        public AzureFileShareRecoveryPoint(string recoveryPointType = default(string), System.DateTime? recoveryPointTime = default(System.DateTime?), string fileShareSnapshotUri = default(string), int? recoveryPointSizeInGB = default(int?), RecoveryPointProperties recoveryPointProperties = default(RecoveryPointProperties))
         {
             RecoveryPointType = recoveryPointType;
             RecoveryPointTime = recoveryPointTime;
             FileShareSnapshotUri = fileShareSnapshotUri;
             RecoveryPointSizeInGB = recoveryPointSizeInGB;
+            RecoveryPointProperties = recoveryPointProperties;
             CustomInit();
         }
 
@@ -78,6 +81,12 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// </summary>
         [JsonProperty(PropertyName = "recoveryPointSizeInGB")]
         public int? RecoveryPointSizeInGB { get; set; }
+
+        /// <summary>
+        /// Gets or sets properties of Recovery Point
+        /// </summary>
+        [JsonProperty(PropertyName = "recoveryPointProperties")]
+        public RecoveryPointProperties RecoveryPointProperties { get; set; }
 
     }
 }

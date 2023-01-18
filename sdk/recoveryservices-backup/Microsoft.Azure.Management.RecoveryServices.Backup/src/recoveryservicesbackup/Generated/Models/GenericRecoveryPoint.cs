@@ -36,12 +36,15 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// created.</param>
         /// <param name="recoveryPointAdditionalInfo">Additional information
         /// associated with this backup copy.</param>
-        public GenericRecoveryPoint(string friendlyName = default(string), string recoveryPointType = default(string), System.DateTime? recoveryPointTime = default(System.DateTime?), string recoveryPointAdditionalInfo = default(string))
+        /// <param name="recoveryPointProperties">Properties of Recovery
+        /// Point</param>
+        public GenericRecoveryPoint(string friendlyName = default(string), string recoveryPointType = default(string), System.DateTime? recoveryPointTime = default(System.DateTime?), string recoveryPointAdditionalInfo = default(string), RecoveryPointProperties recoveryPointProperties = default(RecoveryPointProperties))
         {
             FriendlyName = friendlyName;
             RecoveryPointType = recoveryPointType;
             RecoveryPointTime = recoveryPointTime;
             RecoveryPointAdditionalInfo = recoveryPointAdditionalInfo;
+            RecoveryPointProperties = recoveryPointProperties;
             CustomInit();
         }
 
@@ -74,6 +77,12 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// </summary>
         [JsonProperty(PropertyName = "recoveryPointAdditionalInfo")]
         public string RecoveryPointAdditionalInfo { get; set; }
+
+        /// <summary>
+        /// Gets or sets properties of Recovery Point
+        /// </summary>
+        [JsonProperty(PropertyName = "recoveryPointProperties")]
+        public RecoveryPointProperties RecoveryPointProperties { get; set; }
 
     }
 }

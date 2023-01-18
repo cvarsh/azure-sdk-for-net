@@ -81,7 +81,8 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// item.</param>
         /// <param name="protectionState">Backup state of this backup item.
         /// Possible values include: 'Invalid', 'IRPending', 'Protected',
-        /// 'ProtectionError', 'ProtectionStopped', 'ProtectionPaused'</param>
+        /// 'ProtectionError', 'ProtectionStopped', 'ProtectionPaused',
+        /// 'BackupsSuspended'</param>
         /// <param name="lastBackupStatus">Last backup operation status.
         /// Possible values: Healthy, Unhealthy.</param>
         /// <param name="lastBackupTime">Timestamp of the last backup operation
@@ -123,7 +124,7 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// <summary>
         /// Gets or sets backup state of this backup item. Possible values
         /// include: 'Invalid', 'IRPending', 'Protected', 'ProtectionError',
-        /// 'ProtectionStopped', 'ProtectionPaused'
+        /// 'ProtectionStopped', 'ProtectionPaused', 'BackupsSuspended'
         /// </summary>
         [JsonProperty(PropertyName = "protectionState")]
         public string ProtectionState { get; set; }

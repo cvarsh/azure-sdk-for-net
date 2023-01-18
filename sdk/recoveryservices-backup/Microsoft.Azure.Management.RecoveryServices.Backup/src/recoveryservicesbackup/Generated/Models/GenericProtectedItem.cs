@@ -77,7 +77,8 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// and policy applied to this backup item.</param>
         /// <param name="protectionState">Backup state of this backup item.
         /// Possible values include: 'Invalid', 'IRPending', 'Protected',
-        /// 'ProtectionError', 'ProtectionStopped', 'ProtectionPaused'</param>
+        /// 'ProtectionError', 'ProtectionStopped', 'ProtectionPaused',
+        /// 'BackupsSuspended'</param>
         /// <param name="protectedItemId">Data Plane Service ID of the
         /// protected item.</param>
         /// <param name="sourceAssociations">Loosely coupled (type, value)
@@ -116,7 +117,7 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// <summary>
         /// Gets or sets backup state of this backup item. Possible values
         /// include: 'Invalid', 'IRPending', 'Protected', 'ProtectionError',
-        /// 'ProtectionStopped', 'ProtectionPaused'
+        /// 'ProtectionStopped', 'ProtectionPaused', 'BackupsSuspended'
         /// </summary>
         [JsonProperty(PropertyName = "protectionState")]
         public string ProtectionState { get; set; }

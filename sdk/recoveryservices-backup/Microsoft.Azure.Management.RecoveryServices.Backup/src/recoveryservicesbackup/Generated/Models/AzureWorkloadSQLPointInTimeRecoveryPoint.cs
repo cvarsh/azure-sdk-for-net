@@ -42,14 +42,16 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// information.</param>
         /// <param name="recoveryPointMoveReadinessInfo">Eligibility of RP to
         /// be moved to another tier</param>
+        /// <param name="recoveryPointProperties">Properties of Recovery
+        /// Point</param>
         /// <param name="extendedInfo">Extended Info that provides data
         /// directory details. Will be populated in two cases:
         /// When a specific recovery point is accessed using GetRecoveryPoint
         /// Or when ListRecoveryPoints is called for Log RP only with
         /// ExtendedInfo query filter</param>
         /// <param name="timeRanges">List of log ranges</param>
-        public AzureWorkloadSQLPointInTimeRecoveryPoint(System.DateTime? recoveryPointTimeInUTC = default(System.DateTime?), string type = default(string), IList<RecoveryPointTierInformationV2> recoveryPointTierDetails = default(IList<RecoveryPointTierInformationV2>), IDictionary<string, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo = default(IDictionary<string, RecoveryPointMoveReadinessInfo>), AzureWorkloadSQLRecoveryPointExtendedInfo extendedInfo = default(AzureWorkloadSQLRecoveryPointExtendedInfo), IList<PointInTimeRange> timeRanges = default(IList<PointInTimeRange>))
-            : base(recoveryPointTimeInUTC, type, recoveryPointTierDetails, recoveryPointMoveReadinessInfo, extendedInfo)
+        public AzureWorkloadSQLPointInTimeRecoveryPoint(System.DateTime? recoveryPointTimeInUTC = default(System.DateTime?), string type = default(string), IList<RecoveryPointTierInformationV2> recoveryPointTierDetails = default(IList<RecoveryPointTierInformationV2>), IDictionary<string, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo = default(IDictionary<string, RecoveryPointMoveReadinessInfo>), RecoveryPointProperties recoveryPointProperties = default(RecoveryPointProperties), AzureWorkloadSQLRecoveryPointExtendedInfo extendedInfo = default(AzureWorkloadSQLRecoveryPointExtendedInfo), IList<PointInTimeRange> timeRanges = default(IList<PointInTimeRange>))
+            : base(recoveryPointTimeInUTC, type, recoveryPointTierDetails, recoveryPointMoveReadinessInfo, recoveryPointProperties, extendedInfo)
         {
             TimeRanges = timeRanges;
             CustomInit();
